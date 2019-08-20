@@ -1,0 +1,1 @@
+{"result":{"text":"bevelled t over 6 space e-th root of 6"},"status":"ok"}

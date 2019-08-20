@@ -1,0 +1,1 @@
+{"result":{"text":"square root of x space plus space square root of y space equals space 1"},"status":"ok"}

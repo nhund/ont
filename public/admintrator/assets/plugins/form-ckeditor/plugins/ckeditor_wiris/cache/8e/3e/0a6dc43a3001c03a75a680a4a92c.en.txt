@@ -1,0 +1,1 @@
+{"result":{"text":"mu space equals space E left parenthesis X right parenthesis"},"status":"ok"}

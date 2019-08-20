@@ -1,0 +1,1 @@
+{"result":{"text":"mu space equals space E left parenthesis X right parenthesis equals integral subscript negative infinity end subscript superscript plus infinity end superscript x. f left parenthesis x right parenthesis d x"},"status":"ok"}

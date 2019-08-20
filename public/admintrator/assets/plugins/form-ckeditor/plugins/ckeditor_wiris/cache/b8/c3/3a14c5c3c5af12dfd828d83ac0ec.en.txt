@@ -1,0 +1,1 @@
+{"result":{"text":"stack 0 semicolon 5 with bar on top"},"status":"ok"}

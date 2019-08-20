@@ -1,0 +1,217 @@
+.top10 {margin-top: 10px;}
+.pleft0 { padding-left: 0;}
+.color-red {color: red}
+.color-green {color: green}
+.detail-footer {padding: 0 !important;}
+.detail-footer .panel {margin-bottom: 0; background-color: #fff;}
+.detail-footer .panel .panel-heading{border-right: 0;border-left: 0;border-top:0;border-radius: 0;}
+.panel .panel-heading h2>ul.nav-tabs li.tabdrop+li.active a {    border-top-left-radius: 0;}
+.border-top-0 {border-top: 0;}
+.left10 { margin-left: 10px;}
+ul.mailbox-msg-list {clear: both}
+ul.mailbox-msg-list li div.mailbox-msg-list-item {
+    padding: 12px 15px;
+}
+ul.mailbox-msg-list li div.mailbox-msg-list-item img {
+    float: left;
+    margin-right: 10px;
+    margin-top: 4px;
+    width: 19px;
+    border-radius: inherit;
+    height: auto;
+}
+ul.mailbox-msg-list li {
+    border-bottom: 0;
+}
+ul.mailbox-msg-list li .name {
+    color: #5f7676;
+}
+.btn-create {    padding: 12px 3px; }
+.btn-circle {border-radius: 50%; padding: 4px 8px;}
+.btn-create ul.dropdown-menu {top: inherit; padding: 0}
+.bot-0 {margin-bottom: 0}
+a.mailbox-msg-list .mailbox-msg-list-item {
+    padding: 12px 15px;
+    color: #5f7676;
+}
+a.mailbox-msg-list div.mailbox-msg-list-item img {
+    float: left;
+    margin-right: 10px;
+    margin-top: 4px;
+    height: 30px;
+    border-radius: 50%;
+}
+.tab-des {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+.active-row {background-color: #eaeaea}
+.ls-non { list-style: none }
+.ls-non li {border-top: none !important;}
+.panel-gray .panel-body { padding-top: 10px;}
+.panel-gray .panel-body .breadcrumb { background-color: inherit; border:none !important; }
+.panel-gray .panel-body .breadcrumb a { font-size: 14px;color: #000}
+.panel .panel-heading .nav-tabs li a { font-size: 14px;}
+.text-bold {font-weight: bold}
+.modal-header {padding: 10px;}
+.documentBtn { color: #000; font-size: 20px;}
+.row-doc:hover { background-color: #e1e1e1; cursor: pointer}
+.sub_question {position: relative}
+.pad10 {padding: 10px;}
+.question_handle {    position: absolute;  z-index: 9999;  right: 18px;}
+.doc_img {width: 30px;height: 30px;cursor: pointer; margin-right: 5px;}
+.user_img {width: 30px;height: 30px;cursor: pointer; margin-right: 5px; border-radius: 50%}
+
+.col-td {
+    position: relative !important;
+    border: none;
+}
+.topic_icon.new_style {
+    border: 1px solid #da3737;
+    background-color: white;
+    color: #22425b;
+    width: 25px;
+    height: 25px;
+    top: calc(50% - 13px);
+    font-size: 12px;
+}
+
+.topic_icon_col {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 100%;
+    background: white;
+    right: 26px;
+    top: 0;
+    z-index: 1;
+}
+.topic_icon {
+    width: 27px;
+    height: 27px;
+    color: white;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: calc(50% - 14px);
+    font-size: 10px;
+    z-index: 2;
+}
+.img-td {
+    width: 21px;
+    height: auto;
+}
+.td-infor {
+    font-size: 17px;
+    color: #0647a6;
+    font-family: SourceSansPro;
+}
+.sub-name,.sub-name-ex { margin-left: 30px; position: relative}
+.sub-name:before {
+    content: " ";
+    background-image: url(/public/images/course/icon/iconlession.png);
+    position: absolute;
+    background-size: 21px 17px;
+    background-repeat: no-repeat;
+    left: -30px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+}
+.sub-name-ex:before {
+    content: " ";
+    background-image: url(/public/images/course/icon/iconex.png);
+    position: absolute;
+    background-size: 21px 17px;
+    background-repeat: no-repeat;
+    left: -30px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+}
+.avatar-course {margin-left: 40px; position: absolute;}
+.avatar-course:before {
+    content: " ";
+    background-image: url(/public/images/course/imgavatarcourse.png);
+    position: absolute;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    left: -40px;
+    top: 0;
+    width: 40px;
+    height: 40px;
+}
+.tabDes,.tabComment {margin-left: 20px; position: relative}
+.tabDes:before {
+    content: " ";
+    background-image: url(/public/images/course/icon/icon-description.png);
+    position: absolute;
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    left: -20px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+}
+.tabComment:before {
+    content: " ";
+    background-image: url(/public/images/course/icon/icon-comment.png);
+    position: absolute;
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    left: -20px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+}
+
+.mediPlayer .control {
+    opacity        : 0; /* transition: opacity .2s linear; */
+    pointer-events : none;
+    cursor         : pointer;
+}
+
+.mediPlayer .not-started .play, .mediPlayer .paused .play {
+    opacity : 1;
+
+}
+
+.mediPlayer .playing .pause {
+    opacity : 1;
+
+}
+
+.mediPlayer .playing .play {
+    opacity : 0;
+}
+
+.mediPlayer .ended .stop {
+    opacity        : 1;
+    pointer-events : none;
+}
+
+.mediPlayer .precache-bar .done {
+    opacity : 0;
+}
+
+.mediPlayer .not-started .progress-bar, .mediPlayer .ended .progress-bar {
+    display : none;
+}
+
+.mediPlayer .ended .progress-track {
+    stroke-opacity : 1;
+}
+
+.mediPlayer .progress-bar,
+.mediPlayer .precache-bar {
+    transition        : stroke-dashoffset 500ms;
+
+    stroke-dasharray  : 298.1371428256714;
+    stroke-dashoffset : 298.1371428256714;
+}

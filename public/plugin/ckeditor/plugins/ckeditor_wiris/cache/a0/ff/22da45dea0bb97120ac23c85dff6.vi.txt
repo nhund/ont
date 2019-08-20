@@ -1,0 +1,1 @@
+{"result":{"text":"m apostrophe equals m over v cross times 100 percent sign"},"status":"ok"}

@@ -1,0 +1,1 @@
+{"result":{"text":"sigma space equals square root of V a r left parenthesis X right parenthesis end root"},"status":"ok"}

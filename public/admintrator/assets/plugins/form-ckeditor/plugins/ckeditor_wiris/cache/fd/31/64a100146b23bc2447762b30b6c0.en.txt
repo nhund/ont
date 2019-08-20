@@ -1,0 +1,1 @@
+{"result":{"text":"straight F left parenthesis x right parenthesis greater or equal than integral subscript negative infinity end subscript superscript x f left parenthesis t right parenthesis d t"},"status":"ok"}

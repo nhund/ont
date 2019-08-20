@@ -1,0 +1,1 @@
+{"result":{"text":"1 over x plus space square root of x\nc â u space h ỏ i space n à y"},"status":"ok"}

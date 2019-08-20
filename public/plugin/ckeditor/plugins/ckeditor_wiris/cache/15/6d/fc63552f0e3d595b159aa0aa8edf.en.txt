@@ -1,0 +1,1 @@
+{"result":{"text":"mu space equals space E left parenthesis X right parenthesis space equals space begin inline style sum for blank of end style"},"status":"ok"}

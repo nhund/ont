@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class UserQuestionLog extends Model
+{
+
+     const TYPE_ON_TAP = 1;
+
+    protected $table = 'user_question_log';
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'user_id', 'course_id', 'lesson_id','question_id','question_parent','note', 'status', 'create_at','update_time','is_ontap'
+    ];
+    public $timestamps = false;
+    
+    public function user()
+	{
+		return $this->hasOne('App\User', 'id', 'user_id')->withDefault(['name'=>'']);
+    }    
+
+}

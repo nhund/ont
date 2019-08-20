@@ -1,0 +1,1 @@
+{"result":{"text":"1 over x plus square root of x space end root"},"status":"ok"}

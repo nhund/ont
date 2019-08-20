@@ -1,0 +1,1 @@
+{"result":{"text":"A subscript 1 plus A subscript 2 plus A subscript 3..... plus A subscript n"},"status":"ok"}

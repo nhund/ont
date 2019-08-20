@@ -1,0 +1,1 @@
+{"result":{"text":"t over x plus 1 half"},"status":"ok"}

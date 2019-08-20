@@ -1,0 +1,1 @@
+{"result":{"text":"fraction numerator v b v over denominator c ó space b a o space n h i ê u end fraction"},"status":"ok"}

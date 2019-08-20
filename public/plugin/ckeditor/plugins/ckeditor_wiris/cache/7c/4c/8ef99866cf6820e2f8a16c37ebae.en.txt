@@ -1,0 +1,1 @@
+{"result":{"text":"E. left square bracket X minus E left parenthesis X right parenthesis right square bracket squared equals E left parenthesis X right parenthesis squared minus mu squared"},"status":"ok"}

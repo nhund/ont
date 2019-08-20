@@ -1,0 +1,1 @@
+{"result":{"text":"x-th root of y"},"status":"ok"}

@@ -1,0 +1,1 @@
+{"result":{"text":"t-th root of t space plus space a subscript x"},"status":"ok"}

@@ -1,0 +1,1 @@
+{"result":{"text":"sum from i equals 1 to n of space P left parenthesis H i right parenthesis. space P left parenthesis fraction numerator begin display style A end style over denominator begin display style H i end style end fraction right parenthesis"},"status":"ok"}
