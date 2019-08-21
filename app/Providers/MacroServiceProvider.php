@@ -8,7 +8,7 @@
 
 namespace App\Providers;
 
-use App\Models\PassportClient;
+use App\Models\Auth\PassportClient;
 use Illuminate\Support\ServiceProvider;
 
 class MacroServiceProvider extends ServiceProvider
