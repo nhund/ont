@@ -11,20 +11,25 @@
 |
 */
 
-Route::namespace('Api')->group(function () {
-
-    Route::namespace('User')->group(function () {
-        Route::prefix('me')->group(function () {
-            Route::get('/', 'UsersController@show');
-            Route::post('/', 'UsersController@update');
-        });
-    });
-
-    Route::namespace('Lesson')->group(function () {
-
-    });
-
-    Route::namespace('Question')->group(function () {
-
-    });
+Route::namespace('Auth')->group(function () {
+    Route::post('login', 'LoginController@store');
+    Route::post('register', 'RegisterController@store');
 });
+
+//Route::namespace('Api')->group(function () {
+//
+//    Route::namespace('User')->group(function () {
+//        Route::prefix('me')->group(function () {
+//            Route::get('/', 'UsersController@show');
+//            Route::post('/', 'UsersController@update');
+//        });
+//    });
+//
+//    Route::namespace('Lesson')->group(function () {
+//
+//    });
+//
+//    Route::namespace('Question')->group(function () {
+//
+//    });
+//});

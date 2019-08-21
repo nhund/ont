@@ -10,18 +10,18 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::namespace('Api')->group(function () {
-
-    Route::namespace('User/Admin')->group(function () {
-        Route::source();
-    });
-
-    Route::namespace('Lesson/Admin')->group(function () {
-
-    });
-
-    Route::namespace('Question/Admin')->group(function () {
-
-    });
-});
+//Route::namespace('Api')->group(function () {
+//
+//    Route::namespace('User/Admin')->group(function () {
+//        Route::source();
+//    });
+//
+//    Route::namespace('Lesson/Admin')->group(function () {
+//
+//    });
+//
+//    Route::namespace('Question/Admin')->group(function () {
+//
+//    });
+//});
 

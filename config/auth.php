@@ -99,4 +99,9 @@ return [
         ],
     ],
 
+    'web_app_client' => [
+        'id' => env('WEB_APP_CLIENT_ID'),
+        'secret' => env('WEB_APP_CLIENT_SECRET'),
+    ],
+
 ];

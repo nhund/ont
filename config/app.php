@@ -187,6 +187,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
+        App\Providers\MacroServiceProvider::class,
     ],
 
     /*
