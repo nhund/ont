@@ -129,7 +129,9 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $tokenEntity = (new Authenticator())->issueTokensUsingPasswordGrant(
+        $authenticator = new Authenticator();
+
+        $tokenEntity = $authenticator->issueTokensUsingPasswordGrant(
             'password',
             config('auth.web_app_client.id'),
             config('auth.web_app_client.secret'),
@@ -137,7 +139,7 @@ class LoginController extends Controller
             $request->input('password')
         );
 
-        return (new Authenticator())->respondWithTokens($request, $tokenEntity);
+        return $authenticator->respondWithTokens($request, $tokenEntity);
     }
 
 

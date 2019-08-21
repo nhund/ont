@@ -22,6 +22,20 @@ class RegisterController extends Controller
     |
     */
 
+    protected $authenticator;
+
+    /**
+     * Create a new controller instance.
+     *
+     * RegisterController constructor.
+     * @param Authenticator $authenticator
+     */
+    public function __construct(Authenticator $authenticator){
+        $this->authenticator = $authenticator;
+        $this->middleware('guest');
+
+    }
+
     use RegistersUsers;
 
     /**
@@ -31,15 +45,6 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
 
     /**
      * @param RegisterUserRequest $request
@@ -48,8 +53,6 @@ class RegisterController extends Controller
      */
     public function store(RegisterUserRequest $request)
     {
-        dd($request->user());
-
          $data = $request->only(['email', 'full_name', 'password']);
 
          User::create([
@@ -60,15 +63,12 @@ class RegisterController extends Controller
 //             'status'    => $data['status'],
          ]);
 
-        $tokenEntity = (new Authenticator())->issueTokensUsingPasswordGrantWithClient(
+        $tokenEntity = $this->authenticator->issueTokensUsingPasswordGrantWithClient(
             $request->oauthClient(),
             $data['email'],
             $data['password']
         );
 
-        return fractal()
-            ->item($tokenEntity)
-            ->transformWith(new AccessTokenEntityFull)
-            ->respond();
+        return $this->authenticator->respondWithTokens($request, $tokenEntity);
     }
 }
