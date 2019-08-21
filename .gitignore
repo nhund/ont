@@ -1,4 +1,5 @@
 vendor/
+.ide/
 node_modules/
 npm-debug.log
 
