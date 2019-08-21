@@ -13,8 +13,12 @@
 if (App::environment('production')) {
     URL::forceScheme("https");
 }
-Route::get('/test', 'FrontEnd\HomeController@test')
-            ->name('test');
+Route::get('/test', 'FrontEnd\HomeController@test')->name('test');
+
+Route::namespace('Auth')->group(function () {
+    Route::post('oauth/token/refresh', 'AuthenticationController@refreshAccessToken');
+});
+
 Route::post('/login', 'Auth\LoginController@login')->name('login');       
 Route::post('/register', 'Auth\RegisterController@register')->name('register');        
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');

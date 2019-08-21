@@ -22,6 +22,8 @@ use Illuminate\Support\Arr;
 class Authenticator
 {
 
+    use ClientRetrieval;
+
     /**
      * Issue access and refresh tokens using password grant with provided oauth client.
      *
@@ -61,7 +63,7 @@ class Authenticator
     public function issueTokensUsingPasswordGrant($grantType, $clientId, $clientSecret, $username, $password, $scope = '')
     {
 
-        $client = PassportClient::where('id', $clientId)->where('revoked', false)->first();
+        $client = $this->retrieveClient($clientId);
 
         if ($client->secret !== $clientSecret) {
             throw new ModelNotFoundException('The provided client credentials are invalid.');
@@ -79,6 +81,32 @@ class Authenticator
         return $this->handleTokenRequest($request);
 
     }
+
+    /**
+     * Issue access and refresh tokens using a given refresh token.
+     *
+     * @param $clientId
+     * @param $refreshToken
+     * @param string $scope
+     * @return AccessTokenEntity|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function issueTokensFormRefreshToken($clientId, $refreshToken, $scope = '')
+    {
+        $client = $this->retrieveClient($clientId);
+        $scope  = $this->formatScope($scope);
+
+        $request = request()->create('/oauth/token', 'POST', [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refreshToken,
+            'client_id' => $client->id,
+            'client_secret' => $client->secret,
+            'scope' => $scope,
+        ]);
+
+        return $this->handleTokenRequest($request);
+    }
+
     /**
      * Format a given scope string.
      *
