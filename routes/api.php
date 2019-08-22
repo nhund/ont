@@ -16,15 +16,16 @@ Route::namespace('Auth')->group(function () {
     Route::post('register', 'RegisterController@store');
 });
 
-//Route::namespace('Api')->group(function () {
-//
-//    Route::namespace('User')->group(function () {
-//        Route::prefix('me')->group(function () {
-//            Route::get('/', 'UsersController@show');
-//            Route::post('/', 'UsersController@update');
-//        });
-//    });
-//
+
+Route::middleware(['auth:api'])->namespace('Api')->group(function () {
+
+    Route::namespace('User')->group(function () {
+        Route::prefix('me')->group(function () {
+            Route::get('/', 'UserController@show');
+            Route::post('/', 'UserController@update');
+        });
+    });
+
 //    Route::namespace('Lesson')->group(function () {
 //
 //    });
@@ -32,4 +33,4 @@ Route::namespace('Auth')->group(function () {
 //    Route::namespace('Question')->group(function () {
 //
 //    });
-//});
+});
