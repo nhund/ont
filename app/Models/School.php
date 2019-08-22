@@ -16,5 +16,10 @@ class School extends Model
         'name', 'city', 'status', 'create_at'
     ];
     public $timestamps = false;
+
+    public function getAllSchools()
+    {
+        return self::where('status', self::STATUS_ON)->get();
+    }
   
 }

@@ -6,10 +6,10 @@
  * Time: 13:53
  */
 
-namespace App\Models\Transformers\auth;
+namespace App\Transformers\Auth;
 
 use App\Models\Auth\AccessTokenEntity;
-use App\Models\Transformers\User\UserFull;
+use App\Transformers\User\UserFull;
 use League\Fractal\TransformerAbstract;
 
 class AccessTokenEntityFull extends TransformerAbstract

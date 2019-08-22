@@ -241,4 +241,12 @@ class Course extends Model
             }
         });
     }
+
+
+    public static function getCourses()
+    {
+        return Course::where('status','!=',Course::TYPE_PRIVATE)
+            ->where('sticky',Course::STICKY)
+            ->take(8)->get();
+    }
 }

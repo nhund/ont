@@ -6,8 +6,7 @@
  * Time: 16:20
  */
 
-namespace App\Models\Transformers\User;
-
+namespace App\Transformers\User;
 
 use App\User;
 use League\Fractal\TransformerAbstract;
@@ -17,6 +16,7 @@ class UserFull extends TransformerAbstract
 
     public function transform(User $user){
         return [
+            'id'        =>$user->id,
             'name'      => $user->name,
             'full_name' => $user->full_name,
             'email'     => $user->email,

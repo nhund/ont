@@ -11,7 +11,7 @@ namespace App\Components\Auth;
 use App\Helpers\Helper;
 use App\Models\Auth\AccessTokenEntity;
 use App\Models\Auth\PassportClient;
-use App\Models\Transformers\auth\AccessTokenEntityFull;
+use App\Transformers\Auth\AccessTokenEntityFull;
 use ErrorException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -183,8 +183,6 @@ class Authenticator
             return $tokenEntity;
         }
 
-        $include = $request->query('include', '');
-
         if (!($tokenEntity instanceof AccessTokenEntity)) {
             return $tokenEntity;
         }
@@ -192,7 +190,6 @@ class Authenticator
         return fractal()
             ->item($tokenEntity)
             ->transformWith(new AccessTokenEntityFull)
-            ->parseIncludes($include)
             ->respond();
     }
 }

@@ -10,8 +10,7 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//Route::namespace('Api')->group(function () {
-//
+Route::middleware(['auth:api'])->namespace('Api')->group(function () {
 //    Route::namespace('User/Admin')->group(function () {
 //        Route::source();
 //    });
@@ -23,5 +22,4 @@
 //    Route::namespace('Question/Admin')->group(function () {
 //
 //    });
-//});
-
+});
