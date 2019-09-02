@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\UserCourse;
 use App\Models\CourseRating;
 use App\Models\Rating;
-
+use App\Models\CommentCourse;
+use App\Models\Lesson;
 class Course extends Model
 {
     const STATUS_ON = 1;
@@ -248,5 +249,13 @@ class Course extends Model
         return Course::where('status','!=',Course::TYPE_PRIVATE)
             ->where('sticky',Course::STICKY)
             ->take(8)->get();
+    }
+
+    public function commnet(){
+        return $this->hasMany(CommentCourse::class);
+    }
+
+    public function lesson(){
+        return $this->hasMany(Lesson::class);
     }
 }

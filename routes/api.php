@@ -46,9 +46,11 @@ Route::namespace('Api')->group(function () {
 
     Route::namespace('Course')->prefix('courses')->group(function () {
         Route::get('/', 'CourseController@index');
+        Route::get('/search', 'CourseController@search');
+        Route::get('/{course_id}/detail', 'CourseController@show');
     });
 
-//    Route::namespace('Question')->group(function () {
-//
-//    });
+    Route::namespace('School')->prefix('schools')->group(function () {
+        Route::get('/{school_id}/courses', 'SchoolController@index');
+    });
 });

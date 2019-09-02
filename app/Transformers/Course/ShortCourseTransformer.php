@@ -4,13 +4,9 @@ namespace App\Transformers\Course;
 
 use App\Models\Course;
 use League\Fractal\TransformerAbstract;
-use App\Transformers\Comment\CommentTransformer
 
-class FullCourseTransformer extends TransformerAbstract
+class ShortCourseTransformer extends TransformerAbstract
 {
-    protected $availableIncludes =['comment', 'lesson'];
-
-    protected $course;
     /**
      * A Fractal transformer Course.
      *
@@ -19,7 +15,6 @@ class FullCourseTransformer extends TransformerAbstract
      */
     public function transform(Course $course)
     {
-        $this->course = $course;
         return [
             'id'          => $course->id,
             'name'        => $course->name,
@@ -32,17 +27,6 @@ class FullCourseTransformer extends TransformerAbstract
             'avatar_paht' => $course->avatar_paht,
             'status'      => $course->status,
             'sticky'      => $course->sticky,
-            'rating_1'      => $course->rating_1,
-            'rating_2'      => $course->rating_2,
-            'rating_3'      => $course->rating_3,
-            'rating_4'      => $course->rating_4,
-            'rating_5'      => $course->rating_5,
         ];
-    }
-
-    public function includeComment(){
-        $comments =  $this->course->commnet;
-
-        return $comments ?  $this->collection( new CommentTransformer) : null;
     }
 }
