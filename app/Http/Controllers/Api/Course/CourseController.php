@@ -19,6 +19,10 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class CourseController extends Controller
 {
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(Request $request){
         $courses = (new CourseService($request))->getSourcesForHomePage();
 

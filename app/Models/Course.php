@@ -251,7 +251,7 @@ class Course extends Model
             ->take(8)->get();
     }
 
-    public function commnet(){
+    public function comment(){
         return $this->hasMany(CommentCourse::class);
     }
 

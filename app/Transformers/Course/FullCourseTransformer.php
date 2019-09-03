@@ -4,7 +4,7 @@ namespace App\Transformers\Course;
 
 use App\Models\Course;
 use League\Fractal\TransformerAbstract;
-use App\Transformers\Comment\CommentTransformer
+use App\Transformers\Comment\CommentTransformer;
 
 class FullCourseTransformer extends TransformerAbstract
 {
@@ -41,8 +41,8 @@ class FullCourseTransformer extends TransformerAbstract
     }
 
     public function includeComment(){
-        $comments =  $this->course->commnet;
+        $comments =  $this->course->comment;
 
-        return $comments ?  $this->collection( new CommentTransformer) : null;
+        return $comments ?  $this->collection($comments,  new CommentTransformer) : null;
     }
 }
