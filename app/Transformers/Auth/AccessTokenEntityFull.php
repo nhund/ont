@@ -22,7 +22,9 @@ class AccessTokenEntityFull extends TransformerAbstract
      */
     protected $user;
 
-    protected $availableIncludes=['user'];
+    protected $availableIncludes = ['user'];
+
+    protected $defaultIncludes =['user'];
 
     /**
      * @param AccessTokenEntity $entity
