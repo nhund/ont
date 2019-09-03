@@ -3,14 +3,16 @@
 namespace App\Transformers\Course;
 
 use App\Models\Course;
+use App\Transformers\Lesson\LessonTransformer;
 use League\Fractal\TransformerAbstract;
 use App\Transformers\Comment\CommentTransformer;
 
 class FullCourseTransformer extends TransformerAbstract
 {
-    protected $availableIncludes =['comment', 'lesson'];
+    protected $availableIncludes = ['comment', 'lesson'];
 
-    protected $course;
+    protected $defaultIncludes = ['comment', 'lesson'];
+
     /**
      * A Fractal transformer Course.
      *
@@ -19,7 +21,6 @@ class FullCourseTransformer extends TransformerAbstract
      */
     public function transform(Course $course)
     {
-        $this->course = $course;
         return [
             'id'          => $course->id,
             'name'        => $course->name,
@@ -40,9 +41,15 @@ class FullCourseTransformer extends TransformerAbstract
         ];
     }
 
-    public function includeComment(){
-        $comments =  $this->course->comment;
+    public function includeComment(Course $course){
+        $comments =  $course->comment;
 
         return $comments ?  $this->collection($comments,  new CommentTransformer) : null;
+    }
+
+    public function includeLesson(Course $course){
+        $lessons =  $course->lesson;
+
+        return $lessons ?  $this->collection($lessons,  new LessonTransformer) : null;
     }
 }

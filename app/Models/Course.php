@@ -251,10 +251,16 @@ class Course extends Model
             ->take(8)->get();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comment(){
         return $this->hasMany(CommentCourse::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function lesson(){
         return $this->hasMany(Lesson::class);
     }

@@ -33,7 +33,17 @@ class CourseController extends Controller
             ->respond();
     }
 
-    public function show(Course $course, Request $request){
+    /**
+     * @param Request $request
+     * @param $courseId
+     * @return mixed
+     */
+    public function show(Request $request,  $courseId){
+
+        $course = Course::where('id', $courseId)->first();
+        if (!$course){
+            return $this->message('the course wa\'nt fount')->respondNotFound();
+        }
         return fractal()
         ->item($course)
         ->transformWith(new FullCourseTransformer)
