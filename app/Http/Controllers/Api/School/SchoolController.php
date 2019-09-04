@@ -17,7 +17,7 @@ use App\Transformers\Course\ShortCourseTransformer;
 class SchoolController extends Controller
 {
     public function index($school_id, Request $request){
-        $shools = (new CourseService())->getCourseOfSchoolForHomePage($school_id);
+        $shools = (new CourseService($request))->getCourseOfSchoolForHomePage($school_id);
 
         return fractal()
             ->collection($shools)
