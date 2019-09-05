@@ -2,13 +2,18 @@
 
 namespace App\Exceptions;
 
+use App\Support\ApiResponseFormatter;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\Models\Error as ErrorModel;
+use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponseFormatter;
     /**
      * A list of the exception types that should not be reported.
      *
@@ -201,5 +206,31 @@ class Handler extends ExceptionHandler
 
         $error->save();
 
+    }
+
+    /**
+     * Render an error exception.
+     *
+     * @param  mixed $data
+     * @param  string|null $message
+     * @param  integer $status
+     * @param  array $headers
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function respondError($data = null, $message = null, $status = 400, $headers = [])
+    {
+        $data = $this->formatDataForApiResponse($data, $message, $status, true);
+
+        return response()->json($data, $status, $headers);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        $data = $this->formatDataForApiResponse($exception->errors(), null, $exception->status, true);
+
+        return response()->json($data, $exception->status);
     }
 }
