@@ -108,7 +108,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <textarea name="description" cols="80" rows="20" class="ckeditor">{{ $course['description'] or '' }}</textarea>
+                                <textarea name="description" cols="80" rows="20" class="ckeditor">{{ $course['description'] ?? '' }}</textarea>
                             </div>
                             <div class="col-sm-6">
                                 <div class="row">
