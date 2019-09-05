@@ -31,7 +31,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 data: data,
                 success: function (result) {
-                    if(result.error == false)
+                    if(result.code == 200)
                     {
                         swal({
                             title: "Thông báo",
@@ -90,7 +90,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 data: data,
                 success: function (result) {
-                    if(result.error == false)
+                    if(result.code  ===  200)
                     {
                         swal({
                             title: "Thông báo",
