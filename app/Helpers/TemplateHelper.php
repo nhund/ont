@@ -9,7 +9,7 @@ if (! function_exists('web_asset')) {
      */
     function web_asset($urlString)
     {
-        $v = '102';
+        $v = random_int(1, 10000);
         if(config('app.env') === 'production')
         { 
             return secure_asset($urlString). '?v='.$v;
