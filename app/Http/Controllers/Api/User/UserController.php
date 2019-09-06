@@ -16,7 +16,6 @@ class UserController extends Controller{
     public function index(){}
 
     public function show(Request $request){
-        dd(Auth::user(),  auth()->guard('api'));
         return fractal()
             ->item($request->user())
             ->transformWith(new UserFull)
