@@ -48,7 +48,7 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        return $this->respondOk('đăng nhập thành công');
+        return $this->message('đăng nhập thành công')-> respondOk();
     }
 
 }

@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth\Web;
 
 use App\Components\Auth\Authenticator;
 use App\Http\Requests\RegisterUserRequest;
-use App\Models\Transformers\auth\AccessTokenEntityFull;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -22,7 +23,6 @@ class RegisterController extends Controller
     |
     */
 
-    protected $authenticator;
 
     /**
      * Create a new controller instance.
@@ -30,8 +30,7 @@ class RegisterController extends Controller
      * RegisterController constructor.
      * @param Authenticator $authenticator
      */
-    public function __construct(Authenticator $authenticator){
-        $this->authenticator = $authenticator;
+    public function __construct(){
         $this->middleware('guest');
 
     }
@@ -51,25 +50,35 @@ class RegisterController extends Controller
      * @return mixed
      * @throws \Exception
      */
+
     public function store(RegisterUserRequest $request)
     {
-         $data = $request->only(['email', 'full_name', 'password', 'phone']);
+        $data = $request->all();
 
-         User::create([
+        $user = User::create([
              'email'     => $data['email'],
              'full_name' => $data['full_name'] ?? null,
              'phone'     => $data['phone'] ?? null,
              'password'  => bcrypt($data['password']),
-//             'level'     => $data['level'],
-//             'status'    => $data['status'],
+             'level'     => User::USER_STUDENT,
+             'status'    => User::USER_STUDENT,
+             'create_at' => time()
          ]);
 
-        $tokenEntity = $this->authenticator->issueTokensUsingPasswordGrantWithClient(
-            $request->oauthClient(),
-            $data['email'],
-            $data['password']
-        );
+        $this->guard()->login($user);
 
-        return $this->authenticator->respondWithTokens($request, $tokenEntity);
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+    }
+
+    /**
+     * @param Request $request
+     * @param $user
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function registered(Request $request, $user)
+    {
+        return $this->message('đăng kí tài khoản thành công')-> respondOk();
     }
 }

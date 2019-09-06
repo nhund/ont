@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-	@include('home.slider')
+	{{--@include('home.slider')--}}
 	@include('home.about')                   
 	@include('home.course')   
 	{{-- @include('home.download_app')      --}}

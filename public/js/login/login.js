@@ -31,11 +31,10 @@ $(document).ready(function () {
                 dataType: 'json',
                 data: data,
                 success: function (result) {
-                    if(result.code == 200)
+                    if(result.code === 200)
                     {
                         swal({
-                            title: "Thông báo",
-                            text: result.msg,
+                            title: result.message,
                             timer: 1000,
                             type : 'success',
                         },function(){
@@ -43,8 +42,7 @@ $(document).ready(function () {
                         });
                     }else{
                         swal({
-                            title: "Thông báo",
-                            text: result.msg,
+                            title:result.message,
                             type : 'error',
                         })
                     }
@@ -93,8 +91,7 @@ $(document).ready(function () {
                     if(result.code  ===  200)
                     {
                         swal({
-                            title: "Thông báo",
-                            text: result.msg,
+                            title:result.message,
                             timer: 1000,
                             type : 'success',
                             showConfirmButton: false,
@@ -103,8 +100,7 @@ $(document).ready(function () {
                         });
                     }else{
                         swal({
-                            title: "Thông báo",
-                            text: result.msg,
+                            title:result.message,
                             timer: 5000,
                             type : 'error',
                         })

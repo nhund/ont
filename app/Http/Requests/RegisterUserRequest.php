@@ -28,7 +28,6 @@ class RegisterUserRequest extends AuthorizedFormRequest
             'password.required'  => ' Mật khẩu không được để trống.',
             'password.min'       => ' Mật khẩu tối thiểu 6 ký tự.',
             'password.confirmed' => 'Mật khẩu xác nhận không đúng',
-            'full_name.unique'   => 'Tên đã được sử dụng',
         ];
     }
 }
