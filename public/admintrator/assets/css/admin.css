@@ -112,7 +112,7 @@ a.mailbox-msg-list div.mailbox-msg-list-item img {
     color: #0647a6;
     font-family: SourceSansPro;
 }
-.sub-name,.sub-name-ex { margin-left: 30px; position: relative}
+.sub-name,.sub-name-ex, .sub-name-exam { margin-left: 30px; position: relative}
 .sub-name:before {
     content: " ";
     background-image: url(/public/images/course/icon/iconlession.png);
@@ -135,6 +135,19 @@ a.mailbox-msg-list div.mailbox-msg-list-item img {
     width: 30px;
     height: 30px;
 }
+
+.sub-name-exam:before {
+    content: " ";
+    background-image: url(/public/images/course/icon/exam.png);
+    position: absolute;
+    background-size: 21px 17px;
+    background-repeat: no-repeat;
+    left: -30px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+}
+
 .avatar-course {margin-left: 40px; position: absolute;}
 .avatar-course:before {
     content: " ";

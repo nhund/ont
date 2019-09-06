@@ -82,7 +82,7 @@
                                                     <img src="{{ $course->avatar_thumb }}" class="" style="width: 50px; height: 50px;">                                                 
                                                 </td>
                                                 <td>
-                                                    {{ $course->name }}
+                                                    <a href="{{ route('course.detail',['id'=>$course->id]) }}">{{ $course->name }}</a>
                                                 </td>
                                                 <td>
                                                     {{ $course->category->name }}

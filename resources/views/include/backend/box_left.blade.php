@@ -32,6 +32,7 @@
                                                 <ul class="dropdown-menu pull-right">
                                                     <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}')">Tạo lý thuyết</a></li>
                                                     <li><a onclick="showModalAddExersice('{{ $cl['id'] }}')">Tạo bài tập</a></li>
+                                                    <li><a onclick="showModalAddExam('{{ $cl['id'] }}')">Tạo bài Kiểm tra</a></li>
                                                 </ul>
                                             </div>
                                         @endif
