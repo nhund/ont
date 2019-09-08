@@ -52,7 +52,7 @@
                         <form action="" method="GET">
                             <div class="col-sm-8">&nbsp;</div>
                             <div class="input-group col-sm-4">
-                                <input type="text" autocomplete="off" name="search_code" placeholder="Nhập mã code" class="form-control" value="{{ $search_code or '' }}">
+                                <input type="text" autocomplete="off" name="search_code" placeholder="Nhập mã code" class="form-control" value="{{ $search_code ?? '' }}">
                                 <span class="input-group-btn">
                                   <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                               </span>

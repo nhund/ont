@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\UserCourse;
 use App\Models\CourseRating;
 use App\Models\Rating;
-
+use App\Models\CommentCourse;
+use App\Models\Lesson;
 class Course extends Model
 {
     const STATUS_ON = 1;
@@ -240,5 +241,27 @@ class Course extends Model
                 UserCourse::where('course_id',$model->attributes['id'])->delete();
             }
         });
+    }
+
+
+    public static function getCourses()
+    {
+        return Course::where('status','!=',Course::TYPE_PRIVATE)
+            ->where('sticky',Course::STICKY)
+            ->take(8)->get();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comment(){
+        return $this->hasMany(CommentCourse::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function lesson(){
+        return $this->hasMany(Lesson::class);
     }
 }

@@ -79,7 +79,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" name="name" placeholder="Tên khóa học" value="{{ $course['name'] or '' }}">
+                                <input type="text" class="form-control" name="name" placeholder="Tên khóa học" value="{{ $course['name'] ?? '' }}">
                             </div>
                             <div class="col-sm-3">
                                 <select class="form-control" name="category_id">
@@ -108,7 +108,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <textarea name="description" cols="80" rows="20" class="ckeditor">{{ $course['description'] or '' }}</textarea>
+                                <textarea name="description" cols="80" rows="20" class="ckeditor">{{ $course['description'] ?? '' }}</textarea>
                             </div>
                             <div class="col-sm-6">
                                 <div class="row">

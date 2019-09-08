@@ -17,10 +17,14 @@ Route::get('/test', 'FrontEnd\HomeController@test')->name('test');
 
 Route::namespace('Auth')->group(function () {
     Route::post('oauth/token/refresh', 'AuthenticationController@refreshAccessToken');
+    Route::namespace('Web')->group(function () {
+        Route::post('auth/login', 'LoginController@login')->name('login');
+        Route::post('auth/logout', 'LoginController@logout')->name('logout');
+        Route::post('/register', 'RegisterController@store')->name('register');
+    });
 });
 
-Route::post('/login', 'Auth\LoginController@login')->name('login');       
-Route::post('/register', 'Auth\RegisterController@register')->name('register');        
+//Route::post('/login', 'Auth\LoginController@login')->name('login');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/logout-acount', 'FrontEnd\HomeController@logoutAcount')->name('logoutAcount');
 /* login facebook */

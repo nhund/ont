@@ -16,4 +16,16 @@ class Slide extends Model
         'title','url','slide_order','create_date','content','img','status'
     ];
     public $timestamps = false;
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', self::STATUS_ON);
+    }
+
+    public static function getSlide()
+    {
+        return self::active()
+            ->orderBy('slide_order', 'ASC')
+            ->get();
+    }
 }

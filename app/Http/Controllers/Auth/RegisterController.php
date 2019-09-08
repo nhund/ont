@@ -43,7 +43,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
 
     /**
@@ -53,11 +53,12 @@ class RegisterController extends Controller
      */
     public function store(RegisterUserRequest $request)
     {
-         $data = $request->only(['email', 'full_name', 'password']);
+         $data = $request->only(['email', 'full_name', 'password', 'phone']);
 
          User::create([
              'email'     => $data['email'],
              'full_name' => $data['full_name'] ?? null,
+             'phone'     => $data['phone'] ?? null,
              'password'  => bcrypt($data['password']),
 //             'level'     => $data['level'],
 //             'status'    => $data['status'],

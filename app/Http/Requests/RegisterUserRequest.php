@@ -15,7 +15,7 @@ class RegisterUserRequest extends AuthorizedFormRequest
         return [
             'email'    => 'required|email|unique:users',
             'password' => 'required|confirmed',
-            'phone'    => 'phone|unique:users',
+            'phone'    => 'unique:users',
         ];
     }
 

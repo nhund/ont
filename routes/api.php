@@ -20,6 +20,7 @@ Route::namespace('Auth')->group(function () {
 Route::middleware(['auth:api'])->namespace('Api')->group(function () {
 
     Route::namespace('User')->group(function () {
+
         Route::prefix('me')->group(function () {
             Route::get('/', 'UserController@show');
             Route::post('/', 'UserController@update');
@@ -33,4 +34,23 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
 //    Route::namespace('Question')->group(function () {
 //
 //    });
+});
+
+
+
+Route::namespace('Api')->group(function () {
+
+    Route::namespace('Slide')->prefix('slide')->group(function () {
+        Route::get('/', 'SlideController@index');
+    });
+
+    Route::namespace('Course')->prefix('courses')->group(function () {
+        Route::get('/', 'CourseController@index');
+        Route::get('/search', 'CourseController@search');
+        Route::get('/{course}/detail', 'CourseController@show');
+    });
+
+    Route::namespace('School')->prefix('schools')->group(function () {
+        Route::get('/{school_id}/courses', 'SchoolController@index');
+    });
 });

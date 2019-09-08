@@ -114,6 +114,13 @@ function showModalAddExersice(lesson_id) {
     $('#courseEx').modal('show');
 }
 
+function showModalAddExam(lesson_id) {
+    if (lesson_id) {
+         $('#les_id').val(lesson_id);
+    }
+    $('#courseEx').modal('show');
+}
+
 function addRowLesson() {
     var html = '<div class="form-group row">\n' +
         '                        <div class="col-sm-5">\n' +
