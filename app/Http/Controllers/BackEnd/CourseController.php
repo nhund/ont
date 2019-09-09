@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddExamRequest;
 use App\Models\Category;
 use App\Models\CommentCourse;
 use App\Models\Course;
@@ -295,6 +296,10 @@ class CourseController extends AdminBaseController
         }
 
         return response()->json(['msg' => 'Thêm bài giảng thành công', 'status' => 1, 'id' => $firstId]);
+    }
+
+    public function addExamOrLevel2(AddExamRequest $request){
+        dd($request->all());
     }
 
     public function listUser($id) {

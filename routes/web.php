@@ -144,24 +144,16 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
     });
 
     Route::prefix('course')->group(function () {
-        Route::get('/add', 'BackEnd\CourseController@addCourse')
-            ->name('addcourse');
-        Route::get('/edit/{id}', 'BackEnd\CourseController@editCourse')
-            ->name('admin.course.edit');
-        Route::post('/handle', 'BackEnd\CourseController@handle')
-            ->name('course.handle');
-        Route::get('/detail/{id}', 'BackEnd\CourseController@detail')
-            ->name('course.detail');
-        Route::post('/addLesson', 'BackEnd\CourseController@addLesson')
-            ->name('course.addLesson');
-        Route::get('/{id}/listUser', 'BackEnd\CourseController@listUser')
-            ->name('admin.course.listUser');
-        Route::post('/changeUserStatus', 'BackEnd\CourseController@changeUserStatus')
-            ->name('course.changeUserStatus');
-        Route::post('/addUser', 'BackEnd\CourseController@addUser')
-            ->name('course.addUser');
-        Route::get('/{id}/feedback', 'BackEnd\CourseController@feedback')
-            ->name('course.feedback');
+        Route::get('/add', 'BackEnd\CourseController@addCourse')->name('addcourse');
+        Route::get('/edit/{id}', 'BackEnd\CourseController@editCourse')->name('admin.course.edit');
+        Route::post('/handle', 'BackEnd\CourseController@handle')->name('course.handle');
+        Route::get('/detail/{id}', 'BackEnd\CourseController@detail')->name('course.detail');
+        Route::post('/addLesson', 'BackEnd\CourseController@addLesson')->name('course.addLesson');
+        Route::post('/addExamOrLevel2', 'BackEnd\CourseController@addExamOrLevel2')->name('course.addExamOrLevel2');
+        Route::get('/{id}/listUser', 'BackEnd\CourseController@listUser')->name('admin.course.listUser');
+        Route::post('/changeUserStatus', 'BackEnd\CourseController@changeUserStatus')->name('course.changeUserStatus');
+        Route::post('/addUser', 'BackEnd\CourseController@addUser')->name('course.addUser');
+        Route::get('/{id}/feedback', 'BackEnd\CourseController@feedback')->name('course.feedback');
 
         Route::get('/list', 'BackEnd\CourseController@listCourse')->name('admin.course.index');     
         Route::post('/delete', 'BackEnd\CourseController@delete')->name('admin.course.delete');   
