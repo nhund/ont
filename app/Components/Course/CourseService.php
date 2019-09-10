@@ -21,12 +21,16 @@ class CourseService
     /**
      * @param \Illuminate\Http\Request $request
      */
-    public function  __construct(Request $request){
+    public function  __construct(Request $request = null){
         $this->request = $request;
     }
 
     /**
      * get the special courses of school
+     *
+     * @param $shool_id
+     * @param int $limit
+     * @return mixed
      */
     public function getSpecialCoursesOfSchool($shool_id, $limit = 3)
     {
@@ -39,6 +43,11 @@ class CourseService
 
     /**
      * get the courses of school by status
+     *
+     * @param $shool_id
+     * @param array $status
+     * @param int $limit
+     * @return mixed
      */
     public function getCoursesOfSchoolByStatus($shool_id, array $status, $limit = 10)
     {
@@ -50,7 +59,10 @@ class CourseService
     }
 
     /**
-     * get the courses of school at home page 
+     * get the courses of school at home page
+     *
+     * @param $shool_id
+     * @return mixed
      */
     public function getCourseOfSchoolForHomePage($shool_id)
     {
@@ -94,6 +106,9 @@ class CourseService
 
     /**
      * filter Source by source name
+     *
+     * @param $query
+     * @return $this
      */
     protected function applySourceNameFilter(&$query)
     {
@@ -108,6 +123,9 @@ class CourseService
 
     /**
      * filter Source by school id
+     *
+     * @param $query
+     * @return $this
      */
     protected function applySchoolIdFilter(&$query)
     {
@@ -133,5 +151,25 @@ class CourseService
         return $query->latest()
                 ->paginate($this->getPaginationLimit($this->request))
                 ->appends($this->request->only($this->qs));
+    }
+
+    public function createFolderGalaryForLesson($course_id)
+    {
+        //tao fordel anh
+        $path = '/images/course/'.$course_id;
+        $destinationPath = public_path($path);
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777);
+        }
+        $path = '/images/course/'.$course_id.'/lesson';
+        $destinationPath = public_path($path);
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777);
+        }
+        $path = '/images/course/'.$course_id.'/lesson/audio';
+        $destinationPath = public_path($path);
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777);
+        }
     }
 }

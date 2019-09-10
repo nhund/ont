@@ -1,10 +1,10 @@
-let jQuery = $(document ).ajaxError(function(event, jqxhr, settings, thrownError ) {
-    console.log(event, jqxhr, settings, thrownError);
-});
-
-$( document ).ajaxComplete(function( event, xhr, settings ) {
-    console.log( event, xhr, settings );
-});
+// let jQuery = $(document).ajaxError(function(event, jqxhr, settings, thrownError ) {
+//     console.log(event, jqxhr, settings, thrownError);
+// });
+//
+// $(document).ajaxComplete(function( event, xhr, settings ) {
+//     console.log( event, xhr, settings );
+// });
 
 function number_format(Num) {
     Num = Num.toString().replace(/^0+/, "").replace(/\./g, "").replace(/,/g, "");

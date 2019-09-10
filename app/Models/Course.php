@@ -23,6 +23,10 @@ class Course extends Model
     const STICKY = 1;
     const NOT_STICKY = 0;
 
+    const LESSON = 'lesson';
+    const EXAM = 'exam';
+    const LEVEL2 = 'level2';
+
     protected $table = 'course';
     protected $primaryKey = 'id';
 
