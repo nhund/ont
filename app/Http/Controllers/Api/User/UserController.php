@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Transformers\User\UserFull;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Components\Course\CourseService;
 
 /**
  * Class UserController
@@ -27,4 +28,10 @@ class UserController extends Controller{
     public function update(){}
 
     public function delete(){}
+
+    public function courses(Request $request){
+        // (new CourseService())->applySchoolIdFilter($query)
+        // ->applySourceNameFilter($query)
+        // ->paginate($query);;
+    }
 }

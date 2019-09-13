@@ -64,6 +64,7 @@ class CourseService
         }
 
         return $query->whereIn('status', $status)
+            ->orderBy('sticky', 'DESC')
             ->orderBy('id', 'DESC')
             ->limit($limit)
             ->get();
@@ -85,7 +86,7 @@ class CourseService
     }
 
     /**
-     * searching sources by sourcename and school_id
+     * searching all sources by sourcename and school_id
      */
     public function search()
     {
@@ -93,6 +94,19 @@ class CourseService
 
         return $this->applySchoolIdFilter($query)
             ->applySourceNameFilter($query)
+            ->paginate($query);
+    }
+
+    /**
+     * searching sources by sourcename and school_id of user
+     */
+    public function searchByUser()
+    {
+        $query = Course::query();
+
+        return $this->applySchoolIdFilter($query)
+            ->applySourceNameFilter($query)
+            ->applyUserFilter($query)
             ->paginate($query);
     }
 
@@ -122,6 +136,22 @@ class CourseService
     protected function applySchoolIdFilter(&$query)
     {
         $schoolId = $this->request->get('school_id');
+
+        if( $schoolId){
+            $this->qs[] = 'category_id';
+            $query->where('category_id',  $schoolId);
+        }
+        return $this;
+    }
+
+     /**
+     * filter Source by user id
+     *
+     * @param $query
+     * @return $this
+     */
+    protected function applyUserFilter($query){
+        $userId = $this->request->get('user_id') ?: $this->request->user()->id;
 
         if( $schoolId){
             $this->qs[] = 'category_id';

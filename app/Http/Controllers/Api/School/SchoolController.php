@@ -82,4 +82,8 @@ class SchoolController extends Controller
             ->collection($otherCourse, new ShortCourseTransformer)
             ->respond();
     }
+
+    public function report(){
+        
+    }
 }
