@@ -16,4 +16,8 @@ class Category extends Model
         'name', 'status', 'type','create_at'
     ];
     public $timestamps = false;
+
+    public function cource(){
+        return $this->hasMany(Course::class);
+    }
 }

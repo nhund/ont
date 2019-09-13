@@ -78,8 +78,7 @@ class CourseController extends Controller
      */
     public function freeCourses(Request $request){
 
-        $limit = $request->get('limit', 1);
-        $freeCourse = $this->courseService->getCoursesOfByStatus([Course::TYPE_FREE_TIME], $limit);
+        $freeCourse = $this->courseService->getCoursesOfByStatus([Course::TYPE_FREE_TIME]);
 
         return fractal()
             ->collection($freeCourse, new ShortCourseTransformer)
@@ -92,8 +91,7 @@ class CourseController extends Controller
      */
     public function StickyCourses(Request $request)
     {
-        $limit = $request->get('limit', 3);
-        $specialCourse = $this->courseService->getStickyCourses($limit);
+        $specialCourse = $this->courseService->getStickyCourses();
 
         return fractal()
             ->collection($specialCourse, new ShortCourseTransformer)
@@ -106,9 +104,7 @@ class CourseController extends Controller
      */
     public function otherCourses(Request $request)
     {
-        $limit = $request->get('limit', 4);
-
-        $otherCourse = $this->courseService->getCoursesOfByStatus([Course::TYPE_PUBLIC, Course::TYPE_FREE_NOT_TIME], $limit);
+        $otherCourse = $this->courseService->getCoursesOfByStatus([Course::TYPE_PUBLIC, Course::TYPE_FREE_NOT_TIME]);
 
         return fractal()
             ->collection($otherCourse, new ShortCourseTransformer)

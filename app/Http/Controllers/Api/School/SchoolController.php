@@ -47,9 +47,7 @@ class SchoolController extends Controller
      */
     public function freeCourses($school_id, Request $request){
 
-        $limit = $request->get('limit', 1);
-
-        $freeCourse = (new CourseService())->getCoursesOfByStatus([Course::TYPE_FREE_TIME], $limit, $school_id);
+        $freeCourse = (new CourseService())->getCoursesOfByStatus([Course::TYPE_FREE_TIME], $school_id);
 
         return fractal()
             ->collection($freeCourse, new ShortCourseTransformer)
@@ -63,9 +61,8 @@ class SchoolController extends Controller
      */
     public function StickyCourses($school_id, Request $request)
     {
-        $limit = $request->get('limit', 3);
 
-        $specialCourse = (new CourseService())->getStickyCourses($limit, $school_id);
+        $specialCourse = (new CourseService())->getStickyCourses($school_id);
 
         return fractal()
             ->collection($specialCourse, new ShortCourseTransformer)
@@ -79,9 +76,7 @@ class SchoolController extends Controller
      */
     public function otherCourses($school_id, Request $request)
     {
-        $limit = $request->get('limit', 4);
-
-        $otherCourse = (new CourseService())->getCoursesOfByStatus([Course::TYPE_PUBLIC, Course::TYPE_FREE_NOT_TIME], $limit, $school_id);
+        $otherCourse = (new CourseService())->getCoursesOfByStatus([Course::TYPE_PUBLIC, Course::TYPE_FREE_NOT_TIME], $school_id);
 
         return fractal()
             ->collection($otherCourse, new ShortCourseTransformer)

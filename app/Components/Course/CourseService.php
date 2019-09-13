@@ -32,8 +32,9 @@ class CourseService
      * @param int $limit
      * @return mixed
      */
-    public function getStickyCourses($limit = 3, $school_id = null)
+    public function getStickyCourses($school_id = null)
     {
+        $limit = request('limit', 3);
         $query =  Course::query()->where('sticky', Course::STICKY);
 
         if($school_id){
@@ -53,9 +54,10 @@ class CourseService
      * @param $school_id
      * @return mixed
      */
-    public function getCoursesOfByStatus(array $status, $limit, $school_id = null)
+    public function getCoursesOfByStatus(array $status, $school_id = null)
     {
-        $query = Course::query()->where('category_id', $school_id);
+        $limit = request('limit', 3);
+        $query = Course::query();
 
         if($school_id){
             $query->where('category_id', $school_id);
