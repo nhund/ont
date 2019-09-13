@@ -25,6 +25,7 @@ class FullCourseTransformer extends TransformerAbstract
             'id'          => $course->id,
             'name'        => $course->name,
             'avatar'      => $course->avatar,
+            'full_avatar' => $course->full_avatar,
             'price'       => $course->price,
             'study_time'  => $course->study_time,
             'discount'    => $course->discount,

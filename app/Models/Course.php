@@ -268,4 +268,12 @@ class Course extends Model
     public function lesson(){
         return $this->hasMany(Lesson::class);
     }
+
+    public function getFullAvatarAttribute()
+    {
+        if (!empty($this->getOriginal('avatar'))){
+           return url("public/images/course/{$this->getOriginal('id')}/{$this->getOriginal('avatar')}");
+        }
+        return null;
+    }
 }
