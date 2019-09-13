@@ -21,7 +21,7 @@ class SlideTransformer extends TransformerAbstract
             'id'          => $slide->id,
             'title'       => $slide->title,
             'url'         => $slide->url,
-            'img'         => $slide->img,
+            'img'         => asset($slide->img),
             'content'     => $slide->content,
             'slide_order' => $slide->slide_order,
         ];

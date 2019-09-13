@@ -9,6 +9,7 @@
                 <div class="modal-body">
                     <input type="hidden" name="course_id" value="{{ $course['id'] }}">
                     <input type="hidden" name="lesson_id" id="lesson_id" value="">
+                    <input type="hidden" name="lesson_type" id="lesson_type" value="">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <p class="title-courseLesson"></p>
                     <div class="form-group row">
@@ -33,6 +34,42 @@
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="addLesson()">Lưu</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="courseExam" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h2 class="modal-title">Tạo bài giảng</h2>
+            </div>
+            <form id="addCourseExam" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="course_id" value="{{ $course['id'] }}">
+                    <input type="hidden" name="lesson_id" id="lesson_id" value="">
+                    <input type="hidden" name="lesson_type" id="lesson_type" value="">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <p class="title-courseLesson"></p>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <input id="lessonName" readonly type="text" class="form-control lessonName" placeholder="name ..." name="name">
+                        </div>
+                        <div class="col-sm-5">
+                            <select class="form-control" name="status">
+                                <option value="1">Public</option>
+                                <option value="2">Private</option>
+                                <option value="3">Deleted</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addExamOrLevel2()">Lưu</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
             </div>
         </div>

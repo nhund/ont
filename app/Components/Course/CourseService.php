@@ -21,48 +21,50 @@ class CourseService
     /**
      * @param \Illuminate\Http\Request $request
      */
-    public function  __construct(Request $request){
+    public function  __construct(Request $request = null){
         $this->request = $request;
     }
 
     /**
      * get the special courses of school
+     *
+     * @param $school_id
+     * @param int $limit
+     * @return mixed
      */
-    public function getSpecialCoursesOfSchool($shool_id, $limit = 3)
+    public function getStickyCourses($limit = 3, $school_id = null)
     {
-        return Course::where('sticky', Course::STICKY)
-            ->where('category_id', $shool_id)
-            ->orderBy('id', 'DESC')
-            ->limit($limit)
-            ->get();
+        $query =  Course::query()->where('sticky', Course::STICKY);
+
+        if($school_id){
+            $query->where('category_id', $school_id);
+        }
+
+        return $query->orderBy('id', 'DESC')
+        ->limit($limit)
+        ->get();
     }
 
     /**
      * get the courses of school by status
+     *
+     * @param array $status
+     * @param int $limit
+     * @param $school_id
+     * @return mixed
      */
-    public function getCoursesOfSchoolByStatus($shool_id, array $status, $limit = 10)
+    public function getCoursesOfByStatus(array $status, $limit, $school_id = null)
     {
-        return Course::where('category_id', $shool_id)
-            ->whereIn('status', $status)
+        $query = Course::query()->where('category_id', $school_id);
+
+        if($school_id){
+            $query->where('category_id', $school_id);
+        }
+
+        return $query->whereIn('status', $status)
             ->orderBy('id', 'DESC')
             ->limit($limit)
             ->get();
-    }
-
-    /**
-     * get the courses of school at home page 
-     */
-    public function getCourseOfSchoolForHomePage($shool_id)
-    {
-
-        $freeCourse = $this->getCoursesOfSchoolByStatus($shool_id, [Course::TYPE_FREE_TIME], 1);
-
-        $specialCourses = $this->getSpecialCoursesOfSchool($shool_id);
-
-        $ortherCourse = $this->getCoursesOfSchoolByStatus($shool_id, [Course::TYPE_PUBLIC, Course::TYPE_FREE_NOT_TIME, Course::TYPE_FREE_NOT_TIME]);
-
-        return $freeCourse->merge($specialCourses)->merge($ortherCourse);
-
     }
 
     /**
@@ -94,20 +96,26 @@ class CourseService
 
     /**
      * filter Source by source name
+     *
+     * @param $query
+     * @return $this
      */
     protected function applySourceNameFilter(&$query)
     {
-        $sourseName = $this->request->get('source_name');
+        $courseName = $this->request->get('source_name');
 
-        if($sourseName){
+        if($courseName){
             $this->qs[] = 'name';
-            $query->where('name', 'LIKE', "%{$sourseName}%");
+            $query->where('name', 'LIKE', "%{$courseName}%");
         }
         return $this;
     }
 
     /**
      * filter Source by school id
+     *
+     * @param $query
+     * @return $this
      */
     protected function applySchoolIdFilter(&$query)
     {
@@ -133,5 +141,25 @@ class CourseService
         return $query->latest()
                 ->paginate($this->getPaginationLimit($this->request))
                 ->appends($this->request->only($this->qs));
+    }
+
+    public function createFolderGalaryForLesson($course_id)
+    {
+        //tao fordel anh
+        $path = '/images/course/'.$course_id;
+        $destinationPath = public_path($path);
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777);
+        }
+        $path = '/images/course/'.$course_id.'/lesson';
+        $destinationPath = public_path($path);
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777);
+        }
+        $path = '/images/course/'.$course_id.'/lesson/audio';
+        $destinationPath = public_path($path);
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777);
+        }
     }
 }

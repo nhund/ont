@@ -18,7 +18,7 @@ class ShortCourseTransformer extends TransformerAbstract
         return [
             'id'          => $course->id,
             'name'        => $course->name,
-            'avatar'      => $course->avatar,
+            'avatar_thumb'=> $course->avatar_thumb,
             'price'       => $course->price,
             'study_time'  => $course->study_time,
             'discount'    => $course->discount,

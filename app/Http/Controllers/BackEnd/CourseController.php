@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Components\Course\CourseService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddExamRequest;
 use App\Models\Category;
 use App\Models\CommentCourse;
 use App\Models\Course;
@@ -251,8 +253,8 @@ class CourseController extends AdminBaseController
         $lesson_id      = $request->input('lesson_id');
         $lesson         = Lesson::find($lesson_id);
         $firstId        = 0;
-        foreach ($name as $k=>$val) {
-            if ($name) {
+        if (is_array($name) && $name) {
+            foreach ($name as $k=>$val) {
                 $insertData = [
                     'name'          => $val,
                     'status'        => $status[$k],
@@ -260,6 +262,7 @@ class CourseController extends AdminBaseController
                     'parent_id'     => $lesson_id ? $lesson_id : 0,
                     'lv1'           => 0,
                     'created_at'    => time(),
+                    'type'          => Course::LESSON,
                 ];
 
                 if ($lesson) {
@@ -274,27 +277,20 @@ class CourseController extends AdminBaseController
                 } else {
                     Lesson::insert($insertData);
                 }
-                //tao fordel anh
-                $path = '/images/course/'.$course_id;
-                $destinationPath = public_path($path);
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777);
-                }
-                $path = '/images/course/'.$course_id.'/lesson';
-                $destinationPath = public_path($path);
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777);
-                } 
-                $path = '/images/course/'.$course_id.'/lesson/audio';
-                $destinationPath = public_path($path);
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777);
-                }               
+
+                (new CourseService())->createFolderGalaryForLesson($course_id);
 
             }
         }
 
         return response()->json(['msg' => 'Thêm bài giảng thành công', 'status' => 1, 'id' => $firstId]);
+    }
+
+    public function addExamOrLevel2(AddExamRequest $request){
+
+        $params = $request->only('course_id', 'name', 'status');
+
+        dd($request->all());
     }
 
     public function listUser($id) {

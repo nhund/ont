@@ -45,12 +45,18 @@ Route::namespace('Api')->group(function () {
     });
 
     Route::namespace('Course')->prefix('courses')->group(function () {
-        Route::get('/', 'CourseController@index');
+        Route::get('/free', 'CourseController@freeCourses');
+        Route::get('/sticky', 'CourseController@StickyCourses');
+        Route::get('/other', 'CourseController@otherCourses');
         Route::get('/search', 'CourseController@search');
         Route::get('/{course}/detail', 'CourseController@show');
     });
 
     Route::namespace('School')->prefix('schools')->group(function () {
         Route::get('/{school_id}/courses', 'SchoolController@index');
+        Route::get('/{school_id}/free', 'SchoolController@freeCourses');
+        Route::get('/{school_id}/sticky', 'SchoolController@StickyCourses');
+        Route::get('/{school_id}/other', 'SchoolController@otherCourses');
+
     });
 });
