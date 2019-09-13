@@ -18,6 +18,12 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class CourseController extends Controller
 {
+    protected $courseService;
+
+    public function __construct(CourseService $courseService)
+    {
+        $this->courseService = $courseService;
+    }
 
     /**
      * @param Request $request
@@ -64,5 +70,48 @@ class CourseController extends Controller
         ->transformWith(new ShortCourseTransformer)
         ->paginateWith(new IlluminatePaginatorAdapter($courses))
         ->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function freeCourses(Request $request){
+
+        $limit = $request->get('limit', 1);
+        $freeCourse = $this->courseService->getCoursesOfByStatus([Course::TYPE_FREE_TIME], $limit);
+
+        return fractal()
+            ->collection($freeCourse, new ShortCourseTransformer)
+            ->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function StickyCourses(Request $request)
+    {
+        $limit = $request->get('limit', 3);
+        $specialCourse = $this->courseService->getStickyCourses($limit);
+
+        return fractal()
+            ->collection($specialCourse, new ShortCourseTransformer)
+            ->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function otherCourses(Request $request)
+    {
+        $limit = $request->get('limit', 4);
+
+        $otherCourse = $this->courseService->getCoursesOfByStatus([Course::TYPE_PUBLIC, Course::TYPE_FREE_NOT_TIME], $limit);
+
+        return fractal()
+            ->collection($otherCourse, new ShortCourseTransformer)
+            ->respond();
     }
 }
