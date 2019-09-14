@@ -153,9 +153,11 @@ class CourseService
     protected function applyUserFilter($query){
         $userId = $this->request->get('user_id') ?: $this->request->user()->id;
 
-        if( $schoolId){
-            $this->qs[] = 'category_id';
-            $query->where('category_id',  $schoolId);
+        if( $userId){
+            $this->qs[] = 'user_id';
+            $query->whereHas('userCourse',  function ($q) use ($userId){
+                $q->where('user_id', $userId);
+            });
         }
         return $this;
     }

@@ -17,7 +17,7 @@ class Category extends Model
     ];
     public $timestamps = false;
 
-    public function cource(){
+    public function course(){
         return $this->hasMany(Course::class);
     }
 }

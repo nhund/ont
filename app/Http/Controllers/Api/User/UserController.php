@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Transformers\Course\ShortCourseTransformer;
 use App\Transformers\User\UserFull;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Components\Course\CourseService;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 /**
  * Class UserController
@@ -30,8 +32,13 @@ class UserController extends Controller{
     public function delete(){}
 
     public function courses(Request $request){
-        // (new CourseService())->applySchoolIdFilter($query)
-        // ->applySourceNameFilter($query)
-        // ->paginate($query);;
+
+        $courses = (new CourseService($request))->searchByUser();
+
+        return fractal()
+            ->collection($courses)
+            ->transformWith(new ShortCourseTransformer)
+            ->paginateWith(new IlluminatePaginatorAdapter($courses))
+            ->respond();
     }
 }
