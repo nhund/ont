@@ -24,7 +24,9 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
         Route::prefix('me')->group(function () {
             Route::get('/', 'UserController@show');
             Route::post('/', 'UserController@update');
-            Route::get('/courses', 'UserController@courses');
+
+            Route::get('/courses', 'UserCourseController@courses');
+            Route::get('/courses/report', 'UserCourseController@report');
         });
     });
 
@@ -56,9 +58,10 @@ Route::namespace('Api')->group(function () {
     Route::namespace('School')->prefix('schools')->group(function () {
         Route::get('/', 'SchoolController@index');
         Route::get('/{school_id}/report', 'SchoolController@report');
-        Route::get('/{school_id}/free', 'SchoolController@freeCourses');
-        Route::get('/{school_id}/sticky', 'SchoolController@StickyCourses');
-        Route::get('/{school_id}/other', 'SchoolController@otherCourses');
+
+        Route::get('/{school_id}/free', 'SchoolCourseController@freeCourses');
+        Route::get('/{school_id}/sticky', 'SchoolCourseController@StickyCourses');
+        Route::get('/{school_id}/other', 'SchoolCourseController@otherCourses');
 
     });
 });

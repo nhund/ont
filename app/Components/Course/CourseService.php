@@ -9,6 +9,7 @@
 namespace App\Components\Course;
 
 use App\Models\Course;
+use App\Models\UserCourse;
 use Illuminate\Http\Request;
 use App\Support\WithPaginationLimit;
 class CourseService
@@ -107,6 +108,7 @@ class CourseService
         return $this->applySchoolIdFilter($query)
             ->applySourceNameFilter($query)
             ->applyUserFilter($query)
+            ->applyTimeFilter($query)
             ->paginate($query);
     }
 
@@ -159,6 +161,31 @@ class CourseService
                 $q->where('user_id', $userId);
             });
         }
+        return $this;
+    }
+
+    /**
+     * filter Source by user id
+     *
+     * @param $query
+     * @return $this
+     */
+    protected function applyTimeFilter($query){
+
+        $sortTime = $this->request->get('sort_time');
+
+        if ($this->request->has('sort_time')){
+            if ($sortTime == 'created'){
+                $query->orderBy('created_at', 'DESC');
+            }
+            if ($sortTime == 'expired'){
+                $query->whereHas('userCourse',  function ($q){
+                    $q->where('and_date', '>', time());
+                    $q->orWhere('status', UserCourse::STATUS_OFF);
+                });
+            }
+        }
+
         return $this;
     }
 
