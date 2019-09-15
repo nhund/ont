@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserCourse;
 use App\Transformers\Course\ShortCourseTransformer;
-use App\Transformers\User\UserFull;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Components\Course\CourseService;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
@@ -14,16 +13,9 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
  * Class UserController
  * @package App\Http\Controllers\Api\User
  */
-class UserController extends Controller{
+class UserCourseController extends Controller{
 
     public function index(){}
-
-    public function show(Request $request){
-        return fractal()
-            ->item($request->user())
-            ->transformWith(new UserFull)
-            ->respond();
-    }
 
     public function store(){}
 
@@ -31,6 +23,12 @@ class UserController extends Controller{
 
     public function delete(){}
 
+    /**
+     * searching source of user
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function courses(Request $request){
 
         $courses = (new CourseService($request))->searchByUser();
@@ -40,5 +38,18 @@ class UserController extends Controller{
             ->transformWith(new ShortCourseTransformer)
             ->paginateWith(new IlluminatePaginatorAdapter($courses))
             ->respond();
+    }
+
+    /**
+     * report total courses by user
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function report(Request $request)
+    {
+        $countMYCourses = UserCourse::where('user_id',$request->user()->id)->count();
+
+        return $this->respondOk(['total_courses' => $countMYCourses]);
     }
 }

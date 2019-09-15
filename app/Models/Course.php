@@ -268,4 +268,13 @@ class Course extends Model
     public function lesson(){
         return $this->hasMany(Lesson::class);
     }
+
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userCourse()
+    {
+        return $this->hasMany(UserCourse::class);
+    }
 }

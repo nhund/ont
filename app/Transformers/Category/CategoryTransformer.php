@@ -23,7 +23,7 @@ class CategoryTransformer extends TransformerAbstract {
 
     public function includeCourse(Category $category){
         
-        $courses = $category->cource()->where('sticky', Course::STICKY)->limit(8)->get();
+        $courses = $category->course()->where('sticky', Course::STICKY)->limit(8)->get();
 
         return  $courses ? $this->collection($courses, new ShortCourseTransformer) : null;
     }
