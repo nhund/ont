@@ -3,6 +3,7 @@
 namespace App\Transformers\Course;
 
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Transformers\Lesson\LessonTransformer;
 use League\Fractal\TransformerAbstract;
 use App\Transformers\Comment\CommentTransformer;
@@ -24,14 +25,12 @@ class FullCourseTransformer extends TransformerAbstract
         return [
             'id'          => $course->id,
             'name'        => $course->name,
-            'avatar'      => $course->avatar,
-            'full_avatar' => $course->full_avatar,
             'price'       => $course->price,
             'study_time'  => $course->study_time,
             'discount'    => $course->discount,
             'category_id' => $course->category_id,
             'description' => $course->description,
-            'avatar_paht' => $course->avatar_paht,
+            'avatar_thumb' => $course->avatar_thumb,
             'status'      => $course->status,
             'sticky'      => $course->sticky,
             'rating_1'      => $course->rating_1,
@@ -49,7 +48,7 @@ class FullCourseTransformer extends TransformerAbstract
     }
 
     public function includeLesson(Course $course){
-        $lessons =  $course->lesson;
+        $lessons =  $course->lesson()->where('parent_id', Lesson::PARENT_ID)->get();
 
         return $lessons ?  $this->collection($lessons,  new LessonTransformer) : null;
     }

@@ -76,7 +76,7 @@ class SchoolController extends Controller
      */
     public function otherCourses($school_id, Request $request)
     {
-        $otherCourse = (new CourseService())->getCoursesOfByStatus([Course::TYPE_PUBLIC, Course::TYPE_FREE_NOT_TIME], $school_id);
+        $otherCourse = (new CourseService())->getSourcesForHomePage($school_id);
 
         return fractal()
             ->collection($otherCourse, new ShortCourseTransformer)

@@ -16,6 +16,11 @@ class Lesson extends Model
     const TRAC_NGHIEM_ANSWER_RANDOM = 2;
     const TRAC_NGHIEM_ANSWER_NOT_RANDOM = 0;
 
+    const PARENT_ID = 0;
+
+    const LESSON = 'lesson';
+    const EXAM  = 'exam';
+
     protected $table = 'lesson';
     protected $primaryKey = 'id';
 
@@ -98,5 +103,40 @@ class Lesson extends Model
                 }                       
             }
         });
+    }
+
+    public static function reportLesson($couseId){
+        $report = self::where('status', self::STATUS_ON)
+                    ->where('course_id', $couseId)
+                    ->where('parent_id' , '<>', self::PARENT_ID)
+                    ->whereIn('type', [self::EXAM, self::LESSON])
+                    ->groupBy()
+                    ->get();
+
+        $count = [
+            'theory' => 0,
+            'exercise' => 0,
+            'exam'  => 0
+        ];
+
+        $report->map(function($lesson) use (&$count)
+        {
+            if($lesson->type == self::LESSON)
+            {
+                if($lesson->is_exercise == self::IS_EXERCISE )
+                {
+                    $count['exercise'] += 1;
+                }else
+                {
+                    $count['theory'] += 1;
+                }
+            }
+            if($lesson->type == self::EXAM)
+            {
+                $count['exam'] =+ 1;
+            }
+        });
+
+        return $count;
     }
 }

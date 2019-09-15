@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api\Course;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Transformers\Course\FullCourseTransformer;
 use App\Transformers\Course\ShortCourseTransformer;
 use App\Components\Course\CourseService;
@@ -50,9 +51,13 @@ class CourseController extends Controller
         if (!$course){
             return $this->message('the course wa\'nt fount')->respondNotFound();
         }
+
+        $report = Lesson::reportLesson($courseId);
+
         return fractal()
         ->item($course)
         ->transformWith(new FullCourseTransformer)
+        ->addMeta(['report' => $report])
         ->respond();
     }
 
@@ -104,7 +109,7 @@ class CourseController extends Controller
      */
     public function otherCourses(Request $request)
     {
-        $otherCourse = $this->courseService->getCoursesOfByStatus([Course::TYPE_PUBLIC, Course::TYPE_FREE_NOT_TIME]);
+        $otherCourse = $this->courseService->getSourcesForHomePage();
 
         return fractal()
             ->collection($otherCourse, new ShortCourseTransformer)

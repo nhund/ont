@@ -71,18 +71,19 @@ class CourseService
     }
 
     /**
-     * get the sources of all schools at Home Page
+     * get the sources of all at Home Page
      */
-    public function getSourcesForHomePage(){
-        // $query = Course::where(function($q){
-        //     $q->where('status', Course::TYPE_FREE_TIME)
-        //     ->orWhere('sticky', Course::STICKY);
-        // });
+    public function getSourcesForHomePage($school_id = null){
 
-        $query =  Course::where('status','!=',Course::TYPE_PRIVATE)
-        ->where('sticky',Course::STICKY);
-
-        return $this->paginate($query);
+        $limit = request('limit', 4);
+        $query = Course::query();
+        if($school_id){
+            $query->where('category_id', $school_id);
+        }
+        return $query->where('status','!=',Course::TYPE_PRIVATE)
+        ->orderBy('sticky', 'DESC')
+        ->orderBy('id', 'DESC')
+        ->limit($limit);
     }
 
     /**
