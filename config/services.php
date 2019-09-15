@@ -35,15 +35,15 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
     'facebook' => [
-        'client_id'     => '584814145322201',
-        'client_secret' => '7670b7f49da96db481c42213d62000a8',
-        'redirect'      => 'https://onthiez.com/facebook/callback',
+        'client_id'     => env('CLIENT_ID_FB', '584814145322201'),
+        'client_secret' => env('CLIENT_SECRET_FB', '7670b7f49da96db481c42213d62000a8'),
+        'redirect'      => env('REDIRECT_FB', 'https://onthiez.com/facebook/callback'),
     ],
 
     'google' => [
-        'client_id'     => '497329216350-158al82b15mcr88c1gp02jf3hde50tal.apps.googleusercontent.com',
-        'client_secret' => 'otKWs3DNbCbPLKaAzY7EhFge',
-        'redirect'      => 'https://2aef6546.ngrok.io/google/callback'
+        'client_id'     =>  env('CLIENT_ID_GG', '497329216350-158al82b15mcr88c1gp02jf3hde50tal.apps.googleusercontent.com'),
+        'client_secret' =>  env('CLIENT_SECRET_GG', 'otKWs3DNbCbPLKaAzY7EhFge'),
+        'redirect'      =>  env('REDIRECT_GG', 'https://2aef6546.ngrok.io/google/callback')
     ],
 
 ];

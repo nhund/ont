@@ -5,10 +5,11 @@
  * Date: 21/08/2019
  * Time: 09:41
  */
-
 namespace App\Http\Controllers\Api\Auth\Soical;
 
+use App\Components\Soical\SocialAccountService;
 use App\Http\Controllers\Controller;
+use Laravel\Socialite\Facades\Socialite;
 
 class FacebookController extends Controller
 {
