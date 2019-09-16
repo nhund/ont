@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 
+use App\Components\Auth\Social\FacebookService;
 use App\Http\Controllers\Controller;
 
 class SocialController extends Controller
