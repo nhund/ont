@@ -14,8 +14,13 @@
 Route::namespace('Auth')->group(function () {
     Route::post('login', 'LoginController@store');
     Route::post('register', 'RegisterController@store');
+//    Route::post('redirect/facebook', 'LoginController@redirect');
+//    Route::post('callback/facebook', 'RegisterController@callback');
+//    Route::post('redirect/google', 'LoginController@redirect');
+//    Route::post('callback/google', 'RegisterController@callback');
 });
 
+Route::post('social/{provider}/authenticate', 'Api\Auth\Social\SocialController@authenticate');
 
 Route::middleware(['auth:api'])->namespace('Api')->group(function () {
 

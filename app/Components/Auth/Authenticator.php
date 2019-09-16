@@ -108,6 +108,38 @@ class Authenticator
     }
 
     /**
+     * Issue access and refresh tokens using social grant.
+     *
+     * @param $clientId
+     * @param $clientSecret
+     * @param $socialToken
+     * @param $socialProvider
+     * @param string $scope
+     * @return AccessTokenEntity|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function issueTokensUsingSocialGrant($clientId, $clientSecret, $socialToken, $socialProvider, $scope = '')
+    {
+        $client = $this->retrieveClient($clientId);
+        $scope = $this->formatScope($scope);
+
+        if ($client->secret !== $clientSecret) {
+            throw new ModelNotFoundException('The provided client credentials are invalid.');
+        }
+
+        $request = request()->create('/oauth/token', 'POST', [
+            'grant_type' => 'social',
+            'client_id' => $client->id,
+            'client_secret' => $client->secret,
+            'token' => $socialToken,
+            'provider' => $socialProvider,
+            'scope' => $scope,
+        ]);
+
+        return $this->handleTokenRequest($request);
+    }
+
+    /**
      * Format a given scope string.
      *
      * @param  string|mixed $value

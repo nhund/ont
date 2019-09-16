@@ -32,6 +32,7 @@ class MacroServiceProvider extends ServiceProvider
     {
         $this->accessSpecifiedOAuthClient();
         $this->accessRequestingTimezone();
+        $this->accessRequestingMobileClient();
     }
 
     /**
@@ -55,6 +56,26 @@ class MacroServiceProvider extends ServiceProvider
     {
         $this->app->make('request')->macro('oauthClient', function () {
             return PassportClient::findOrFail($this->header('OAuth-Client-ID', null));
+        });
+    }
+
+    /**
+     * Access the user agent using 'Mobile-Client' header.
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    protected function accessRequestingMobileClient()
+    {
+        $this->app->make('request')->macro('mobileClient', function () {
+            return trim(strtolower($this->header('Mobile-Client', 'web')));
+        });
+
+        $this->app->make('request')->macro('isFromWebApp', function () {
+            return $this->mobileClient() === 'web';
+        });
+
+        $this->app->make('request')->macro('isFromMobileApp', function () {
+            return in_array($this->mobileClient(), ['android', 'ios']);
         });
     }
 }
