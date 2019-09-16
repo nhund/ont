@@ -5,8 +5,10 @@ namespace App\Components\Auth\Social;
 
 
 use App\User;
+use http\Exception;
 use Illuminate\Support\Arr;
 use Laravel\Socialite\Facades\Socialite;
+use Zttp\Zttp;
 
 class FacebookService
 {
@@ -28,18 +30,29 @@ class FacebookService
     }
 
     /**
-     * {@inheritdoc}
+     * @param $token
+     * @return bool
      */
     public function getUserByToken($token)
     {
-        $fields = $this->getFields();
-        $driver = Socialite::driver('facebook');
-
-        if (empty($fields) || !method_exists($driver, 'fields')) {
-            return $driver;
+//        $fields = $this->getFields();
+//        $driver = Socialite::driver('facebook');
+//        if (empty($fields) || !method_exists($driver, 'fields')) {
+//            return $driver;
+//        }
+//        return $driver->fields($fields)->userFromToken($token);
+        try {
+            $response = Zttp::get('https://graph.facebook.com/v3.0/me', [
+                'access_token' => $token,
+                'fields' =>'name,first_name,last_name,email'
+            ]);
+            if (!$response->isSuccess()) {
+                return false;
+            }
+            return $response->json();
+        } catch (\Exception $e) {
+            return false;
         }
-
-        return $driver->fields($fields)->userFromToken($token);
     }
 
     /**
