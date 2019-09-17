@@ -28,6 +28,7 @@ class SocialController extends Controller
     {
         $face = (new FacebookService())->getUserByToken('EAAVnx8kpEGgBADrsFZBcOT2uB7cV6BpVhIFVWwYxHXdH52Iqs65cZCpqcAoZBDpjXuvYvgqRQPTadEB7sVw99vLfaKL4uPREWAeLNTKNkV3zGnhxyP0jpqFNJge0aac9ZAFAzNc5lPHRv4RgR68HggWDVBrrEZB3jawio7hxRIYfO1P2vnoZAxGZCpRq6IzW7Lza44ZAg4f5GZC7j05RtXDBdR4y5OuJ3jEugRY1UalZCAFwZDZD');
 
+        dd($face);
         $mobileClient = $request->mobileClient();
         $clientId = $mobileClient === 'web' ? config('auth.web_app_client.id') : $request->input('client_id');
         $clientSecret = $mobileClient === 'web' ? config('auth.web_app_client.secret') : $request->input('client_secret');

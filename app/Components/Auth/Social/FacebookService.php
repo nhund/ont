@@ -5,13 +5,19 @@ namespace App\Components\Auth\Social;
 
 
 use App\User;
-use http\Exception;
 use Illuminate\Support\Arr;
-use Laravel\Socialite\Facades\Socialite;
 use Zttp\Zttp;
 
 class FacebookService
 {
+    const TOKEN_INFO_API = 'https://graph.facebook.com/v3.0/me';
+
+    protected $token;
+
+    public function __construct($token = null)
+    {
+        $this->token = $token;
+    }
     /**
      * {@inheritdoc}
      */
@@ -29,6 +35,12 @@ class FacebookService
         ];
     }
 
+    public function checkLogin()
+    {
+
+    }
+
+
     /**
      * @param $token
      * @return bool
@@ -41,10 +53,13 @@ class FacebookService
 //            return $driver;
 //        }
 //        return $driver->fields($fields)->userFromToken($token);
+
+        $fields = $this->getFields();
+
         try {
-            $response = Zttp::get('https://graph.facebook.com/v3.0/me', [
+            $response = Zttp::get(self::TOKEN_INFO_API, [
                 'access_token' => $token,
-                'fields' =>'name,first_name,last_name,email'
+                'fields' => implode($fields, ',')
             ]);
             if (!$response->isSuccess()) {
                 return false;

@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api\Course;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserCourseRequest;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Transformers\Course\FullCourseTransformer;
@@ -41,11 +42,11 @@ class CourseController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param UserCourseRequest $request
      * @param $courseId
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request,  $courseId){
+    public function show(UserCourseRequest $request,  $courseId){
 
         $course = Course::where('id', $courseId)->first();
         if (!$course){
