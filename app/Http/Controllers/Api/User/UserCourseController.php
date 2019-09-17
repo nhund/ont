@@ -50,6 +50,6 @@ class UserCourseController extends Controller{
     {
         $countMYCourses = UserCourse::where('user_id',$request->user()->id)->count();
 
-        return $this->respondOk(['total_courses' => $countMYCourses]);
+        return $this->respondOk(['total_courses' => $countMYCourses, 'courses_done' => 4]);
     }
 }
