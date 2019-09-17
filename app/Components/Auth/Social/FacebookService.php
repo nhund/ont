@@ -5,6 +5,7 @@ namespace App\Components\Auth\Social;
 
 
 use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Zttp\Zttp;
 
@@ -14,9 +15,12 @@ class FacebookService
 
     protected $token;
 
-    public function __construct($token = null)
+    protected $request;
+
+    public function __construct(Request $request = null, $token = null)
     {
-        $this->token = $token;
+        $this->request = $request;
+        $this->token   = $token;
     }
     /**
      * {@inheritdoc}

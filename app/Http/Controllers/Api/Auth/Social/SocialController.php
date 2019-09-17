@@ -8,14 +8,21 @@
 
 namespace App\Http\Controllers\Api\Auth\Social;
 
-
 use App\Components\Auth\Authenticator;
-use App\Components\Auth\Social\FacebookService;
+use App\Components\Auth\Social\SocialService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SocialAuthenticationRequest;
+use App\User;
 
 class SocialController extends Controller
 {
+    protected $socialService;
+
+    public function __construct(SocialService $socialService)
+    {
+        $this->socialService = $socialService;
+    }
+
     /**
      * Perform social authentication using the given social provider.
      *
@@ -26,41 +33,30 @@ class SocialController extends Controller
      */
     public function authenticate(SocialAuthenticationRequest $request, $provider)
     {
-        $face = (new FacebookService())->getUserByToken('EAAVnx8kpEGgBADrsFZBcOT2uB7cV6BpVhIFVWwYxHXdH52Iqs65cZCpqcAoZBDpjXuvYvgqRQPTadEB7sVw99vLfaKL4uPREWAeLNTKNkV3zGnhxyP0jpqFNJge0aac9ZAFAzNc5lPHRv4RgR68HggWDVBrrEZB3jawio7hxRIYfO1P2vnoZAxGZCpRq6IzW7Lza44ZAg4f5GZC7j05RtXDBdR4y5OuJ3jEugRY1UalZCAFwZDZD');
+        $user = null;
 
-        dd($face);
-        $mobileClient = $request->mobileClient();
-        $clientId = $mobileClient === 'web' ? config('auth.web_app_client.id') : $request->input('client_id');
-        $clientSecret = $mobileClient === 'web' ? config('auth.web_app_client.secret') : $request->input('client_secret');
+        if ($provider == SocialService::FACEBOOK)
+        {
+            $user = $this->socialService
+                    ->refactorFields($request->all())
+                    ->findOrCreateUser(User::LOGIN_FB);
 
-//        $authCode = $request->input('auth_code');
-//        $oldGoogleClientId = config('services.google.client_id');
-//        $oldGoogleClientSecret = config('services.google.client_secret');
-        $accessToken = null;
-//        if ($authCode) {
-//            config([
-//                       'services.google.client_id' => config('services.google.client_id_google_sign_in'),
-//                       'services.google.client_secret' => config('services.google.client_secret_google_sign_in'),
-//                   ]);
-//            $accessToken = ($authCode) ? \Socialite::driver($provider)->getAccessTokenResponse($authCode) : null;
-//            if ($accessToken) $accessToken = $accessToken['access_token'];
-//            else {
-//                config([
-//                           'services.google.client_id' => $oldGoogleClientId,
-//                           'services.google.client_secret' => $oldGoogleClientSecret,
-//                       ]);
-//            }
-//        }
+        }
 
-        $accessToken = $accessToken ?? $request->input('token');
+        if ($provider == SocialService::GOOGLE)
+        {
+            $user = $this->socialService
+                    ->refactorFields($request->all())
+                    ->findOrCreateUser(User::LOGIN_GG);
+        }
 
-        $tokenEntity = (new Authenticator())->issueTokensUsingSocialGrant(
-            $clientId,
-            $clientSecret,
-            $accessToken,
-            $provider
-        );
+        if ($user){
+            $tokenEntity = $user->createToken($provider);
+            return (new Authenticator())->respondWithTokens($request, $tokenEntity);
 
-        return (new Authenticator())->respondWithTokens($request, $tokenEntity);
+        }
+
+        return $this->respondNotFound("the {$provider} is invalid");
+
     }
 }

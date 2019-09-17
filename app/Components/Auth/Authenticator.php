@@ -12,12 +12,14 @@ use App\Helpers\Helper;
 use App\Models\Auth\AccessTokenEntity;
 use App\Models\Auth\PassportClient;
 use App\Transformers\Auth\AccessTokenEntityFull;
+use App\Transformers\Auth\PersonalAccessTokenFull;
 use ErrorException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Laravel\Passport\PersonalAccessTokenResult;
 
 class Authenticator
 {
@@ -213,6 +215,13 @@ class Authenticator
     {
         if ($tokenEntity instanceof JsonResponse) {
             return $tokenEntity;
+        }
+
+        if ($tokenEntity instanceof PersonalAccessTokenResult){
+            return fractal()
+                ->item($tokenEntity)
+                ->transformWith(new PersonalAccessTokenFull)
+                ->respond();
         }
 
         if (!($tokenEntity instanceof AccessTokenEntity)) {

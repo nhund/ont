@@ -6,74 +6,71 @@ use App\User;
 
 class SocialService
 {
+    const FACEBOOK = 'facebook';
+    const GOOGLE = 'google';
+
+    protected $fields;
+
     /**
-     * * If a user has registered before using social auth, return the user
+     * {@inheritdoc}
+     */
+    public function getFields()
+    {
+        return [
+            'id' => '',
+            'name' => '',
+            'email' => '',
+            'avatar' => '',
+        ];
+    }
+
+    /**
+     *  If a user has registered before using social auth, return the user
      * else, create a new user object.
      *
-     * @param $user
      * @param $social_type
-     * @return array
+     * @return User|array|bool
      */
-    public function findOrCreateUser($user, $social_type)
+    public function findOrCreateUser($social_type)
     {
-        $authUser = User::where('social_id', $user->id)->where('social_type', '=', $social_type)->first();
+        $authUser = User::where('social_id', $this->fields['id'])->where('social_type', '=', $social_type)->first();
         if ($authUser) {
             //update avatar facebook and google
 
-            if(empty($authUser->avatar) && isset($user->avatar) && !empty($user->avatar))
+            if(empty($authUser['avatar']))
             {
-                $this->_updateAvatar($authUser,$user->avatar);
+                $this->_updateAvatar($authUser);
             }
-           return true;
-            // return $authUser;
+           return $authUser;
         }
-        $social_name = $social_type == User::LOGIN_FB ? 'facebook' : 'google';
-        if(empty($user->email))
-        {
-            return array(
-                'error'=>true,
-                'msg'=>'Bạn không thể đăng ký tài khoản , do tài khoản '.$social_name.' của bạn không có email',
-            );
-            $user->email = $user->id.'@gmail.com';
-        }
-        $check_email = User::where('email', $user->email)->first();
-        if($check_email)
-        {
-            return array(
-                'error'=>true,
-                'msg'=>'Bạn không thể đăng ký tài khoản , do tài khoản '.$social_name.' của bạn không có email',
-            );
 
-            $user->email = $user->id.'@gmail.com';
-        }
         $user_new = new User();
-        //$user->name = $data['name'];
-        $user_new->email = $user->email;
-        $user_new->full_name = $user->name;
+        $user_new->email = $this->fields['email'];
+        $user_new->full_name = $this->fields['name'];
         $user_new->create_at = time();
         $user_new->status = User::USER_STUDENT;
-        $user_new->password = bcrypt($user->id);
+        $user_new->password = bcrypt($this->fields['id']);
         $user_new->level = User::USER_STUDENT;
         $user_new->avatar = '';
-        $user_new->social_id = $user->id;
+        $user_new->social_id = $this->fields['id'];
         $user_new->social_type = $social_type;
         $user_new->save();
+
         //update avatar
-        if(isset($user->avatar) && !empty($user->avatar))
-        {
-            $this->_updateAvatar($user_new,$user->avatar);
-        }
-        return array(
-            'error'=>false,
-            'msg'=>'Đăng ký tài khoản thành công',
-            'user'=>$user_new
-        );
+        $this->_updateAvatar($user_new);
+
+        return $user_new;
     }
 
-    protected function _updateAvatar($user,$avatar)
+    /**
+     * @param $user
+     */
+    protected function _updateAvatar($user)
     {
-        if(empty($user->avatar) && !empty($avatar))
+        if(empty($user->avatar) && !empty($this->fields['avatar']))
         {
+            $avatar = $this->fields['avatar'];
+
             $name = time().'_'.str_slug($user->name_full).'.png';
             $path = 'images/user/avatar/'.$user->id;
             //$this->removeFolder(public_path($path));
@@ -105,5 +102,27 @@ class SocialService
         if ($newf) {
             fclose($newf);
         }
+    }
+
+    /**
+     * @param $prams
+     * @return $this
+     */
+    public function refactorFields($prams)
+    {
+        $fields = $this->getFields();
+
+        $keyFields = array_keys($fields);
+
+        foreach ($prams as $key => $pram)
+        {
+            if (in_array($key, $keyFields))
+            {
+                $fields[$key] = $pram;
+            }
+        }
+
+        $this->fields = $prams;
+        return $this;
     }
 }
