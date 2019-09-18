@@ -19,17 +19,13 @@ class SocialAuthenticationRequest extends AuthorizedFormRequest
 
         $rules = [];
 
-        if ($provider == SocialService::FACEBOOK){
+        if ($provider == SocialService::FACEBOOK || $provider == SocialService::GOOGLE){
             $rules = [
                 'id' => 'required|string',
-                'email' => 'required|string',
+                'email' => 'required|email|string',
                 'name' => 'required|string',
             ];
         }
-
-//        if ($provider == SocialService::GOOGLE){
-//
-//        }
 
         return $rules;
 
@@ -54,6 +50,7 @@ class SocialAuthenticationRequest extends AuthorizedFormRequest
         return [
             'fb_id.required' => 'Mã facebook Id không được để trống',
             'email.required' => 'Email không được để trống.',
+            'email.email' => 'Email không hợp lệ.',
             'name.required' => 'Tên không được để trống.',
         ];
     }
