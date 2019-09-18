@@ -39,7 +39,7 @@ class SocialService
 
             if(empty($authUser['avatar']))
             {
-                $this->_updateAvatar($authUser);
+//                $this->_updateAvatar($authUser);
             }
            return $authUser;
         }
@@ -57,7 +57,7 @@ class SocialService
         $user_new->save();
 
         //update avatar
-        $this->_updateAvatar($user_new);
+//        $this->_updateAvatar($user_new);
 
         return $user_new;
     }
