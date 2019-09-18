@@ -73,6 +73,9 @@ class CourseService
 
     /**
      * get the sources of all at Home Page
+     *
+     * @param null $school_id
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getSourcesForHomePage($school_id = null){
 
@@ -81,10 +84,10 @@ class CourseService
         if($school_id){
             $query->where('category_id', $school_id);
         }
-        return $query->where('status','!=',Course::TYPE_PRIVATE)
+        return $query
         ->orderBy('sticky', 'DESC')
         ->orderBy('id', 'DESC')
-        ->limit($limit);
+        ->limit($limit)->get();
     }
 
     /**

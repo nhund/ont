@@ -24,6 +24,7 @@ class ShortCourseTransformer extends TransformerAbstract
             'discount'    => $course->discount,
             'category_id' => $course->category_id,
             'description' => $course->description,
+            'description_format' => strip_tags($course->description),
             'avatar_paht' => $course->avatar_paht,
             'status'      => $course->status,
             'sticky'      => $course->sticky,
