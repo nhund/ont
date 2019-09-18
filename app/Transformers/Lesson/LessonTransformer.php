@@ -14,6 +14,7 @@ class LessonTransformer extends TransformerAbstract {
             'id'          => $lesson->id,
             'name'        => $lesson->name,
             'description' => $lesson->description,
+            'description_format' => strip_tags($lesson->description),
             'created_at'  => $lesson->created_at,
             'is_exercise' => $lesson->is_exercise,
             'image'       => $lesson->image,

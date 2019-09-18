@@ -17,12 +17,11 @@ class UserFull extends TransformerAbstract
     public function transform(User $user){
         return [
             'id'        =>$user->id,
-            'name'      => $user->name,
-            'full_name' => $user->full_name,
+            'full_name' => $user->name_full,
             'email'     => $user->email,
             'phone'     => $user->phone,
             'gender'    => $user->gender,
-            'avatar'    => $user->avatar,
+            'avatar_full'    => $user->avatar_full,
         ];
     }
 }

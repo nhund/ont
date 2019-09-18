@@ -37,6 +37,7 @@ class FullCourseTransformer extends TransformerAbstract
             'discount'    => $course->discount,
             'category_id' => $course->category_id,
             'description' => $course->description,
+            'description_format' => strip_tags($course->description),
             'avatar_thumb' => $course->avatar_thumb,
             'status'      => $course->status,
             'sticky'      => $course->sticky,
