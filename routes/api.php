@@ -29,6 +29,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
         Route::prefix('me')->group(function () {
             Route::get('/', 'UserController@show');
             Route::post('/', 'UserController@update');
+            Route::post('/avatar', 'UserController@updateAvatar');
 
             Route::get('/courses', 'UserCourseController@courses');
             Route::get('/courses/report', 'UserCourseController@report');

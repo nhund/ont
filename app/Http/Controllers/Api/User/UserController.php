@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Components\User\UserUpdater;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateInfoUserRequest;
+use App\Http\Requests\UpdatingAvatarRequest;
 use App\Transformers\Course\ShortCourseTransformer;
 use App\Transformers\User\UserFull;
 use Illuminate\Http\Request;
@@ -20,9 +21,9 @@ class UserController extends Controller{
     public function index(){}
 
     public function show(Request $request){
+
         return fractal()
-            ->item($request->user())
-            ->transformWith(new UserFull)
+            ->item($request->user(), new UserFull)
             ->respond();
     }
 
@@ -45,14 +46,26 @@ class UserController extends Controller{
 
     public function delete(){}
 
-    public function courses(Request $request){
-
+    public function courses(Request $request)
+    {
         $courses = (new CourseService($request))->searchByUser();
+        return fractal()
+            ->collection($courses, new ShortCourseTransformer)
+            ->paginateWith(new IlluminatePaginatorAdapter($courses))
+            ->respond();
+    }
+
+    /**
+     * @param UpdatingAvatarRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateAvatar(UpdatingAvatarRequest $request)
+    {
+        $user = (new UserUpdater())
+            ->updateAvatar($request->user(), $request->file('avatar'));
 
         return fractal()
-            ->collection($courses)
-            ->transformWith(new ShortCourseTransformer)
-            ->paginateWith(new IlluminatePaginatorAdapter($courses))
+            ->item($user, new UserFull)
             ->respond();
     }
 }

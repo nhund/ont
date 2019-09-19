@@ -35,9 +35,7 @@ class CourseController extends Controller
         $courses = (new CourseService($request))->getSourcesForHomePage();
 
         return fractal()
-            ->collection($courses)
-            ->transformWith(new ShortCourseTransformer)
-            ->paginateWith(new IlluminatePaginatorAdapter($courses))
+            ->collection($courses, new ShortCourseTransformer)
             ->respond();
     }
 
@@ -56,8 +54,7 @@ class CourseController extends Controller
         $report = Lesson::reportLesson($courseId);
 
         return fractal()
-        ->item($course)
-        ->transformWith(new FullCourseTransformer)
+        ->item($course, new FullCourseTransformer)
         ->addMeta(['report' => $report])
         ->respond();
     }
@@ -72,8 +69,7 @@ class CourseController extends Controller
         $courses = (new CourseService($request))->search();
 
         return fractal()
-        ->collection($courses)
-        ->transformWith(new ShortCourseTransformer)
+        ->collection($courses, new ShortCourseTransformer)
         ->paginateWith(new IlluminatePaginatorAdapter($courses))
         ->respond();
     }
