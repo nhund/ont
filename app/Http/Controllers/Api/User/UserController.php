@@ -6,6 +6,7 @@ use App\Components\User\UserUpdater;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateInfoUserRequest;
 use App\Http\Requests\UpdatingAvatarRequest;
+use App\Http\Requests\UpdatingPasswordRequest;
 use App\Transformers\Course\ShortCourseTransformer;
 use App\Transformers\User\UserFull;
 use Illuminate\Http\Request;
@@ -56,6 +57,8 @@ class UserController extends Controller{
     }
 
     /**
+     * updating avatar of user
+     *
      * @param UpdatingAvatarRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -63,6 +66,22 @@ class UserController extends Controller{
     {
         $user = (new UserUpdater())
             ->updateAvatar($request->user(), $request->file('avatar'));
+
+        return fractal()
+            ->item($user, new UserFull)
+            ->respond();
+    }
+
+    /**
+     * updating password of user
+     *
+     * @param UpdatingPasswordRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updatePassword(UpdatingPasswordRequest $request)
+    {
+        $user = (new UserUpdater())
+            ->updatePassword($request->user(), $request->get('password'));
 
         return fractal()
             ->item($user, new UserFull)

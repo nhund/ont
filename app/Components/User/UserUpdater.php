@@ -51,6 +51,19 @@ class UserUpdater
         return $user->refresh();
     }
 
+    /**
+     * @param User $user
+     * @param $password
+     * @return User
+     */
+    public function updatePassword(User $user, $password)
+    {
+        $user->password = bcrypt($password);
+        $user->save();
+        return $user->refresh();
+    }
+
+
     protected function removeFolder($str)
     {
         if (is_file($str)) {

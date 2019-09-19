@@ -30,6 +30,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
             Route::get('/', 'UserController@show');
             Route::post('/', 'UserController@update');
             Route::post('/avatar', 'UserController@updateAvatar');
+            Route::post('/password', 'UserController@updatePassword');
 
             Route::get('/courses', 'UserCourseController@courses');
             Route::get('/courses/report', 'UserCourseController@report');
