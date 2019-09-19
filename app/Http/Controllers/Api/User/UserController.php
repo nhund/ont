@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Components\User\UserUpdater;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateInfoUserRequest;
 use App\Transformers\Course\ShortCourseTransformer;
 use App\Transformers\User\UserFull;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Components\Course\CourseService;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
@@ -27,7 +28,20 @@ class UserController extends Controller{
 
     public function store(){}
 
-    public function update(){}
+    /**
+     * @param UpdateInfoUserRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(UpdateInfoUserRequest $request){
+
+        $params = $request->only(['name', 'full_name', 'phone', 'gender', 'birthday', 'status',
+                                  'avatar', 'level', 'school_id', 'user_group', 'status']);
+        $user = (new UserUpdater())->update($request->user(), $params);
+        return fractal()
+            ->item($user, new UserFull)
+            ->respond();
+
+    }
 
     public function delete(){}
 
