@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Components\Course\UserCourseService;
+use App\Exceptions\UserCourseException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddUserCourseRequest;
+use App\Models\Auth\PassportToken;
+use App\Models\Course;
 use App\Models\UserCourse;
 use App\Transformers\Course\ShortCourseTransformer;
 use Illuminate\Http\Request;
@@ -10,14 +15,25 @@ use App\Components\Course\CourseService;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 /**
- * Class UserController
+ * Class UserCourseController
  * @package App\Http\Controllers\Api\User
  */
 class UserCourseController extends Controller{
 
     public function index(){}
 
-    public function store(){}
+    public function store(AddUserCourseRequest $request){
+        $tokenInstance = PassportToken::parseToken($request->get('token'));
+        if (!$tokenInstance){
+            return $this->respondUnauthorized('Bạn cần đăng nhập để thực hiện hành động này.');
+        }
+
+        $course = Course::find($request->get('course_id'));
+
+        $result = (new UserCourseService($course, $tokenInstance->user->id))->addingORExtentCourse();
+
+       return $this->respondOk($result);
+    }
 
     public function update(){}
 

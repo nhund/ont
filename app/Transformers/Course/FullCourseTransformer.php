@@ -12,9 +12,9 @@ use phpDocumentor\Reflection\Types\Self_;
 
 class FullCourseTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = ['comment', 'lesson'];
+    protected $availableIncludes = ['comment'];
 
-    protected $defaultIncludes = ['comment', 'lesson'];
+    protected $defaultIncludes = ['lesson'];
 
     const BOUGHT = 1;
     const NOT_YET_BUY = 2;

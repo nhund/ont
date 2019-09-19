@@ -28,6 +28,10 @@ class Handler extends ExceptionHandler
         \Illuminate\Validation\ValidationException::class,
     ];
 
+    protected $customRender = [
+        UserCourseException::class
+    ];
+
     /**
      * Report or log an exception.
      *
@@ -50,11 +54,75 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        $hasCustomRenderer = in_array(get_class($exception), $this->customRender);
+        if ($hasCustomRenderer) {
+            return $this->renderCustomException($request, $exception);
+        }
+
         if ($this->shouldReport($exception))
         {
             $this->_logError($request, $exception);
         }
         return parent::render($request, $exception);
+    }
+
+    /**
+     * Handle exceptions for API request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Exception $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function renderCustomException($request, $exception)
+    {
+        $handler = 'render'.class_basename($exception);
+
+        if (!method_exists($this, $handler)) {
+            return null;
+        }
+
+        return $this->$handler($request, $exception);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\Access\AuthorizationException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderUserCourseException($request, $exception){
+
+//        $message = $exception->getMessage() ?: __('We are unable to authorize your request.');
+
+        return $this->prepareErrorResponse($request, $exception, 400);
+    }
+
+    /**
+     * Convert a given exception to the appropriate response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $exception
+     * @param  integer $status
+     * @param  mixed  $data
+     * @param  string|null  $message
+     * @param  array   $headers
+     * @return mixed
+     */
+    protected function prepareErrorResponse($request, $exception, $status = 400, $message = null, $data = null, $headers = [])
+    {
+        if (is_null($message) && method_exists($exception, 'getMessage')) {
+            $message = $exception->getMessage();
+        }
+
+        if (method_exists($exception, 'getStatusCode') && $exception->getStatusCode() !== null) {
+            $status = $exception->getStatusCode();
+        }
+
+        return $this->respondError(
+            $data,
+            __($message),
+            $status,
+            $headers
+        );
     }
 
     /**

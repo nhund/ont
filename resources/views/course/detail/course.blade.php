@@ -67,7 +67,7 @@
                               @if($var['course']->status == \App\Models\Course::TYPE_APPROVAL)
                                 <span>Xin tham gia</span>
                               @else
-                                <span>Mua khóa học</span>
+                                <span>Mua khóa học đ</span>
                               @endif                              
                             </button>
                           @endif

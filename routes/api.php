@@ -34,6 +34,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
 
             Route::get('/courses', 'UserCourseController@courses');
             Route::get('/courses/report', 'UserCourseController@report');
+            Route::post('/courses/add', 'UserCourseController@store');
         });
     });
 
@@ -69,6 +70,12 @@ Route::namespace('Api')->group(function () {
         Route::get('/{school_id}/free', 'SchoolCourseController@freeCourses');
         Route::get('/{school_id}/sticky', 'SchoolCourseController@StickyCourses');
         Route::get('/{school_id}/other', 'SchoolCourseController@otherCourses');
+    });
 
+    Route::namespace('User')->group(function () {
+        Route::prefix('me')->group(function () {
+
+            Route::post('/courses/add', 'UserCourseController@store');
+        });
     });
 });

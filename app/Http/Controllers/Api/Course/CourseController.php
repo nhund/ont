@@ -48,7 +48,7 @@ class CourseController extends Controller
 
         $course = Course::where('id', $courseId)->first();
         if (!$course){
-            return $this->message('the course wa\'nt fount')->respondNotFound();
+            return $this->message('Không tìm thấy khóa học')->respondNotFound();
         }
 
         $report = Lesson::reportLesson($courseId);
