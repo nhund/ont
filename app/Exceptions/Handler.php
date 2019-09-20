@@ -289,7 +289,7 @@ class Handler extends ExceptionHandler
     {
         $data = $this->formatDataForApiResponse($data, $message, $status, true);
 
-        return response()->json($data, $status, $headers);
+        return response()->json($data, 200, $headers);
     }
 
     /**
@@ -299,6 +299,6 @@ class Handler extends ExceptionHandler
     {
         $data = $this->formatDataForApiResponse($exception->errors(), null, $exception->status, true);
 
-        return response()->json($data, $exception->status);
+        return response()->json($data, 200);
     }
 }
