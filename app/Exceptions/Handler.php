@@ -29,7 +29,8 @@ class Handler extends ExceptionHandler
     ];
 
     protected $customRender = [
-        UserCourseException::class
+        UserCourseException::class,
+        BookMarkException::class
     ];
 
     /**
@@ -90,6 +91,16 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\JsonResponse|null
      */
     protected function renderUserCourseException($request, $exception){
+
+        return $this->prepareErrorResponse($request, $exception, 400);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\Access\AuthorizationException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderOnthiezException($request, $exception){
 
         return $this->prepareErrorResponse($request, $exception, 400);
     }
