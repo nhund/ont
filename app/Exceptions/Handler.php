@@ -91,8 +91,6 @@ class Handler extends ExceptionHandler
      */
     protected function renderUserCourseException($request, $exception){
 
-//        $message = $exception->getMessage() ?: __('We are unable to authorize your request.');
-
         return $this->prepareErrorResponse($request, $exception, 400);
     }
 

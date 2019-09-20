@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\UserCourse;
 use App\Models\Wallet;
 use App\Models\WalletLog;
+use App\User;
 use Illuminate\Support\Facades\DB;
 
 class UserCourseService
@@ -44,11 +45,10 @@ class UserCourseService
                 DB::transaction(function () use ($course, $UserCourse){
                     $this->paymentCourse($course);
                     $this->createOrUpdateUserCourse(UserCourse::STATUS_ON, $UserCourse);
-                    return 'mua hóa học thành công';
                 });
-                dd($course->status,555);
-            }catch (UserCourseException $courseException){
-                throw new UserCourseException('Mua khóa học không thàn ddh công.');
+                return 'mua khóa học thành công';
+            }catch (\Exception $exception){
+                throw new UserCourseException('Mua khóa học không thành công.');
             }
         }
 
@@ -69,7 +69,7 @@ class UserCourseService
             $userCourse->user_id = $this->userId;
             $userCourse->course_id = $this->course->id;
         }
-        $this->course->status = $status_course;
+        $userCourse->status   = $status_course;
         $userCourse->and_date = $this->endDate();
         $userCourse->learn_day = $this->course->study_time;
         $userCourse->updated_at = time();
@@ -115,6 +115,9 @@ class UserCourseService
             'xu_change' => -$course_price,
             'note' => 'Mua khóa học ' . $course->name,
         );
-        Helper::walletLog($dataLog, $this->userId);
+
+        $user = User::find($this->userId);
+
+        Helper::walletLog($dataLog, $user);
     }
 }
