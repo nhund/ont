@@ -8,6 +8,8 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\Models\Error as ErrorModel;
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Illuminate\Validation\ValidationException;
 
@@ -30,7 +32,12 @@ class Handler extends ExceptionHandler
 
     protected $customRender = [
         UserCourseException::class,
-        BookMarkException::class
+        BookMarkException::class,
+        AuthenticationException::class,
+        \Illuminate\Auth\Access\AuthorizationException::class,
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        \App\Exceptions\ValidationException::class,
+        \League\OAuth2\Server\Exception\OAuthServerException::class,
     ];
 
     /**
@@ -105,6 +112,61 @@ class Handler extends ExceptionHandler
         return $this->prepareErrorResponse($request, $exception, 400);
     }
 
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Database\Eloquent\ModelNotFoundException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderModelNotFoundException($request, $exception)
+    {
+        $entity = str_replace('-', ' ', strtolower(Str::kebab(class_basename($exception->getModel()))));
+        $message = "Không thể tìm thấy Model {$entity}";
+
+        return $this->prepareErrorResponse($request, $exception, 404, $message);
+    }
+
+
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \League\OAuth2\Server\Exception\OAuthServerException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderOAuthServerException($request, $exception)
+    {
+        return $this->prepareErrorResponse(
+            $request,
+            $exception,
+            $exception->getHttpStatusCode(),
+            Arr::get($exception->getPayload(), 'message') ?: null,
+            null,
+            $exception->getHttpHeaders()
+        );
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\Access\AuthorizationException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderAuthorizationException($request, $exception)
+    {
+
+        return $this->prepareErrorResponse($request, $exception, 403, 'Bạn không có quyền truy cập.');
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\AuthenticationException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderAuthenticationException($request, $exception)
+    {
+        return $this->prepareErrorResponse($request, $exception, 401, 'Bạn chưa đăng nhập.');
+    }
+
+
     /**
      * Convert a given exception to the appropriate response.
      *
@@ -133,6 +195,8 @@ class Handler extends ExceptionHandler
             $headers
         );
     }
+
+
 
     /**
      * Convert an authentication exception into an unauthenticated response.
@@ -266,6 +330,7 @@ class Handler extends ExceptionHandler
         }
         return redirect()->guest(route('login'));
     }
+
     protected function _logError($request, $exception)
     {
 
