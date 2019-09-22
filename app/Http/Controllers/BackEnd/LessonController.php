@@ -56,6 +56,7 @@ class LessonController extends AdminBaseController
                 'title'=>$lesson->name
             )
         );
+        dd($var);
         echo '<pre>';
         var_dump($var);
         echo '</pre>';
