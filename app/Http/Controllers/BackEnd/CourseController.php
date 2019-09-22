@@ -11,7 +11,9 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\UserCourse;
 use App\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
 use App\Models\Feedback;
@@ -246,6 +248,10 @@ class CourseController extends AdminBaseController
         return view('backend.course.feedback', $var);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function addLesson(Request $request) {
         $course_id      = $request->input('course_id');
         $name           = $request->input('name');
@@ -286,11 +292,36 @@ class CourseController extends AdminBaseController
         return response()->json(['msg' => 'Thêm bài giảng thành công', 'status' => 1, 'id' => $firstId]);
     }
 
-    public function addExamOrLevel2(AddExamRequest $request){
+    public function addExam(AddExamRequest $request)
+    {
+        $params    = $request->only('course_id', 'name', 'status', 'lesson_id');
+        $lesson_id = Arr::get($params, 'lesson_id');
 
-        $params = $request->only('course_id', 'name', 'status');
+        $lesson     = Lesson::find($lesson_id);
 
-        dd($request->all());
+        $insertData = [
+            'name' => $params['name'],
+            'status' => $params['status'],
+            'course_id' => $params['course_id'],
+            'parent_id' => $lesson_id ? $lesson_id : 0,
+            'lv1' => 0,
+            'created_at' => time(),
+            'type' => Course::EXAM,
+        ];
+
+        if ($lesson)
+        {
+            $insertData['lv1'] = $lesson['lv1'] ? $lesson['lv1'] : $lesson_id;
+            if ($lesson['lv1']) {
+                $insertData['lv2'] = $lesson_id;
+            }
+        }
+
+        $firstId = Lesson::insertGetId($insertData);
+
+        (new CourseService())->createFolderGalaryForLesson($params['course_id']);
+
+        return response()->json(['msg' => 'Thêm bài kiểm tra thành công', 'status' => 1, 'id' => $firstId]);
     }
 
     public function listUser($id) {

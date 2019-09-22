@@ -149,7 +149,8 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/handle', 'BackEnd\CourseController@handle')->name('course.handle');
         Route::get('/detail/{id}', 'BackEnd\CourseController@detail')->name('course.detail');
         Route::post('/addLesson', 'BackEnd\CourseController@addLesson')->name('course.addLesson');
-        Route::post('/addExamOrLevel2', 'BackEnd\CourseController@addExamOrLevel2')->name('course.addExamOrLevel2');
+        Route::post('/addLevel2', 'BackEnd\CourseController@addLevel2')->name('course.addLevel2');
+        Route::post('/addExam', 'BackEnd\CourseController@addExam')->name('course.addExam');
         Route::get('/{id}/listUser', 'BackEnd\CourseController@listUser')->name('admin.course.listUser');
         Route::post('/changeUserStatus', 'BackEnd\CourseController@changeUserStatus')->name('course.changeUserStatus');
         Route::post('/addUser', 'BackEnd\CourseController@addUser')->name('course.addUser');
