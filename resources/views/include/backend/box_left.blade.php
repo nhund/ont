@@ -10,8 +10,8 @@
                     <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
                     <ul class="dropdown-menu pull-right">
                         <li><a onclick="showModalAddLesson(0, '{{ $course['name'] }}', 'lesson')">Tạo bài giảng</a></li>
-                        <li><a onclick="showModalAddExamOrLevel2(0, '{{ $course['name'] }}', 'exam')">Tạo bài Kiểm tra</a></li>
-                        <li><a onclick="showModalAddExamOrLevel2(0, '{{ $course['name'] }}', 'level2')">Tạo bài level 2</a></li>
+                        <li><a onclick="showModalAddExam(0, '{{ $course['name'] }}', 'exam')">Tạo bài Kiểm tra</a></li>
+                        <li><a onclick="showModalAddLevel2(0, '{{ $course['name'] }}', 'level2')">Tạo bài level 2</a></li>
                     </ul>
                 </div>
             </a>
@@ -20,6 +20,8 @@
             @if ($course_lesson)
                 <ul class="mailbox-msg-list">
                     @foreach($course_lesson as $cl)
+
+                        <!-- bài học -->
                         @if (isset($cl['parent_id']) && !$cl['parent_id'])
                             <li>
                                 <div class="col-sm-12 @if(isset($lesson) && $cl['id'] == $lesson['id']) active-row @endif">
@@ -28,13 +30,25 @@
                                             <span class="name @if (isset($cl['is_exercise']) && $cl['is_exercise']) sub-name-ex @else sub-name @endif">{{ $cl['name'] }}</span>
                                         </div>
                                         @if(isset($lesson) && $cl['id'] == $lesson['id'])
-                                            <div class="col-sm-2 btn-create">
-                                                <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}')">Tạo lý thuyết</a></li>
-                                                    <li><a onclick="showModalAddExersice('{{ $cl['id'] }}')">Tạo bài tập</a></li>
-                                                </ul>
-                                            </div>
+                                            @if( $lesson['type'] == \App\Models\Lesson::LESSON)
+                                                <div class="col-sm-2 btn-create">
+                                                    <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}')">Tạo lý thuyết</a></li>
+                                                        <li><a onclick="showModalAddExersice('{{ $cl['id'] }}')">Tạo bài tập</a></li>
+                                                        <li><a onclick="showModalAddExam('{{ $cl['id'] }}')">Tạo bài kiểm tra</a></li>
+                                                    </ul>
+                                                </div>
+                                            @endif
+                                                @if( $lesson['type'] == \App\Models\Lesson::EXAM)
+                                                    <div class="col-sm-2 btn-create">
+                                                        <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}')">Tạo lý thuyết</a></li>
+                                                            <li><a onclick="showModalAddExersice('{{ $cl['id'] }}')">Tạo bài tập</a></li>
+                                                        </ul>
+                                                    </div>
+                                                @endif
                                         @endif
                                     </a>
                                 </div>

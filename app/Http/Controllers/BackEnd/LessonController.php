@@ -55,7 +55,8 @@ class LessonController extends AdminBaseController
                 'url'=>'#',
                 'title'=>$lesson->name
             )
-        ); 
+        );
+        var_dump($var);
         return view('backend.lesson.detail', $var);
     }
 

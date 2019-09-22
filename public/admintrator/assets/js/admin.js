@@ -126,7 +126,20 @@ function showModalAddExersice(lesson_id) {
     $('#courseEx').modal('show');
 }
 
-function showModalAddExamOrLevel2(lesson_id, title, lesson_type) {
+function showModalAddExam(lesson_id, title, lesson_type) {
+    if (lesson_id) {
+        $('#courseExam #lesson_id').val(lesson_id);
+    }
+
+    if (lesson_type) {
+        $('#courseExam #lesson_type').val(lesson_type);
+    }
+
+    $('#courseExam .title-courseLesson').html(title);
+    $('#courseExam').modal('show');
+}
+
+function showModalAddLevel2(lesson_id, title, lesson_type) {
     if (lesson_id) {
         $('#courseExam #lesson_id').val(lesson_id);
     }
