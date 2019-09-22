@@ -87,6 +87,7 @@
                 <div class="modal-body">
                     <input type="hidden" name="lesson_id" id="les_id" value="">
                     <input type="hidden" name="course_id" value="{{ $course['id'] }}">
+                    <input type="hidden" name="type"  id="type" value="">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="row">
                         <div class="col-sm-8">Tên bài tập</div>

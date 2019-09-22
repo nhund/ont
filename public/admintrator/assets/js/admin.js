@@ -119,10 +119,12 @@ function showModalAddLesson(lesson_id, title, lesson_type) {
     $('#courseLesson').modal('show');
 }
 
-function showModalAddExersice(lesson_id) {
-    if (lesson_id) {
-         $('#les_id').val(lesson_id);
-    }
+function showModalAddExersice(lesson_id, type) {
+
+    if (lesson_id) {$('#les_id').val(lesson_id);}
+
+    if (type) {$('#type').val(type);}
+
     $('#courseEx').modal('show');
 }
 

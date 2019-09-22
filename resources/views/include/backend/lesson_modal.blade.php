@@ -24,6 +24,7 @@
                     <form id="editcourseEx" method="POST" action="{{ route('lesson.handleEx') }}" enctype="multipart/form-data">
                         <div class="modal-body">
                             <input type="hidden" name="cur_lesson_id" value="{{ $lesson['id'] }}">
+                            <input type="hidden" name="type" value="{{ $lesson['type'] }}">
                             <input type="hidden" name="course_id" value="{{ $course['id'] }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="row">

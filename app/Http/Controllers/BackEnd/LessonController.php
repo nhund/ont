@@ -112,8 +112,9 @@ class LessonController extends AdminBaseController
         $description    = trim($request->input('exDescription', ''));
         $sapo           = trim($request->input('sapo', ''));
         $repeat_time    = $request->input('repeat_time', '');
-        $random_question           = $request->input('random_question', '');
+        $random_question= $request->input('random_question', '');
         $avatar         = $request->file('avatar');
+        $type           = $request->input('type');
 
         $les                    = Lesson::find($lesson_id);
         if ($cur_lesson_id) {
@@ -150,7 +151,8 @@ class LessonController extends AdminBaseController
         $lesson->course_id      = $course_id;
         $lesson->sapo           = $sapo;
         $lesson->repeat_time    = $repeat_time;
-        $lesson->random_question           = $random_question;
+        $lesson->random_question= $random_question;
+        $lesson->type           = $type;
         $lesson->save();
 
         return redirect()->back();

@@ -10,7 +10,7 @@
                     <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
                     <ul class="dropdown-menu pull-right">
                         <li><a onclick="showModalAddLesson(0, '{{ $course['name'] }}', 'lesson')">Tạo bài giảng</a></li>
-                        <li><a onclick="showModalAddExam(0, '{{ $course['name'] }}', 'exam')">Tạo bài Kiểm tra</a></li>
+                        <li><a onclick="showModalAddExersice(0, 'exam')">Tạo bài Kiểm tra</a></li>
                         <li><a onclick="showModalAddLevel2(0, '{{ $course['name'] }}', 'level2')">Tạo bài level 2</a></li>
                     </ul>
                 </div>
@@ -35,20 +35,11 @@
                                                     <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
                                                     <ul class="dropdown-menu pull-right">
                                                         <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}')">Tạo lý thuyết</a></li>
-                                                        <li><a onclick="showModalAddExersice('{{ $cl['id'] }}')">Tạo bài tập</a></li>
-                                                        <li><a onclick="showModalAddExam('{{ $cl['id'] }}')">Tạo bài kiểm tra</a></li>
+                                                        <li><a onclick="showModalAddExersice('{{ $cl['id'] }}', 'lesson')">Tạo bài tập</a></li>
+                                                        <li><a onclick="showModalAddExersice('{{ $cl['id'] }}', 'exam', )">Tạo bài Kiểm tra</a></li>
                                                     </ul>
                                                 </div>
                                             @endif
-                                                @if( $lesson['type'] == \App\Models\Lesson::EXAM)
-                                                    <div class="col-sm-2 btn-create">
-                                                        <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}')">Tạo lý thuyết</a></li>
-                                                            <li><a onclick="showModalAddExersice('{{ $cl['id'] }}')">Tạo bài tập</a></li>
-                                                        </ul>
-                                                    </div>
-                                                @endif
                                         @endif
                                     </a>
                                 </div>
