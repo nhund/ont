@@ -27,7 +27,11 @@
                                 <div class="col-sm-12 @if(isset($lesson) && $cl['id'] == $lesson['id']) active-row @endif">
                                     <a href="{{ route('lesson.detail', ['id' => $cl['id']]) }}">
                                         <div class="mailbox-msg-list-item col-sm-10">
-                                            <span class="name @if (isset($cl['is_exercise']) && $cl['is_exercise']) sub-name-ex @else sub-name @endif">{{ $cl['name'] }}</span>
+                                            <span class="name
+                                                @if (isset($cl['is_exercise']) && $cl['is_exercise'] && $cl['type'] == \App\Models\Lesson::LESSON) sub-name-ex sd
+                                                @elseif  (isset($cl['type']) && $cl['type'] == \App\Models\Lesson::EXAM) sub-name-exam
+                                                @else sub-name @endif">{{ $cl['name'] }}
+                                            </span>
                                         </div>
                                         @if(isset($lesson) && $cl['id'] == $lesson['id'])
                                             @if( $lesson['type'] == \App\Models\Lesson::LESSON)
@@ -51,7 +55,11 @@
                                                 <div class="col-sm-12 @if(isset($lesson) && $sub == $lesson['id']) active-row @endif">
                                                     <a href="{{ route('lesson.detail', ['id' => $sub]) }}">
                                                         <div class="mailbox-msg-list-item col-sm-10">
-                                                            <span class="name @if (isset($course_lesson[$sub]['is_exercise']) && $course_lesson[$sub]['is_exercise']) sub-name-ex @else sub-name @endif">{{ $course_lesson[$sub]['name'] }}</span>
+                                                            <span class="name
+                                                                @if (isset($course_lesson[$sub]['is_exercise']) && $course_lesson[$sub]['is_exercise']  && $course_lesson[$sub]['type'] == \App\Models\Lesson::LESSON) sub-name-ex
+                                                                @elseif  (isset($course_lesson[$sub]['type']) && $course_lesson[$sub]['type'] == \App\Models\Lesson::EXAM) sub-name-exam
+                                                                @else sub-name @endif">{{ $course_lesson[$sub]['name'] }}
+                                                            </span>
                                                         </div>
                                                         @if(isset($lesson) && $sub == $lesson['id'])
                                                             {{-- <div class="col-sm-2 btn-create">
@@ -72,7 +80,11 @@
                                                                 <div class="col-sm-12 @if(isset($lesson) && $sub2 == $lesson['id']) active-row @endif">
                                                                     <a href="{{ route('lesson.detail', ['id' => $sub2]) }}">
                                                                         <div class="mailbox-msg-list-item col-sm-10">
-                                                                            <span class="name @if (isset($course_lesson[$sub2]['is_exercise']) && $course_lesson[$sub2]['is_exercise']) sub-name-ex @else sub-name @endif">{{ $course_lesson[$sub2]['name'] }}</span>
+                                                                            <span class="name
+                                                                                @if (isset($course_lesson[$sub2]['is_exercise']) && $course_lesson[$sub2]['is_exercise'] && $course_lesson[$sub2]['type'] == \App\Models\Lesson::LESSON) sub-name-ex
+                                                                                @elseif  (isset($course_lesson[$sub2]['type']) && $course_lesson[$sub2]['type'] == \App\Models\Lesson::EXAM) sub-name-exam
+                                                                                @else sub-name @endif">{{ $course_lesson[$sub2]['name'] }}
+                                                                            </span>
                                                                         </div>
                                                                     </a>
                                                                 </div>
