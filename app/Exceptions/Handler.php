@@ -135,7 +135,6 @@ class Handler extends ExceptionHandler
      */
     protected function renderOAuthServerException($request, $exception)
     {
-        dd(121212);
         return $this->prepareErrorResponse(
             $request,
             $exception,
@@ -164,7 +163,7 @@ class Handler extends ExceptionHandler
      */
     protected function renderAuthenticationException($request, $exception)
     {
-        return $this->prepareErrorResponse($request, $exception, 401, 'Bạn chưa đăng nhập.');
+        return $this->prepareErrorResponse($request, $exception, 401, $exception->getMessage());
     }
 
 
