@@ -11,6 +11,7 @@ use App\Transformers\Course\ShortCourseTransformer;
 use App\Transformers\User\UserFull;
 use Illuminate\Http\Request;
 use App\Components\Course\CourseService;
+use Illuminate\Support\Facades\Hash;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 /**
@@ -80,6 +81,11 @@ class UserController extends Controller{
      */
     public function updatePassword(UpdatingPasswordRequest $request)
     {
+
+        if (!Hash::check($request->get('old_password'), $request->user()->password)){
+            return $this->respondUnauthorized('mật khẩu cũ không chính xác');
+        }
+
         $user = (new UserUpdater())
             ->updatePassword($request->user(), $request->get('password'));
 
