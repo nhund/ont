@@ -187,7 +187,6 @@ class Authenticator
         if (Arr::has($tokens, 'errors') || !Arr::has($tokens, 'access_token')) {
             return $response;
         }
-        dd($response, 222);
 
         return AccessTokenEntity::newInstance($tokens);
     }
