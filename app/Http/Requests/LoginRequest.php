@@ -17,13 +17,4 @@ class LoginRequest extends AuthorizedFormRequest
             'password' => 'required',
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'email.required'    => ' Email không được để trống.',
-            'email.email'       => ' Email không đúng định dạng.',
-            'password.required' => ' Mật khẩu không được để trống.',
-        ];
-    }
 }

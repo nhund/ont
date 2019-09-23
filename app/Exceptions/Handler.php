@@ -135,6 +135,7 @@ class Handler extends ExceptionHandler
      */
     protected function renderOAuthServerException($request, $exception)
     {
+        dd(121212);
         return $this->prepareErrorResponse(
             $request,
             $exception,

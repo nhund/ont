@@ -19,7 +19,7 @@ trait ApiResponseFormatter
 
         if (!empty($data)) {
             if ($error) {
-                if (is_array($error)){
+                if (is_array($data)){
                     $final = array_merge($final, ['error' => $data]);
                 }else{
                     $final = array_merge($final, ['message' => $data]);

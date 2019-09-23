@@ -18,16 +18,4 @@ class RegisterUserRequest extends AuthorizedFormRequest
             'phone'    => 'unique:users',
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'email.required'     => ' Email không được để trống.',
-            'email.email'        => ' Email không đúng định dạng.',
-            'email.unique'       => ' Email đã được sử dụng.',
-            'password.required'  => ' Mật khẩu không được để trống.',
-            'password.min'       => ' Mật khẩu tối thiểu 6 ký tự.',
-            'password.confirmed' => 'Mật khẩu xác nhận không đúng',
-        ];
-    }
 }

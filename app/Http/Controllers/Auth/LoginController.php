@@ -139,6 +139,7 @@ class LoginController extends Controller
             $request->input('password')
         );
 
+        dd($tokenEntity);
         return $authenticator->respondWithTokens($request, $tokenEntity);
     }
 
