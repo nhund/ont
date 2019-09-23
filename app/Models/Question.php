@@ -99,4 +99,12 @@ class Question extends Model
             }
         });
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subQuestion()
+    {
+        return $this->hasMany(Question::class, 'parent_id', 'id');
+    }
 }
