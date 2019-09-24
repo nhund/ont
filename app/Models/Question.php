@@ -19,6 +19,14 @@ class Question extends Model
     const TYPE_TRAC_NGHIEM = 4;
     const TYPE_DIEN_TU_DOAN_VAN = 5;
 
+    const TYPE  = [
+        self::TYPE_FLASH_SINGLE => 'FlashCard đơn',
+        self::TYPE_FLASH_MUTI => 'FlashCard chuỗi',
+        self::TYPE_DIEN_TU => 'Điền từ',
+        self::TYPE_TRAC_NGHIEM => 'Trắc nghiệm',
+        self::TYPE_DIEN_TU_DOAN_VAN => 'Điền từ đoạn văn',
+    ];
+
     const REPLY_ERROR = 1;
     const REPLY_OK = 2;
 
@@ -106,5 +114,10 @@ class Question extends Model
     public function subQuestion()
     {
         return $this->hasMany(Question::class, 'parent_id', 'id');
+    }
+
+    public function type()
+    {
+        return self::TYPE[$this->getOriginal('type')];
     }
 }
