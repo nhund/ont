@@ -30,13 +30,13 @@
                                 <div class="panel-heading">
                                     <h2>
                                         <ul class="nav nav-tabs">
-                                            <li class="active">
-                                                <a href="#tab-des" data-toggle="tab" class="tabDescription">
+                                            <li>
+                                                <a href="#tab-des" data-toggle="tab" class="tabDescription active">
                                                     <span class="tabDes">Câu hỏi</span>
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="#tab-add-question" data-toggle="tab">
+                                                <a href="#tab-add-question" data-toggle="tab" class="add-question">
                                                     <img src="{{ asset('/public/images/course/icon/icon-comment.png')}}" class="tab-des">Thêm câu hỏi</a>
                                             </li>
                                         </ul>
@@ -242,6 +242,12 @@
                   
         });
     @endif
+
+    @if(request()->has('add_question'))
+        $('.add-question').click();
+    @endif
+
+
 </script>
 
 @endpush
