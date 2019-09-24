@@ -9,11 +9,12 @@
                             <tbody>
                                 <tr>
                                     <td class="text-bold"><label for="keySearch">Tìm câu hỏi</label></td>
-                                    <td><input id="keySearch" class="form-control" type="text" name="keySearch"> <button class="btn btn-primary" type="submit">tìm kiếm</button> </td>
+                                    <td><input id="keySearch" class="form-control" type="text" name="keySearch"></td>
+                                    <td> <button class="btn btn-primary" type="submit">tìm kiếm</button> </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-bold"><label for="keySearch">Câu hỏi thuộc phần</label></td>
-                                    <td><select name="part">
+                                    <td class="text-bold"><label for="part">Câu hỏi thuộc phần</label></td>
+                                    <td><select class="form-control" id="part" name="part">
                                             <option value="1">Phần 1</option>
                                             <option value="2">Phần 2</option>
                                             <option value="3">Phần 3</option>
@@ -22,6 +23,7 @@
                                             <option value="6">Phần 6</option>
                                         </select>
                                     </td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
