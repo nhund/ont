@@ -244,7 +244,7 @@
     @endif
 
     @if(request()->has('add_question'))
-            console.log(2121212);
+        $('.common-question').removeClass('active');
         $('.add-question').addClass('active');
     @endif
 
