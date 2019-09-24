@@ -66,7 +66,31 @@ class ExamController
 
     public function store(Request $request)
     {
-        return response()->json($request->all());
+        $addQuestionIds = $request->get('addQuestion');
+        $removeQuestionIds = $request->get('removeQuestion');
+        $part = $request->get('part');
+        $exam_id = $request->get('exam_id');
+
+        if ($addQuestionIds and is_array($addQuestionIds) && $exam_id && $part){
+            $questions = [];
+            foreach ($addQuestionIds as $questionId){
+                $question = [
+                    'lesson_id' => $exam_id,
+                    'question_id'=> $questionId,
+                    'part'=> $part
+                ];
+                array_push($questions, $question);
+            }
+
+            ExamQuestion::insert($questions);
+        }
+
+        if ($removeQuestionIds and is_array($removeQuestionIds) && $exam_id && $part){
+            ExamQuestion::whereIn('question_id',$removeQuestionIds)
+                ->where('lesson_id', $exam_id)->delete();
+        }
+
+        return response()->json(['status' => 200, 'data' => $request->all()]);
     }
 
 }
