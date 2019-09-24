@@ -31,7 +31,7 @@ class ExamController
 
         $questionIds = ExamQuestion::where('lesson_id', $id)->pluck('question_id');
 
-        $question = Question::whereIn($questionIds)
+        $question = Question::whereIn('id', $questionIds)
             ->where('parent_id',0)->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->paginate(30);
 
