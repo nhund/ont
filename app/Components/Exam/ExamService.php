@@ -36,7 +36,7 @@ class ExamService
     }
 
     public function insertExamQuestion($lesson_id, $question_id, $part = null){
-        return ExamQuestion::insert([
+        return ExamQuestion::create([
              'lesson_id' => $lesson_id,
              'question_id' => $question_id,
              'part' => $part,

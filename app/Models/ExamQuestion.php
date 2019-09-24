@@ -15,5 +15,7 @@ class ExamQuestion extends Model
 
     protected $table = 'exam_question';
 
+    public $timestamps = true;
+
     protected $fillable = ['lesson_id', 'question_id', 'part', 'created_at', 'updated_at', 'times'];
 }
