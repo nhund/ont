@@ -35,8 +35,8 @@
                                                     <span class="tabDes">Câu hỏi</span>
                                                 </a>
                                             </li>
-                                            <li class="">
-                                                <a href="#tab-add-question" data-toggle="tab" class="add-question">
+                                            <li class="add-question">
+                                                <a href="#tab-add-question" data-toggle="tab">
                                                     <img src="{{ asset('/public/images/course/icon/icon-comment.png')}}" class="tab-des">Thêm câu hỏi</a>
                                             </li>
                                         </ul>
@@ -244,6 +244,7 @@
     @endif
 
     @if(request()->has('add_question'))
+            console.log(2121212);
         $('.add-question').click();
     @endif
 
