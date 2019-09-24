@@ -237,7 +237,7 @@
         $('.add-question').addClass('active');
     @endif
 
-    function addQuestion() {
+    function addQuestionssss() {
         $('input[name=question_id]').forEach(function (e, index) {
             console.log(e, index)
         })

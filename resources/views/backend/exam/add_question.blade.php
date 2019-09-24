@@ -55,7 +55,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="col-sm-4 pull-right"><button class="btn btn-primary" type="submit" onclick="addQuestion()">Thêm/Xóa</button></div>
+                        <div class="col-sm-4 pull-right"><button class="btn btn-primary" type="submit" onclick="addQuestionssss()">Thêm/Xóa</button></div>
                         <div class="col-sm-4 pull-left">{{ $suggestQuestions->appends(['key_search' => request('key_search')])->render() }}</div>
                     @endif
 {{--                    </form>--}}
