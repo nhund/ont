@@ -136,7 +136,14 @@
                                                     @endif
                                                 </div>
                                             @endif
-
+                                            @if(!$lesson['is_exercise'])
+                                                <div class="text-center form-group add-lesson-des">
+                                                    <button type="button" class="btn btn-primary" onclick="handleLessonForm()"><i class="fa fa-plus"></i> &nbsp;&nbsp;Thêm nội dung</button>
+                                                </div>
+                                                @include('backend.lesson.list')
+                                            @else
+                                                @include('backend.lesson.detail_ex')
+                                            @endif
 
                                             @if ($lesson['is_exercise'])
                                                 @include('backend.lesson.information')
@@ -144,6 +151,7 @@
                                         </div>
                                         <div class="tab-pane" id="tab-add-question">
                                             <p>Thêm câu hỏi</p>
+                                            @include('backend.exam.add_question')
                                             @if ($lesson['is_exercise'])
                                                 @include('backend.lesson.information')
                                             @endif
