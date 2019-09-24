@@ -238,6 +238,7 @@
     @endif
 
     function addQuestionssss() {
+        console.log($('input[name=question_id[]]'));
         $('input[name=question_id[]]').forEach(function (e, index) {
             console.log(e, index)
         })
