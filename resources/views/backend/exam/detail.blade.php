@@ -237,11 +237,17 @@
         $('.add-question').addClass('active');
     @endif
 
-    function addQuestionssss() {
-        console.log($('input[name=question_id]'));
-        $('input[name=question_id]').each(function (e, index) {
-            console.log(e, index)
+    function addQuestionToExam() {
+        let addQuestion = [];
+        let removeQuestion = [];
+        $('input[name=question_id]').each(function (index, ele) {
+            if($(ele).is(':checked')){
+                addQuestion.push($(ele).val())
+            }else{
+                removeQuestion.push($(ele).val())
+            }
         })
+        console.log(addQuestion, removeQuestion)
     }
 
 </script>
