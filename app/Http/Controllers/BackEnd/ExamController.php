@@ -83,7 +83,7 @@ class ExamController
                 array_push($questions, $question);
             }
 
-            ExamQuestion::insert($questions);
+            ExamQuestion::updateOrCreate($questions);
         }
 
         if ($removeQuestionIds and is_array($removeQuestionIds) && $exam_id && $part){
