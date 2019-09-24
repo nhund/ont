@@ -30,8 +30,8 @@
                                 <div class="panel-heading">
                                     <h2>
                                         <ul class="nav nav-tabs">
-                                            <li>
-                                                <a href="#tab-des" data-toggle="tab" class="tabDescription active">
+                                            <li class="common-question active">
+                                                <a href="#tab-des" data-toggle="tab" class="tabDescription">
                                                     <span class="tabDes">Câu hỏi</span>
                                                 </a>
                                             </li>
@@ -245,7 +245,7 @@
 
     @if(request()->has('add_question'))
             console.log(2121212);
-        $('.add-question').click();
+        $('.add-question').addClass('active');
     @endif
 
 
