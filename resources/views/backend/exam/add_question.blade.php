@@ -7,7 +7,7 @@
                     <table class="table">
                         <tbody>
                             <tr>
-                                <td></td>class="text-bold">Tìm câu hỏi</td>
+                                <td class="text-bold">Tìm câu hỏi</td>
                                 <td><input class="form-control"></td>
                                 <td><button type="submit">tìm</button> </td>
                             </tr>
