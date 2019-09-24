@@ -233,8 +233,8 @@
 
     @if(request()->has('key_search'))
         $('.common-question').removeClass('active');
-        $('.add-question').addClass('active');
         $('.a-add-question').click();
+        $('.add-question').addClass('active');
     @endif
 
     function addQuestion() {
