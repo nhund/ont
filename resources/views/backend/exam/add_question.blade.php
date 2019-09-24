@@ -9,19 +9,19 @@
                             <tbody>
                                 <tr>
                                     <td class="text-bold"><label for="keySearch">Tìm câu hỏi</label></td>
-                                    <td><input id="keySearch" class="form-control" type="text" name="key_search"></td>
+                                    <td><input id="keySearch" value="{{request('key_search')}}" class="form-control" type="text" name="key_search"></td>
                                     <td> <button class="btn btn-primary" type="submit">tìm kiếm</button> </td>
                                 </tr>
                             </tbody>
                         </table>
                     </form>
-{{--                    <form method="post" action="{{route('exam.store')}}">--}}
                         <input hidden name="exam_id" value="{{$lesson->id ?? ''}}">
                     <table class="table">
                             <thead>
                                 <tr>
                                     <td class="text-bold"><label for="part">Câu hỏi thuộc phần</label></td>
-                                    <td><select class="form-control" id="part" name="part">
+                                    <td>
+                                        <select class="form-control" id="part" name="part">
                                             <option value="1">Phần 1</option>
                                             <option value="2">Phần 2</option>
                                             <option value="3">Phần 3</option>
@@ -37,12 +37,12 @@
                     @if($suggestQuestions)
                         <table class="table">
                             <thead>
-                            <tr>
-                                <th class="text-bold">ID</th>
-                                <th>Tên</th>
-                                <th style="min-width: 50px">Loại</th>
-                                <th style="min-width: 50px">Thêm/Bỏ</th>
-                            </tr>
+                                <tr>
+                                    <th class="text-bold">ID</th>
+                                    <th>Tên</th>
+                                    <th style="min-width: 50px">Loại</th>
+                                    <th style="min-width: 50px">Thêm/Bỏ</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach($suggestQuestions as $suggestQuestion)
@@ -58,7 +58,6 @@
                         <div class="col-sm-4 pull-right"><button class="btn btn-primary" type="submit" onclick="addQuestionToExam()">Thêm/Xóa</button></div>
                         <div class="col-sm-4 pull-left">{{ $suggestQuestions->appends(['key_search' => request('key_search')])->render() }}</div>
                     @endif
-{{--                    </form>--}}
                 </div>
             </div>
         </div>
