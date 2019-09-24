@@ -36,7 +36,7 @@
                                                 </a>
                                             </li>
                                             <li class="add-question">
-                                                <a href="#tab-add-question" data-toggle="tab">
+                                                <a href="#tab-add-question" data-toggle="tab" class="a-add-question">
                                                     <img src="{{ asset('/public/images/course/icon/icon-comment.png')}}" class="tab-des">Thêm câu hỏi</a>
                                             </li>
                                         </ul>
@@ -234,7 +234,7 @@
     @if(request()->has('key_search'))
         $('.common-question').removeClass('active');
         $('.add-question').addClass('active');
-         $('.add-question a').click();
+        $('.a-add-question').click();
     @endif
 
     function addQuestion() {
