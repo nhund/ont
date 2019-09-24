@@ -17,7 +17,7 @@
                     </form>
                     <form method="post" action="{{route('exam.store')}}">
                     <table class="table">
-                            <tbody>
+                            <thead>
                                 <tr>
                                     <td class="text-bold"><label for="part">Câu hỏi thuộc phần</label></td>
                                     <td><select class="form-control" id="part" name="part">
@@ -29,9 +29,8 @@
                                             <option value="6">Phần 6</option>
                                         </select>
                                     </td>
-                                    <td></td>
                                 </tr>
-                            </tbody>
+                            </thead>
                         </table>
 
                     @if($suggestQuestions)
@@ -55,7 +54,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div><button class="btn btn-primary" type="submit">tìm kiếm</button></div>
                         <div class="col-sm-4 pull-right">{{ $suggestQuestions->render() }}</div>
+
                     @endif
                     </form>
                 </div>
