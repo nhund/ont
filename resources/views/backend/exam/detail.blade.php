@@ -238,7 +238,7 @@
     @endif
 
     function addQuestionssss() {
-        $('input[name=question_id]').forEach(function (e, index) {
+        $('input[name=question_id[]]').forEach(function (e, index) {
             console.log(e, index)
         })
     }
