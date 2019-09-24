@@ -50,7 +50,7 @@
                                         <td>{{$suggestQuestion->id}}</td>
                                         <td>{!! $suggestQuestion->question !!}</td>
                                         <td>{!! $suggestQuestion->type() !!}</td>
-                                        <td><input type="checkbox" name="question_id[]" value="{{$suggestQuestion->id}}"></td>
+                                        <td><input type="checkbox" name="question_id" value="{{$suggestQuestion->id}}"/></td>
                                     </tr>
                                 @endforeach
                             </tbody>
