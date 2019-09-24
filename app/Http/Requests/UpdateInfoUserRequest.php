@@ -23,17 +23,4 @@ class UpdateInfoUserRequest extends AuthorizedFormRequest
         ];
     }
 
-    public function messages()
-    {
-        return [
-            'email.required' => 'Email không được để trống',
-            'email.email' => 'Email KHông hợp lệ.',
-            'phone.regex' => 'Số điện thoại không hợp lệ',
-            'phone.max' => 'Số điện thoại không được dài quá 11',
-            'gender.in' => 'Giới tính không hợp lệ',
-            'school_id.exists' => 'Mã trường không tồn tại',
-            'school_id.numeric' => 'Mã trường phải là một số',
-            'birthday.date_format' => 'Định dạng ngày sinh không hợp lệ.',
-        ];
-    }
 }

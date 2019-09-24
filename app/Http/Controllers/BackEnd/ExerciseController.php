@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Components\Exam\ExamService;
 use App\Http\Controllers\Controller;
+use App\Models\ExamQuestion;
+use App\Models\Lesson;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +20,9 @@ class ExerciseController extends AdminBaseController
         $sub_explain    = $request->input('sub_explain');
         $lesson_id      = $request->input('lesson_id');
 
+        $typeLesson     = $request->input('type_lesson');
+
+        dd($request->all());
         if ($question) {
             foreach ($question as $k => $quest) {
                 $qid = Question::insertGetId([
@@ -40,6 +46,10 @@ class ExerciseController extends AdminBaseController
                             'created_at'    => time()
                         ]);
                     }
+                }
+
+                if ($typeLesson == Lesson::EXAM){
+                    (new ExamService())->insertExamQuestion($qid, $lesson_id);
                 }
             }
         }

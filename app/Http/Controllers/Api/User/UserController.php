@@ -9,8 +9,10 @@ use App\Http\Requests\UpdatingAvatarRequest;
 use App\Http\Requests\UpdatingPasswordRequest;
 use App\Transformers\Course\ShortCourseTransformer;
 use App\Transformers\User\UserFull;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use App\Components\Course\CourseService;
+use Illuminate\Support\Facades\Hash;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 /**
@@ -73,13 +75,20 @@ class UserController extends Controller{
     }
 
     /**
-     * updating password of user
+     *  updating password of user
      *
      * @param UpdatingPasswordRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws AuthenticationException
      */
     public function updatePassword(UpdatingPasswordRequest $request)
     {
+
+        if (!Hash::check($request->get('old_password'), $request->user()->password)){
+            throw new AuthenticationException('mật khẩu cũ không chính xác');
+//            return $this->respondUnauthorized();
+        }
+
         $user = (new UserUpdater())
             ->updatePassword($request->user(), $request->get('password'));
 

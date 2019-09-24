@@ -17,11 +17,4 @@ class UserCourseRequest extends AuthorizedFormRequest
             'user_id' => 'numeric',
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'user_id.numeric' => 'Mã người dùng phải là một số',
-        ];
-    }
 }

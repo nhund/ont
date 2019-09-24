@@ -8,11 +8,14 @@
 
 namespace App\Transformers\User;
 
+use App\Transformers\SchoolTransformer;
 use App\User;
 use League\Fractal\TransformerAbstract;
 
 class UserFull extends TransformerAbstract
 {
+
+    protected $defaultIncludes =['school'];
 
     public function transform(User $user){
         return [
@@ -23,5 +26,10 @@ class UserFull extends TransformerAbstract
             'gender'    => $user->gender,
             'avatar_full'    => $user->avatar_full,
         ];
+    }
+
+    public function includeSchool(User $user){
+
+        return $user->school ? $this->item($user->school, new SchoolTransformer) : null;
     }
 }

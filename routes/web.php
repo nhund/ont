@@ -210,6 +210,11 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
             ->name('lesson.delete.post');        
     });
 
+    Route::prefix('exam')->group(function () {
+        Route::get('/{id}', 'BackEnd\ExamController@detail')
+            ->name('exam.detail');
+    });
+
     Route::prefix('exercise')->group(function () {
         Route::post('/upload', 'BackEnd\ExerciseController@upload')
             ->name('exercise.upload');

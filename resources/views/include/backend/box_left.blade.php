@@ -25,21 +25,23 @@
                         @if (isset($cl['parent_id']) && !$cl['parent_id'])
                             <li>
                                 <div class="col-sm-12 @if(isset($lesson) && $cl['id'] == $lesson['id']) active-row @endif">
-                                    <a href="{{ route('lesson.detail', ['id' => $cl['id']]) }}">
+                                    <a href="@if($cl['type'] == \App\Models\Lesson::EXAM) {{ route('exam.detail', ['id' => $cl['id']]) }} @else {{ route('lesson.detail', ['id' => $cl['id']]) }} @endif">
                                         <div class="mailbox-msg-list-item col-sm-10">
-                                            <span class="name @if (isset($cl['is_exercise']) && $cl['is_exercise']) sub-name-ex @else sub-name @endif">{{ $cl['name'] }}</span>
+                                            <span class="name
+                                                @if (isset($cl['is_exercise']) && $cl['is_exercise'] && $cl['type'] == \App\Models\Lesson::LESSON) sub-name-ex sd
+                                                @elseif  (isset($cl['type']) && $cl['type'] == \App\Models\Lesson::EXAM) sub-name-exam
+                                                @else sub-name @endif">{{ $cl['name'] }}
+                                            </span>
                                         </div>
-                                        @if(isset($lesson) && $cl['id'] == $lesson['id'])
-                                            @if( $lesson['type'] == \App\Models\Lesson::LESSON)
-                                                <div class="col-sm-2 btn-create">
-                                                    <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
-                                                    <ul class="dropdown-menu pull-right">
-                                                        <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}')">Tạo lý thuyết</a></li>
-                                                        <li><a onclick="showModalAddExersice('{{ $cl['id'] }}', 'lesson')">Tạo bài tập</a></li>
-                                                        <li><a onclick="showModalAddExersice('{{ $cl['id'] }}', 'exam', )">Tạo bài Kiểm tra</a></li>
-                                                    </ul>
-                                                </div>
-                                            @endif
+                                        @if(isset($lesson) && $cl['id'] == $lesson['id'] && $lesson['type'] == \App\Models\Lesson::LESSON)
+                                            <div class="col-sm-2 btn-create">
+                                                <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}')">Tạo lý thuyết</a></li>
+                                                    <li><a onclick="showModalAddExersice('{{ $cl['id'] }}', 'lesson')">Tạo bài tập</a></li>
+                                                    <li><a onclick="showModalAddExersice('{{ $cl['id'] }}', 'exam', )">Tạo bài Kiểm tra</a></li>
+                                                </ul>
+                                            </div>
                                         @endif
                                     </a>
                                 </div>
@@ -49,9 +51,13 @@
                                         @foreach($cl['sub'] as $sub)
                                             <li>
                                                 <div class="col-sm-12 @if(isset($lesson) && $sub == $lesson['id']) active-row @endif">
-                                                    <a href="{{ route('lesson.detail', ['id' => $sub]) }}">
+                                                    <a href="@if($course_lesson[$sub]['type'] == \App\Models\Lesson::EXAM) {{ route('exam.detail', ['id' => $sub]) }} @else {{ route('lesson.detail', ['id' => $sub]) }} @endif">
                                                         <div class="mailbox-msg-list-item col-sm-10">
-                                                            <span class="name @if (isset($course_lesson[$sub]['is_exercise']) && $course_lesson[$sub]['is_exercise']) sub-name-ex @else sub-name @endif">{{ $course_lesson[$sub]['name'] }}</span>
+                                                            <span class="name
+                                                                @if (isset($course_lesson[$sub]['is_exercise']) && $course_lesson[$sub]['is_exercise']  && $course_lesson[$sub]['type'] == \App\Models\Lesson::LESSON) sub-name-ex
+                                                                @elseif  (isset($course_lesson[$sub]['type']) && $course_lesson[$sub]['type'] == \App\Models\Lesson::EXAM) sub-name-exam
+                                                                @else sub-name @endif">{{ $course_lesson[$sub]['name'] }}
+                                                            </span>
                                                         </div>
                                                         @if(isset($lesson) && $sub == $lesson['id'])
                                                             {{-- <div class="col-sm-2 btn-create">
@@ -70,9 +76,13 @@
                                                         @foreach($course_lesson[$sub]['sub'] as $sub2)
                                                             <li>
                                                                 <div class="col-sm-12 @if(isset($lesson) && $sub2 == $lesson['id']) active-row @endif">
-                                                                    <a href="{{ route('lesson.detail', ['id' => $sub2]) }}">
+                                                                    <a href="@if($course_lesson[$sub2]['type'] == \App\Models\Lesson::EXAM) {{ route('exam.detail', ['id' => $sub2]) }} @else {{ route('lesson.detail', ['id' => $sub2]) }} @endif">
                                                                         <div class="mailbox-msg-list-item col-sm-10">
-                                                                            <span class="name @if (isset($course_lesson[$sub2]['is_exercise']) && $course_lesson[$sub2]['is_exercise']) sub-name-ex @else sub-name @endif">{{ $course_lesson[$sub2]['name'] }}</span>
+                                                                            <span class="name
+                                                                                @if (isset($course_lesson[$sub2]['is_exercise']) && $course_lesson[$sub2]['is_exercise'] && $course_lesson[$sub2]['type'] == \App\Models\Lesson::LESSON) sub-name-ex
+                                                                                @elseif  (isset($course_lesson[$sub2]['type']) && $course_lesson[$sub2]['type'] == \App\Models\Lesson::EXAM) sub-name-exam
+                                                                                @else sub-name @endif">{{ $course_lesson[$sub2]['name'] }}
+                                                                            </span>
                                                                         </div>
                                                                     </a>
                                                                 </div>

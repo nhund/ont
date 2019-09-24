@@ -163,7 +163,8 @@ class Handler extends ExceptionHandler
      */
     protected function renderAuthenticationException($request, $exception)
     {
-        return $this->prepareErrorResponse($request, $exception, 401, 'Bạn chưa đăng nhập.');
+        $message = $exception->getMessage() != 'Unauthenticated.' ? $exception->getMessage() :  'Bạn chưa đăng nhập';
+        return $this->prepareErrorResponse($request, $exception, 401, $message);
     }
 
 
