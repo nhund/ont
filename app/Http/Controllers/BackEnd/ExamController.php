@@ -42,7 +42,6 @@ class ExamController
             $suggestQuestions = Question::where('question', 'like', "%{$keySearch}%")
                 ->where('parent_id',0)->orderBy('order_s','ASC')
                 ->paginate(30);
-            dd($suggestQuestions);
         }
         foreach($question as $q) {
             $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();

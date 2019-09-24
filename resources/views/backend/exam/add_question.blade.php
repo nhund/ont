@@ -33,16 +33,28 @@
                             </tbody>
                         </table>
 
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th class="text-bold">ID</th>
-                            <th>Tên</th>
-                            <th>Loại</th>
-                            <th>Hành động</th>
-                        </tr>
-                        </thead>
-                    </table>
+                    @if($suggestQuestions)
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th class="text-bold">ID</th>
+                                <th>Tên</th>
+                                <th>Loại</th>
+                                <th>Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($suggestQuestions as $suggestQuestion)
+                                    <tr>
+                                        <td>{{$suggestQuestion->id}}</td>
+                                        <td>{!! $suggestQuestion->question !!}</td>
+                                        <td><input type="checkbox" name="question_id[]" value="{{$suggestQuestion->id}}"></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <div class="col-sm-4 pull-right">{{ $suggestQuestions->render() }}</div>
+                    @endif
                 </div>
             </div>
         </div>
