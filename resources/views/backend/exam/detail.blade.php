@@ -105,18 +105,6 @@
                                                             @endif                                                            
                                                         </div>
                                                     </div>
-                                                    {{-- <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <div class="col-sm-6">File ảnh</div>                                                            
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            @if(!empty($lesson['image']))
-                                                                <img src="{{ web_asset('public/'.$lesson['image']) }}" style="max-width: 200px;">
-                                                            @endif
-
-                                                            <input type="file" name="image">
-                                                        </div>
-                                                    </div> --}}
                                                     <div class="row col-sm-12">Nội dung</div>
                                                     <div class="col-sm-12 row">
                                                         <textarea name="description" cols="80" rows="20" id="editor" class="ckeditor1">{{ $lesson['description'] or '' }}</textarea>
@@ -248,6 +236,9 @@
         $('.add-question').click().addClass('active');
     @endif
 
+    function addQuestion() {
+        
+    }
 
 </script>
 

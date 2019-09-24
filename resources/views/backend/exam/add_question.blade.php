@@ -56,7 +56,7 @@
                             </tbody>
                         </table>
                         <div><button class="btn btn-primary" type="submit">Thêm/Xóa</button></div>
-                        <div class="col-sm-4 pull-right">{{ $suggestQuestions->render() }}</div>
+                        <div class="col-sm-4 pull-right">{{ $suggestQuestions->appends(['key_search' => request('key_search')])->render() }}</div>
                     @endif
                     </form>
                 </div>
