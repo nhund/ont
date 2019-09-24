@@ -237,17 +237,28 @@
         $('.add-question').addClass('active');
     @endif
 
-    function addQuestionToExam() {
+    async function addQuestionToExam() {
         let addQuestion = [];
         let removeQuestion = [];
-        $('input[name=question_id]').each(function (index, ele) {
+        await $('input[name=question_id]').each(function (index, ele) {
             if($(ele).is(':checked')){
                 addQuestion.push($(ele).val())
             }else{
                 removeQuestion.push($(ele).val())
             }
         })
-        console.log(addQuestion, removeQuestion)
+        $.ajax({
+            url: '/admin/exam',
+            data: {removeQuestion, addQuestion},
+            dataType: 'json',
+            method: 'POST',
+            success: function (response) {
+                console.log(response);
+                if (response.status) {
+                    // window.location.href = '/admin/lesson/'+response.id;
+                }
+            }
+        });
     }
 
 </script>
