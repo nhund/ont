@@ -243,7 +243,7 @@
         });
     @endif
 
-    @if(request()->has('add_question'))
+    @if(request()->has('key_search'))
         $('.common-question').removeClass('active');
         $('.add-question').addClass('active');
     @endif

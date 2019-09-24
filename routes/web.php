@@ -211,8 +211,8 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
     });
 
     Route::prefix('exam')->group(function () {
-        Route::get('/{id}', 'BackEnd\ExamController@detail')
-            ->name('exam.detail');
+        Route::get('/{id}', 'BackEnd\ExamController@detail')->name('exam.detail');
+        Route::post('/', 'BackEnd\ExamController@store')->name('exam.store');
     });
 
     Route::prefix('exercise')->group(function () {

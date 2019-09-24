@@ -15,6 +15,7 @@
                             </tbody>
                         </table>
                     </form>
+                    <form method="post" action="{{route('exam.store')}}">
                     <table class="table">
                             <tbody>
                                 <tr>
@@ -40,7 +41,7 @@
                                 <th class="text-bold">ID</th>
                                 <th>Tên</th>
                                 <th>Loại</th>
-                                <th>Hành động</th>
+                                <th style="min-width: 50px">Thêm/Bỏ</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -56,6 +57,7 @@
                         </table>
                         <div class="col-sm-4 pull-right">{{ $suggestQuestions->render() }}</div>
                     @endif
+                    </form>
                 </div>
             </div>
         </div>

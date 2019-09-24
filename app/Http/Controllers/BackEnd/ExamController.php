@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\BackEnd;
 
-
 use App\Components\Exam\ExamService;
 use App\Models\ExamQuestion;
 use App\Models\Lesson;
@@ -17,7 +16,6 @@ use Illuminate\Http\Request;
 
 class ExamController
 {
-
     public function detail($id, Request $request) {
 
         $lesson  = (new ExamService())->checkPermission($id);
@@ -37,8 +35,9 @@ class ExamController
             ->orderBy('id','ASC')->paginate(30);
 
         $suggestQuestions = null;
-        if ($request->get('key_search')){
-            $keySearch = $request->get('key_search');
+
+        $keySearch = $request->get('key_search');
+        if ($keySearch){
             $suggestQuestions = Question::where('question', 'like', "%{$keySearch}%")
                 ->where('parent_id',0)->orderBy('order_s','ASC')
                 ->paginate(30);
@@ -63,6 +62,11 @@ class ExamController
             )
         );
         return view('backend.exam.detail', $var);
+    }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
     }
 
 }
