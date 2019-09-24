@@ -239,7 +239,7 @@
 
     function addQuestionssss() {
         console.log($('input[name=question_id]'));
-        $('input[name=question_id[]]').each(function (e, index) {
+        $('input[name=question_id]').each(function (e, index) {
             console.log(e, index)
         })
     }
