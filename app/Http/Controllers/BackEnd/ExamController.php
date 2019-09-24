@@ -26,7 +26,6 @@ class ExamController
             return redirect()->route('dashboard');
         }
 
-        dd($request->all());
         $var['page_title'] = 'Chi tiết khóa học '.$lesson->course['name'];
         $var['course']     = $lesson->course;
         $var['lesson']     = $lesson;
@@ -41,7 +40,8 @@ class ExamController
             $keySearch = $request->get('key_search');
             $suggestQuestions = Question::where('question', 'like', "%{$keySearch}%")
                 ->where('parent_id',0)->orderBy('order_s','ASC')
-                ->orderBy('id','ASC')->paginate(30);
+                ->paginate(30);
+            dd($suggestQuestions);
         }
         foreach($question as $q) {
             $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();
