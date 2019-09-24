@@ -13,11 +13,12 @@ use App\Components\Exam\ExamService;
 use App\Models\ExamQuestion;
 use App\Models\Lesson;
 use App\Models\Question;
+use Illuminate\Http\Request;
 
 class ExamController
 {
 
-    public function detail($id) {
+    public function detail($id, Request $request) {
 
         $lesson  = (new ExamService())->checkPermission($id);
 
@@ -25,6 +26,7 @@ class ExamController
             return redirect()->route('dashboard');
         }
 
+        dd($request->all());
         $var['page_title'] = 'Chi tiết khóa học '.$lesson->course['name'];
         $var['course']     = $lesson->course;
         $var['lesson']     = $lesson;
@@ -35,11 +37,18 @@ class ExamController
             ->where('parent_id',0)->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->paginate(30);
 
+        if ($request->get('key_search')){
+            $keySearch = $request->get('key_search');
+            $suggestQuestions = Question::where('question', 'like', "%{$keySearch}%")
+                ->where('parent_id',0)->orderBy('order_s','ASC')
+                ->orderBy('id','ASC')->paginate(30);
+        }
         foreach($question as $q) {
             $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();
         }
 
         $var['questions']       = $question;
+        $var['suggestQuestions']  = $suggestQuestions;
         $var['user_course']     = $lesson->user_course->count();
         $var['course_lesson']   = Lesson::getCourseLesson($lesson->course['id']);
 
