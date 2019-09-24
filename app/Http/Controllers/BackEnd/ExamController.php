@@ -36,6 +36,7 @@ class ExamController
             ->where('parent_id',0)->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->paginate(30);
 
+        $suggestQuestions = null;
         if ($request->get('key_search')){
             $keySearch = $request->get('key_search');
             $suggestQuestions = Question::where('question', 'like', "%{$keySearch}%")
