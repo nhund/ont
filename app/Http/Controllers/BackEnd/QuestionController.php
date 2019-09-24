@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Components\Exam\ExamService;
 use App\Http\Controllers\Controller;
 use App\Models\Question;
 use App\Models\QuestionAnswer;
+use function Composer\Autoload\includeFile;
 use Illuminate\Http\Request;
 use App\Models\QuestionCardMuti;
 use App\Models\Lesson;
@@ -32,6 +34,7 @@ class QuestionController extends AdminBaseController
         }
         $user = Auth::user();
         $lesson = Lesson::find($data['lesson_id']);
+        $typeLesson     = $request->input('type_lesson');
         if($data['type'] == Question::TYPE_TRAC_NGHIEM)
         {
            // /dd($data);   
@@ -48,6 +51,11 @@ class QuestionController extends AdminBaseController
                  $question->img_before = $data['image'];
                  $question->audio_content = $data['audio_content'];
                  $question->save();
+
+                 if($typeLesson == Lesson::EXAM){
+                     (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+                 }
+
                  if(isset($data['question_tn']) && count($data['question_tn']) > 0)
                  {
                     foreach ($data['question_tn'] as $key => $value) {
@@ -123,6 +131,10 @@ class QuestionController extends AdminBaseController
         $question->audio_content = $data['audio_content'];
         $question->img_before = $data['image'];
                 //$question->question = $data['question'];
+        if($typeLesson == Lesson::EXAM){
+            (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+        }
+
         if($question->save())
         {
             foreach ($data['card_question'] as $key => $q_sub) {
@@ -207,6 +219,10 @@ class QuestionController extends AdminBaseController
         //dd($question);
         if($question->save())
         {
+            if($typeLesson == Lesson::EXAM){
+                (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+            }
+
             return response()->json(array('error' => false,'msg' => 'Thêm dữ liệu thành công'));
         }
         return response()->json(array('error' => true,'msg' => 'Thêm dữ liệu không thành công'));
@@ -230,6 +246,9 @@ class QuestionController extends AdminBaseController
         $question->img_before = $data['image'];
         $question->audio_content = $data['audio_content'];
         $question->save();
+        if($typeLesson == Lesson::EXAM){
+            (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+        }
         foreach ($data['question'] as $key => $q)
         {
             $que = new Question();
@@ -278,6 +297,11 @@ class QuestionController extends AdminBaseController
         $question->interpret_all = Helper::detectMathLatex($data['interpret_dv_global']);
         $question->img_before = $data['image'];
         $question->save();
+
+        if($typeLesson == Lesson::EXAM){
+            (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+        }
+
         foreach ($data['question_dt'] as $key => $q)
         {
             $que = new Question();

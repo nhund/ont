@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Components\Exam\ExamService;
 use App\Http\Controllers\Controller;
 use App\Models\ExamQuestion;
 use App\Models\Lesson;
@@ -21,6 +22,7 @@ class ExerciseController extends AdminBaseController
 
         $typeLesson     = $request->input('type_lesson');
 
+        dd($request->all());
         if ($question) {
             foreach ($question as $k => $quest) {
                 $qid = Question::insertGetId([
@@ -47,11 +49,7 @@ class ExerciseController extends AdminBaseController
                 }
 
                 if ($typeLesson == Lesson::EXAM){
-                    ExamQuestion::insert([
-                        'lesson_id' => $lesson_id,
-                        'question_id' => $lesson_id,
-                        'part' => $lesson_id,
-                     ]);
+                    (new ExamService())->insertExamQuestion($qid, $lesson_id);
                 }
             }
         }

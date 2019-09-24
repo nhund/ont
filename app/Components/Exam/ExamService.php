@@ -9,6 +9,7 @@
 namespace App\Components\Exam;
 
 
+use App\Models\ExamQuestion;
 use App\Models\Lesson;
 use App\Models\TeacherSupport;
 use App\User;
@@ -32,5 +33,13 @@ class ExamService
             return false;
         }
         return $lesson;
+    }
+
+    public function insertExamQuestion($lesson_id, $question_id, $part = null){
+        return ExamQuestion::insert([
+             'lesson_id' => $lesson_id,
+             'question_id' => $question_id,
+             'part' => $part,
+        ]);
     }
 }
