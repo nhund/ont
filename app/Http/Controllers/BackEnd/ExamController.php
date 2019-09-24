@@ -47,6 +47,7 @@ class ExamController
         }
 
         $var['questions']       = $question;
+        $var['questionIds']     = $questionIds;
         $var['suggestQuestions']  = $suggestQuestions;
         $var['user_course']     = $lesson->user_course->count();
         $var['course_lesson']   = Lesson::getCourseLesson($lesson->course['id']);

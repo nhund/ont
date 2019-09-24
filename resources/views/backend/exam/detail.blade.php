@@ -257,7 +257,7 @@
             success: function (response) {
                 console.log(response);
                 if (response.status) {
-                    // window.location.href = '/admin/lesson/'+response.id;
+                    window.location.reload();
                 }
             }
         });
