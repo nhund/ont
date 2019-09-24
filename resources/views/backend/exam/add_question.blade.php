@@ -16,6 +16,7 @@
                         </table>
                     </form>
                     <form method="post" action="{{route('exam.store')}}">
+                        <input hidden name="exam_id" value="{{$lesson->id ?? ''}}">
                     <table class="table">
                             <thead>
                                 <tr>
@@ -54,9 +55,8 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div><button class="btn btn-primary" type="submit">tìm kiếm</button></div>
+                        <div><button class="btn btn-primary" type="submit">Thêm/Xóa</button></div>
                         <div class="col-sm-4 pull-right">{{ $suggestQuestions->render() }}</div>
-
                     @endif
                     </form>
                 </div>
