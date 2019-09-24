@@ -18,7 +18,7 @@ class ExamController
 
     public function detail($id) {
 
-        $lesson             = (new ExamService())->checkPermission($id);
+        $lesson  = (new ExamService())->checkPermission($id);
 
         if (!$lesson) {
             return redirect()->route('dashboard');

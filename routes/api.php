@@ -67,6 +67,7 @@ Route::namespace('Api')->group(function () {
 
     Route::namespace('School')->prefix('schools')->group(function () {
         Route::get('/', 'SchoolController@index');
+        Route::get('/all', 'SchoolController@allSchool');
         Route::get('/{school_id}/report', 'SchoolController@report');
 
         Route::get('/{school_id}/free', 'SchoolCourseController@freeCourses');
