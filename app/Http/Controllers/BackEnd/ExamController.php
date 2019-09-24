@@ -10,6 +10,7 @@ namespace App\Http\Controllers\BackEnd;
 
 
 use App\Components\Exam\ExamService;
+use App\Models\ExamQuestion;
 use App\Models\Lesson;
 use App\Models\Question;
 
@@ -27,7 +28,10 @@ class ExamController
         $var['page_title'] = 'Chi tiết khóa học '.$lesson->course['name'];
         $var['course']     = $lesson->course;
         $var['lesson']     = $lesson;
-        $question          = Question::where('lesson_id', '=', $lesson->id)
+
+        $questionIds = ExamQuestion::where('lesson_id', $id)->pluck('question_id');
+
+        $question = Question::whereIn($questionIds)
             ->where('parent_id',0)->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->paginate(30);
 

@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Api\School;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\ExamQuestion;
 use App\Models\School;
 use App\Transformers\Category\CategoryTransformer;
 use App\Transformers\SchoolTransformer;
@@ -34,6 +35,8 @@ class SchoolController extends Controller
 
     public function allSchool(Request $request)
     {
+        dd(ExamQuestion::where('lesson_id', 1386)->pluck('id'));
+
         $schools = School::where('status', School::STATUS_ON)->get();
 
         return fractal()
