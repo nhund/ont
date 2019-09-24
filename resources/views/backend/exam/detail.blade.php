@@ -246,10 +246,12 @@
             }else{
                 removeQuestion.push($(ele).val())
             }
-        })
+        });
+        const part = $('select[name=part]').val();
+        const exam_id = $('input[name=exam_id]').val();
         $.ajax({
             url: '/admin/exam',
-            data: {removeQuestion, addQuestion},
+            data: {removeQuestion, addQuestion, part, exam_id},
             dataType: 'json',
             method: 'POST',
             success: function (response) {
