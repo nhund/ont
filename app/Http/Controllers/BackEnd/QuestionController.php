@@ -131,12 +131,13 @@ class QuestionController extends AdminBaseController
         $question->audio_content = $data['audio_content'];
         $question->img_before = $data['image'];
                 //$question->question = $data['question'];
-        if($typeLesson == Lesson::EXAM){
-            (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
-        }
 
         if($question->save())
         {
+            if($typeLesson == Lesson::EXAM){
+                (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+            }
+
             foreach ($data['card_question'] as $key => $q_sub) {
                 if(!empty($q_sub))
                 {
