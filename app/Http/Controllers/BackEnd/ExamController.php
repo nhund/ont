@@ -73,17 +73,14 @@ class ExamController
         $exam_id = $request->get('exam_id');
 
         if ($addQuestionIds and is_array($addQuestionIds) && $exam_id && $part){
-            $questions = [];
             foreach ($addQuestionIds as $questionId){
                 $question = [
-                    'lesson_id' => $exam_id,
+                    'lesson_id'  => $exam_id,
                     'question_id'=> $questionId,
-                    'part'=> $part
+                    'part'       => $part
                 ];
-                array_push($questions, $question);
+                ExamQuestion::updateOrCreate($question, ['lesson_id' => $exam_id, 'question_id' => $questionId ]);
             }
-
-            ExamQuestion::updateOrCreate($questions);
         }
 
         if ($removeQuestionIds and is_array($removeQuestionIds) && $exam_id && $part){
