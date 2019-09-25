@@ -35,8 +35,6 @@ class SchoolController extends Controller
 
     public function allSchool(Request $request)
     {
-        dd(ExamQuestion::where('lesson_id', 1386)->pluck('id'));
-
         $schools = School::where('status', School::STATUS_ON)->get();
 
         return fractal()
