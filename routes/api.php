@@ -38,15 +38,13 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
         });
     });
 
-
-
     Route::namespace('Exam')->prefix('exam')->group(function () {
         Route::get('/{exam_id}', 'ExamController@show');
     });
-//
-//    Route::namespace('Question')->group(function () {
-//
-//    });
+
+    Route::namespace('Lesson')->prefix('lesson')->group(function () {
+        Route::get('/{lesson}', 'LessonController@show');
+    });
 });
 
 

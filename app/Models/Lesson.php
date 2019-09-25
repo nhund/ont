@@ -139,4 +139,22 @@ class Lesson extends Model
 
         return $count;
     }
+
+    public function scopeActive($query){
+        return $query->where('status', self::STATUS_ON);
+    }
+
+    public function scopeExercise($query){
+        return $query->where('is_exercise', self::IS_EXERCISE);
+    }
+
+    public function is_exercise(){
+        return $this->getOriginal('is_exercise') === self::IS_EXERCISE;
+    }
+
+    public function subLesson()
+    {
+        return $this->hasMany(Lesson::class, 'parent_id');
+    }
+
 }
