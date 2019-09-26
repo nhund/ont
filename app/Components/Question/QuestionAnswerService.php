@@ -384,9 +384,7 @@ class QuestionAnswerService
 
     private function logUserLesson($data)
     {
-
-        $userId = $this->request->user()->id;
-
+        $userId   = $this->request->user()->id;
         $courseId = $this->lesson->course_id;
         $lessonId = $this->lesson->id;
 
@@ -400,7 +398,8 @@ class QuestionAnswerService
             if ((int)$data['status'] == QuestionAnswer::REPLY_OK) {
                 $up_question_true = true;
             }
-        } // if($data['question_type'] == Question::TYPE_DIEN_TU || $data['question_type'] == Question::TYPE_TRAC_NGHIEM)
+        }
+        // if($data['question_type'] == Question::TYPE_DIEN_TU || $data['question_type'] == Question::TYPE_TRAC_NGHIEM)
         else {
 
             $count_question_child = Question::where('parent_id', $data['question_parent'])->count();
