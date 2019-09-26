@@ -10,6 +10,7 @@ use App\Models\Error as ErrorModel;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Intervention\Image\Exception\NotFoundException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Illuminate\Validation\ValidationException;
 
@@ -30,6 +31,7 @@ class Handler extends ExceptionHandler
         AuthenticationException::class,
         \Illuminate\Auth\Access\AuthorizationException::class,
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        NotFoundException::class,
         \App\Exceptions\ValidationException::class,
         \League\OAuth2\Server\Exception\OAuthServerException::class,
     ];
@@ -115,9 +117,19 @@ class Handler extends ExceptionHandler
     protected function renderModelNotFoundException($request, $exception)
     {
         $entity = str_replace('-', ' ', strtolower(Str::kebab(class_basename($exception->getModel()))));
-        $message = "Không thể tìm thấy Model {$entity}";
+        $message = __('Cannot find the given :entity.', ['entity' => $entity]);
 
         return $this->prepareErrorResponse($request, $exception, 404, $message);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Database\Eloquent\ModelNotFoundException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderNotFoundException($request, $exception)
+    {
+        return $this->prepareErrorResponse($request, $exception, 404, $exception->getMessage());
     }
 
 
@@ -147,7 +159,7 @@ class Handler extends ExceptionHandler
     protected function renderAuthorizationException($request, $exception)
     {
 
-        return $this->prepareErrorResponse($request, $exception, 403, 'Bạn không có quyền truy cập.');
+        return $this->prepareErrorResponse($request, $exception, 403,  __('You are not allowed to perform this request.'));
     }
 
     /**

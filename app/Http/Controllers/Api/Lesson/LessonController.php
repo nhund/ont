@@ -11,16 +11,20 @@ use Illuminate\Http\Request;
 class LessonController extends Controller{
 
     protected $lessonService;
+
     public function __construct(LessonService $lessonService)
     {
         $this->lessonService = $lessonService;
     }
 
     public function index(){}
-        
-    public function show(Lesson $lesson, Request $request){
 
-//        $subLesson = $this->lessonService->subLesson($lesson);
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(Lesson $lesson, Request $request){
 
         return fractal()
             ->item($lesson, new LessonTransformer)
