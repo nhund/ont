@@ -5,9 +5,7 @@
  * Date: 20/09/2019
  * Time: 17:16
  */
-
 namespace App\Components\Question;
-
 
 use App\Models\Course;
 use App\Models\Lesson;
@@ -25,7 +23,6 @@ use Illuminate\Http\Request;
 class QuestionAnswerService
 {
     protected $request;
-
     protected $question;
     protected $lesson;
 
@@ -33,7 +30,7 @@ class QuestionAnswerService
     {
         $this->request  = $request;
         $this->question = $question;
-        $this->lesson   = $this->getLesson($this->question->course_id);
+        $this->lesson   = $this->getLesson($this->question->lesson_id);
 
         if ($this->question->type == Question::TYPE_FLASH_MUTI) {
             return $this->multiFlash();
@@ -55,7 +52,7 @@ class QuestionAnswerService
             return $this->fillWordIntoParagraph();
         }
 
-        return response()->json(array('error' => false, 'msg' => 'succsess'));
+        return response()->json(array('error' => true, 'msg' => 'succsess'));
     }
 
     protected function _saveLogQuestion($data)
@@ -64,7 +61,7 @@ class QuestionAnswerService
         $lessonId       = $this->lesson->id;
         $type           = $this->request->get('type');
         $user           = $this->request->user();
-        $questionParent = $this->request->get('id');
+        $questionParent = $this->question->id;
 
         if ($type == Question::LEARN_LAM_BOOKMARK) {
             $questionlearnedIds = [];
@@ -168,163 +165,160 @@ class QuestionAnswerService
         $this->logUserLesson($data);
     }
 
-
+    /**
+     * @return array
+     */
     private function multiFlash()
     {
+        $rely = $this->request->get('reply') == Question::REPLY_OK ? $this->request->get('reply') : Question::REPLY_ERROR;
         $dataLog = array(
-            'question_id'   => $this->request->get('id'),
-            'status'        => $this->request->get('reply') == Question::REPLY_OK ? $this->request->get('reply') : Question::REPLY_ERROR,
+            'question_id'   => $this->question->id,
+            'status'        => $rely,
             'question_type' => Question::TYPE_FLASH_MUTI
         );
         $this->_saveLogQuestion($dataLog);
+
+        return [
+            'error'  => $rely,
+            'question_id' => $this->question->id
+        ];
     }
 
+    /**
+     * @return array
+     */
     private function singleFlash()
     {
+        $rely = $this->request->get('reply') == Question::REPLY_OK ? $this->request->get('reply') : Question::REPLY_ERROR;
         $dataLog = array(
-            'question_id'   => $this->request->get('id'),
-            'status'        => $this->request->get('reply') == Question::REPLY_OK ? $this->request->get('reply') : Question::REPLY_ERROR,
+            'question_id'   => $this->question->id,
+            'status'        => $rely,
             'question_type' => Question::TYPE_FLASH_SINGLE
         );
         $this->_saveLogQuestion($dataLog);
+
+        return [
+            'error'  => (int)$rely,
+            'question_id' => $this->question->id
+        ];
     }
 
     private function multipleChoice()
     {
         $answers = $this->request->get('answers');
-        if ($this->request->has('answers') && is_array($answers) && count($answers) > 0) {
-            $result = [];
-            foreach ($answers as $key => $answer) {
+        $result = [];
+        foreach ($answers as $key => $answer) {
 
-                $reply = QuestionAnswer::REPLY_ERROR;
-                //lay dap an dung
-                $answerCheck = QuestionAnswer::where('question_id', $key)->where('status', QuestionAnswer::REPLY_OK)->first();
-                if (!$answerCheck) {
-                    return response()->json(array(
-                        'error' => true,
-                        'msg'   => 'Câu hỏi chưa có đáp án',
-                        'data'  => '',
-                    ));
-                }
-                if ($answerCheck && (int)$answer == (int)$answerCheck->id) {
-                    $reply = QuestionAnswer::REPLY_OK;
-                }
-                $dataLog = array(
-                    'question_id'   => $key,
-                    'status'        => $reply,
-                    'question_type' => Question::TYPE_TRAC_NGHIEM
-                );
-                $this->_saveLogQuestion($dataLog);
-                $question_child = Question::find($key);
-                $text           = $question_child ? $question_child->interpret : '';
-
-                $interpret_all = $this->question ? $this->question->interpret_all : '';
-
-                $result[$key] = array(
-                    'question_id'   => $key,
-                    'error'         => $reply,
-                    'input'         => !empty($answer) ? (int)$answer : '',
-                    'answer'        => $answerCheck->id,
-                    'interpret'     => $text ?: '',
-                    'interpret_all' => $interpret_all ?: '',
-                );
+            $reply = QuestionAnswer::REPLY_ERROR;
+            //lay dap an dung
+            $answerCheck = QuestionAnswer::where('question_id', $key)->where('status', QuestionAnswer::REPLY_OK)->first();
+            if (!$answerCheck) {
+                return response()->json(array(
+                    'error' => true,
+                    'msg'   => 'Câu hỏi chưa có đáp án',
+                    'data'  => '',
+                ));
             }
-            return $result;
+            if ($answerCheck && (int)$answer == (int)$answerCheck->id) {
+                $reply = QuestionAnswer::REPLY_OK;
+            }
+            $dataLog = array(
+                'question_id'   => $key,
+                'status'        => $reply,
+                'question_type' => Question::TYPE_TRAC_NGHIEM
+            );
+            $this->_saveLogQuestion($dataLog);
+            $question_child = Question::find($key);
+            $text           = $question_child ? $question_child->interpret : '';
 
+            $interpret_all = $this->question ? $this->question->interpret_all : '';
+
+            $result[$key] = array(
+                'question_id'   => $key,
+                'error'         => $reply,
+                'input'         => !empty($answer) ? (int)$answer : '',
+                'answer'        => $answerCheck->id,
+                'interpret'     => $text ?: '',
+                'interpret_all' => $interpret_all ?: '',
+            );
         }
-        return response()->json(array(
-            'error' => true,
-            'msg'   => 'bạn chưa chọn đáp án cho câu hỏi',
-            'data'  => '',
-        ));
+        return $result;
     }
 
     private function fillWordIntoSentence()
     {
         $answers = $this->request->get('answers');
-        if ($this->request->has('answers') && is_array($answers) && count($answers) > 0) {
-            $result = [];
-            //dd($data['answers']);
-            foreach ($answers as $key => $answer) {
-                $an    = QuestionAnswer::where('question_id', $key)->first();
-                $reply = Question::REPLY_ERROR;
-                if (mb_strtolower($an->answer, 'UTF-8') == mb_strtolower($answer, 'UTF-8')) {
-                    $reply = Question::REPLY_OK;
-                }
-
-                $dataLog = array(
-                    'question_id'   => $key,
-                    'status'        => $reply,
-                    'question_type' => Question::TYPE_DIEN_TU
-                );
-                $this->_saveLogQuestion($dataLog);
-
-                $result[$key] = array(
-                    'error'  => $reply,
-                    'input'  => !empty($answer) ? $answer : '',
-                    'answer' => $an->answer,
-                );
+        $result = [];
+        foreach ($answers as $key => $answer) {
+            $an    = QuestionAnswer::where('question_id', $key)->first();
+            $reply = Question::REPLY_ERROR;
+            if (mb_strtolower($an->answer, 'UTF-8') == mb_strtolower($answer, 'UTF-8')) {
+                $reply = Question::REPLY_OK;
             }
-            return $result;
+
+            $dataLog = array(
+                'question_id'   => $key,
+                'status'        => $reply,
+                'question_type' => Question::TYPE_DIEN_TU
+            );
+            $this->_saveLogQuestion($dataLog);
+
+            $result[$key] = array(
+                'error'  => $reply,
+                'input'  => !empty($answer) ? $answer : '',
+                'answer' => $an->answer,
+            );
         }
+        return $result;
     }
 
     private function fillWordIntoParagraph()
     {
         $txtLearnWord = $this->request->get('txtLearnWord');
-        if ($this->request->has('txtLearnWord') && is_array($txtLearnWord) && count($txtLearnWord) > 0) {
-            $result = [];
-            foreach ($txtLearnWord as $question_id => $value) {
+        $result = [];
+        foreach ($txtLearnWord as $question_id => $value) {
+            $question = Question::find($question_id);
+            if ($question) {
 
-                $question = Question::find($question_id);
-                if ($question) {
-                    $check_pass_question = QuestionAnswer::REPLY_OK;
+                $check_pass_question = QuestionAnswer::REPLY_OK;
+                $str     = $question->question;
+                $pattern = '/<a .*?class="(.*?cloze.*?)">(.*?)<\/a>/';
 
-                    $str     = $question->question;
-                    $pattern = '/<a .*?class="(.*?cloze.*?)">(.*?)<\/a>/';
-                    $content = preg_replace_callback($pattern, function ($m) use ($question_id, $value, &$result, &$check_pass_question) {
-                        static $incr_sb = 0;
-                        $incr_sb += 1;
-                        if (isset($value[$incr_sb])) {
-                            if (mb_strtolower($value[$incr_sb], 'UTF-8') == mb_strtolower($m[2], 'UTF-8')) {
-                                $reply_status = QuestionAnswer::REPLY_OK;
-                            } else {
-                                $check_pass_question = QuestionAnswer::REPLY_ERROR;
-                                $reply_status        = QuestionAnswer::REPLY_ERROR;
+                $content = preg_replace_callback($pattern, function ($m) use ($question_id, $value, &$result, &$check_pass_question) {
 
-                            }
-                            $result[$question_id][$incr_sb] = array(
-                                'error'  => $reply_status,
-                                'input'  => $value[$incr_sb],
-                                'answer' => $m[2],
-                            );
+                    static $incr_sb = 0;
+                    $incr_sb += 1;
+                    if (isset($value[$incr_sb])) {
+                        if (mb_strtolower($value[$incr_sb], 'UTF-8') == mb_strtolower($m[2], 'UTF-8')) {
+                            $reply_status = QuestionAnswer::REPLY_OK;
                         } else {
-                            $check_pass_question            = QuestionAnswer::REPLY_ERROR;
-                            $result[$question_id][$incr_sb] = array(
-                                'error'  => QuestionAnswer::REPLY_ERROR,
-                                'input'  => '',
-                                'answer' => $m[2],
-                            );
+                            $check_pass_question = QuestionAnswer::REPLY_ERROR;
+                            $reply_status        = QuestionAnswer::REPLY_ERROR;
                         }
-                    }, $str);
-                    //luu log
-                    $dataLog = array(
-                        'question_id'   => $question_id,
-                        'status'        => $check_pass_question,
-                        'question_type' => Question::TYPE_DIEN_TU_DOAN_VAN
-                    );
-                    $this->_saveLogQuestion($dataLog);
-                }
+                        $result[$question_id][$incr_sb] = array(
+                            'error'  => $reply_status,
+                            'input'  => $value[$incr_sb],
+                            'answer' => $m[2],
+                        );
+                    } else {
+                        $check_pass_question            = QuestionAnswer::REPLY_ERROR;
+                        $result[$question_id][$incr_sb] = array(
+                            'error'  => QuestionAnswer::REPLY_ERROR,
+                            'input'  => '',
+                            'answer' => $m[2],
+                        );
+                    }
+                }, $str);
+                //luu log
+                $dataLog = array(
+                    'question_id'   => $question_id,
+                    'status'        => $check_pass_question,
+                    'question_type' => Question::TYPE_DIEN_TU_DOAN_VAN
+                );
+                $this->_saveLogQuestion($dataLog);
             }
-            return $result;
-
-        } else {
-            return response()->json(array(
-                'error' => true,
-                'msg'   => 'Bạn chưa điền câu trả lời',
-                'data'  => '',
-            ));
         }
+        return $result;
     }
 
     private function getLesson($lessonId)
@@ -351,14 +345,18 @@ class QuestionAnswerService
         ]);
     }
 
+    /**
+     * @param $data
+     */
     private function logUserQuestion($data)
     {
         $userId      = $this->request->user()->id;
+        $type        = $this->request->get('type');
         $questionLog = UserQuestionLog::where('user_id', $userId)->where('question_id', $data['question_id'])->first();
         if ($questionLog) {
             $questionLog->status      = $data['status'];
             $questionLog->update_time = time();
-            $questionLog->is_ontap    = $data['type'] == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
+            $questionLog->is_ontap    = $type == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
 
             if ((int)$data['status'] == Question::REPLY_OK){
                 $questionLog->correct_number += 1;
@@ -371,11 +369,11 @@ class QuestionAnswerService
             $questionLog->course_id       = $this->lesson->course_id;
             $questionLog->lesson_id       = $this->lesson->id;
             $questionLog->question_id     = $data['question_id'];
-            $questionLog->question_parent = $data['question_parent'];
+            $questionLog->question_parent = $this->question->id;
             $questionLog->note            = $data['note'] ?? '';
             $questionLog->status          = (int)$data['status'];
             $questionLog->create_at       = time();
-            $questionLog->is_ontap        = $data['type'] == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
+            $questionLog->is_ontap        = $type == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
             $questionLog->update_time     = time();
 
             if ((int)$data['status'] == Question::REPLY_OK){
@@ -386,11 +384,15 @@ class QuestionAnswerService
         }
     }
 
+    /**
+     * @param $data
+     */
     private function logUserLesson($data)
     {
         $userId   = $this->request->user()->id;
         $courseId = $this->lesson->course_id;
         $lessonId = $this->lesson->id;
+        $questionParent = $this->question->id;
 
         $up_question_true = false;
 
@@ -406,9 +408,9 @@ class QuestionAnswerService
         // if($data['question_type'] == Question::TYPE_DIEN_TU || $data['question_type'] == Question::TYPE_TRAC_NGHIEM)
         else {
 
-            $count_question_child = Question::where('parent_id', $data['question_parent'])->count();
+            $count_question_child = Question::where('parent_id', $questionParent)->count();
             //kiem tra xem da lam dung bn cau
-            $count_question_true = UserQuestionLog::where('question_parent', $data['question_parent'])
+            $count_question_true = UserQuestionLog::where('question_parent', $questionParent)
                 ->where('lesson_id', $lessonId)
                 ->where('user_id', $userId)
                 ->where('status', QuestionAnswer::REPLY_OK)->count();

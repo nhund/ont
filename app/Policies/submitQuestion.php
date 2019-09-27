@@ -23,8 +23,15 @@ class submitQuestion
     {
         $course = Course::where('id', $question->course_id)->first();
 
+
+
+
         if (!$course){
             throw new NotFoundException('Khóa học không tồn tại hoặc đã bị xóa.');
+        }
+
+        if( $user->id === $course->user_id){
+            return true;
         }
 
         if (!($user->id == $course->user_id || $user->level == User::USER_ADMIN)){

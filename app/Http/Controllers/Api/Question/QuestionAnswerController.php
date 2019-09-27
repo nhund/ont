@@ -24,7 +24,9 @@ class QuestionAnswerController extends Controller{
     {
         $this->authorize('submit', $question);
 
-        $this->questionAnswerService->submit($request, $question);
+       $result = $this->questionAnswerService->submit($request, $question);
+
+      return $this->respondOk($result);
     }
 
     public function update(){}
