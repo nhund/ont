@@ -13,7 +13,7 @@ class UserQuestionLog extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'user_id', 'course_id', 'lesson_id','question_id','question_parent','note', 'status', 'create_at','update_time','is_ontap'
+        'user_id', 'course_id', 'lesson_id','question_id','question_parent','note', 'status', 'create_at','update_time','is_ontap', 'correct_number', 'wrong_number'
     ];
     public $timestamps = false;
     

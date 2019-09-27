@@ -18,8 +18,10 @@ class submitQuestionRequest extends AuthorizedFormRequest
 
         return [
             'question_id' => 'required|integer|exists:question,id',
-            'type' => 'required|in:'.implode($types, ','),
-            'answers' => 'array'
+            'question_type' => 'required|in:'.implode($types, ','),
+            'type' => 'required',
+            'answers' => 'array',
+            'txtLearnWord' => 'array'
         ];
     }
 }

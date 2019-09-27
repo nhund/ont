@@ -35,13 +35,6 @@ class QuestionAnswerService
         $this->question = $question;
         $this->lesson   = $this->getLesson($this->question->course_id);
 
-        if (!$this->lesson) {
-            //khong ton tai lesson chi cau hoi nay
-            //xoa bo lich su lam bai
-            UserQuestionLog::where('question_id', $this->request->get('id'))->delete();
-            return response()->json(array('error' => true, 'msg' => 'Có lỗi xẩy ra, vui lòng thử lại sau'));
-        }
-
         if ($this->question->type == Question::TYPE_FLASH_MUTI) {
             return $this->multiFlash();
         }
@@ -97,6 +90,7 @@ class QuestionAnswerService
                 $this->questionLearned($questionLearned);
             }
         }
+
         if ($type == Question::LEARN_LAM_BAI_TAP) {
             $questionlearnedIds = [];
             $questionLearned    = QuestionLogCurrent::where('user_id', $user->id)->where('course_id', $courseId)->where('type', $type)->first();
@@ -365,6 +359,11 @@ class QuestionAnswerService
             $questionLog->status      = $data['status'];
             $questionLog->update_time = time();
             $questionLog->is_ontap    = $data['type'] == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
+
+            if ((int)$data['status'] == Question::REPLY_OK){
+                $questionLog->correct_number += 1;
+            }else{$questionLog->wrong_number += 1;}
+
             $questionLog->save();
         } else {
             $questionLog                  = new UserQuestionLog();
@@ -378,6 +377,11 @@ class QuestionAnswerService
             $questionLog->create_at       = time();
             $questionLog->is_ontap        = $data['type'] == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
             $questionLog->update_time     = time();
+
+            if ((int)$data['status'] == Question::REPLY_OK){
+                $questionLog->correct_number = 1;
+            }else{$questionLog->wrong_number = 1;}
+
             $questionLog->save();
         }
     }
