@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Lesson;
 
 use App\Components\Lesson\LessonService;
+use App\Components\Question\QuestionService;
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
 use App\Transformers\Lesson\LessonTransformer;
@@ -37,4 +38,11 @@ class LessonController extends Controller{
     public function update(){}
 
     public function delete(){}
+
+    public function question(Lesson $lesson, Request $request){
+        $questions = (new QuestionService())->getQuestions($lesson);
+        return $this->respondOk($questions);
+    }
+
+
 }
