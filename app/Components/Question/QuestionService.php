@@ -29,12 +29,6 @@ class QuestionService
     protected $question;
     protected $lesson;
 
-//    public function __construct(Request $request, Question $question)
-//    {
-//        $this->request  = $request;
-//        $this->question = $question;
-//        $this->lesson   = $this->getLesson();
-//    }
 
     public function getQuestions($lesson)
     {
@@ -61,10 +55,6 @@ class QuestionService
         return $questions;
     }
     
-    private function singleFlashQuestions()
-    {
-        
-    }
     private function getMultipleChoiceQuestions(Question $question, array $notIn = [])
     {
         $questionChildren = Question::query()->where('parent_id',$question->id);
