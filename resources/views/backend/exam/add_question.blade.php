@@ -48,7 +48,7 @@
                                 @foreach($suggestQuestions as $suggestQuestion)
                                     <tr>
                                         <td>{{$suggestQuestion->id}}</td>
-                                        <td>{!! $suggestQuestion->question !!}</td>
+                                        <td>{!! $suggestQuestion->question ?: $suggestQuestion->content !!}</td>
                                         <td>{!! $suggestQuestion->type() !!}</td>
                                         <td><input type="checkbox" @if(in_array($suggestQuestion->id, $questionIds)) checked @endif name="question_id" value="{{$suggestQuestion->id}}"/></td>
                                     </tr>
