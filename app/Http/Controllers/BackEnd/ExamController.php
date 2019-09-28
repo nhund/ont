@@ -40,7 +40,7 @@ class ExamController
         if ($keySearch){
             $suggestQuestions = Question::where(function ($q) use ($keySearch){
                 $q->where('question', 'like',  '%'.$keySearch.'%');
-                $q->orhere('content', 'like',  '%'.$keySearch.'%');
+                $q->orWhere('content', 'like',  '%'.$keySearch.'%');
             })
             ->where('parent_id',0)->orderBy('order_s','ASC')
             ->paginate(30);
