@@ -38,9 +38,12 @@ class ExamController
 
         $keySearch = $request->get('key_search');
         if ($keySearch){
-            $suggestQuestions = Question::where('question', 'like', "%{$keySearch}%")
-                ->where('parent_id',0)->orderBy('order_s','ASC')
-                ->paginate(30);
+            $suggestQuestions = Question::where(function ($q) use ($keySearch){
+                $q->where('question', 'like',  '%'.$keySearch.'%');
+                $q->orhere('content', 'like',  '%'.$keySearch.'%');
+            })
+            ->where('parent_id',0)->orderBy('order_s','ASC')
+            ->paginate(30);
         }
         foreach($question as $q) {
             $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();

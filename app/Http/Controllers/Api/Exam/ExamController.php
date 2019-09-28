@@ -8,22 +8,19 @@
 
 namespace App\Http\Controllers\Api\Exam;
 
+use App\Components\Exam\ExamService;
 use App\Http\Controllers\Controller;
-use App\Models\Question;
-use App\Transformers\Exam\FullExamTransformer;
+use App\Models\Lesson;
 use Illuminate\Http\Request;
 
 class ExamController extends Controller
 {
 
-    public function show($examId, Request $request)
+    public function show( $lessonId, Request $request)
     {
-        $question = Question::where('lesson_id', '=', $examId)
-            ->where('parent_id',0)->orderBy('order_s','ASC')
-            ->orderBy('id','ASC')->get();
+        $lesson = Lesson::findOrfail($lessonId);
+        $questions = (new ExamService())->getQuestionExam($lesson);
 
-        return fractal()
-            ->collection($question, new FullExamTransformer)
-            ->respond();
+        return $this->respondOk($questions);
     }
 }

@@ -22,7 +22,6 @@ class ExerciseController extends AdminBaseController
 
         $typeLesson     = $request->input('type_lesson');
 
-        dd($request->all());
         if ($question) {
             foreach ($question as $k => $quest) {
                 $qid = Question::insertGetId([

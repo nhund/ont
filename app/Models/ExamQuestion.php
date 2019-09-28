@@ -15,6 +15,9 @@ class ExamQuestion extends Model
 
     protected $table = 'exam_question';
 
+    const ACTIVE = 'Active';
+    const INACTIVE = 'Inactive';
+
     public $timestamps = true;
 
     protected $fillable = ['lesson_id', 'question_id', 'part', 'created_at', 'updated_at', 'times'];

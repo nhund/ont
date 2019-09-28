@@ -30,12 +30,10 @@ class QuestionService
     protected $lesson;
 
 
-    public function getQuestions($lesson)
+    public function getQuestions($questions, $lesson)
     {
         $this->lesson = $lesson;
-        $questions = Question::where('lesson_id',$lesson->id)->where('parent_id',0)
-                                ->orderBy('order_s','ASC')
-                                ->orderBy('id','ASC')->take(10)->get();
+
 
         foreach ($questions as $question){
             if ($question->type === Question::TYPE_DIEN_TU_DOAN_VAN){

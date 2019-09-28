@@ -9,8 +9,10 @@
 namespace App\Components\Exam;
 
 
+use App\Components\Question\QuestionService;
 use App\Models\ExamQuestion;
 use App\Models\Lesson;
+use App\Models\Question;
 use App\Models\TeacherSupport;
 use App\User;
 use Auth;
@@ -41,5 +43,19 @@ class ExamService
              'question_id' => $question_id,
              'part' => $part,
         ]);
+    }
+
+    public function getQuestionExam(Lesson $lesson)
+    {
+        $questionIds = ExamQuestion::where('lesson_id', $lesson->id)
+            ->where('status', ExamQuestion::ACTIVE)->pluck('question_id');
+
+        $questions = Question::whereIn('id', $questionIds)
+            ->where('parent_id',0)->orderBy('order_s','ASC')
+            ->orderBy('id','ASC')->get();
+
+        $questions = (new QuestionService())->getQuestions($questions, $lesson);
+
+        return $questions;
     }
 }
