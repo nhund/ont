@@ -8,6 +8,8 @@ use App\Models\CourseRating;
 use App\Models\Rating;
 use App\Models\CommentCourse;
 use App\Models\Lesson;
+use Illuminate\Support\Facades\DB;
+
 class Course extends Model
 {
     const STATUS_ON = 1;
@@ -276,5 +278,40 @@ class Course extends Model
     public function userCourse()
     {
         return $this->hasMany(UserCourse::class);
+    }
+
+    public static function reportRatingCourse($id)
+    {
+        $ratings = Rating::select('rating_value',DB::raw('count(*) as total'))->where('course_id',$id)->groupBy('rating_value')->get();
+
+        $ratingValue = array(
+            '1'=>0,
+            '2'=>0,
+            '3'=>0,
+            '4'=>0,
+            '5'=>0,
+        );
+        $rating_avg = 0;
+        $rating_value = 0;
+        $user_rating = 0;
+        foreach($ratings as $rating)
+        {
+            $rating_value += (int)$rating->total * (int)$rating->rating_value;
+            $user_rating += $rating->total;
+
+            $ratingValue[$rating->rating_value] = array(
+                'users'=>$rating->total,
+                'total'=>(int)$rating->total
+            );
+        }
+        if($rating_value > 0)
+        {
+            $rating_avg = $rating_value / $user_rating;
+        }
+        $var['user_rating'] = $user_rating;
+        $var['rating_avg'] = number_format((float)$rating_avg, 1, '.', '');
+        $var['rating_value'] = $ratingValue;
+
+        return $var;
     }
 }

@@ -12,7 +12,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCourseRequest;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Rating;
 use App\Transformers\Course\FullCourseTransformer;
+use App\Transformers\Course\RatingTransformer;
 use App\Transformers\Course\ShortCourseTransformer;
 use App\Components\Course\CourseService;
 use Illuminate\Http\Request;
@@ -53,9 +55,10 @@ class CourseController extends Controller
 
         $report = Lesson::reportLesson($courseId);
 
+        $ratingCourse = Course::reportRatingCourse($courseId);
         return fractal()
         ->item($course, new FullCourseTransformer)
-        ->addMeta(['report' => $report])
+        ->addMeta(['report' => $report, 'ratingCourse' => $ratingCourse])
         ->respond();
     }
 
@@ -110,6 +113,21 @@ class CourseController extends Controller
 
         return fractal()
             ->collection($otherCourse, new ShortCourseTransformer)
+            ->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param $courseId
+     * @return mixed
+     */
+    public function rating(Request $request, $courseId)
+    {
+        $rates = Rating::where('course_id',$courseId)->orderBy('id','DESC')->paginate();
+
+        return fractal()
+            ->collection($rates, new RatingTransformer)
+            ->paginateWith(new IlluminatePaginatorAdapter($rates))
             ->respond();
     }
 }

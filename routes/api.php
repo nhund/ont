@@ -65,6 +65,7 @@ Route::namespace('Api')->group(function () {
         Route::get('/other', 'CourseController@otherCourses');
         Route::get('/search', 'CourseController@search');
         Route::get('/{course}/detail', 'CourseController@show');
+        Route::get('/{course}/rating', 'CourseController@rating');
     });
 
     Route::namespace('School')->prefix('schools')->group(function () {
