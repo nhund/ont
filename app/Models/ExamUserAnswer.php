@@ -13,4 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 class ExamUserAnswer extends Model
 {
     protected $table = 'exam_user_answer';
+
+    protected $fillable = ['lesson_id', 'user_id', 'question_id', 'turn', 'score', 'answer', 'status', 'part', 'submit_at'];
 }
