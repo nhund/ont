@@ -9,6 +9,8 @@
 namespace App\Components\Exam;
 
 
+use App\Models\ExamPart;
+use App\Models\ExamQuestion;
 use App\Models\ExamUser;
 use App\Models\ExamUserAnswer;
 use App\Models\Lesson;
@@ -20,8 +22,9 @@ class SubmitQuestionExam
 {
     protected $request;
     protected $question;
-    protected $lesson;
+    protected $examId;
     protected $user;
+    private $flag = true;
 
     /**
      * @param Request $request
@@ -33,7 +36,7 @@ class SubmitQuestionExam
         $this->request  = $request;
         $this->user     = $this->request->user();
         $this->question = $question;
-        $this->lesson   = $this->getLesson($this->question->lesson_id);
+        $this->examId   = $this->request->get('exam_id');
 
         $this->checkUserExam();
 
@@ -62,7 +65,7 @@ class SubmitQuestionExam
 
     protected function _saveLogQuestion($data, $result = false)
     {
-        $conditions = ['lesson_id' => $this->lesson->id,
+        $conditions = ['lesson_id' => $this->examId,
                        'user_id'   => $this->user->id,
                        'question_id', $this->question->id];
 
@@ -74,15 +77,25 @@ class SubmitQuestionExam
         } else {
             $userQuestion = new ExamUserAnswer();
 
-            $userQuestion->lesson_id   = $this->lesson->id;
+            $userQuestion->lesson_id   = $this->examId;
             $userQuestion->user_id     = $this->user->id;
             $userQuestion->question_id = $this->question->id;
             $userQuestion->turn        = 1;
         }
         $userQuestion->status    = $result;
-        $userQuestion->score     = $this->calculateScore();
         $userQuestion->answer    = \json_encode($data);
         $userQuestion->submit_at = now();
+
+        if ($this->flag){
+            $score =  $this->calculateScore();
+            $examUser = ExamUser::where([
+                'user_id' => $this->user->id,
+                'lesson_id' => $this->examId
+            ])->first();
+            $examUser->score += $score;
+            $examUser->save();
+        }
+
         return $userQuestion->save();
     }
 
@@ -93,9 +106,11 @@ class SubmitQuestionExam
     {
         $rely    = $this->request->get('reply');
         $dataLog = [
-            'error'       => $rely,
+            'error'       => (int)$rely,
             'question_id' => $this->question->id
         ];
+        $this->flag = $rely == Question::REPLY_OK;
+
         return $this->_saveLogQuestion($dataLog);
     }
 
@@ -109,6 +124,8 @@ class SubmitQuestionExam
             'error'       => (int)$rely,
             'question_id' => $this->question->id
         ];
+
+        $this->flag = $rely == Question::REPLY_OK;
         return $this->_saveLogQuestion($dataLog);
     }
 
@@ -123,12 +140,15 @@ class SubmitQuestionExam
             $answerCheck = QuestionAnswer::where('question_id', $key)->where('status', QuestionAnswer::REPLY_OK)->first();
             if (!$answerCheck) {
                 return response()->json(array(
-                                            'error' => true,
-                                            'msg'   => 'Câu hỏi chưa có đáp án',
-                                            'data'  => '',
-                                        ));
+                    'error' => true,
+                    'msg'   => 'Câu hỏi chưa có đáp án',
+                    'data'  => '',
+                ));
             }
-            if ($answerCheck && (int)$answer == (int)$answerCheck->id) {
+
+            $this->flag = $flag = $answerCheck && (int)$answer == (int)$answerCheck->id;
+
+            if ($flag) {
                 $reply = QuestionAnswer::REPLY_OK;
             }
 
@@ -159,6 +179,12 @@ class SubmitQuestionExam
             $reply = Question::REPLY_ERROR;
             if (mb_strtolower($an->answer, 'UTF-8') == mb_strtolower($answer, 'UTF-8')) {
                 $reply = Question::REPLY_OK;
+            }
+
+            $flag = mb_strtolower($an->answer, 'UTF-8') == mb_strtolower($answer, 'UTF-8');
+
+            if (!$flag){
+                $this->flag = $flag;
             }
 
             $result[$key] = array(
@@ -193,6 +219,7 @@ class SubmitQuestionExam
                         } else {
                             $check_pass_question = QuestionAnswer::REPLY_ERROR;
                             $reply_status        = QuestionAnswer::REPLY_ERROR;
+                            $this->flag = false;
                         }
                         $result[$question_id][$incr_sb] = array(
                             'error'  => $reply_status,
@@ -200,6 +227,7 @@ class SubmitQuestionExam
                             'answer' => $m[2],
                         );
                     } else {
+                        $this->flag = false;
                         $check_pass_question            = QuestionAnswer::REPLY_ERROR;
                         $result[$question_id][$incr_sb] = array(
                             'error'  => QuestionAnswer::REPLY_ERROR,
@@ -213,11 +241,6 @@ class SubmitQuestionExam
         return $this->_saveLogQuestion($result);
     }
 
-    private function getLesson($lessonId)
-    {
-        return Lesson::where('id', $lessonId)->first();
-    }
-
     /**
      * @return mixed
      */
@@ -228,7 +251,7 @@ class SubmitQuestionExam
 
         if (!$examUser) {
             ExamUser::create([
-                 'lesson_id'      => $this->lesson->id,
+                 'lesson_id'      => $this->examId,
                  'user_id'        => $userId,
                  'turn'           => 1,
                  'score'          => 0,
@@ -237,8 +260,25 @@ class SubmitQuestionExam
         }
     }
 
+    // tính điểm mỗi câu hỏi đúng
     private function calculateScore()
     {
-        return 10;
+        $examQuestion = ExamQuestion::where([
+            'question_id' => $this->question->id,
+            'lesson_id'   => $this->examId,
+        ])->first();
+
+        $condition = [
+            'lesson_id' => $this->examId,
+            'part'      => $examQuestion->part
+        ];
+
+        // tổng câu hỏi của từng phần
+        $totalQuestions = ExamQuestion::where($condition)->count();
+
+        // tổng điểm của phần
+        $scoreTotal = ExamPart::where($condition)->first();
+
+        return round($scoreTotal/$totalQuestions, 1);
     }
 }

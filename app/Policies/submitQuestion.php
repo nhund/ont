@@ -23,8 +23,41 @@ class submitQuestion
     {
         $course = Course::where('id', $question->course_id)->first();
 
+        if (!$course){
+            throw new NotFoundException('Khóa học không tồn tại hoặc đã bị xóa.');
+        }
+
+        if( $user->id === $course->user_id){
+            return true;
+        }
+
+        if (!($user->id == $course->user_id || $user->level == User::USER_ADMIN)){
+            return false;
+        }
+
+        $support = TeacherSupport::where('course_id', $course->id)
+                    ->where('user_id', $user->id)
+                    ->where('status', TeacherSupport::STATUS_ON)
+                    ->first();
+
+        $checkExist = UserCourse::where('user_id', $user->id)->where('course_id', $course->id)->first();
+        if ( !($support || $checkExist || $user->id == $course->user_id || $user->level == User::USER_ADMIN)
+            || $checkExist->status == UserCourse::STATUS_APPROVAL) {
+            return false;
+        }
+
+        if ($checkExist->and_date > 0 && $checkExist->and_date < time()) {
+            return false;
+        }
+
+        return true;
+    }
 
 
+    public function submitExam(User $user, Question $question)
+    {
+        $examId = request('exam_id');
+        $course = Course::where('id', $examId)->first();
 
         if (!$course){
             throw new NotFoundException('Khóa học không tồn tại hoặc đã bị xóa.');

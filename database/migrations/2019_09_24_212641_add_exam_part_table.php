@@ -15,6 +15,7 @@ class AddExamPartTable extends Migration
     {
         Schema::create('exam_part', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('exam_id');
             $table->integer('part_1')->nullable();
             $table->integer('part_2')->nullable();
             $table->integer('part_3')->nullable();
