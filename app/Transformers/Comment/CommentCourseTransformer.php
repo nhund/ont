@@ -6,22 +6,25 @@ use App\Models\CommentCourse;
 use App\Transformers\User\UserFull;
 use League\Fractal\TransformerAbstract;
 
-class CommentTransformer extends TransformerAbstract {
+class CommentCourseTransformer extends TransformerAbstract
+{
 
     protected $defaultIncludes = ['user'];
 
     protected $comment;
 
-    public function transform(CommentCourse $comment){
+    public function transform(CommentCourse $comment)
+    {
 
         $this->comment = $comment;
 
         return [
-            'id' => $comment->id,
-            'course_id' => $comment->course_id,
-            'content' => $comment->content,
-            'status' => $comment->status,
-            'user_id' => $comment->user_id,
+            'id'         => $comment->id,
+            'course_id'  => $comment->course_id,
+            'parent_id'  => $comment->parent_id,
+            'content'    => $comment->content,
+            'status'     => $comment->status,
+            'user_id'    => $comment->user_id,
             'created_at' => $comment->created_at
         ];
     }

@@ -26,7 +26,7 @@ class QuestionAnswerController extends Controller{
 
        $result = $this->questionAnswerService->submit($request, $question);
 
-      return $this->respondOk($result);
+      return $this->message('gửi câu hỏi thành công')->respondOk($result);
     }
 
     public function update(){}

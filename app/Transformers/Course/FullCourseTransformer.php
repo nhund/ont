@@ -7,7 +7,7 @@ use App\Models\Lesson;
 use App\Models\UserCourse;
 use App\Transformers\Lesson\LessonTransformer;
 use League\Fractal\TransformerAbstract;
-use App\Transformers\Comment\CommentTransformer;
+use App\Transformers\Comment\CommentCourseTransformer;
 use phpDocumentor\Reflection\Types\Self_;
 
 class FullCourseTransformer extends TransformerAbstract
@@ -53,7 +53,7 @@ class FullCourseTransformer extends TransformerAbstract
     public function includeComment(Course $course){
         $comments =  $course->comment;
 
-        return $comments ?  $this->collection($comments,  new CommentTransformer) : null;
+        return $comments ?  $this->collection($comments,  new CommentCourseTransformer) : null;
     }
 
     public function includeLesson(Course $course){

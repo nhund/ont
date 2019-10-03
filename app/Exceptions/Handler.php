@@ -28,6 +28,7 @@ class Handler extends ExceptionHandler
     protected $customRender = [
         UserCourseException::class,
         BookMarkException::class,
+        BadRequestException::class,
         AuthenticationException::class,
         \Illuminate\Auth\Access\AuthorizationException::class,
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
@@ -106,6 +107,16 @@ class Handler extends ExceptionHandler
     protected function renderOnthiezException($request, $exception){
 
         return $this->prepareErrorResponse($request, $exception, 400);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\Access\AuthorizationException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderBadRequestException($request, $exception){
+
+        return $this->prepareErrorResponse($request, $exception, 201);
     }
 
 
