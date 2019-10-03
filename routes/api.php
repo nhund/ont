@@ -48,6 +48,9 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
     });
     Route::namespace('Question')->prefix('question')->group(function () {
         Route::post('/{question}', 'QuestionAnswerController@store');
+
+
+        Route::post('/{question}/bookmark', 'QuestionController@bookmark');
     });
 });
 
