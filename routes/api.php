@@ -54,9 +54,14 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
     });
 
     Route::namespace('Comment')->prefix('comment')->group(function (){
-        Route::post('/course/{course}', 'CommentController@course');
 
-        Route::post('/question/{question}', 'CommentController@question');
+        Route::prefix('course')->group(function () {
+            Route::post('/{course}', 'CommentCourseController@store');
+        });
+
+        Route::prefix('question')->group(function () {
+            Route::post('/{question}', 'CommentQuestionController@store');
+        });
     });
 });
 
