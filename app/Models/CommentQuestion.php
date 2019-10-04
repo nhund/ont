@@ -24,4 +24,12 @@ class CommentQuestion extends Model
                 $user->email = 'onthiez@gmail.com';
             });
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subComment()
+    {
+        return $this->hasMany(CommentQuestion::class, 'parent_id', 'id');
+    }
 }

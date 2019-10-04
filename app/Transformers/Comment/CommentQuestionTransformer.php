@@ -10,6 +10,7 @@ class CommentQuestionTransformer extends TransformerAbstract
 {
 
     protected $defaultIncludes = ['user'];
+    protected $availableIncludes = ['subComment'];
 
     protected $comment;
 
@@ -23,6 +24,7 @@ class CommentQuestionTransformer extends TransformerAbstract
             'question_id' => $comment->question_id,
             'course_id'   => $comment->course_id,
             'lesson_id'   => $comment->lesson_id,
+            'parent_id'   => $comment->parent_id,
             'content'     => $comment->content,
             'status'      => $comment->status,
             'user_id'     => $comment->user_id,
@@ -38,5 +40,12 @@ class CommentQuestionTransformer extends TransformerAbstract
         $user = $this->comment->user;
 
         return $user ? $this->item($user, new UserFull) : null;
+    }
+
+    public function includeSubComment()
+    {
+        $subComments = $this->comment->subComment;
+
+        return $subComments ? $this->collection($subComments, new self) : null;
     }
 }

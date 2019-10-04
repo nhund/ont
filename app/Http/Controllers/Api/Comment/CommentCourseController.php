@@ -8,11 +8,20 @@ use App\Http\Requests\AddCommentToQuestionRequest;
 use App\Models\CommentCourse;
 use App\Models\Course;
 use App\Transformers\Comment\CommentCourseTransformer;
+use Illuminate\Http\Request;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class CommentCourseController extends Controller
 {
 
-    public function index(){}
+    public function index(Course $course, Request $request){
+
+        $comments = $course->comment()->where('parent_id', 0)->paginate(10);
+
+        return fractal()->collection($comments, new CommentCourseTransformer)
+            ->paginateWith(new IlluminatePaginatorAdapter($comments))
+            ->respond();
+    }
 
     public function show(){}
 
@@ -26,9 +35,9 @@ class CommentCourseController extends Controller
     {
         $data = $request->only(['parent_id', 'content']);
         try {
-        $comment = CommentCourse::updateOrCreate([
-             'user_id'   => $request->user()->id,
-             'course_id' => $course->id], [
+        $comment = CommentCourse::create([
+             'user_id'    => $request->user()->id,
+             'course_id'  => $course->id,
              'parent_id'  => $data['parent_id'] ?? 0,
              'status'     => CommentCourse::STATUS_ON,
              'content'    => $data['content'],

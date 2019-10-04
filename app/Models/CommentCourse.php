@@ -61,4 +61,12 @@ class CommentCourse extends Model
             }
         });
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subComment()
+    {
+        return $this->hasMany(CommentCourse::class, 'parent_id', 'id');
+    }
 }

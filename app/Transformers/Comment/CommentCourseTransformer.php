@@ -9,7 +9,9 @@ use League\Fractal\TransformerAbstract;
 class CommentCourseTransformer extends TransformerAbstract
 {
 
-    protected $defaultIncludes = ['user'];
+    protected $defaultIncludes   = ['user'];
+    protected $availableIncludes = ['subComment'];
+
 
     protected $comment;
 
@@ -37,5 +39,13 @@ class CommentCourseTransformer extends TransformerAbstract
         $user = $this->comment->user;
 
         return $user ? $this->item($user, new UserFull) : null;
+    }
+
+
+    public function includeSubComment()
+    {
+        $subComments = $this->comment->subComment;
+
+        return $subComments ? $this->collection($subComments, new self) : null;
     }
 }

@@ -57,10 +57,12 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
 
         Route::prefix('course')->group(function () {
             Route::post('/{course}', 'CommentCourseController@store');
+            Route::get('/{course}', 'CommentCourseController@index');
         });
 
         Route::prefix('question')->group(function () {
             Route::post('/{question}', 'CommentQuestionController@store');
+            Route::get('/{question}', 'CommentQuestionController@index');
         });
     });
 });

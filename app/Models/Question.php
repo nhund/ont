@@ -136,4 +136,12 @@ class Question extends Model
     {
         return $this->getOriginal('img_after') ? asset($this->getOriginal('img_after')) : null;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comment()
+    {
+        return $this->hasMany(CommentQuestion::class);
+    }
 }
