@@ -168,7 +168,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h1 class="modal-title">Cập nhật điểm của phần kiểm tra</h1>
             </div>
-            <form id="form-update-part-exam" method="POST" action="{{ route('update.partExam') }}">
+            <form id="form-update-part-exam" method="POST" action="{{ route('exam.partExam') }}">
                 <div class="modal-body">
                     <input type="hidden" name="lesson_id" id="les_id" value="">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">

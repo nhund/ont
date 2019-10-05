@@ -68,4 +68,9 @@ class UserCourseController extends Controller{
 
         return $this->respondOk(['total_courses' => $countMYCourses, 'courses_done' => 4]);
     }
+
+    public function detail(Course $course, Request $request)
+    {
+        dd($course);
+    }
 }
