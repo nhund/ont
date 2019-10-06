@@ -107,54 +107,36 @@ function showSuccessMsg (msg) {
     });
 }
 
-function showModalAddLesson(lesson_id, title, lesson_type) {
+function showModalAddLesson(lesson_id, title, level) {
     if (lesson_id) {
         $('#courseLesson #lesson_id').val(lesson_id);
     }
 
-    if (lesson_type) {
-        $('#courseLesson #lesson_type').val(lesson_type);
+    if (level) {
+        $('#courseLesson #level').val(level);
     }
     $('#courseLesson .title-courseLesson').html(title);
     $('#courseLesson').modal('show');
 }
 
-function showModalAddExersice(lesson_id, type) {
+function showModalAddExercise(lesson_id, type, level) {
 
-    if (lesson_id) {$('#les_id').val(lesson_id);}
+    if (lesson_id) {$('#courseEx #les_id').val(lesson_id);}
 
-    if (type) {$('#type').val(type);}
+    if (type) {$('#courseEx #type').val(type);}
+    if (type) {$('#courseEx #level').val(level);}
 
     $('#courseEx').modal('show');
 }
 
-function showModalAddExam(lesson_id, title, lesson_type) {
-    if (lesson_id) {
-        $('#courseExam #lesson_id').val(lesson_id);
-    }
+function showModalAddLevel2(title, lesson_type) {
 
     if (lesson_type) {
-        $('#courseExam #lesson_type').val(lesson_type);
+        $('#courseLevel2 #lesson_type').val(lesson_type);
     }
 
-    $('#courseExam .title-courseLesson').html(title);
-    $('#courseExam').modal('show');
-}
-
-function showModalAddLevel2(lesson_id, title, lesson_type) {
-    if (lesson_id) {
-        $('#courseExam #lesson_id').val(lesson_id);
-    }
-
-    if (lesson_type) {
-        $('#courseExam #lesson_type').val(lesson_type);
-    }
-
-    const nameLesson = lesson_type === 'exam' ? 'Bài kiểm tra' : 'Bài tập level 2';
-    $('#courseExam #lessonName').val(nameLesson);
-
-    $('#courseExam .title-courseLesson').html(title);
-    $('#courseExam').modal('show');
+    $('#courseLevel2 .title-courseLesson').html(title);
+    $('#courseLevel2').modal('show');
 }
 
 function addRowLesson() {
@@ -214,10 +196,10 @@ function addLesson() {
     });
 }
 
-function addExamOrLevel2() {
-    var serialise = $( "form#addCourseExam" ).serialize();
+function addLevel2() {
+    const serialise = $( "form#addCourseLevel2" ).serialize();
     $.ajax({
-       url: '/admin/course/addExamOrLevel2',
+       url: '/admin/course/addLevel2',
        data: serialise,
        dataType: 'json',
        method: 'POST',

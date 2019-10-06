@@ -115,6 +115,7 @@ class LessonController extends AdminBaseController
         $random_question= $request->input('random_question', '');
         $avatar         = $request->file('avatar');
         $type           = $request->input('type');
+        $level           = $request->input('level', 1);
 
         $les                    = Lesson::find($lesson_id);
         if ($cur_lesson_id) {
@@ -123,15 +124,25 @@ class LessonController extends AdminBaseController
             $lesson = new Lesson();
             $lesson->created_at     = time();
             $lesson->is_exercise    = Lesson::IS_EXERCISE;
-            $lesson->parent_id      = $lesson_id ? $lesson_id : 0;
+            $lesson->parent_id      = $lesson_id ?: 0;
             $lesson->lv1            = 0;
+            $lesson->level          = $level;
         }
 
         if ($les) {
-            $lesson->lv1        = $les['lv1'] ? $les['lv1'] : $lesson_id;
-            if ($lesson->lv1) {
+            $lesson->lv1 = $les['lv1'] ?: $lesson_id;
+
+            if ($les['lv1']) {
                 $lesson->lv2    = $lesson_id;
+                $lesson->lv3    = $lesson_id;
             }
+
+            if ($les['lv1'] && $les['lv2'])
+            {
+                $lesson->lv2 = $les['lv2'];
+                $lesson->lv3 = $lesson_id;
+            }
+
         }
 
         // if have image

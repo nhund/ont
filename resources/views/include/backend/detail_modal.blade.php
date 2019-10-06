@@ -9,7 +9,7 @@
                 <div class="modal-body">
                     <input type="hidden" name="course_id" value="{{ $course['id'] }}">
                     <input type="hidden" name="lesson_id" id="lesson_id" value="">
-                    <input type="hidden" name="lesson_type" id="lesson_type" value="">
+                    <input type="hidden" name="level" id="level" value="">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <p class="title-courseLesson"></p>
                     <div class="form-group row">
@@ -40,23 +40,22 @@
     </div>
 </div>
 
-<div class="modal fade" id="courseExam" tabindex="-1" role="dialog">
+<div class="modal fade" id="courseLevel2" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h2 class="modal-title">Tạo bài giảng</h2>
+                <h2 class="modal-title">Tạo bài giảng cấp 2</h2>
             </div>
-            <form id="addCourseExam" method="POST">
+            <form id="addCourseLevel2" method="POST">
                 <div class="modal-body">
                     <input type="hidden" name="course_id" value="{{ $course['id'] }}">
-                    <input type="hidden" name="lesson_id" id="lesson_id" value="">
-                    <input type="hidden" name="lesson_type" id="lesson_type" value="">
+                    <input type="hidden" name="level" id="level" value="">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <p class="title-courseLesson"></p>
                     <div class="form-group row">
                         <div class="col-sm-5">
-                            <input id="lessonName" readonly type="text" class="form-control lessonName" placeholder="name ..." name="name">
+                            <input id="lessonName" type="text" class="form-control lessonName" placeholder="tên bài tâp cấp 2 ..." name="name">
                         </div>
                         <div class="col-sm-5">
                             <select class="form-control" name="status">
@@ -69,7 +68,7 @@
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="addExamOrLevel2()">Lưu</button>
+                <button type="button" class="btn btn-primary" onclick="addLevel2()">Lưu</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
             </div>
         </div>
@@ -88,6 +87,7 @@
                     <input type="hidden" name="lesson_id" id="les_id" value="">
                     <input type="hidden" name="course_id" value="{{ $course['id'] }}">
                     <input type="hidden" name="type"  id="type" value="">
+                    <input type="hidden" name="level"  id="level" value="">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="row">
                         <div class="col-sm-8">Tên bài tập</div>

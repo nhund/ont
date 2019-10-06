@@ -257,6 +257,7 @@ class CourseController extends AdminBaseController
         $name           = $request->input('name');
         $status         = $request->input('status');
         $lesson_id      = $request->input('lesson_id');
+        $level      = $request->input('level');
         $lesson         = Lesson::find($lesson_id);
         $firstId        = 0;
         if (is_array($name) && $name) {
@@ -269,15 +270,18 @@ class CourseController extends AdminBaseController
                     'lv1'           => 0,
                     'created_at'    => time(),
                     'type'          => Course::LESSON,
+                    'level'         => $level,
                 ];
 
                 if ($lesson) {
-                    $insertData['lv1'] = $lesson['lv1'] ? $lesson['lv1'] : $lesson_id;
-                    if ($lesson['lv1']) {
-                        $insertData['lv2'] = $lesson_id;
+                    $insertData['lv1'] = $lesson['lv1'] ?: $lesson_id;
+
+                    if ($lesson['lv1'] && $lesson['lv2'])
+                    {
+                        $insertData['lv2'] = $lesson['lv2'];
+                        $insertData['lv3'] = $lesson_id;
                     }
                 }
-
                 if (!$firstId) {
                     $firstId = Lesson::insertGetId($insertData);
                 } else {
@@ -322,6 +326,25 @@ class CourseController extends AdminBaseController
         (new CourseService())->createFolderGalaryForLesson($params['course_id']);
 
         return response()->json(['msg' => 'Thêm bài kiểm tra thành công', 'status' => 1, 'id' => $firstId]);
+    }
+
+    public function addLevel2(AddExamRequest $request)
+    {
+        $insertData = [
+            'name'          => $request->get('name'),
+            'status'        => $request->get('status'),
+            'course_id'     => $request->get('course_id'),
+            'parent_id'     => Lesson::PARENT_ID,
+            'lv1'           => Lesson::PARENT_ID,
+            'level'         => 2,
+            'is_exercise'   => null,
+            'created_at'    => time(),
+            'type'          => Course::LESSON,
+        ];
+
+        $id = Lesson::insertGetId($insertData);
+
+        return response()->json(['msg' => 'Thêm bài giảng cấp 2 thành công', 'status' => 1, 'id' => $id]);
     }
 
     public function listUser($id) {

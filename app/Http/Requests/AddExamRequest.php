@@ -13,7 +13,7 @@ class AddExamRequest extends AuthorizedFormRequest
     public function rules()
     {
         return [
-            'lesson_type' => 'required|in:exam,lesson,levle2',
+            'lesson_type' => 'required|in:exam,lesson,level2',
             'course_id'   => 'required',
         ];
     }

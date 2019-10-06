@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Components\Course\UserCourseService;
+use App\Components\User\UserCourseReportService;
 use App\Exceptions\UserCourseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddUserCourseRequest;
@@ -71,6 +72,6 @@ class UserCourseController extends Controller{
 
     public function detail(Course $course, Request $request)
     {
-        dd($course);
+        dd((new UserCourseReportService($course))->get());
     }
 }
