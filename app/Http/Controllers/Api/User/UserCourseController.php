@@ -23,6 +23,12 @@ class UserCourseController extends Controller{
 
     public function index(){}
 
+    /**
+     * @param AddUserCourseRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws UserCourseException
+     * @throws \Throwable
+     */
     public function store(AddUserCourseRequest $request){
         $tokenInstance = PassportToken::parseToken($request->get('token'));
         if (!$tokenInstance){
@@ -31,7 +37,11 @@ class UserCourseController extends Controller{
 
         $course = Course::find($request->get('course_id'));
 
-        $result = (new UserCourseService($course, $tokenInstance->user->id))->addingORExtentCourse();
+        try{
+            $result = (new UserCourseService($course, $tokenInstance->user->id))->addingORExtentCourse();
+         }catch (\Exception $exception){
+            throw new UserCourseException('Mua khóa học không thành công.');
+        }
 
        return $this->respondOk($result);
     }
@@ -72,6 +82,8 @@ class UserCourseController extends Controller{
 
     public function detail(Course $course, Request $request)
     {
-        dd((new UserCourseReportService($course, $request->user()))->get());
+        $userCourseReport = new UserCourseReportService($course, $request->user());
+
+        return $this->respondOk($userCourseReport->get());
     }
 }

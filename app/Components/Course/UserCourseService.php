@@ -41,15 +41,11 @@ class UserCourseService
 
         if($course->status == Course::TYPE_PUBLIC)
         {
-            try{
-                DB::transaction(function () use ($course, $UserCourse){
-                    $this->paymentCourse($course);
-                    $this->createOrUpdateUserCourse(UserCourse::STATUS_ON, $UserCourse);
-                });
-                return 'mua khóa học thành công';
-            }catch (\Exception $exception){
-                throw new UserCourseException('Mua khóa học không thành công.');
-            }
+            DB::transaction(function () use ($course, $UserCourse){
+                $this->paymentCourse($course);
+                $this->createOrUpdateUserCourse(UserCourse::STATUS_ON, $UserCourse);
+            });
+            return 'mua khóa học thành công';
         }
 
         if($course->status == Course::TYPE_APPROVAL)
