@@ -72,6 +72,6 @@ class UserCourseController extends Controller{
 
     public function detail(Course $course, Request $request)
     {
-        dd((new UserCourseReportService($course))->get());
+        dd((new UserCourseReportService($course, $request->user()))->get());
     }
 }

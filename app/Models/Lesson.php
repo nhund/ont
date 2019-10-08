@@ -19,8 +19,10 @@ class Lesson extends Model
     const PARENT_ID = 0;
 
     const LESSON = 'lesson';
-    const EXAM  = 'exam';
-    const LEVEL2  = 'level2';
+    const EXAM   = 'exam';
+
+    const LEVEL_1 = 1;
+    const LEVEL_2 = 2;
 
     protected $table = 'lesson';
     protected $primaryKey = 'id';

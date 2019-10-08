@@ -216,7 +216,9 @@ class CourseLearnController extends Controller
         }
         $var['user_rating'] = $user_rating;
         $var['rating_avg'] = number_format((float)$rating_avg, 1, '.', '');
-        
+
+//        dd($var);
+
         return view('learn.course',compact('var'));
     }
     public function lyThuyet($id,Request $request)
