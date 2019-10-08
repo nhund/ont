@@ -321,3 +321,21 @@ function addComment(e, parent_id, course_id) {
         }
     });
 }
+
+function updatePartExam() {
+    var serialise = $( "form#form-update-part-exam" ).serialize();
+    $.ajax({
+           url: '/admin/exam/part',
+           data: serialise,
+           dataType: 'json',
+           method: 'POST',
+           success: function (response) {
+               if (response.status) {
+                   window.location.reload();
+               } else {
+                   showErrorMsg('cập nhât điểm cho bài kiểm tra không thành công.');
+                   return false;
+               }
+           }
+       });
+}

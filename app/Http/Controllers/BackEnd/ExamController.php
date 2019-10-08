@@ -9,10 +9,12 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Components\Exam\ExamService;
+use App\Models\ExamPart;
 use App\Models\ExamQuestion;
 use App\Models\Lesson;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class ExamController
 {
@@ -49,6 +51,7 @@ class ExamController
             $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();
         }
 
+        $var['parts']           = ExamPart::where('exam_id', $id)->first();
         $var['questions']       = $question;
         $var['questionIds']     = $questionIds->toArray();
         $var['suggestQuestions']  = $suggestQuestions;
@@ -92,6 +95,15 @@ class ExamController
         }
 
         return response()->json(['status' => 200, 'data' => $request->all()]);
+    }
+
+    public function partExam(Request $request)
+    {
+        $params = $request->only(['exam_id', 'part_1', 'part_2', 'part_3', 'part_4', 'part_5', 'part_6', 'part_7', 'part_8', 'part_9', 'part_10']);
+        $examId = Arr::pull($params, 'exam_id');
+        ExamPart::updateOrCreate(['exam_id' => $examId], $params);
+
+        return response()->json(['status' => 200, 'data' => $params]);
     }
 
 }

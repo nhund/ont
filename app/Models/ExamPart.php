@@ -20,5 +20,5 @@ class ExamPart extends Model
 
     public $timestamps = true;
 
-    protected $fillable = ['exam_id', 'part_1', 'part_2', 'part_3', 'part_4', 'part_5', 'part_6', 'part_7', 'part_8', 'part_9', 'part_10', 'part_1', 'created_at', 'updated_at'];
+    protected $fillable = ['exam_id', 'part_1', 'part_2', 'part_3', 'part_4', 'part_5', 'part_6', 'part_7', 'part_8', 'part_9', 'part_10', 'created_at', 'updated_at'];
 }

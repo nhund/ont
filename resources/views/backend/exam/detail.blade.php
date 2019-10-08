@@ -42,14 +42,8 @@
                                         </ul>
                                     </h2>
                                     <div class="pull-right editBtn">
-                                        @if (!$lesson['is_exercise'])
-                                                <button class="btn btn-primary" title="Sửa" @if (!$lesson['is_exercise'])
-                                                onclick="handleLessonForm()" @else  @endif
-                                                ><i class="fa fa-pencil-square-o"></i></button>
-                                        @endif
-                                        @if ($lesson['is_exercise'])
-                                            <button class="btn btn-primary" title="Sửa" data-toggle="modal" href="#editCourse"><i class="fa fa-pencil-square-o"></i></button>
-                                        @endif
+                                        <a class="btn btn-success left10" title="Xóa" data-toggle="modal" href="#update-part-exam">Xét điểm từng phần</a>
+                                        <button class="btn btn-primary" title="Sửa" data-toggle="modal" href="#editCourse">Sửa</button>
                                         <a class="btn btn-danger left10" title="Xóa" data-toggle="modal" href="#delLesson">Xoá</a>
                                     </div>
                                 </div>
