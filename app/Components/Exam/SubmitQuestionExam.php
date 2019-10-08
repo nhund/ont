@@ -89,7 +89,7 @@ class SubmitQuestionExam
             $userQuestion->part = $examQuestion->part;
         }
         $userQuestion->status    = $this->flag ? Question::REPLY_OK : Question::REPLY_ERROR;
-        $userQuestion->score = $score;
+        $userQuestion->score = $this->flag ? $score : 0 ;
         $userQuestion->answer    = \json_encode($data);
         $userQuestion->submit_at = now();
 

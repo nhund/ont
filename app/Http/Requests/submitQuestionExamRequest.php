@@ -18,6 +18,10 @@ class submitQuestionExamRequest extends AuthorizedFormRequest
 
         $questionType = $this->get('question_type');
 
+        if (!$this->has('question_type')){
+            return [ 'question_type' => 'required|in:'.implode($types, ',')];
+        }
+
         $rules =  [
             'question_type' => 'required|in:'.implode($types, ','),
             'type' => 'required',
