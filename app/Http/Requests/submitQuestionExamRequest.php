@@ -21,6 +21,7 @@ class submitQuestionExamRequest extends AuthorizedFormRequest
         $rules =  [
             'question_type' => 'required|in:'.implode($types, ','),
             'type' => 'required',
+            'exam_id' => 'required|exists:lesson,id',
         ];
 
         if ( in_array($questionType, [Question::TYPE_FLASH_MUTI, Question::TYPE_FLASH_SINGLE])){
@@ -40,12 +41,12 @@ class submitQuestionExamRequest extends AuthorizedFormRequest
             ]);
         }
 
-        return [
-            'question_type' => 'required|in:'.implode($types, ','),
-            'exam_id' => 'required|exists:lesson,id',
-            'type' => 'required',
-            'answers' => 'array',
-            'txtLearnWord' => 'array'
-        ];
+//        return [
+//            'question_type' => 'required|in:'.implode($types, ','),
+//            'exam_id' => 'required|exists:lesson,id',
+//            'type' => 'required',
+//            'answers' => 'array',
+//            'txtLearnWord' => 'array'
+//        ];
     }
 }

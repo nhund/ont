@@ -67,7 +67,7 @@ class SubmitQuestionExam
     {
         $conditions = ['lesson_id' => $this->examId,
                        'user_id'   => $this->user->id,
-                       'question_id', $this->question->id];
+                       'question_id' => $this->question->id];
 
         $userQuestion = ExamUserAnswer::where($conditions)->first();
 
@@ -247,7 +247,7 @@ class SubmitQuestionExam
     private function checkUserExam()
     {
         $userId   = $this->request->user()->id;
-        $examUser = ExamUser::where('lesson_id', $this->lesson->id)->where('user_id', $userId)->exsit();
+        $examUser = ExamUser::where('lesson_id', $this->examId)->where('user_id', $userId)->exists();
 
         if (!$examUser) {
             ExamUser::create([

@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\TeacherSupport;
 use App\Models\UserCourse;
@@ -57,7 +58,14 @@ class submitQuestion
     public function submitExam(User $user, Question $question)
     {
         $examId = request('exam_id');
-        $course = Course::where('id', $examId)->first();
+
+        $lesson = Lesson::where('id', $examId)->first();
+
+        if (!$lesson){
+            throw new NotFoundException('Bài học không tồn tại hoặc đã bị xóa.');
+        }
+
+        $course = Course::where('id', $lesson->course_id)->first();
 
         if (!$course){
             throw new NotFoundException('Khóa học không tồn tại hoặc đã bị xóa.');
