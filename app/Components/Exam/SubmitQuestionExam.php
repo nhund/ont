@@ -63,8 +63,10 @@ class SubmitQuestionExam
         return response()->json(array('error' => true, 'msg' => 'succsess'));
     }
 
-    protected function _saveLogQuestion($data, $result = false)
+    protected function _saveLogQuestion($data)
     {
+        $score =  $this->calculateScore();
+
         $conditions = ['lesson_id' => $this->examId,
                        'user_id'   => $this->user->id,
                        'question_id' => $this->question->id];
@@ -75,19 +77,23 @@ class SubmitQuestionExam
             $userQuestion->turn += 1;
 
         } else {
-            $userQuestion = new ExamUserAnswer();
+            $examQuestion  = $this->question->examQuestion()
+                ->where('lesson_id', $this->examId)->first();
 
+            $userQuestion = new ExamUserAnswer();
             $userQuestion->lesson_id   = $this->examId;
             $userQuestion->user_id     = $this->user->id;
             $userQuestion->question_id = $this->question->id;
-            $userQuestion->turn        = 1;
+            $userQuestion->part = $this->question->id;
+            $userQuestion->turn = 1;
+            $userQuestion->part = $examQuestion->part;
         }
-        $userQuestion->status    = $result;
+        $userQuestion->status    = $this->flag ? Question::REPLY_OK : Question::REPLY_ERROR;
+        $userQuestion->score = $score;
         $userQuestion->answer    = \json_encode($data);
         $userQuestion->submit_at = now();
 
         if ($this->flag){
-            $score =  $this->calculateScore();
             $examUser = ExamUser::where([
                 'user_id' => $this->user->id,
                 'lesson_id' => $this->examId
@@ -276,8 +282,13 @@ class SubmitQuestionExam
         // tổng câu hỏi của từng phần
         $totalQuestions = ExamQuestion::where($condition)->count();
 
+        $conditionPart = [
+            'exam_id' => $this->examId,
+        ];
+
         // tổng điểm của phần
-        $scoreTotal = ExamPart::where($condition)->first();
+        $parts = ExamPart::where($conditionPart)->first();
+        $scoreTotal = $parts->{'part_'.$examQuestion->part};
 
         return round($scoreTotal/$totalQuestions, 1);
     }

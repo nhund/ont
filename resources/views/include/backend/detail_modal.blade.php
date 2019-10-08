@@ -170,7 +170,7 @@
             </div>
             <form id="form-update-part-exam" method="POST">
                 <div class="modal-body">
-                    <input type="hidden" name="exam_id" id="exam_id" value="{{$lesson->id}}">
+                    <input type="hidden" name="exam_id" id="exam_id" value="{{$lesson->id ?? 0}}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="row" style="font-weight: bold">
                         <div class="col-sm-offset-1 col-sm-2">Phần</div>

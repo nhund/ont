@@ -144,4 +144,9 @@ class Question extends Model
     {
         return $this->hasMany(CommentQuestion::class);
     }
+
+    public function examQuestion()
+    {
+        return $this->hasMany(ExamQuestion::class);
+    }
 }
