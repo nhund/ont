@@ -100,6 +100,11 @@ class SubmitQuestionExam
                 'lesson_id' => $this->examId
             ])->first();
             $examUser->score += $score;
+
+            if ($examUser->score > $examUser->highest_score){
+                $examUser->highest_score = $examUser->score;
+            }
+
             $examUser->save();
         }
 

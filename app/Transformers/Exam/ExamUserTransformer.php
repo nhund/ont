@@ -17,7 +17,7 @@ class ExamUserTransformer extends TransformerAbstract
         return [
             'id' => $examUser->id,
             'user_id' => $examUser->user_id,
-            'score' => $examUser->score,
+            'score' => $examUser->highest_score,
             'turn' => $examUser->turn,
             'exam_id' => $examUser->exam_id,
         ];

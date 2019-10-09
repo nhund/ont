@@ -52,7 +52,7 @@ class ExamController extends Controller
     public function rank($examId, Request $request)
     {
         $examUser = ExamUser::where('lesson_id', $examId)
-            ->orderBy('score', 'DESC')
+            ->orderBy('highest_score', 'DESC')
             ->orderBy('created_at', 'DESC')
             ->orderBy('turn', 'ASC')
             ->paginate(10);
