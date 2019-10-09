@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Components\Course\UserCourseService;
 use App\Components\User\UserCourseReportService;
+use App\Events\RemoveUserCourse;
 use App\Exceptions\UserCourseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddUserCourseRequest;
@@ -48,7 +49,17 @@ class UserCourseController extends Controller{
 
     public function update(){}
 
-    public function delete(){}
+    public function delete(Course $course, Request $request){
+
+        $this->authorize('permission', $course);
+
+        $course->delete();
+
+        event(new RemoveUserCourse($course, $request->user()));
+
+        return $this->respondOk('Gỡ bỏ khóa học thành công');
+
+    }
 
     /**
      * searching source of user

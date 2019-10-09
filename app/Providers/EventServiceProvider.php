@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Events\BeginExamEvent::class => [
             Listeners\BeginExamListener::class
+        ],
+        Events\RemoveUserCourse::class => [
+            Listeners\RemoveUserCourseListen::class
         ]
     ];
 
@@ -27,7 +30,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        //
     }
 }
