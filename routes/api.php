@@ -43,6 +43,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
         Route::get('/{lesson}', 'ExamController@show');
         Route::post('/question/{question}', 'ExamController@submitQuestion');
         Route::get('/{lesson}/rank', 'ExamController@rank');
+        Route::get('/{lesson}/result', 'ExamController@result');
     });
 
     Route::namespace('Lesson')->prefix('lesson')->group(function () {

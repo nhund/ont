@@ -12,6 +12,7 @@ namespace App\Components\Exam;
 use App\Components\Question\QuestionService;
 use App\Events\BeginExamEvent;
 use App\Models\ExamQuestion;
+use App\Models\ExamUserAnswer;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\TeacherSupport;
@@ -51,6 +52,22 @@ class ExamService
             ->orderBy('id','ASC')->get();
 
         $questions = (new QuestionService())->getQuestions($questions, $lesson);
+
+        return $questions;
+    }
+
+
+
+    public function resultQuestion($questions, $lessonId, $userId)
+    {
+        foreach ($questions as $question){
+            $answer = ExamUserAnswer::where([
+                'question_id' => $question->id,
+                'lesson_id'   => $lessonId,
+                'user_id'     => $userId])->first();
+
+                $question->result = $answer ? $answer->answer : null ;
+        }
 
         return $questions;
     }

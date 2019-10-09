@@ -10,6 +10,7 @@ namespace App\Components\Question;
 
 
 use App\Models\Course;
+use App\Models\ExamUserAnswer;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\QuestionAnswer;
@@ -76,6 +77,7 @@ class QuestionService
         }
         $question->child = $questionChildren;
     }
+    
     private function getFillWordIntoSentenceQuestions(Question $question, array $notIn = [])
     {
         $query = Question::where('parent_id', $question->id);
@@ -89,6 +91,7 @@ class QuestionService
 
         $question->child = $children;
     }
+    
     private function getFillWordIntoParagraphQuestions(Question $question)
     {
         if($question->parent_id == 0)
@@ -126,6 +129,7 @@ class QuestionService
             $question->childs =  $sub_questions;
         }
     }
+    
     private function getMultiFlashQuestions(Question $question)
     {
         $questionSub = QuestionCardMuti::where('parent_id',$question->id)->where('lesson_id',$question->lesson_id)->get();

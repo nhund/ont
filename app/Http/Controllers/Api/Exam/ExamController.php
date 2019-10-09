@@ -62,4 +62,18 @@ class ExamController extends Controller
                 ->paginateWith(new IlluminatePaginatorAdapter($examUser))
                 ->respond();
     }
+
+
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return mixed
+     */
+    public function result(Lesson $lesson, Request $request)
+    {
+        $examService    = new ExamService();
+        $questions      = $examService->getQuestionExam($lesson);
+        $answerQuestions   = $examService->resultQuestion($questions, $lesson->id, $request->user()->id);
+        return $this->respondOk($answerQuestions);
+    }
 }
