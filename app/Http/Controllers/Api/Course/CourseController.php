@@ -115,19 +115,4 @@ class CourseController extends Controller
             ->collection($otherCourse, new ShortCourseTransformer)
             ->respond();
     }
-
-    /**
-     * @param Request $request
-     * @param $courseId
-     * @return mixed
-     */
-    public function rating(Request $request, $courseId)
-    {
-        $rates = Rating::where('course_id',$courseId)->orderBy('id','DESC')->paginate();
-
-        return fractal()
-            ->collection($rates, new RatingTransformer)
-            ->paginateWith(new IlluminatePaginatorAdapter($rates))
-            ->respond();
-    }
 }

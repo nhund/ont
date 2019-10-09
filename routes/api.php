@@ -69,6 +69,10 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
             Route::get('/{question}', 'CommentQuestionController@index');
         });
     });
+
+    Route::namespace('Course')->group(function (){
+        Route::post('courses/{course}/rating', 'RatingController@store');
+    });
 });
 
 
@@ -85,7 +89,7 @@ Route::namespace('Api')->group(function () {
         Route::get('/other', 'CourseController@otherCourses');
         Route::get('/search', 'CourseController@search');
         Route::get('/{course}/detail', 'CourseController@show');
-        Route::get('/{course}/rating', 'CourseController@rating');
+        Route::get('/{course}/rating', 'RatingController@index');
     });
 
     Route::namespace('School')->prefix('schools')->group(function () {

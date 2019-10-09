@@ -16,6 +16,10 @@ class Rating extends Model
     
     public function user()
 	{
-		return $this->hasOne('App\User', 'id', 'user_id')->withDefault(['name'=>'']);
+		return $this->hasOne('App\User', 'id', 'user_id')
+            ->withDefault(function ($user){
+                $user->full_name = 'Default Name';
+                $user->email = 'onthiez@gmail.com';
+            });
     }    
 }

@@ -10,6 +10,7 @@ use League\Fractal\TransformerAbstract;
 class RatingTransformer extends TransformerAbstract
 {
     protected $defaultIncludes = ['user'];
+
     /**
      * A Fractal transformer Course.
      *
@@ -18,7 +19,13 @@ class RatingTransformer extends TransformerAbstract
      */
     public function transform(Rating $rating)
     {
-        return $rating->toArray();
+        return [
+            'id'           => $rating->id,
+            'user_id'      => $rating->user_id,
+            'course_id'    => $rating->course_id,
+            'rating_value' => (int)$rating->rating_value,
+            'create_at'    => date('d-m-Y H:i:s', $rating->create_at),
+        ];
     }
 
     /**
