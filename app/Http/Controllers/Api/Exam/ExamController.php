@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api\Exam;
 
 use App\Components\Exam\ExamService;
 use App\Components\Exam\SubmitQuestionExam;
+use App\Events\BeginExamEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\submitQuestionExamRequest;
 use App\Http\Requests\submitQuestionRequest;
@@ -25,6 +26,8 @@ class ExamController extends Controller
     {
         $lesson = Lesson::findOrfail($lessonId);
         $questions = (new ExamService())->getQuestionExam($lesson);
+
+        event(new BeginExamEvent($lesson, $request->user()));
 
         return $this->respondOk($questions);
     }

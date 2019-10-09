@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExamPart;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\UserCourse;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TeacherSupport;
 use App\User;
@@ -56,10 +58,6 @@ class LessonController extends AdminBaseController
                 'title'=>$lesson->name
             )
         );
-//        dd($var);
-//        echo '<pre>';
-//        var_dump($var);
-//        echo '</pre>';
         return view('backend.lesson.detail', $var);
     }
 
@@ -165,6 +163,12 @@ class LessonController extends AdminBaseController
         $lesson->random_question= $random_question;
         $lesson->type           = $type;
         $lesson->save();
+
+        if ($type == Lesson::EXAM){
+            $params = $request->only(['lesson_id', 'part_1', 'part_2', 'part_3', 'part_4', 'part_5', 'part_6', 'part_7', 'part_8', 'part_9', 'part_10']);
+            $examId = Arr::pull($params, 'lesson_id');
+            ExamPart::updateOrCreate(['exam_id' => $examId], $params);
+        }
 
         return redirect()->back();
     }

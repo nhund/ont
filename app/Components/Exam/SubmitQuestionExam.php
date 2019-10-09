@@ -38,8 +38,6 @@ class SubmitQuestionExam
         $this->question = $question;
         $this->examId   = $this->request->get('exam_id');
 
-        $this->checkUserExam();
-
         if ($this->question->type == Question::TYPE_FLASH_MUTI) {
             return $this->multiFlash();
         }
@@ -89,7 +87,7 @@ class SubmitQuestionExam
             $userQuestion->part = $examQuestion->part;
         }
         $userQuestion->status    = $this->flag ? Question::REPLY_OK : Question::REPLY_ERROR;
-        $userQuestion->score = $this->flag ? $score : 0 ;
+        $userQuestion->score     = $this->flag ? $score : 0 ;
         $userQuestion->answer    = \json_encode($data);
         $userQuestion->submit_at = now();
 
@@ -247,24 +245,6 @@ class SubmitQuestionExam
         return $this->_saveLogQuestion($result);
     }
 
-    /**
-     * @return mixed
-     */
-    private function checkUserExam()
-    {
-        $userId   = $this->request->user()->id;
-        $examUser = ExamUser::where('lesson_id', $this->examId)->where('user_id', $userId)->exists();
-
-        if (!$examUser) {
-            ExamUser::create([
-                 'lesson_id'      => $this->examId,
-                 'user_id'        => $userId,
-                 'turn'           => 1,
-                 'score'          => 0,
-                 'last_submit_at' => now(),
-             ]);
-        }
-    }
 
     // tính điểm mỗi câu hỏi đúng
     private function calculateScore()

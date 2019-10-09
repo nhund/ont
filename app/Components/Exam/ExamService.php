@@ -10,6 +10,7 @@ namespace App\Components\Exam;
 
 
 use App\Components\Question\QuestionService;
+use App\Events\BeginExamEvent;
 use App\Models\ExamQuestion;
 use App\Models\Lesson;
 use App\Models\Question;
@@ -19,11 +20,6 @@ use Auth;
 
 class ExamService
 {
-    public function getQuestionOfExam()
-    {
-        
-    }
-
     public function checkPermission($id) {
         if (!$id || !$lesson = Lesson::find($id)) {
             return false;
