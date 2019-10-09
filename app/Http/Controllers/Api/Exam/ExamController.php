@@ -14,10 +14,13 @@ use App\Events\BeginExamEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\submitQuestionExamRequest;
 use App\Http\Requests\submitQuestionRequest;
+use App\Models\ExamUser;
 use App\Models\Lesson;
 use App\Models\Question;
+use App\Transformers\Exam\ExamUserTransformer;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class ExamController extends Controller
 {
@@ -39,5 +42,24 @@ class ExamController extends Controller
         $result = (new SubmitQuestionExam())->submit($request, $question);
 
         return $this->respondOk($result);
+    }
+
+    /**
+     * @param $examId
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rank($examId, Request $request)
+    {
+        $examUser = ExamUser::where('lesson_id', $examId)
+            ->orderBy('score', 'DESC')
+            ->orderBy('created_at', 'DESC')
+            ->orderBy('turn', 'ASC')
+            ->paginate(10);
+
+
+        return fractal()->collection($examUser, new ExamUserTransformer)
+                ->paginateWith(new IlluminatePaginatorAdapter($examUser))
+                ->respond();
     }
 }

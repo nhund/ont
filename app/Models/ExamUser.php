@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class ExamUser extends Model
@@ -17,4 +18,9 @@ class ExamUser extends Model
     public $timestamps = true;
 
     protected $fillable = ['lesson_id', 'user_id', 'turn', 'score', 'last_submit_at'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
