@@ -38,27 +38,30 @@ class SubmitQuestionExam
         $this->question = $question;
         $this->examId   = $this->request->get('exam_id');
 
-        if ($this->question->type == Question::TYPE_FLASH_MUTI) {
-            return $this->multiFlash();
+        if ($this->question->type == $this->question->type)
+        {
+            if ($this->question->type == Question::TYPE_FLASH_MUTI) {
+                return $this->multiFlash();
+            }
+
+            if ($this->question->type == Question::TYPE_FLASH_SINGLE) {
+                return $this->singleFlash();
+            }
+
+            if ($this->question->type == Question::TYPE_DIEN_TU) {
+                return $this->fillWordIntoSentence();
+            }
+
+            if ($this->question->type == Question::TYPE_TRAC_NGHIEM) {
+                return $this->multipleChoice();
+            }
+
+            if ($this->question->type == Question::TYPE_DIEN_TU_DOAN_VAN) {
+                return $this->fillWordIntoParagraph();
+            }
         }
 
-        if ($this->question->type == Question::TYPE_FLASH_SINGLE) {
-            return $this->singleFlash();
-        }
-
-        if ($this->question->type == Question::TYPE_DIEN_TU) {
-            return $this->fillWordIntoSentence();
-        }
-
-        if ($this->question->type == Question::TYPE_TRAC_NGHIEM) {
-            return $this->multipleChoice();
-        }
-
-        if ($this->question->type == Question::TYPE_DIEN_TU_DOAN_VAN) {
-            return $this->fillWordIntoParagraph();
-        }
-
-        return response()->json(array('error' => true, 'msg' => 'succsess'));
+        return response()->json(array('error' => 1, 'msg' => 'Dữ liệu không hợp lệ'));
     }
 
     protected function _saveLogQuestion($data)
@@ -115,7 +118,9 @@ class SubmitQuestionExam
         ];
         $this->flag = $rely == Question::REPLY_OK;
 
-        return $this->_saveLogQuestion($dataLog);
+         $this->_saveLogQuestion($dataLog);
+
+        return $dataLog;
     }
 
     /**
@@ -130,7 +135,9 @@ class SubmitQuestionExam
         ];
 
         $this->flag = $rely == Question::REPLY_OK;
-        return $this->_saveLogQuestion($dataLog);
+        $this->_saveLogQuestion($dataLog);
+
+        return $dataLog;
     }
 
     private function multipleChoice()
@@ -170,8 +177,8 @@ class SubmitQuestionExam
                 'interpret_all' => $interpret_all ?: '',
             );
         }
-
-        return $this->_saveLogQuestion($result);
+        $this->_saveLogQuestion($result);
+        return $result;
     }
 
     private function fillWordIntoSentence()
@@ -198,7 +205,9 @@ class SubmitQuestionExam
             );
         }
 
-        return $this->_saveLogQuestion($result);
+        $this->_saveLogQuestion($result);
+
+        return $result;
     }
 
     private function fillWordIntoParagraph()
@@ -242,7 +251,9 @@ class SubmitQuestionExam
                 }, $str);
             }
         }
-        return $this->_saveLogQuestion($result);
+        $this->_saveLogQuestion($result);
+
+        return $result;
     }
 
 
@@ -252,7 +263,7 @@ class SubmitQuestionExam
         $examQuestion = ExamQuestion::where([
             'question_id' => $this->question->id,
             'lesson_id'   => $this->examId,
-        ])->first();
+        ])->firstOrFail();
 
         $condition = [
             'lesson_id' => $this->examId,
