@@ -28,7 +28,7 @@ class Lesson extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'status', 'description', 'created_at','image', 'updated_at', 'is_exercise', 'type', 'level'
+        'name', 'status', 'description', 'created_at','image', 'updated_at', 'is_exercise', 'type', 'level', 'repeat_time'
     ];
     public $timestamps = false;
 

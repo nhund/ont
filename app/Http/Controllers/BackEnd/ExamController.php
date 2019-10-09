@@ -99,10 +99,11 @@ class ExamController
 
     public function partExam(Request $request)
     {
-        $params = $request->only(['exam_id', 'part_1', 'part_2', 'part_3', 'part_4', 'part_5', 'part_6', 'part_7', 'part_8', 'part_9', 'part_10']);
+        $params = $request->only(['exam_id', 'part_1', 'part_2', 'part_3', 'part_4', 'part_5', 'part_6', 'part_7', 'part_8', 'part_9', 'part_10', 'repeat_time']);
         $examId = Arr::pull($params, 'exam_id');
+        $repeatTime = Arr::pull($params, 'repeat_time');
         ExamPart::updateOrCreate(['exam_id' => $examId], $params);
-
+        Lesson::where('id', $examId)->update(['repeat_time' => $repeatTime]);
         return response()->json(['status' => 200, 'data' => $params]);
     }
 

@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api\Exam;
 use App\Components\Exam\ExamService;
 use App\Components\Exam\SubmitQuestionExam;
 use App\Events\BeginExamEvent;
+use App\Exceptions\BadRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\submitQuestionExamRequest;
 use App\Http\Requests\submitQuestionRequest;
@@ -28,6 +29,15 @@ class ExamController extends Controller
     public function show( $lessonId, Request $request)
     {
         $lesson = Lesson::findOrfail($lessonId);
+
+        $userExam = ExamUser::where('user_id', $request->user()->id)
+            ->where('lesson_id', $lessonId)
+            ->first();
+
+        if ($userExam && $userExam->turn > $lesson->repeat_time){
+            throw new BadRequestException('Bạn đã hết lượt làm bài kiểm tra, vui lòng mua thêm');
+        }
+
         $questions = (new ExamService())->getQuestionExam($lesson);
 
         event(new BeginExamEvent($lesson, $request->user()));

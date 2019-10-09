@@ -166,12 +166,20 @@
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h1 class="modal-title">Cập nhật điểm của phần kiểm tra</h1>
+                <h1 class="modal-title"><strong>Cập nhật điểm của phần kiểm tra</strong></h1>
             </div>
             <form id="form-update-part-exam" method="POST">
                 <div class="modal-body">
                     <input type="hidden" name="exam_id" id="exam_id" value="{{$lesson->id ?? 0}}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                    <div class="row" style="font-weight: bold">
+                        <div class="col-sm-offset-1 col-sm-2">Số lần làm bài</div>
+                        <div class="col-sm-2"><input type="number" value="{{$lesson->repeat_time??0}}" name="repeat_time"/></div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <hr/>
                     <div class="row" style="font-weight: bold">
                         <div class="col-sm-offset-1 col-sm-2">Phần</div>
                         <div class="col-sm-3">Điểm</div>
