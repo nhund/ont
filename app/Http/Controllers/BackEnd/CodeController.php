@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\BackEnd;
 
-use App\Http\Controllers\Controller;
 use App\Models\Code;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +34,12 @@ class CodeController extends AdminBaseController
         } else {
             $code = new Code();
         }
-        $var['code']    = $code->orderBy('created_at', 'DESC')->paginate(20);
+
+
+        $var['code']    = $code->select('*','code.code as cCode','user_code_log.create_at as dateActive')
+            ->leftJoin('user_code_log','user_code_log.code_id', '=', 'code.id')
+            ->leftJoin('users','users.id', '=', 'user_code_log.user_id')
+            ->orderBy('code.created_at', 'DESC')->paginate(20);
         return view('backend.code.list', $var);
     }
 
