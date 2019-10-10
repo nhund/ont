@@ -50,5 +50,11 @@ class LessonController extends Controller{
         return $this->respondOk($questions);
     }
 
+    public function report(Lesson $lesson, Request $request)
+    {
+        $question = (new LessonService($lesson, $request->user()))->get();
+        dd($question);
+    }
+
 
 }

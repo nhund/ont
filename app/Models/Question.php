@@ -30,6 +30,8 @@ class Question extends Model
     const REPLY_ERROR = 1;
     const REPLY_OK = 2;
 
+    const PARENT_ID = 0;
+
     const LEARN_LAM_BAI_MOI = 'lam-bai-moi';
     const LEARN_LAM_CAU_CU = 'lam-cau-cu';
     const LEARN_LAM_CAU_SAI = 'lam-cau-sai';

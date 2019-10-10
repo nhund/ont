@@ -50,6 +50,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
     Route::namespace('Lesson')->prefix('lesson')->group(function () {
         Route::get('/{lesson}', 'LessonController@show');
         Route::get('/{lesson}/question', 'LessonController@question');
+        Route::get('/{lesson}/report', 'LessonController@report');
     });
     Route::namespace('Question')->prefix('question')->group(function () {
         Route::post('/{question}', 'QuestionAnswerController@store');

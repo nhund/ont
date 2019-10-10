@@ -91,6 +91,13 @@ class UserCourseController extends Controller{
         return $this->respondOk(['total_courses' => $countMYCourses, 'courses_done' => 4]);
     }
 
+    /**
+     * api get info full detail a course
+     *
+     * @param Course $course
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function detail(Course $course, Request $request)
     {
         $userCourseReport = new UserCourseReportService($course, $request->user());
