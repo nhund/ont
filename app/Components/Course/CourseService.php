@@ -197,7 +197,7 @@ class CourseService
         $stick = $this->getStickyCourses($school_id)->pluck('id')->toArray();
         $free  = $this->getCoursesOfByStatus([Course::TYPE_FREE_TIME], $school_id)->pluck('id')->toArray();
 
-        $courseIds = array_merge($stick, $free);
+        $courseIds = array_merge($stick, $free, [\request('course_current_id')]);
 
         $limit = request('limit', 4);
 

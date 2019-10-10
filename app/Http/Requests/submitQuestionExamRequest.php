@@ -44,13 +44,5 @@ class submitQuestionExamRequest extends AuthorizedFormRequest
                 'answers' =>'required|array'
             ]);
         }
-
-//        return [
-//            'question_type' => 'required|in:'.implode($types, ','),
-//            'exam_id' => 'required|exists:lesson,id',
-//            'type' => 'required',
-//            'answers' => 'array',
-//            'txtLearnWord' => 'array'
-//        ];
     }
 }
