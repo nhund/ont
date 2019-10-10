@@ -69,7 +69,7 @@ class LessonService
         return [
             'totalNewQuestions'     => $this->totalNewQuestions(),
             'totalQuestions'        => $this->totalQuestions,
-            'bookmarkQuestions'     => $this->totalBookmarkQuestions(),
+            'totalBookmarkQuestions'     => $this->totalBookmarkQuestions(),
             'totalWrongQuestions'   => $this->totalWrongQuestions,
             'totalCorrectQuestions' => $this->totalCorrectQuestions,
             'totalDid'              => $this->totalCorrectQuestions + $this->totalWrongQuestions,
