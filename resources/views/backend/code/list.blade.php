@@ -62,12 +62,15 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th width="10%">STT</th>
-                                    <th width="15%">Ngày tạo</th>
-                                    <th width="20%">Code</th>
+                                    <th width="3%">STT</th>
+                                    <th width="10%">Ngày tạo</th>
+                                    <th width="10%">Code</th>
                                     <th>Giá</th>
-                                    <th>Trạng thái</th>
+                                    <th>Nguồn</th>
+                                    <th>Email</th>
                                     <th>Người dùng</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thời gian kích hoạt</th>
                                     <th>Ngày hết hạn</th>
                                 </tr>
                                 </thead>
@@ -81,9 +84,23 @@
                                                         {{ date('d/m/Y', $co->created_at) }}
                                                     </td>
                                                     <td>
-                                                        {{ $co->code }}
+                                                        {{ $co->cCode }}
                                                     </td>
                                                     <td>{{  number_format($co->price,0,',','.') }}</td>
+
+                                                    <td>
+                                                        @if(empty($co->social_type))
+                                                            Web
+                                                        @else
+                                                            @if($co->social_type == \App\User::LOGIN_FB)
+                                                                FaceBook
+                                                            @else
+                                                                Google
+                                                            @endif
+                                                        @endif
+                                                    </td>
+                                                    <td>{{$co->email}}</td>
+                                                    <td>{{$co->full_name}}</td>
                                                     <td>
                                                         @if ($co->status)
                                                             <span class="color-red">Đã sử dụng</span>
@@ -91,8 +108,7 @@
                                                             <span class="color-green">Chưa sử dụng</span>
                                                         @endif
                                                     </td>
-                                                    <td>
-                                                    </td>
+                                                    <td>{{ (empty($co->dateActive)) ? '' : date('d/m/Y H:i:s', $co->dateActive) }}</td>
                                                     <td>@if($co->end_date) {{ date('d/m/Y', $co->end_date) }} @else Không thời hạn @endif</td>
                                                 </tr>
                                             @endif
