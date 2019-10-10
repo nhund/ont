@@ -193,6 +193,26 @@ class CourseService
         return $this;
     }
 
+    public function getOtherCourseSchoolHome($school_id){
+        $stick = $this->getStickyCourses($school_id)->pluck('id')->toArray();
+        $free  = $this->getCoursesOfByStatus([Course::TYPE_FREE_TIME], $school_id)->pluck('id')->toArray();
+
+        $courseIds = array_merge($stick, $free);
+
+        $limit = request('limit', 4);
+
+        $query = Course::query();
+
+        if($school_id){
+            $query->where('category_id', $school_id);
+        }
+        return $query
+            ->whereNotIn('id', $courseIds)
+            ->orderBy('sticky', 'DESC')
+            ->orderBy('id', 'DESC')
+            ->paginate($limit);
+    }
+
      /**
      * @param  \Illuminate\Database\Eloquent\Builder &$query
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
