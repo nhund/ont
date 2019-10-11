@@ -8,7 +8,7 @@
 
 namespace App\Components\Recommendation;
 
-class RecommendationService
+class RecommendationService extends RecommendationCommon
 {
 
 }

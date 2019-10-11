@@ -3,10 +3,14 @@
 namespace App\Transformers\Course;
 
 use App\Models\Course;
+use App\Transformers\Category\CategoryTransformer;
 use League\Fractal\TransformerAbstract;
 
 class ShortCourseTransformer extends TransformerAbstract
 {
+
+    protected $defaultIncludes = ['school'];
+
     /**
      * A Fractal transformer Course.
      *
@@ -29,5 +33,12 @@ class ShortCourseTransformer extends TransformerAbstract
             'status'      => $course->status,
             'sticky'      => $course->sticky,
         ];
+    }
+
+    public function includeSchool(Course $course)
+    {
+        $school = $course->category;
+
+        return $school ? $this->item($school, new CategoryTransformer) : null;
     }
 }

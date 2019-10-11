@@ -50,5 +50,22 @@ class LessonController extends Controller{
         return $this->respondOk($questions);
     }
 
+    /**
+     * report all type amount questions of a lesson
+     *
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return mixed
+     */
+    public function report(Lesson $lesson, Request $request)
+    {
+        $report = (new LessonService($lesson, $request->user()))->get();
+
+        return fractal()
+            ->item($lesson, new LessonTransformer)
+            ->addMeta($report)
+            ->respond();
+    }
+
 
 }

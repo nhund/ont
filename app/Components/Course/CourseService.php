@@ -33,9 +33,9 @@ class CourseService
      * @param int $limit
      * @return mixed
      */
-    public function getStickyCourses($school_id = null)
+    public function getStickyCourses($school_id = null, $limit = null)
     {
-        $limit = request('limit', 3);
+        $limit = $limit ?: request('limit', 3);
         $query =  Course::query()->where('sticky', Course::STICKY);
 
         if($school_id){
@@ -55,9 +55,9 @@ class CourseService
      * @param $school_id
      * @return mixed
      */
-    public function getCoursesOfByStatus(array $status, $school_id = null)
+    public function getCoursesOfByStatus(array $status, $school_id = null, $limit = null)
     {
-        $limit = request('limit', 3);
+        $limit = $limit ?: request('limit', 3);
         $query = Course::query();
 
         if($school_id){
@@ -77,9 +77,9 @@ class CourseService
      * @param null $school_id
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function getSourcesForHomePage($school_id = null){
+    public function getSourcesForHomePage($school_id = null, $limit = null){
 
-        $limit = request('limit', 4);
+        $limit = $limit ?: request('limit', 4);
         $query = Course::query();
         if($school_id){
             $query->where('category_id', $school_id);
@@ -191,6 +191,30 @@ class CourseService
         }
 
         return $this;
+    }
+
+    public function getOtherCourseSchoolHome($school_id){
+        $stick = $this->getStickyCourses($school_id, 3)->pluck('id')->toArray();
+        $free  = $this->getCoursesOfByStatus([Course::TYPE_FREE_TIME], $school_id, 1)->pluck('id')->toArray();
+
+        $courseIds = array_merge($stick, $free);
+
+        if (\request('course_current_id')){
+            $courseIds = array_merge($courseIds, [\request('course_current_id')]);
+        }
+
+        $limit = request('limit', 4);
+
+        $query = Course::query();
+
+        if($school_id){
+            $query->where('category_id', $school_id);
+        }
+        return $query
+            ->whereNotIn('id', $courseIds)
+            ->orderBy('sticky', 'DESC')
+            ->orderBy('id', 'DESC')
+            ->paginate($limit);
     }
 
      /**

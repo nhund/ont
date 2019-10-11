@@ -1074,11 +1074,11 @@ class CourseLearnController extends Controller
             //tong so cau hoi trong 1 lesson
             $lesson_questions = Question::where('lesson_id',$data['lesson_id'])->where('parent_id',0)->count();
             //tong so cau hoi user da lam
-            $userQuestionLog = UserQuestionLog::where('lesson_id',$data['lesson_id'])->where('user_id',$user->id)->count();
-            if($lesson_questions == $userQuestionLog)
-            {
-                UserQuestionLog::where('lesson_id',$data['lesson_id'])->where('user_id',$user->id)->delete();
-            }
+//            $userQuestionLog = UserQuestionLog::where('lesson_id',$data['lesson_id'])->where('user_id',$user->id)->count();
+//            if($lesson_questions == $userQuestionLog)
+//            {
+//                UserQuestionLog::where('lesson_id',$data['lesson_id'])->where('user_id',$user->id)->delete();
+//            }
         }
         //dd($data);
 
@@ -1088,6 +1088,12 @@ class CourseLearnController extends Controller
             $questionLog->status = $data['status'];
             $questionLog->update_time = time();
             $questionLog->is_ontap = $data['type'] == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
+
+            $questionLog->total_turn += 1;
+            if ($data['status'] == Question::REPLY_OK){
+                $questionLog->correct_number += 1;
+            }
+
             $questionLog->save();
 
         }else{
@@ -1102,6 +1108,12 @@ class CourseLearnController extends Controller
             $questionLog->create_at = time();
             $questionLog->is_ontap = $data['type'] == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
             $questionLog->update_time = time();
+
+            $questionLog->total_turn += 1;
+            if ($data['status'] == Question::REPLY_OK){
+                $questionLog->correct_number += 1;
+            }
+
             $questionLog->save();
         }
         //ghi log neu dang lam on tap
@@ -1178,7 +1190,7 @@ class CourseLearnController extends Controller
             {
                 // lam dung het tat ca cau hoi. reset tong so cau tra loi dung
                 // tang luot lam len
-                $lesson_log->count_question_true = 0;
+                //$lesson_log->count_question_true = 0;
                 $lesson_log->count += 1;
                 $lesson_log->save();
             }

@@ -73,7 +73,6 @@ class QuestionService
             }else{
                 $questionChild->answers = QuestionAnswer::where('question_id',$questionChild->id)->orderBy('answer','ASC')->get();
             }
-
         }
         $question->child = $questionChildren;
     }

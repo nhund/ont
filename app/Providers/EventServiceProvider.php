@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         Events\RemoveUserCourse::class => [
             Listeners\RemoveUserCourseListen::class
+        ],
+        Events\SubmitQuestionEvent::class => [
+            Listeners\CountTurnLessonListen::class
         ]
     ];
 

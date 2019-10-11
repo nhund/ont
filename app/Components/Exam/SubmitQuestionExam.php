@@ -5,9 +5,7 @@
  * Date: 28/09/2019
  * Time: 10:54
  */
-
 namespace App\Components\Exam;
-
 
 use App\Models\ExamPart;
 use App\Models\ExamQuestion;
