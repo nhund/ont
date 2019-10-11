@@ -400,6 +400,9 @@
 .overlay-content .method.do_bookmark a{
     background: #FF8B00;
 }
+.do_bookmark{
+    background: #FF8B00 !important;
+}
 .overlay-content .method p{
     line-height: 16px;
     font-size: 14px;
@@ -525,4 +528,9 @@
     top: 15px;
     right: 35px;
   }
+}
+
+.block-tow{
+    clear: both;
+    margin-top: 15px;
 }
