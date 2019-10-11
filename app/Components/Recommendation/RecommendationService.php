@@ -10,8 +10,5 @@ namespace App\Components\Recommendation;
 
 class RecommendationService extends RecommendationCommon
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
+
 }
