@@ -2,7 +2,9 @@ vendor/
 .ide/
 node_modules/
 npm-debug.log
+**.idea/**
 
+#git ls-files --others -i --exclude-standard
 # Laravel 4 specific
 bootstrap/compiled.php
 app/storage/
