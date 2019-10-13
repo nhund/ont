@@ -106,36 +106,41 @@
                     <div class="body">
                         @foreach($var['lessons'] as $lesson)
                                 <div class="title_body">
-                                    {{ $lesson->name }}
-                                </div>                                
+                                    @if($lesson->level == \App\Models\Lesson::LEVEL_1)
+                                        {{ $lesson->name }}
+                                    @else
+                                        <a href="{{route('course.learn.level2',['title'=>str_slug($lesson->name),'id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
+                                    @endif
+                                </div>
                                 @if(isset($lesson->childs))
                                     @foreach($lesson->childs as $lesson_child)
-
-                                        @if($lesson_child->is_exercise == \App\Models\Lesson::IS_EXERCISE)
-                                            <div class="item-exercise">
-                                            <a href="{{ route('user.lambaitap.question',['id'=>$lesson_child->id,'title'=>str_slug($lesson_child->name),'type'=>\App\Models\Question::LEARN_LAM_BAI_TAP]) }}" class="name ly_thuyet">{{ $lesson_child->name }}</a>
-                                                <div class="count_learn">
-                                                    <p>
-                                                        @if(isset($lesson_child->userLearn->count))
-                                                            {{ number_format($lesson_child->userLearn->count) }}
-                                                        @else 
-                                                            0
+                                        @if($lesson_child->level == \App\Models\Lesson::LEVEL_1)
+                                            @if($lesson_child->is_exercise == \App\Models\Lesson::IS_EXERCISE)
+                                                <div class="item-exercise">
+                                                <a href="{{ route('user.lambaitap.question',['id'=>$lesson_child->id,'title'=>str_slug($lesson_child->name),'type'=>\App\Models\Question::LEARN_LAM_BAI_TAP]) }}" class="name ly_thuyet">{{ $lesson_child->name }}</a>
+                                                    <div class="count_learn">
+                                                        <p>
+                                                            @if(isset($lesson_child->userLearn->count))
+                                                                {{ number_format($lesson_child->userLearn->count) }}
+                                                            @else
+                                                                0
+                                                            @endif
+                                                        </p>
+                                                    </div>
+                                                    <div class="topic_progress">
+                                                        @if(isset($lesson_child->userLearnPass)) {{ number_format($lesson_child->userLearnPass) }} @else 0 @endif/{{ number_format($lesson_child->countQuestion) }}
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div class="item-exercise">
+                                                    <a href="{{ route('user.lambaitap.lythuyet',['id'=>$lesson_child->id]) }}" class="name bai_tap">{{ $lesson_child->name }}</a>
+                                                    <div class="topic_progress">
+                                                        @if($lesson_child->lesson_ly_thuyet_pass)
+                                                            <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
                                                         @endif
-                                                    </p>
+                                                    </div>
                                                 </div>
-                                                <div class="topic_progress">
-                                                    @if(isset($lesson_child->userLearnPass)) {{ number_format($lesson_child->userLearnPass) }} @else 0 @endif/{{ number_format($lesson_child->countQuestion) }}
-                                                </div>
-                                            </div>
-                                        @else
-                                            <div class="item-exercise">
-                                                <a href="{{ route('user.lambaitap.lythuyet',['id'=>$lesson_child->id]) }}" class="name bai_tap">{{ $lesson_child->name }}</a>
-                                                <div class="topic_progress">
-                                                    @if($lesson_child->lesson_ly_thuyet_pass)
-                                                        <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">           
-                                                    @endif
-                                                </div>
-                                            </div>    
+                                            @endif
                                         @endif
                                     @endforeach
                                 @endif
