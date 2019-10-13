@@ -81,17 +81,16 @@ Route::prefix('course')->group(function () {
 Route::prefix('bai-viet')->group(function () { 
         Route::get('/{title}.{id}', 'FrontEnd\PostController@detail')
                     ->name('post.detail');             
-        });                         
+        });
 Route::get('/khoa-hoc/{title}.{id}/tong-quan', 'FrontEnd\CourseLearnController@course')->name('course.learn');
-Route::get('/khoa-hoc/cap-2/{title}.{id}/tong-quan', 'FrontEnd\CourseLearnController@course')->name('course.learn.level2');
+Route::get('/khoa-hoc/cap-2/{title}.{course_id}/tong-quan', 'FrontEnd\CourseLearnController@lessonLevel2')
+                ->name('course.learn.level2');
 
 Route::get('/khoa-hoc/{title}.{id}/tong-quan/{type}', 'FrontEnd\CourseLearnController@courseTypeLearn')
         ->name('course.courseTypeLearn');  
 Route::get('/search', 'FrontEnd\SearchController@search')
             ->name('search');  
 Route::prefix('bai-tap')->group(function () { 
-                // Route::get('/hoc-ly-thuyet.{id}', 'FrontEnd\CourseLearnController@lyThuyet')
-                //             ->name('user.lambaitap.lythuyet');       
                 Route::post('/get-explain', 'FrontEnd\CourseLearnController@getExplain')
                         ->name('user.lambaitap.getExplain');       
                 Route::get('/hoc-ly-thuyet.{id}', 'FrontEnd\CourseLearnController@lyThuyet')

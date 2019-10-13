@@ -1214,7 +1214,7 @@ class CourseLearnController extends Controller
         $lesson_log->save();
     }        
 }
-public function getExplain(Request $request)
+    public function getExplain(Request $request)
 {
     $data = $request->all();
     if(!Auth::check())
@@ -1229,4 +1229,113 @@ public function getExplain(Request $request)
     }
     return response()->json(array('error' => true, 'msg' => 'error'));
 }
+
+    public function lessonLevel2($title,$courseId,Request $request)
+    {
+        $data = $request->all();
+        $course = Course::find($courseId);
+        if(!$course)
+        {
+            return redirect()->route('home');
+        }
+        if(!Auth::check())
+        {
+            alert()->error('Bạn cần đăng nhập để thực hiện hành động này');
+            return redirect()->route('home');
+        }
+        $user = Auth::user();
+        $check_permision = $this->checkPermission($user->id,$courseId);
+        if($check_permision['error'] == true)
+        {
+            alert()->error($check_permision['msg']);
+            return redirect()->route('courseDetail',['title'=>str_slug($title),'id'=>$courseId]);
+        }
+
+        $var['support'] = isset($check_permision['support']) ? $check_permision['support'] : false;
+        $var['course'] = $course;
+        $lessons = Lesson::where('course_id',$courseId)
+            ->where('parent_id',$request->get('lesson_id'))
+            ->orderBy('order_s','ASC')
+            ->orderBy('created_at','ASC')->get();
+
+        $total_question = 0;
+        $total_user_learn = 0;
+        $show_on_tap = false;
+
+        foreach($lessons as $lesson)
+        {
+            $lesson_childs = Lesson::where('course_id',$courseId)->where('parent_id',$lesson->id)
+                ->orderBy('order_s','ASC')
+                ->orderBy('created_at','ASC')->get();
+            foreach ($lesson_childs as $key => $lesson_child) {
+                $question_child = Question::where('lesson_id',$lesson_child->id)->where('parent_id',0)->get();
+                $countQuestion = $question_child->count();
+                //dd($question_child->pluck('id')->toArray());
+                $userLearn = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->groupBy('question_parent')->get();
+                //lay log lesson
+                $userLessonLog = UserLessonLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->first();
+                if($userLessonLog)
+                {
+                    if($userLessonLog->count > 1)
+                    {
+                        $show_on_tap = true;
+                    }
+                }
+                $countLearnError = $userLearn->where('status',Question::REPLY_ERROR)->count();
+                $countLearnTrue = count($userLearn) - $countLearnError;
+                $lesson_child->countQuestion = $countQuestion;
+                $lesson_child->userLearn = $userLessonLog;
+                $lesson_child->userLearnPass = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->where('status',QuestionAnswer::REPLY_OK)->count();
+                $total_question += $countQuestion;
+                $total_user_learn += $countLearnTrue;
+                //kiem tra xem da hoc ly thuyet chua
+                $lesson_child->lesson_ly_thuyet_pass = UserLessonLog::where('user_id',$user->id)->where('course_id',$courseId)->where('lesson_id',$lesson_child->id)->first();
+            }
+            $lesson->childs = $lesson_childs;
+
+
+        }
+        $var['lessons'] = $lessons;
+        $var['course_same'] = Course::where('status','!=',Course::TYPE_PRIVATE)->orderBy('id','DESC')->take(5)->get();
+        $var['total_question'] = $total_question;
+        $var['total_user_learn'] = $total_user_learn;
+        //count so cau bookmark
+        $var['user_learn_bookmark'] = UserQuestionBookmark::where('user_id',$user->id)
+            ->where('course_id',$courseId)->count();
+
+        //lay tat ca cau sau cua user
+        $questionErrors = UserQuestionLog::where('course_id',$courseId)
+            ->where('user_id',$user->id)
+            ->where('status',Question::REPLY_ERROR)
+            ->groupBy('question_parent')->get()
+            ->pluck('question_parent')->toArray();
+
+        $var['user_learn_error'] = Question::whereIn('id',$questionErrors)->count();
+
+        $var['show_on_tap'] = $show_on_tap;
+
+        $var['rating'] = Rating::select('rating_value',DB::raw('count(*) as total'))->where('course_id',$courseId)->groupBy('rating_value')->get();
+
+        $rating_avg = 0;
+        $rating_value = 0;
+        $user_rating = 0;
+        foreach($var['rating'] as $rating)
+        {
+            $rating_value += (int)$rating->total * (int)$rating->rating_value;
+            $user_rating += $rating->total;
+
+            $ratingValue[$rating->rating_value] = array(
+                'users'=>$rating->total,
+                'total'=>(int)$rating->total
+            );
+        }
+        if($rating_value > 0)
+        {
+            $rating_avg = $rating_value / $user_rating;
+        }
+        $var['user_rating'] = $user_rating;
+        $var['rating_avg'] = number_format((float)$rating_avg, 1, '.', '');
+
+        return view('learn.course_l2',compact('var'));
+    }
 }
