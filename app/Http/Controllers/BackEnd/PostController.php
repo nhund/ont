@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Auth;
-use App\User;
-use App\Helpers\Helper;
-// use App\Models\Categories;
-use Lang;
+use function Psy\debug;
 
 class PostController extends AdminBaseController
 {
+    protected $_category;
+
     public function index(){
 
         $limit = 20;
@@ -39,7 +37,8 @@ class PostController extends AdminBaseController
                 'title' => 'Thêm bài viết',
             )
         );
-        return view('backend.post.add',compact('var'));
+        $_category = Category::where('status', Category::STATUS_ON)->orderby('id', 'DESC')->get();
+        return view('backend.post.add',compact(['var', '_category']));
     }
     public function save(Request $request)
     {
@@ -50,6 +49,7 @@ class PostController extends AdminBaseController
         // }
         $post = new Post();      
         $post->name = $data['name'];
+        $post->category_id = $data['category_id'];
         $post->content = $data['content'];       
         $post->create_date = time();   
         $post->status = $data['status'];
@@ -76,8 +76,10 @@ class PostController extends AdminBaseController
                 'title' => 'Sửa : '.$post->name,
             )
         );
-        $var['post'] = $post; 
-        return view('backend.post.edit',compact('var'));
+        $var['post'] = $post;
+
+        $_category = Category::where('status', Category::STATUS_ON)->orderby('id', 'DESC')->get();
+        return view('backend.post.edit',compact('var', '_category'));
     }
     public function update(Request $request)
     {
@@ -94,6 +96,7 @@ class PostController extends AdminBaseController
            return redirect()->route('admin.post.index');
        }
         $post->name = $data['name'];
+        $post->category_id = $data['category_id'];
         $post->content = $data['content'];       
         $post->update_date = time();   
         $post->status = $data['status'];

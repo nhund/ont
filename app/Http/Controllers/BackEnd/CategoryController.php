@@ -40,8 +40,9 @@ class CategoryController extends AdminBaseController
     {
         $data = $request->all();
         $category = new Category();
-        $category->name = $data['name'];        
+        $category->name = $data['name'];
         $category->status = $data['status'];
+        $category->type = $data['type'];
         $category->create_at = time();    
         if($category->save())
         {            
