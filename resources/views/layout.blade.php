@@ -97,7 +97,7 @@
       
       <script src='{{ web_asset('public/js/script.js') }}' type='text/javascript'></script>
       <script src='{{ web_asset('public/js/main.js') }}' type='text/javascript'></script>
-      <script src='{{ web_asset('public/js/no_coppy.js') }}' type='text/javascript'></script>
+      {{--<script src='{{ web_asset('public/js/no_coppy.js') }}' type='text/javascript'></script>--}}
       <script src="{{ web_asset('public/js/sweetalert.min.js') }}"></script>
       
       @if(Auth::check())            
