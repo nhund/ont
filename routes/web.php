@@ -82,8 +82,9 @@ Route::prefix('bai-viet')->group(function () {
         Route::get('/{title}.{id}', 'FrontEnd\PostController@detail')
                     ->name('post.detail');             
         });                         
-Route::get('/khoa-hoc/{title}.{id}/tong-quan', 'FrontEnd\CourseLearnController@course')
-        ->name('course.learn');
+Route::get('/khoa-hoc/{title}.{id}/tong-quan', 'FrontEnd\CourseLearnController@course')->name('course.learn');
+Route::get('/khoa-hoc/cap-2/{title}.{id}/tong-quan', 'FrontEnd\CourseLearnController@course')->name('course.learn.level2');
+
 Route::get('/khoa-hoc/{title}.{id}/tong-quan/{type}', 'FrontEnd\CourseLearnController@courseTypeLearn')
         ->name('course.courseTypeLearn');  
 Route::get('/search', 'FrontEnd\SearchController@search')
