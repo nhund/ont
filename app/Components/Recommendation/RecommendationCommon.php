@@ -5,17 +5,17 @@ namespace App\Components\Recommendation;
 use App\Models\Course;
 use App\User;
 
-abstract class RecommendationCommon
+ class RecommendationCommon
 {
     public function doingNewQuestions($lessonId, $userId)
     {
         
     }
 
-    public function doingOldQuestions()
-    {
-        
-    }
+//    public function doingReplayQuestions($lessonId)
+//    {
+//
+//    }
 
     public function doingBookmarkQuestions()
     {

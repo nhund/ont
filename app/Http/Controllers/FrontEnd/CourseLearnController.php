@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use App\Events\SubmitQuestionEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
@@ -140,6 +141,7 @@ class CourseLearnController extends Controller
         $var['support'] = isset($check_permision['support']) ? $check_permision['support'] : false;
         $var['course'] = $course;
         $lessons = Lesson::where('course_id',$id)->where('parent_id',0)
+        ->where('type', Lesson::LESSON)
         ->orderBy('order_s','ASC')
         ->orderBy('created_at','ASC')->get();
         $total_question = 0;
@@ -149,6 +151,7 @@ class CourseLearnController extends Controller
         foreach($lessons as $lesson)
         {
             $lesson_childs = Lesson::where('course_id',$id)->where('parent_id',$lesson->id)
+            ->where('type', Lesson::LESSON)
             ->orderBy('order_s','ASC')
             ->orderBy('created_at','ASC')->get();
             foreach ($lesson_childs as $key => $lesson_child) {
@@ -223,7 +226,6 @@ class CourseLearnController extends Controller
     }
     public function lyThuyet($id,Request $request)
     {
-        $data = $request->all();
         $var = [];
         if(!Auth::check())
         {
@@ -239,42 +241,10 @@ class CourseLearnController extends Controller
             $course = Course::find($lesson->course_id);
             return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);
         }
-        //check xem user co mua khoa hoc nay ko
-        // $userCourse = UserCourse::where('user_id',$user->id)->where('course_id',$lesson->course_id)->first();
-        // $hasCourse = true;
-        // $msg = '';
-        // if(!$userCourse)
-        // {
-        //     $hasCourse = false;
-        //     $msg = 'Bạn chưa tham gia khóa học này. Vui lòng gia mua khóa học để học tiếp';
-            
-        // }
-        // if($userCourse->status == UserCourse::STATUS_OFF)
-        // {
-        //     $hasCourse = false;
-        //     $msg ='Bạn đã bị block khỏi khóa học';
 
-        // }
-        // if($userCourse->and_date > 0 && $userCourse->and_date < time())
-        // {
-        //     $hasCourse = false;
-        //     $msg = 'Khóa học của bạn đã hết hạn. Vui lòng gia hạn để học tiếp';                
-        // }
-        // if(!$hasCourse)
-        // {
-        //     $course = Course::find($lesson->course_id);
-        //     alert()->error($msg);
-        //     if($course)
-        //     {
-        //         return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);                
-        //     }else{
-        //         return redirect()->route('home');            
-        //     }
-        // }
         $var['course'] = Course::find($lesson->course_id);   
         $var['lesson'] = $lesson;
-        //$var['type'] = isset($data['type']) ? $data['type'] : Question::LEARN_LAM_BAI_MOI;
-        
+
         $var['child'] = route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]);
         
         return view('learn.lambaitap.lythuyet',compact('var'));
@@ -363,7 +333,7 @@ class CourseLearnController extends Controller
             $questions = Question::where('lesson_id',$id)->where('parent_id',0)->whereNotIn('id',$question_log)
             ->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->take($limit)->get();
-            $getQuestionDetail = $this->_getQuestion($user, $questions, $question_log); 
+            $getQuestionDetail = $this->_getQuestion($user, $questions, $question_log);
         }else{
             if($type == Question::LEARN_LAM_BAI_TAP)
             {
@@ -539,25 +509,6 @@ class CourseLearnController extends Controller
             return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);
         }
 
-        // $userCourse = UserCourse::where('user_id',$user->id)->where('course_id',$id)->first();
-        // if(!$userCourse)
-        // {
-        //     alert()->error('Bạn chưa tham ra khóa học này');
-        //     return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);
-        // }
-        // if(!$userCourse->status == UserCourse::STATUS_OFF)
-        // {
-        //     alert()->error('Bạn đã bị block khỏi khóa học');
-        //     return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);
-        // }
-        // if($userCourse->and_date > 0 && $userCourse->and_date < time())
-        // {
-            
-        //     //$msg = 'Khóa học của bạn đã hết hạn. Vui lòng gia hạn để học tiếp';  
-        //     alert()->error('Khóa học của bạn đã hết hạn. Vui lòng gia hạn để học tiếp');
-        //     return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);              
-        // }
-
         $var = [];
         $var['course'] = $course;  
         $var['type'] = $type;
@@ -638,10 +589,12 @@ class CourseLearnController extends Controller
         if($type == Question::LEARN_LAM_BAI_MOI)
         {
             //lay lesson da hoc
-            $lesson_log = UserLessonLog::where('user_id',$user->id)->where('course_id',$id)->get()->pluck('lesson_id')->toArray();
+//            $lesson_log = UserLessonLog::where('user_id',$user->id)->where('course_id',$id)->get()->pluck('lesson_id')->toArray();
             $lesson_all = Lesson::where('course_id',$id)
-            ->orderBy('order_s','ASC')
-            ->orderBy('created_at','ASC')->get();
+                ->where('parent_id', '<>', Lesson::PARENT_ID)
+                ->where('type', Lesson::LESSON)
+                ->orderBy('order_s','ASC')
+                ->orderBy('created_at','ASC')->get();
 
             $questionLearnedLogs = UserQuestionLog::where('course_id',$id)
                         ->where('user_id',$user->id)                        
@@ -652,6 +605,7 @@ class CourseLearnController extends Controller
                 //kiem tra xem co ly thuyet trong bai hoc ko
                 $lythuyets = Lesson::where('course_id',$id)
                             ->where('parent_id',$lesson->id)
+                            ->where('type', Lesson::LESSON)
                             ->where('is_exercise',Lesson::IS_DOC)
                             ->orderBy('order_s','ASC')
                             ->orderBy('created_at','ASC')->get();
@@ -694,6 +648,7 @@ class CourseLearnController extends Controller
             
             //lay all lesson
             $lessons = Lesson::where('course_id',$id)
+            ->where('type', Lesson::LESSON)
             ->where('is_exercise',Lesson::IS_EXERCISE)
             ->orderBy('order_s','ASC')
             ->orderBy('created_at','ASC')->get()->pluck('id')->toArray();            
@@ -974,7 +929,6 @@ class CourseLearnController extends Controller
                     'msg' => 'succsess',
                     'data'=> $result,
                 ));
-                dd($result);
 
             }else{
                     return response()->json(array(
@@ -988,6 +942,7 @@ class CourseLearnController extends Controller
         return response()->json(array('error' => false, 'msg' => 'succsess'));
 
     }
+
     protected function _saveLogQuestion($user, $data)
     {
         if($data['type'] == Question::LEARN_LAM_BOOKMARK)
@@ -1212,8 +1167,11 @@ class CourseLearnController extends Controller
         $lesson_log->create_at = time();
         $lesson_log->count_question_true = $up_question_true == true ? 1 : 0;
         $lesson_log->save();
-    }        
+    }
+
+    event(new SubmitQuestionEvent($data['question_parent'], $user));
 }
+
     public function getExplain(Request $request)
 {
     $data = $request->all();

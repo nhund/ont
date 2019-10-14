@@ -75,9 +75,15 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
     Route::namespace('Course')->group(function (){
         Route::post('courses/{course}/rating', 'RatingController@store');
     });
+
+    Route::namespace('Recommendation')->prefix('recommendation')->group(function (){
+        Route::get('course/{course}/replay', 'RecommendationController@replay');
+        Route::get('course/{course}/new', 'RecommendationController@new');
+        Route::get('course/{course}/bookmark', 'RecommendationController@bookmark');
+        Route::get('course/{course}/wrong', 'RecommendationController@wrong');
+    });
+
 });
-
-
 
 Route::namespace('Api')->group(function () {
 
