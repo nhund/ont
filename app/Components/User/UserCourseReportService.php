@@ -3,6 +3,8 @@
 namespace App\Components\User;
 
 use App\Models\Course;
+use App\Models\ExamPart;
+use App\Models\ExamUser;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\QuestionAnswer;
@@ -121,15 +123,20 @@ class UserCourseReportService
                 $subReport['type'] = $this->getType($subLesson);
                 $subReport['sub_lesson_id'] = $subLesson->id;
 
-                if ($subLesson->is_exercise == Lesson::IS_EXERCISE)
+                if ($subLesson->is_exercise == Lesson::IS_EXERCISE && $subLesson->type == Lesson::LESSON)
                 {
                     $subReport['total'] = $this->countTotalQuestion($subLesson->id);
                     $subReport['done']  = $this->countCorrectQuestion($subLesson->id);
                 }
 
-                if ($subLesson->is_exercise == Lesson::IS_DOC)
+                if ($subLesson->is_exercise == Lesson::IS_DOC && $subLesson->type == Lesson::LESSON)
                 {
                     $subReport['done'] = $this->checkPassTheory($subLesson->id);
+                }
+
+                if ($subLesson->type == Lesson::EXAM)
+                {
+                    list($subReport['total'], $subReport['done']) = $this->exam($subLesson);
                 }
                 array_push($report, $subReport);
             }
@@ -204,8 +211,26 @@ class UserCourseReportService
 
     /**
      * @param Lesson $lesson
+     * @return array
      */
     private function exam(Lesson $lesson){
+
+        $score = 0;
+        $userScore = 0;
+        $parts = ['part_1','part_2','part_3','part_4','part_5','part_6','part_7','part_8','part_9','part_10'];
+        $examPart = ExamPart::where('exam_id', $lesson->id)->first();
+        if ($examPart){
+            foreach ($parts as $part){
+                $score += $examPart->$part;
+            }
+        }
+
+        $examUser = ExamUser::where('user_id', $this->user->id)
+            ->where('lesson_id', $lesson->id)
+            ->first();
+        $userScore = $examUser ? $examUser->highest_score : $userScore;
+
+       return [$score, $userScore];
 
     }
 }
