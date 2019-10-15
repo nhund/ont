@@ -75,8 +75,8 @@ class RecommendationController extends Controller
         return $this->respondOk($question);
     }
 
-    public function random(Course $course, Request $request){
-        $question = $this->recommendationService->doingBookmarkQuestions($course, $request->user());
+    public function suggest(Course $course, Request $request){
+        $question = $this->recommendationService->suggest($course, $request->user());
         return $this->respondOk($question);
     }
 }

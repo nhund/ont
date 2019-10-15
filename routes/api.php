@@ -81,6 +81,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
         Route::get('course/{course}/new', 'RecommendationController@new');
         Route::get('course/{course}/bookmark', 'RecommendationController@bookmark');
         Route::get('course/{course}/wrong', 'RecommendationController@wrong');
+        Route::get('course/{course}/suggest', 'RecommendationController@suggest');
     });
 
 });
