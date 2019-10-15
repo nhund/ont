@@ -60,31 +60,6 @@ class QuestionAnswerService
         $user           = $this->request->user();
         $questionParent = $this->question->id;
 
-        if ($type == Question::LEARN_LAM_BOOKMARK) {
-            $questionlearnedIds = [];
-            $questionLearned    = QuestionLogCurrent::where('user_id', $user->id)
-                ->where('course_id', $courseId)
-                ->where('type', $type)->first();
-            if ($questionLearned) {
-                $questionlearnedIds = json_decode($questionLearned->content, true);
-                if (!in_array($questionParent, $questionlearnedIds)) {
-                    array_push($questionlearnedIds, $questionParent);
-                    //lay tat ca cac cau bookmark
-                    $questionLogs = UserQuestionBookmark::where('user_id', $user->id)->where('course_id', $courseId)->count();
-                    if ($questionLogs == count($questionlearnedIds)) {
-                        $questionlearnedIds = [];
-                    }
-                    $questionLearned->content = json_encode($questionlearnedIds);
-                    $questionLearned->save();
-                }
-
-            } else {
-                array_push($questionlearnedIds, $questionParent);
-                $questionLearned['content'] = json_encode($questionlearnedIds);
-                $this->questionLearned($questionLearned);
-            }
-        }
-
         if ($type == Question::LEARN_LAM_BAI_TAP) {
             $questionlearnedIds = [];
             $questionLearned    = QuestionLogCurrent::where('user_id', $user->id)->where('course_id', $courseId)->where('type', $type)->first();
@@ -117,7 +92,7 @@ class QuestionAnswerService
 
                     $this->questionLearned($questionLearned);
                 }
-
+                return true;
             }
             //neu dang click lam 1 bai bat ky
             //tong so cau hoi trong 1 lesson
@@ -126,6 +101,16 @@ class QuestionAnswerService
             $userQuestionLog = UserQuestionLog::where('lesson_id', $lessonId)->where('user_id', $user->id)->count();
             if ($lesson_questions == $userQuestionLog) {
                 UserQuestionLog::where('lesson_id', $lessonId)->where('user_id', $user->id)->delete();
+            }
+
+            $bookmarkQuestion = UserQuestionBookmark::where('user_id', $user->id)
+                ->where('lesson_id', $lessonId)
+                ->where('course_id', $courseId)
+                ->where('question_id', $courseId, $questionParent)->first();
+
+            if ($bookmarkQuestion){
+                $bookmarkQuestion->turn += 1;
+                $bookmarkQuestion->save();
             }
         }
 

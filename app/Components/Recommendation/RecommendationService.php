@@ -49,16 +49,11 @@ class RecommendationService
         $limit = request('limit', 10);
         //lay lesson da hoc
 
-        $lesson = Lesson::select('lesson.*')
-            ->leftJoin('user_lesson_log', function ($q) use ($user){
-                $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
-                ->where('user_lesson_log.user_id', $user->id);
-            })
-            ->where('lesson.parent_id', '<>', 0)
-            ->where('lesson.course_id', $course->id)
-            ->orderBy('turn')
-            ->first()
-        ;
+        if (request()->has('lesson_id')){
+            $lesson = Lesson::where('id', request('lesson_id'))->first();
+        }else {
+            $lesson = $this->_getLessonLogUser($course, $user);
+        }
 
         $questionLearnedLogs = UserQuestionLog::where('course_id',$course->id)
             ->where('user_id',$user->id)
@@ -97,7 +92,7 @@ class RecommendationService
             {
                 //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
                 $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
-                    ->where('parent_id',0)
+                    ->where('parent_id', Question::PARENT_ID)
                     ->where('lesson_id',$lesson->id)
                     ->orderBy('order_s','ASC')
                     ->orderBy('id','ASC')->count();
@@ -106,14 +101,18 @@ class RecommendationService
                 {
 
                     //lay cac cau hoi da lam
-                    $question_log = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson->id)->get()->pluck('question_parent')->toArray();
+                    $question_log = UserQuestionLog::where('user_id',$user->id)
+                        ->where('lesson_id',$lesson->id)->get()
+                        ->pluck('question_parent')->toArray();
 
-                    $questions = Question::where('lesson_id', $lesson->id)->where('parent_id',0)->whereNotIn('id',$question_log)
-                        ->orderBy('order_s','ASC')
+                    $questions = Question::where('lesson_id', $lesson->id)
+                        ->where('parent_id', Question::PARENT_ID)
+                        ->whereNotIn('id',$question_log)->orderBy('order_s','ASC')
                         ->orderBy('id','ASC')->take($limit)->get();
 
                     $getQuestionDetail = $this->_getQuestion($user, $questions, $question_log);
 
+                    $getQuestionDetail['type'] = Question::LEARN_LAM_BAI_MOI;
                     return $getQuestionDetail;
                 }
             }
@@ -138,7 +137,7 @@ class RecommendationService
                 $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
                     ->where('user_lesson_log.user_id', $user->id);
             })
-            ->where('lesson.parent_id', '<>', 0)
+            ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
             ->where('lesson.course_id', $course->id)
             ->orderBy('turn_right')
             ->first()
@@ -146,17 +145,13 @@ class RecommendationService
 
         //loai bo cac cau da luu de phan trang
         $questions = Question::where('lesson_id',$lesson->id)
-            ->where('parent_id',0)
+            ->where('parent_id',Question::PARENT_ID)
             ->orderByRaw('RAND()')->take($limit)
             ->get();
 
         $getQuestionDetail = $this->_getQuestion($user, $questions);
-        $var['userBookmark'] = $getQuestionDetail['userBookmark'];
-        $var['questions'] = $getQuestionDetail['questions'];
-        $var['type'] = Question::LEARN_LAM_CAU_CU;
-
-        return $var;
-
+        $getQuestionDetail['type'] = Question::LEARN_LAM_CAU_CU;
+        return $getQuestionDetail;
     }
 
     /**
@@ -171,19 +166,19 @@ class RecommendationService
         $limit = request('limit', 10);
 
         //lay danh sach bookmark
+        $userBookmark = UserQuestionBookmark::where('user_id',$user->id)
+            ->where('course_id',$course->id)
+            ->orderBy('turn', 'ASC')->get()
+            ->pluck('question_id')->toArray();
 
-        $userBookmark = UserQuestionBookmark::where('user_id',$user->id)->where('course_id',$course->id)->get()->pluck('question_id')->toArray();
-
-        $questions = Question::whereIn('id',$userBookmark)->where('parent_id',0)->orderBy('order_s','ASC')
+        $questions = Question::whereIn('id',$userBookmark)
+            ->where('parent_id',Question::PARENT_ID)->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->take($limit)->get();
 
         $getQuestionDetail = $this->_getQuestion($user, $questions);
 
-        $var['userBookmark'] = $getQuestionDetail['userBookmark'];
-
-        $var['questions'] = $getQuestionDetail['questions'];
-
-        return $var;
+        $getQuestionDetail['type'] = Question::LEARN_LAM_BOOKMARK;
+        return $getQuestionDetail;
     }
 
     /**
@@ -200,33 +195,52 @@ class RecommendationService
 
         $lessons = Lesson::where('course_id',$course->id)
             ->where('type', Lesson::LESSON)
-            ->where('is_exercise',Lesson::IS_EXERCISE)
-            ->where('parent_id', '<>', 0)
+            ->where('is_exercise', Lesson::IS_EXERCISE)
+            ->where('parent_id', '<>', Lesson::PARENT_ID)
             ->get();
 
+        if (request()->has('lesson_id')){
+            $lesson = Lesson::where('id', request('lesson_id'))->first();
+            return $this->__getWrongQuestions($course, $lesson, $user);
+        }
+
         foreach ($lessons as $lesson){
-            $question = UserQuestionLog::where('course_id',$course->id)
-                ->where('user_id',$user->id)
-                ->where('lesson_id',$lesson->id)
-                ->where('status',Question::REPLY_ERROR)
-                ->orderBy('create_at','ASC')->get();
-
-            if ($question->count()){
-                $questionErrors = $question->pluck('question_parent')->toArray();
-
-                $questions = Question::whereIn('id',$questionErrors)->where('parent_id',0)->orderBy('order_s','ASC')
-                    ->orderBy('id','ASC')->take($limit)->get();
-
-                $getQuestionDetail = $this->_getQuestion($user, $questions);
-
-                $var['userBookmark'] = $getQuestionDetail['userBookmark'];
-
-                $var['questions'] = $getQuestionDetail['questions'];
-
-                return $var;
+            $questions = $this->__getWrongQuestions($course, $lesson, $user);
+            if (count($questions)){
+                return  $questions;
             }
         }
         return [];
+    }
+
+    public function randomType(Course $course, User $user)
+    {
+        $lessons =  Lesson::select('lesson.*')
+            ->leftJoin('user_lesson_log', function ($q) use ($user){
+                $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
+                    ->where('user_lesson_log.user_id', $user->id);
+            })
+            ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
+            ->where('lesson.course_id', $course->id)
+            ->orderBy('turn')->get();
+
+        foreach ($lessons as $lesson){
+
+            if ($lesson->turn == 0)
+            {
+                return $this->doingNewQuestions($course, $user);
+            }
+
+            if ($lesson->turn >= 0)
+            {
+                $question = $this->doingWrongQuestions($course, $user);
+                if (count($question)){
+                    return $question;
+                }else {
+                    continue;
+                }
+            }
+        }
     }
 
     /**
@@ -292,7 +306,7 @@ class RecommendationService
             }
             if($question->type  == Question::TYPE_DIEN_TU_DOAN_VAN)
             {
-                if($question->parent_id == 0)
+                if($question->parent_id == Question::PARENT_ID)
                 {
                     $sub_questions = Question::where('parent_id',$question->id)->orderBy('id','asc')->get();
                     foreach ($sub_questions as $key => $sub_q) {
@@ -336,5 +350,40 @@ class RecommendationService
             'questions'=>$questions,
             'userBookmark'=>$userBookmark
         );
+    }
+
+    protected function _getLessonLogUser($course, $user){
+        return Lesson::select('lesson.*')
+            ->leftJoin('user_lesson_log', function ($q) use ($user){
+                $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
+                    ->where('user_lesson_log.user_id', $user->id);
+            })
+            ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
+            ->where('lesson.course_id', $course->id)
+            ->orderBy('turn')
+            ->first()
+        ;
+    }
+
+    public function __getWrongQuestions($course, $lesson, $user, $limit = 10)
+    {
+        $question = UserQuestionLog::where('course_id',$course->id)
+            ->where('user_id',$user->id)
+            ->where('lesson_id',$lesson->id)
+            ->where('status',Question::REPLY_ERROR)
+            ->orderBy('create_at','ASC')->get();
+
+        if ($question->count()){
+            $questionErrors = $question->pluck('question_parent')->toArray();
+
+            $questions = Question::whereIn('id',$questionErrors)
+                ->where('parent_id', Question::PARENT_ID)->orderBy('order_s','ASC')
+                ->orderBy('id','ASC')->take($limit)->get();
+
+            $getQuestionDetail = $this->_getQuestion($user, $questions);
+            $getQuestionDetail['type'] = Question::LEARN_LAM_CAU_SAI;
+            return $getQuestionDetail;
+        }
+        return [];
     }
 }
