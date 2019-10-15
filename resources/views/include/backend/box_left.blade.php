@@ -10,7 +10,7 @@
                     <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
                     <ul class="dropdown-menu pull-right">
                         <li><a onclick="showModalAddLesson(0, '{{ $course['name'] }}', 'lesson')">Tạo bài giảng</a></li>
-                        <li><a onclick="showModalAddExercise(0, 'exam')">Tạo bài Kiểm tra</a></li>
+                        <li><a onclick="showModalAddExercise(0, 'exam', 1)">Tạo bài Kiểm tra</a></li>
                         <li><a onclick="showModalAddLevel2('{{ $course['name'] }}', 'level2')">Tạo bài level 2</a></li>
                     </ul>
                 </div>
