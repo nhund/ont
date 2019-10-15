@@ -22,6 +22,17 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label class="col-sm-2 control-label">Chuyên mục</label>
+                                            <div class="col-sm-2 tabular-border">
+                                                <select name="category_id" class="form-control">
+                                                    <option value="" selected>Chọn chuyên mục</option>
+                                                    @foreach($_category as $value)
+                                                        <option value="{{$value->id}}">{{$value->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-sm-2 control-label">Nội dung</label>
                                             <div class="col-sm-8">
                                                 <textarea class="note-codable form-control" id="editor" name="content"></textarea>

@@ -21,7 +21,8 @@
                                         <th width="100">STT</th>
                                         <th>Tiêu đề</th>                   
                                         <th>Nội dung</th>                                                                        
-                                        <th width="200">Trạng thái</th>
+                                        <th width="100">Chuyên mục</th>
+                                        <th width="100">Trạng thái</th>
                                         <th width="200">Ngày tạo</th>                                        
                                         <th width="150">Hành động</th>
                                     </tr>
@@ -36,7 +37,8 @@
                                                     <a target="_blank" href="{{ route('post.detail',['id'=>$post->id,'title'=>str_slug($post->name)]) }}">{{ $post->name }}</a>
                                                     
                                                 </td>   
-                                                <td>{{ str_limit($post->content,300) }}</td>   
+                                                <td>{{ str_limit($post->content,300) }}</td>
+                                                <td>{{ \App\Models\Category::find($post->category_id)['name']}}</td>
                                                 <td>
                                                     @if($post->status == \App\Models\Post::STATUS_OFF)
                                                         <span style="color: #c9302c; font-weight: bold;">private</span>

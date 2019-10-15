@@ -20,6 +20,7 @@
                                         </th> --}}
                                         <th>STT</th>                                        
                                         <th>Tiêu đề</th>                                        
+                                        <th>Loại</th>
                                         <th>Ngày tạo</th>
                                         <th width="150">Hành động</th>
                                     </tr>
@@ -30,7 +31,8 @@
                                             <tr class="tr">
                                                 {{-- <td><div class="icheck checkbox-inline"><input type="checkbox"></div></td> --}}
                                                 <td>{{ $key +1 }}</td>                                                
-                                                <td>{{ $category->name }}</td>                                                
+                                                <td>{{ $category->name }}</td>
+                                                <td>{{ ($category->type == 1) ? 'Post' : 'News' }}</td>
                                                 <td>{{ date('d-m-Y',$category->create_at ) }}</td>
                                                 <td>
                                                     {{--<a href="#" class="btn btn-success btn-xs btn-label"><i class="fa fa-search"></i>Xem</a>--}}
