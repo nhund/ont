@@ -289,6 +289,40 @@ class RecommendationService
         }
     }
 
+    public function clickLesson(Lesson $lesson, User $user)
+    {
+        $limit = request('limit', 10);
+
+        $listQuestionLearned = [];
+        //kiem tra xem dang hoc den dau
+        $questionLearned = QuestionLogCurrent::where('user_id',$user->id)
+            ->where('type',Question::LEARN_LAM_BAI_TAP)
+            ->where('course_id',$lesson->course_id)
+            ->first();
+
+        if($questionLearned)
+        {
+            $listId = [];
+            if(!empty($questionLearned->content))
+            {
+                $listId = json_decode($questionLearned->content,true);
+            }
+            //dd($listId);
+            if(isset($listId[$lesson->id]))
+            {
+                $listQuestionLearned = $listId[$lesson->id];
+            }
+        }
+        $questions = Question::where('lesson_id',$lesson->id)->whereNotIn('id',$listQuestionLearned)->where('parent_id',0)
+            ->orderBy('order_s','ASC')
+            ->orderBy('id','ASC')->take($limit)->get();
+
+        $QuestionDetail = $this->_getQuestion($user, $questions);
+        $QuestionDetail['type'] = Question::LEARN_LAM_BAI_TAP;
+
+        return $QuestionDetail;
+    }
+
     /**
      * @param $user
      * @param $questions

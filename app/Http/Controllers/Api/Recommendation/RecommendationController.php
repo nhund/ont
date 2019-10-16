@@ -12,6 +12,7 @@ use App\Components\Recommendation\RecommendationService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RecommendationRequest;
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\UserQuestionBookmark;
 use App\Models\UserQuestionLog;
@@ -42,8 +43,11 @@ class RecommendationController extends Controller
      * @param Course $course
      * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function replay(Course $course, RecommendationRequest $request){
+    public function replay(Course $course, RecommendationRequest $request)
+    {
+        $this->authorize('permission', $course);
 
         $question = $this->recommendationService->doingReplayQuestions($course, $request->user());
         return $this->respondOk($question);
@@ -53,8 +57,12 @@ class RecommendationController extends Controller
      * @param Course $course
      * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function new(Course $course, RecommendationRequest $request){
+    public function new(Course $course, RecommendationRequest $request)
+    {
+        $this->authorize('permission', $course);
+
         $question = $this->recommendationService->doingNewQuestions($course, $request->user());
         return $this->respondOk($question);
     }
@@ -64,7 +72,8 @@ class RecommendationController extends Controller
      * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function wrong(Course $course, RecommendationRequest $request){
+    public function wrong(Course $course, RecommendationRequest $request)
+    {
         $question = $this->recommendationService->doingWrongQuestions($course, $request->user());
         return $this->respondOk($question);
     }
@@ -73,8 +82,12 @@ class RecommendationController extends Controller
      * @param Course $course
      * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function bookmark(Course $course, RecommendationRequest $request){
+    public function bookmark(Course $course, RecommendationRequest $request)
+    {
+        $this->authorize('permission', $course);
+
         $question = $this->recommendationService->doingBookmarkQuestions($course, $request->user());
         return $this->respondOk($question);
     }
@@ -83,14 +96,26 @@ class RecommendationController extends Controller
      * @param Course $course
      * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function suggest(Course $course, RecommendationRequest $request){
+    public function suggest(Course $course, RecommendationRequest $request)
+    {
+        $this->authorize('permission', $course);
+
         $question = $this->recommendationService->suggest($course, $request->user());
         return $this->respondOk($question);
     }
 
+    /**
+     * @param Course $course
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function report(Course $course, Request $request)
     {
+        $this->authorize('permission', $course);
+
         $questionDid = UserQuestionLog::where('course_id', $course->id)
             ->where('user_id', $request->user()->id);
 
@@ -121,5 +146,16 @@ class RecommendationController extends Controller
         $report['countNewQuestion'] = $newQuestion;
 
         return $this->respondOk($report);
+    }
+
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function click(Lesson $lesson, Request $request)
+    {
+        $question = $this->recommendationService->clickLesson($lesson, $request->user());
+        return $this->respondOk($question);
     }
 }
