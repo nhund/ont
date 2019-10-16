@@ -90,18 +90,32 @@ class RecommendationController extends Controller
 
     public function report(Course $course, Request $request)
     {
-        $questionDid = UserQuestionLog::where('course_id', $course->id)->where('user_id', $request->user()->id);
+        $questionDid = UserQuestionLog::where('course_id', $course->id)
+            ->where('user_id', $request->user()->id);
 
         $questionsIds = $questionDid->get()->pluck('question_parent')->toArray();
 
-        $newQuestion = Question::where('course_id', $course->id)->whereNotIn('id', $questionsIds)
+        $newQuestion = Question::where('course_id', $course->id)
+            ->whereNotIn('id', $questionsIds)
             ->where('parent_id', Question::PARENT_ID)
             ->count();
 
-        UserQuestionLog::where('course_id', $course->id)->where('status', Question::REPLY_OK)->count();
+        $wrongQuestions = UserQuestionLog::where('course_id', $course->id)
+            ->where('user_id', $request->user()->id)
+            ->where('status', Question::REPLY_ERROR)
+            ->count();
 
-        $report['countWrongQuestion'] = UserQuestionLog::where('course_id', $course->id)->where('user_id', $request->user()->id)->where('status', Question::REPLY_ERROR)->count();
-        $report['countQuestionsBookmark'] = UserQuestionBookmark::where('course_id', $course->id)->where('user_id', $request->user()->id)->where('status', Question::REPLY_ERROR)->count();
+        $bookmarkQuestions = UserQuestionBookmark::where('course_id', $course->id)
+            ->where('user_id', $request->user()->id)
+            ->where('status', Question::REPLY_ERROR)
+            ->count();
+
+        UserQuestionLog::where('course_id', $course->id)
+            ->where('status', Question::REPLY_OK)
+            ->count();
+
+        $report['countWrongQuestion'] = $wrongQuestions;
+        $report['countQuestionsBookmark'] = $bookmarkQuestions;
         $report['countDid'] = $questionDid->count();
         $report['countNewQuestion'] = $newQuestion;
 
