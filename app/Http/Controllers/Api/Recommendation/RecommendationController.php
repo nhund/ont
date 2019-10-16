@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api\Recommendation;
 
 use App\Components\Recommendation\RecommendationService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RecommendationRequest;
 use App\Models\Course;
 use App\Models\Question;
 use App\Models\UserQuestionBookmark;
@@ -39,10 +40,10 @@ class RecommendationController extends Controller
 
     /**
      * @param Course $course
-     * @param Request $request
+     * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function replay(Course $course, Request $request){
+    public function replay(Course $course, RecommendationRequest $request){
 
         $question = $this->recommendationService->doingReplayQuestions($course, $request->user());
         return $this->respondOk($question);
@@ -50,40 +51,40 @@ class RecommendationController extends Controller
 
     /**
      * @param Course $course
-     * @param Request $request
+     * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function new(Course $course, Request $request){
+    public function new(Course $course, RecommendationRequest $request){
         $question = $this->recommendationService->doingNewQuestions($course, $request->user());
         return $this->respondOk($question);
     }
 
     /**
      * @param Course $course
-     * @param Request $request
+     * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function wrong(Course $course, Request $request){
+    public function wrong(Course $course, RecommendationRequest $request){
         $question = $this->recommendationService->doingWrongQuestions($course, $request->user());
         return $this->respondOk($question);
     }
 
     /**
      * @param Course $course
-     * @param Request $request
+     * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function bookmark(Course $course, Request $request){
+    public function bookmark(Course $course, RecommendationRequest $request){
         $question = $this->recommendationService->doingBookmarkQuestions($course, $request->user());
         return $this->respondOk($question);
     }
 
     /**
      * @param Course $course
-     * @param Request $request
+     * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function suggest(Course $course, Request $request){
+    public function suggest(Course $course, RecommendationRequest $request){
         $question = $this->recommendationService->suggest($course, $request->user());
         return $this->respondOk($question);
     }

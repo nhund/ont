@@ -8,6 +8,7 @@
 
 namespace App\Components\Recommendation;
 
+use App\Exceptions\BadRequestException;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Question;
@@ -36,6 +37,18 @@ use App\User;
 class RecommendationService
 {
 
+    protected $lesson;
+
+    public function __construct()
+    {
+        if (request()->has('lesson_id')){
+            $this->lesson = Lesson::findOrFail(request('lesson_id'));
+            if (request()->route()->parameter('course') != $this->lesson->course_id){
+                throw new BadRequestException('mã bài học không hợp lệ');
+            }
+        }
+    }
+
     const TURN = 0;
     /**
      * - Tìm xem trong khóa học bài tập có lượt làm: D=0, có số thứ tự nhỏ nhất. Lấy ra để làm bài.
@@ -51,8 +64,8 @@ class RecommendationService
         $limit = request('limit', 10);
         //lay lesson da hoc
 
-        if (request()->has('lesson_id')){
-            $lesson = Lesson::where('id', request('lesson_id'))->first();
+        if ($this->lesson){
+            $lesson = $this->lesson;
         }else {
             $lesson = $this->_getLessonLogUser($course, $user);
         }
@@ -134,16 +147,21 @@ class RecommendationService
     public function doingReplayQuestions(Course $course, User $user)
     {
         $limit = request('limit', 10);
-        $lesson = Lesson::select('lesson.*')
-            ->leftJoin('user_lesson_log', function ($q) use ($user){
-                $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
-                    ->where('user_lesson_log.user_id', $user->id);
-            })
-            ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
-            ->where('lesson.course_id', $course->id)
-            ->orderBy('turn_right')
-            ->first()
-        ;
+
+        if ($this->lesson){
+            $lesson = $this->lesson;
+        }else {
+            $lesson = Lesson::select('lesson.*')
+                ->leftJoin('user_lesson_log', function ($q) use ($user){
+                    $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
+                        ->where('user_lesson_log.user_id', $user->id);
+                })
+                ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
+                ->where('lesson.course_id', $course->id)
+                ->orderBy('turn_right')
+                ->first()
+            ;
+        }
 
         //loai bo cac cau da luu de phan trang
         $questions = Question::where('lesson_id',$lesson->id)
@@ -173,9 +191,18 @@ class RecommendationService
             ->orderBy('turn', 'ASC')->get()
             ->pluck('question_id')->toArray();
 
-        $questions = Question::whereIn('id',$userBookmark)
-            ->where('parent_id',Question::PARENT_ID)->orderBy('order_s','ASC')
-            ->orderBy('id','ASC')->take($limit)->get();
+        $questions = Question::query()->whereIn('id',$userBookmark)
+            ->where('parent_id',Question::PARENT_ID)
+        ;
+
+        if ($this->lesson){
+            $questions->where('lesson_id', $this->lesson->id);
+        }
+
+        $questions->orderBy('order_s','ASC')
+            ->orderBy('id','ASC')
+            ->take($limit)->get()
+        ;
 
         $getQuestionDetail = $this->_getQuestion($user, $questions);
 
@@ -195,6 +222,12 @@ class RecommendationService
     {
         $limit = request('limit', 10);
 
+        if ($this->lesson){
+            $questions = $this->__getWrongQuestions($course, $this->lesson, $user, $limit);
+            $questions['type'] = Question::LEARN_LAM_CAU_SAI;
+            return $questions;
+        }
+
         $lessons = Lesson::where('course_id',$course->id)
             ->where('type', Lesson::LESSON)
             ->where('is_exercise', Lesson::IS_EXERCISE)
@@ -204,6 +237,7 @@ class RecommendationService
         foreach ($lessons as $lesson){
             $questions = $this->__getWrongQuestions($course, $lesson, $user, $limit);
             if (count($questions)){
+                $questions['type'] = Question::LEARN_LAM_CAU_SAI;
                 return  $questions;
             }
         }
