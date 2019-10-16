@@ -23,15 +23,16 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Chuyên mục</label>
+                                            <label class="col-sm-2 control-label">Danh mục</label>
                                             <div class="col-sm-2 tabular-border">
                                                 <select name="category_id" class="form-control">
-                                                    <option value="">Chọn chuyên mục</option>
+                                                    <option value="">Chọn danh mục tin</option>
                                                     @foreach($_category as $value)
                                                         <option @if($var['post']->category_id == $value->id) selected @endif value="{{$value->id}}">{{$value->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
+                                            <p style="padding-top: 6px">Lưu ý: nếu bài viết là tin tức hãy chọn danh mục</p>
                                         </div>
 
                                         <div class="form-group">
@@ -45,8 +46,8 @@
                                             <label for="" class="control-label col-sm-2">Trạng thái</label>
                                             <div class="col-sm-2 tabular-border">
                                                 <select class="form-control" name="status">                                                                   
-                                                    <option @if(App\Models\Post::STATUS_ON == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_ON }}">public</option>
-                                                    <option @if(App\Models\Post::STATUS_OFF == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_OFF }}">private</option>
+                                                    <option @if(App\Models\Post::STATUS_ON == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_ON }}">Hiển thị</option>
+                                                    <option @if(App\Models\Post::STATUS_OFF == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_OFF }}">Ẩn</option>
                                                 </select>
                                             </div>
                                         </div>

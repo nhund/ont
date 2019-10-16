@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\BackEnd;
 
-use App\Models\Category;
+use App\Models\CategoryNews;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use function Psy\debug;
 
 class PostController extends AdminBaseController
 {
@@ -37,7 +36,7 @@ class PostController extends AdminBaseController
                 'title' => 'Thêm bài viết',
             )
         );
-        $_category = Category::where('status', Category::STATUS_ON)->orderby('id', 'DESC')->get();
+        $_category = CategoryNews::where('status', CategoryNews::STATUS_ON)->orderby('id', 'DESC')->get();
         return view('backend.post.add',compact(['var', '_category']));
     }
     public function save(Request $request)
@@ -51,8 +50,11 @@ class PostController extends AdminBaseController
         $post->name = $data['name'];
         $post->category_id = $data['category_id'];
         $post->content = $data['content'];       
-        $post->create_date = time();   
         $post->status = $data['status'];
+        if (!empty($data['category_id'])){
+            $post->type = 'news';
+        }
+        $post->create_date = time();
         if($post->save())
         {
             //Helper::thumbImages($name,$avatar,600,600,'fit',$destinationPath.'/600_600');
@@ -78,7 +80,7 @@ class PostController extends AdminBaseController
         );
         $var['post'] = $post;
 
-        $_category = Category::where('status', Category::STATUS_ON)->orderby('id', 'DESC')->get();
+        $_category = CategoryNews::where('status', CategoryNews::STATUS_ON)->orderby('id', 'DESC')->get();
         return view('backend.post.edit',compact('var', '_category'));
     }
     public function update(Request $request)
@@ -98,8 +100,11 @@ class PostController extends AdminBaseController
         $post->name = $data['name'];
         $post->category_id = $data['category_id'];
         $post->content = $data['content'];       
-        $post->update_date = time();   
         $post->status = $data['status'];
+        if (!empty($data['category_id'])){
+            $post->type = 'news';
+        }
+        $post->update_date = time();
         $post->save();
        alert()->success('Thông báo','Cập nhật thành công');
        return redirect()->route('admin.post.index');

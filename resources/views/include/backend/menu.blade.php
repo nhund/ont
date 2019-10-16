@@ -41,6 +41,13 @@
                             <li><a class="{{ url()->current() == route('admin.post.index') ? 'active':''  }}" href="{{ route('admin.post.index') }}">Danh sách bài viết</a></li>
                         </ul>
                     </li>
+
+                    <li class="hasChild {{ Request()->route()->getPrefix() == 'admin/news' ? 'active':''  }}"><a href="javascript:;"><i class="fa fa fa-th-list"></i><span>Danh mục tin</span></a>
+                        <ul class="acc-menu" @if(Request()->route()->getPrefix() == 'admin/news' ? 'active':'')  style="display: block" @endif>
+                            <li ><a class="{{ url()->current() == route('admin.news.add') ? 'active':''  }}" href="{{ route('admin.news.add') }}">Thêm danh mục</a></li>
+                            <li><a class="{{ url()->current() == route('admin.news.index') ? 'active':''  }}" href="{{ route('admin.news.index') }}">Danh sách danh mục</a></li>
+                        </ul>
+                    </li>
                     {{-- <li class="hasChild {{ Request()->route()->getPrefix() == 'admin/slider' ? 'active':''  }}"><a href="javascript:;"><i class="fa fa-image"></i><span>Slider</span></a>
                         <ul class="acc-menu" @if(Request()->route()->getPrefix() == 'admin/slider' ? 'active':'')  style="display: block" @endif>
                             <li ><a class="{{ url()->current() == route('admin.slider.add') ? 'active':''  }}" href="{{ route('admin.slider.add') }}">Thêm slider</a></li>
