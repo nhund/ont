@@ -71,9 +71,12 @@ class RecommendationController extends Controller
      * @param Course $course
      * @param RecommendationRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function wrong(Course $course, RecommendationRequest $request)
     {
+        $this->authorize('permission', $course);
+
         $question = $this->recommendationService->doingWrongQuestions($course, $request->user());
         return $this->respondOk($question);
     }

@@ -58,6 +58,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
         Route::post('/{lesson}/theory', 'QuestionAnswerController@theory');
 
         Route::post('/{question}/bookmark', 'QuestionController@bookmark');
+        Route::post('/{question}/feedback', 'QuestionController@feedback');
     });
 
     Route::namespace('Comment')->prefix('comment')->group(function (){
