@@ -2,6 +2,7 @@
 
 namespace App\Transformers\Lesson;
 
+use App\Components\User\UserCourseReportService;
 use App\Models\CommentCourse;
 use App\Models\Lesson;
 use League\Fractal\TransformerAbstract;
@@ -19,6 +20,8 @@ class LessonTransformer extends TransformerAbstract {
     public function transform(Lesson $lesson){
         $this->lesson = $lesson;
 
+        $subLesson =  (new UserCourseReportService(request()->user(), null))->subLessons($lesson);
+
         return [
             'id'          => $lesson->id,
             'name'        => $lesson->name,
@@ -29,16 +32,8 @@ class LessonTransformer extends TransformerAbstract {
             'image'       => $lesson->image,
             'sapo'        => $lesson->sapo,
             'repeat_time' => $lesson->repeat_time,
-            'parent_id' => $lesson->parent_id
+            'parent_id' => $lesson->parent_id,
+            'subLesson' => $subLesson
         ];
-    }
-
-    /**
-     * @return \League\Fractal\Resource\Collection|null
-     */
-    public function includeSubLesson()
-    {
-       $subLessons =  $this->lesson->subLesson()->active()->get();
-       return $subLessons ? $this->collection($subLessons, new FullLessonTransformer) : null;
     }
 }

@@ -103,7 +103,7 @@ class UserCourseController extends Controller{
      */
     public function detail(Course $course, Request $request)
     {
-        $userCourseReport = new UserCourseReportService($course, $request->user());
+        $userCourseReport = new UserCourseReportService($request->user(), $course);
 
         return $this->respondOk($userCourseReport->get());
     }

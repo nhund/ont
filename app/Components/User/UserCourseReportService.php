@@ -38,7 +38,7 @@ class UserCourseReportService
      * @param Course $course
      * @param User $user
      */
-    public function __construct(Course $course, User $user)
+    public function __construct(User $user, Course $course = null)
     {
         $this->course = $course;
         $this->user = $user;
@@ -112,7 +112,7 @@ class UserCourseReportService
      */
     public function level1(Lesson $lesson)
     {
-        $subLessons = $lesson->subLesson;
+        $subLessons = $lesson->subLesson()->active()->get();
         $report     = [];
 
         if ($subLessons)
