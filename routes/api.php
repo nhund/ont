@@ -45,6 +45,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
         Route::post('/question/{question}', 'ExamController@submitQuestion');
         Route::get('/{lesson}/rank', 'ExamController@rank');
         Route::get('/{lesson}/result', 'ExamController@result');
+        Route::get('/{lesson}/detail', 'ExamController@detail');
     });
 
     Route::namespace('Lesson')->prefix('lesson')->group(function () {
@@ -54,7 +55,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
     });
     Route::namespace('Question')->prefix('question')->group(function () {
         Route::post('/{question}', 'QuestionAnswerController@store');
-
+        Route::post('/{lesson}/theory', 'QuestionAnswerController@theory');
 
         Route::post('/{question}/bookmark', 'QuestionController@bookmark');
     });
