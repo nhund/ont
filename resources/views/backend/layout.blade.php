@@ -66,7 +66,11 @@
     <script src="{{ asset('public/js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('/public/admintrator/assets/plugins/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('/public/admintrator/assets/js/player.js') }}"></script>
+    <script src="{{ asset('/public/admintrator/assets/js/bootstrap-input-spinner.min.js') }}"></script>
 
+    {{--<script>--}}
+        {{--$("input[type='number']").inputSpinner()--}}
+    {{--</script>--}}
 
     <script type="text/javascript" src="{{ asset('public/admintrator/assets/plugins/form-ckeditor/plugins/ckeditor_wiris/integration/WIRISplugins.js?viewer=image') }}"></script>
     <script type="text/javascript" src="{{ web_asset('public/admintrator/assets/plugins/form-ckeditor/plugins/ckeditor_wiris/core/display.js') }}"></script>

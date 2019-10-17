@@ -129,6 +129,16 @@ function showModalAddExercise(lesson_id, type, level) {
     $('#courseEx').modal('show');
 }
 
+function showModalAddExam(lesson_id, type, level) {
+
+    if (lesson_id) {$('#courseExam #les_id').val(lesson_id);}
+
+    if (type) {$('#courseExam #type').val(type);}
+    if (type) {$('#courseExam #level').val(level);}
+
+    $('#courseExam').modal('show');
+}
+
 function showModalAddLevel2(title, lesson_type) {
 
     if (lesson_type) {
