@@ -8,6 +8,7 @@
 
 namespace App\Components\Recommendation;
 
+use App\Exceptions\BadRequestException;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Question;
@@ -35,6 +36,20 @@ use App\User;
 
 class RecommendationService
 {
+
+    protected $lesson;
+
+    public function __construct()
+    {
+        if (request()->has('lesson_id')){
+            $this->lesson = Lesson::findOrFail(request('lesson_id'));
+            if (request()->route()->parameter('course') != $this->lesson->course_id){
+                throw new BadRequestException('mã bài học không hợp lệ');
+            }
+        }
+    }
+
+    const TURN = 0;
     /**
      * - Tìm xem trong khóa học bài tập có lượt làm: D=0, có số thứ tự nhỏ nhất. Lấy ra để làm bài.
      * - Làm lần lượt 10 câu 1 lượt (theo đúng thứ tự câu hỏi trong bài tập).
@@ -49,8 +64,8 @@ class RecommendationService
         $limit = request('limit', 10);
         //lay lesson da hoc
 
-        if (request()->has('lesson_id')){
-            $lesson = Lesson::where('id', request('lesson_id'))->first();
+        if ($this->lesson){
+            $lesson = $this->lesson;
         }else {
             $lesson = $this->_getLessonLogUser($course, $user);
         }
@@ -68,7 +83,7 @@ class RecommendationService
                 ->orderBy('created_at','ASC')
                 ->get();
 
-            if(count($theories) > 0)
+            if(count($theories) > self::TURN)
             {
                 foreach ($theories as $theory) {
                     //kiem tra xem bai nay da hoc ly thuyet chua
@@ -97,7 +112,7 @@ class RecommendationService
                     ->orderBy('order_s','ASC')
                     ->orderBy('id','ASC')->count();
 
-                if($check_has_question > 0)
+                if($check_has_question > self::TURN)
                 {
 
                     //lay cac cau hoi da lam
@@ -132,16 +147,21 @@ class RecommendationService
     public function doingReplayQuestions(Course $course, User $user)
     {
         $limit = request('limit', 10);
-        $lesson = Lesson::select('lesson.*')
-            ->leftJoin('user_lesson_log', function ($q) use ($user){
-                $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
-                    ->where('user_lesson_log.user_id', $user->id);
-            })
-            ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
-            ->where('lesson.course_id', $course->id)
-            ->orderBy('turn_right')
-            ->first()
-        ;
+
+        if ($this->lesson){
+            $lesson = $this->lesson;
+        }else {
+            $lesson = Lesson::select('lesson.*')
+                ->leftJoin('user_lesson_log', function ($q) use ($user){
+                    $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
+                        ->where('user_lesson_log.user_id', $user->id);
+                })
+                ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
+                ->where('lesson.course_id', $course->id)
+                ->orderBy('turn_right')
+                ->first()
+            ;
+        }
 
         //loai bo cac cau da luu de phan trang
         $questions = Question::where('lesson_id',$lesson->id)
@@ -171,9 +191,18 @@ class RecommendationService
             ->orderBy('turn', 'ASC')->get()
             ->pluck('question_id')->toArray();
 
-        $questions = Question::whereIn('id',$userBookmark)
-            ->where('parent_id',Question::PARENT_ID)->orderBy('order_s','ASC')
-            ->orderBy('id','ASC')->take($limit)->get();
+        $questions = Question::query()->whereIn('id',$userBookmark)
+            ->where('parent_id',Question::PARENT_ID)
+        ;
+
+        if ($this->lesson){
+            $questions->where('lesson_id', $this->lesson->id);
+        }
+
+        $questions->orderBy('order_s','ASC')
+            ->orderBy('id','ASC')
+            ->take($limit)->get()
+        ;
 
         $getQuestionDetail = $this->_getQuestion($user, $questions);
 
@@ -193,27 +222,29 @@ class RecommendationService
     {
         $limit = request('limit', 10);
 
+        if ($this->lesson){
+            $questions = $this->__getWrongQuestions($course, $this->lesson, $user, $limit);
+            $questions['type'] = Question::LEARN_LAM_CAU_SAI;
+            return $questions;
+        }
+
         $lessons = Lesson::where('course_id',$course->id)
             ->where('type', Lesson::LESSON)
             ->where('is_exercise', Lesson::IS_EXERCISE)
             ->where('parent_id', '<>', Lesson::PARENT_ID)
             ->get();
 
-        if (request()->has('lesson_id')){
-            $lesson = Lesson::where('id', request('lesson_id'))->first();
-            return $this->__getWrongQuestions($course, $lesson, $user);
-        }
-
         foreach ($lessons as $lesson){
-            $questions = $this->__getWrongQuestions($course, $lesson, $user);
+            $questions = $this->__getWrongQuestions($course, $lesson, $user, $limit);
             if (count($questions)){
+                $questions['type'] = Question::LEARN_LAM_CAU_SAI;
                 return  $questions;
             }
         }
         return [];
     }
 
-    public function randomType(Course $course, User $user)
+    public function suggest(Course $course, User $user)
     {
         $lessons =  Lesson::select('lesson.*')
             ->leftJoin('user_lesson_log', function ($q) use ($user){
@@ -222,16 +253,31 @@ class RecommendationService
             })
             ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
             ->where('lesson.course_id', $course->id)
-            ->orderBy('turn')->get();
+            ->orderBy('turn')
+            ->get();
+
+        $countCorrectLesson = Lesson::select('lesson.*')
+            ->leftJoin('user_lesson_log', function ($q) use ($user){
+                $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
+                    ->where('user_lesson_log.user_id', $user->id);
+            })
+            ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
+            ->where('lesson.course_id', $course->id)
+            ->where('user_lesson_log.turn_right', '>=', 1 )
+            ->count();
+
+        if ($lessons->count() == $countCorrectLesson){
+            return $this->doingReplayQuestions($course, $user);
+        }
 
         foreach ($lessons as $lesson){
 
-            if ($lesson->turn == 0)
+            if ($lesson->turn == self::TURN)
             {
                 return $this->doingNewQuestions($course, $user);
             }
 
-            if ($lesson->turn >= 0)
+            if ($lesson->turn >= self::TURN)
             {
                 $question = $this->doingWrongQuestions($course, $user);
                 if (count($question)){
@@ -241,6 +287,40 @@ class RecommendationService
                 }
             }
         }
+    }
+
+    public function clickLesson(Lesson $lesson, User $user)
+    {
+        $limit = request('limit', 10);
+
+        $listQuestionLearned = [];
+        //kiem tra xem dang hoc den dau
+        $questionLearned = QuestionLogCurrent::where('user_id',$user->id)
+            ->where('type',Question::LEARN_LAM_BAI_TAP)
+            ->where('course_id',$lesson->course_id)
+            ->first();
+
+        if($questionLearned)
+        {
+            $listId = [];
+            if(!empty($questionLearned->content))
+            {
+                $listId = json_decode($questionLearned->content,true);
+            }
+            //dd($listId);
+            if(isset($listId[$lesson->id]))
+            {
+                $listQuestionLearned = $listId[$lesson->id];
+            }
+        }
+        $questions = Question::where('lesson_id',$lesson->id)->whereNotIn('id',$listQuestionLearned)->where('parent_id',0)
+            ->orderBy('order_s','ASC')
+            ->orderBy('id','ASC')->take($limit)->get();
+
+        $QuestionDetail = $this->_getQuestion($user, $questions);
+        $QuestionDetail['type'] = Question::LEARN_LAM_BAI_TAP;
+
+        return $QuestionDetail;
     }
 
     /**

@@ -165,9 +165,8 @@ class LessonController extends AdminBaseController
         $lesson->save();
 
         if ($type == Lesson::EXAM){
-            $params = $request->only(['lesson_id', 'part_1', 'part_2', 'part_3', 'part_4', 'part_5', 'part_6', 'part_7', 'part_8', 'part_9', 'part_10']);
-            $examId = Arr::pull($params, 'lesson_id');
-            ExamPart::updateOrCreate(['exam_id' => $examId], $params);
+            $params = $request->only(['part_1', 'part_2', 'part_3', 'part_4', 'part_5', 'part_6', 'part_7', 'part_8', 'part_9', 'part_10']);
+            ExamPart::updateOrCreate(['exam_id' => $lesson->id], $params);
         }
 
         return redirect()->back();
