@@ -5,6 +5,7 @@ namespace App\Transformers\Course;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\UserCourse;
+use App\Transformers\Category\CategoryTransformer;
 use App\Transformers\Lesson\LessonTransformer;
 use League\Fractal\TransformerAbstract;
 use App\Transformers\Comment\CommentCourseTransformer;
@@ -13,7 +14,7 @@ use phpDocumentor\Reflection\Types\Self_;
 class FullCourseTransformer extends TransformerAbstract
 {
     protected $availableIncludes = ['comment', 'lesson'];
-
+    protected $defaultIncludes = ['school'];
 
     const BOUGHT = 1;
     const NOT_YET_BUY = 2;
@@ -83,5 +84,12 @@ class FullCourseTransformer extends TransformerAbstract
         }
 
         return self::BOUGHT;
+    }
+
+    public function includeSchool(Course $course)
+    {
+        $school = $course->category;
+
+        return $school ? $this->item($school, new CategoryTransformer) : null;
     }
 }
