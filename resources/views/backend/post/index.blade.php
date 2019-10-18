@@ -41,10 +41,10 @@
                                                 <td>{{ \App\Models\Category::find($post->category_id)['name']}}</td>
                                                 <td>
                                                     @if($post->status == \App\Models\Post::STATUS_OFF)
-                                                        <span style="color: #c9302c; font-weight: bold;">private</span>
+                                                        <span style="color: #c9302c; font-weight: bold;">Ẩn</span>
                                                         
                                                     @else
-                                                        <span style="color: #5cb85c;font-weight: bold;">Public</span>                                                        
+                                                        <span style="color: #5cb85c;font-weight: bold;">Hiển thị</span>
                                                     @endif
                                                 </td>                                                 
                                                 <td>{{ date('d-m-Y',$post->create_date) }}</td>

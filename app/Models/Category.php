@@ -13,7 +13,7 @@ class Category extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'category_id', 'status', 'type','create_at'
+        'name', 'status', 'type','create_at'
     ];
     public $timestamps = false;
 

@@ -48,17 +48,6 @@
                                                 </div>
                                             </div>
                                         </div> --}}
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Loại chuyên mục</label>
-                                            <div class="col-sm-2 tabular-border">
-                                                <select name="type" class="form-control">
-                                                    <option @if($var['category']->type == 0) selected @endif value="0">Chọn loại chuyên mục</option>
-                                                    <option @if($var['category']->type == 1) selected @endif value="1">Post</option>
-                                                    <option @if($var['category']->type == 2) selected @endif value="2">News</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
                                         <div class="form-group pb0">
                                             <label for="" class="control-label col-sm-2">Trạng thái</label>
                                             <div class="col-sm-2 tabular-border">
