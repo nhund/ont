@@ -30,31 +30,50 @@ class UserCourseService
     public function addingORExtentCourse(){
         $course = Course::find($this->course->id);
 
-        $UserCourse = UserCourse::where([
+        $userCourse = UserCourse::where([
             'user_id' => $this->userId,
             'course_id' => $this->course->id,
         ])->first();
 
-        if ($UserCourse && ($UserCourse->and_date > 0 && $UserCourse->and_date > time())){
+        if ($userCourse && ($userCourse->and_date > 0 && $userCourse->and_date > time())){
             throw new UserCourseException('Bạn đang học khóa học này.');
         }
 
         if($course->status == Course::TYPE_PUBLIC)
         {
-            DB::transaction(function () use ($course, $UserCourse){
+            DB::transaction(function () use ($course, $userCourse){
                 $this->paymentCourse($course);
-                $this->createOrUpdateUserCourse(UserCourse::STATUS_ON, $UserCourse);
+                $this->createOrUpdateUserCourse(UserCourse::STATUS_ON, $userCourse);
             });
             return 'mua khóa học thành công';
         }
 
         if($course->status == Course::TYPE_APPROVAL)
         {
-            $this->createOrUpdateUserCourse(UserCourse::STATUS_APPROVAL, $UserCourse);
+            $this->createOrUpdateUserCourse(UserCourse::STATUS_APPROVAL, $userCourse);
             return 'Xin tham gia thành công, bạn cần chờ duyệt để tham gia';
         }
 
-        return  'Mua khóa học không thành công';
+        $end_date = (int)$course->study_time > 0 ? time() + (int)$course->study_time * 24 * 60 * 60 : 0;
+        $status_course = UserCourse::STATUS_ON;
+
+        if($userCourse)
+        {
+            $userCourse->status = $status_course;
+            $userCourse->and_date = $end_date;
+            $userCourse->learn_day = $course->study_time;
+            $userCourse->updated_at = time();
+        }else{
+            $userCourse = new UserCourse();
+            $userCourse->user_id = $this->userId;
+            $userCourse->course_id = $this->course->id;
+            $userCourse->status = $status_course;
+            $userCourse->and_date = $end_date;
+            $userCourse->learn_day = $course->study_time;
+            $userCourse->created_at = time();
+        }
+
+        return  $userCourse->save() ? 'mua khóa học thành công' : 'Mua khóa học không thành công';
     }
 
     public function createOrUpdateUserCourse($status_course, $userCourse = null)
