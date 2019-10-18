@@ -2,6 +2,7 @@
 
 namespace App\Components\Course;
 
+use App\Exceptions\BadRequestException;
 use App\Exceptions\UserCourseException;
 use App\Helpers\Helper;
 use App\Models\Course;
@@ -72,8 +73,7 @@ class UserCourseService
             $userCourse->learn_day = $course->study_time;
             $userCourse->created_at = time();
         }
-
-        return  $userCourse->save() ? 'mua khóa học thành công' : 'Mua khóa học không thành công';
+        return 'mua khóa học thành công';
     }
 
     public function createOrUpdateUserCourse($status_course, $userCourse = null)
