@@ -30,7 +30,11 @@ class ExamController
         $var['course']     = $lesson->course;
         $var['lesson']     = $lesson;
 
-        $questionIds = ExamQuestion::where('lesson_id', $id)->pluck('question_id');
+        $questionIds = ExamQuestion::query()->where('lesson_id', $id);
+        if (!empty($request->get('part'))){
+            $questionIds->where('part', $request->get('part'));
+        }
+        $questionIds = $questionIds->get()->pluck('question_id');
 
         $question = Question::whereIn('id', $questionIds)
             ->where('parent_id',0)->orderBy('order_s','ASC')
@@ -39,13 +43,22 @@ class ExamController
         $suggestQuestions = null;
 
         $keySearch = $request->get('key_search');
-        if ($keySearch){
-            $suggestQuestions = Question::where(function ($q) use ($keySearch){
+        if ($keySearch) {
+
+            $suggestQuestions = Question::query()->where(function ($q) use ($keySearch){
                 $q->where('question', 'like',  '%'.$keySearch.'%');
                 $q->orWhere('content', 'like',  '%'.$keySearch.'%');
-            })
-            ->where('parent_id',0)->orderBy('order_s','ASC')
-            ->paginate(30);
+            });
+
+             if (!empty($request->get('part'))){
+                 $ExceptQuestionIds = ExamQuestion::query()->where('lesson_id', $id);
+                 $ExceptQuestionIds->where('part', '<>',  $request->get('part'));
+                 $ExceptQuestionIds = $ExceptQuestionIds->get()->pluck('question_id');
+                 $suggestQuestions->whereNotIn('id', $ExceptQuestionIds);
+             };
+
+            $suggestQuestions = $suggestQuestions->where('parent_id',0)
+                ->orderBy('order_s','ASC')->paginate(30);
         }
         foreach($question as $q) {
             $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();
