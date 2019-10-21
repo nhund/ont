@@ -1,5 +1,7 @@
 <div class="row top10">
     <div class="col-xs-12">
+        <div><button class="btn btn-info" type="button" data-toggle="modal" href="#add-part-exam">thêm phần kiểm tra</button></div>
+        <hr/>
         <div class="panel panel-grape panel-bod">
             <div class="panel-heading"><h2>Điểm Từng phần của bài kiểm tra</h2></div>
             <div class="panel-body">
@@ -48,6 +50,43 @@
     </div>
 </div>
 
+<div class="modal fade" id="add-part-exam" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="text-bold text-center">Thêm phần mới cho bài kiểm tra <strong>{{$lesson->name ?? ''}}</strong></p>
+                <form id="form-add-part-exam" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" name="exam_id" value="{{$lesson->id ?? ''}}">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label for="part_name">Tên</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="part_name" type="number" name="part_name">
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label for="part_score">Tổng điểm</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="part_score" type="number" name="part_score">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addPartExam()">Xóa</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     const modalConfirm = function(part_id){
 
@@ -75,7 +114,28 @@
              });
             console.log('partId', part_id);
         });
-
-
     };
+
+    const addPartExam = function(){
+        $("#add-part-exam").modal('show');
+
+        $("#modal-btn-yes").on("click", function(){
+            const serialise = $( "form#form-add-part-exam" ).serialize();
+            $.ajax({
+                   url: '/admin/exam/part',
+                   data: serialise,
+                   dataType: 'json',
+                   method: 'POST',
+                   success: function (response) {
+                       const exam_id =  $('input[name=exam_id]').val();
+                       console.log('response', response.status === 200);
+                       if (response.status === 200) {
+                           // window.location.href = '/admin/exam/'+exam_id;
+                       }
+                   }
+               });
+            console.log('partId', part_id);
+        });
+
+    }
 </script>
