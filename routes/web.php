@@ -217,7 +217,8 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/', 'BackEnd\ExamController@store')->name('exam.store');
 //        Route::post('/part', 'BackEnd\ExamController@partExam')->name('exam.partExam');
         Route::get('/{id}/part', 'BackEnd\ExamController@partExam')->name('exam.partExam');
-        Route::post('/part', 'BackEnd\ExamController@partDelete')->name('part.delete');
+        Route::delete('/part', 'BackEnd\ExamController@partDelete')->name('part.delete');
+        Route::post('/part', 'BackEnd\ExamController@partAdd')->name('part.add');
     });
 
     Route::prefix('exercise')->group(function () {

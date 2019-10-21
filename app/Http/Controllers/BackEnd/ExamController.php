@@ -108,4 +108,11 @@ class ExamController
         return response()->json(['status' => 200, 'data' => $request->all()]);
     }
 
+    public function partAdd(Request $request)
+    {
+        $params  = $request->only(['lesson_id', 'name', 'score', 'number_question']);
+        ExamPart::create($params);
+        return redirect()->route('exam.detail', ['id' => $params['lesson_id']]);
+    }
+
 }
