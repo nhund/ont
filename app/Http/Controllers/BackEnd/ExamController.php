@@ -51,7 +51,7 @@ class ExamController
             $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();
         }
 
-        $var['parts']           = ExamPart::where('exam_id', $id)->first();
+        $var['parts']           = ExamPart::where('lesson_id', $id)->get();
         $var['questions']       = $question;
         $var['questionIds']     = $questionIds->toArray();
         $var['suggestQuestions']  = $suggestQuestions;
@@ -97,14 +97,15 @@ class ExamController
         return response()->json(['status' => 200, 'data' => $request->all()]);
     }
 
-    public function partExam(Request $request)
+    public function partDelete(Request $request)
     {
-        $params = $request->only(['exam_id', 'part_1', 'part_2', 'part_3', 'part_4', 'part_5', 'part_6', 'part_7', 'part_8', 'part_9', 'part_10', 'repeat_time']);
-        $examId = Arr::pull($params, 'exam_id');
-        $repeatTime = Arr::pull($params, 'repeat_time');
-        ExamPart::updateOrCreate(['exam_id' => $examId], $params);
-        Lesson::where('id', $examId)->update(['repeat_time' => $repeatTime]);
-        return response()->json(['status' => 200, 'data' => $params]);
+        $examPart = ExamPart::where('id', $request->get('part_id'))->first();
+
+        if ($examPart){
+            $examPart->delete();
+        }
+
+        return response()->json(['status' => 200, 'data' => $request->all()]);
     }
 
 }
