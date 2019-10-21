@@ -218,7 +218,7 @@ class UserCourseReportService
         $score = 0;
         $userScore = 0;
         $parts = ['part_1','part_2','part_3','part_4','part_5','part_6','part_7','part_8','part_9','part_10'];
-        $examPart = ExamPart::where('exam_id', $lesson->id)->first();
+        $examPart = ExamPart::where('lesson_id', $lesson->id)->first();
         if ($examPart){
             foreach ($parts as $part){
                 $score += $examPart->$part;

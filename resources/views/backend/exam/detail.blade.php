@@ -39,6 +39,11 @@
                                                 <a href="#tab-add-question" data-toggle="tab" class="a-add-question">
                                                     <img src="{{ asset('/public/images/course/icon/icon-comment.png')}}" class="tab-des">Thêm câu hỏi</a>
                                             </li>
+
+                                            <li class="add-question">
+                                                <a href="#tab-add-part" data-toggle="tab" class="a-add-part">
+                                                    <img src="{{ asset('/public/images/course/icon/icon-comment.png')}}" class="tab-des">Điểm từng phần</a>
+                                            </li>
                                         </ul>
                                     </h2>
                                     <div class="pull-right editBtn">
@@ -132,11 +137,13 @@
                                             @endif
                                         </div>
                                         <div class="tab-pane" id="tab-add-question">
-                                            <p>Thêm câu hỏi</p>
                                             @include('backend.exam.add_question')
                                             @if ($lesson['is_exercise'])
                                                 @include('backend.lesson.information')
                                             @endif
+                                        </div>
+                                        <div class="tab-pane" id="tab-add-part">
+                                            @include('backend.exam.add_part')
                                         </div>
                                     </div>
                                 </div>

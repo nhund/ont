@@ -215,7 +215,9 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
     Route::prefix('exam')->group(function () {
         Route::get('/{id}', 'BackEnd\ExamController@detail')->name('exam.detail');
         Route::post('/', 'BackEnd\ExamController@store')->name('exam.store');
-        Route::post('/part', 'BackEnd\ExamController@partExam')->name('exam.partExam');
+//        Route::post('/part', 'BackEnd\ExamController@partExam')->name('exam.partExam');
+        Route::get('/{id}/part', 'BackEnd\ExamController@partExam')->name('exam.partExam');
+        Route::post('/part', 'BackEnd\ExamController@partDelete')->name('part.delete');
     });
 
     Route::prefix('exercise')->group(function () {

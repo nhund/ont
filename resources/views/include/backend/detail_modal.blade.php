@@ -297,36 +297,36 @@
                         <div class="col-sm-3">Điểm</div>
                     </div>
                     <hr/>
-                    <div class="form-group row">
-                        <div class="col-sm-offset-1 col-sm-2">phần 1</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_1 ?? 0}}" type="number" name="part_1"></div>
-                        <div class="col-sm-2">phần 2</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_2 ?? 0}}" type="number" name="part_2"></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-offset-1 col-sm-2">phần 3</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_3 ?? 0}}" type="number" name="part_3"></div>
-                        <div class="col-sm-2">phần 4</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_4 ?? 0}}" type="number" name="part_4"></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-offset-1 col-sm-2">phần 5</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_5 ?? 0}}" type="number" name="part_5"></div>
-                        <div class="col-sm-2">phần 6</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_6 ?? 0}}" type="number" name="part_6"></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-offset-1 col-sm-2">phần 7</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_7 ?? 0}}" type="number" name="part_7"></div>
-                        <div class="col-sm-2">phần 8</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_8 ?? 0}}" type="number" name="part_8"></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-offset-1 col-sm-2">phần 9</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_9 ?? 0}}" type="number" name="part_9"></div>
-                        <div class="col-sm-2">phần 10</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_10 ?? 0}}" type="number" name="part_10"></div>
-                    </div>
+                    {{--<div class="form-group row">--}}
+                        {{--<div class="col-sm-offset-1 col-sm-2">phần 1</div>--}}
+                        {{--<div class="col-sm-3"><input value="{{$parts->part_1 ?? 0}}" type="number" name="part_1"></div>--}}
+                        {{--<div class="col-sm-2">phần 2</div>--}}
+                        {{--<div class="col-sm-3"><input value="{{$parts->part_2 ?? 0}}" type="number" name="part_2"></div>--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group row">--}}
+                        {{--<div class="col-sm-offset-1 col-sm-2">phần 3</div>--}}
+                        {{--<div class="col-sm-3"><input value="{{$parts->part_3 ?? 0}}" type="number" name="part_3"></div>--}}
+                        {{--<div class="col-sm-2">phần 4</div>--}}
+                        {{--<div class="col-sm-3"><input value="{{$parts->part_4 ?? 0}}" type="number" name="part_4"></div>--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group row">--}}
+                        {{--<div class="col-sm-offset-1 col-sm-2">phần 5</div>--}}
+                        {{--<div class="col-sm-3"><input value="{{$parts->part_5 ?? 0}}" type="number" name="part_5"></div>--}}
+                        {{--<div class="col-sm-2">phần 6</div>--}}
+                        {{--<div class="col-sm-3"><input value="{{$parts->part_6 ?? 0}}" type="number" name="part_6"></div>--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group row">--}}
+                        {{--<div class="col-sm-offset-1 col-sm-2">phần 7</div>--}}
+                        {{--<div class="col-sm-3"><input value="{{$parts->part_7 ?? 0}}" type="number" name="part_7"></div>--}}
+                        {{--<div class="col-sm-2">phần 8</div>--}}
+                        {{--<div class="col-sm-3"><input value="{{$parts->part_8 ?? 0}}" type="number" name="part_8"></div>--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group row">--}}
+                        {{--<div class="col-sm-offset-1 col-sm-2">phần 9</div>--}}
+                        {{--<div class="col-sm-3"><input value="{{$parts->part_9 ?? 0}}" type="number" name="part_9"></div>--}}
+                        {{--<div class="col-sm-2">phần 10</div>--}}
+                        {{--<div class="col-sm-3"><input value="{{$parts->part_10 ?? 0}}" type="number" name="part_10"></div>--}}
+                    {{--</div>--}}
                 </div>
             </form>
             <div class="modal-footer">
