@@ -53,7 +53,10 @@ class UserCourseController extends Controller{
 
         $this->authorize('permission', $course);
 
-        $course->delete();
+        $userCourse = UserCourse::where('course_id', $course->id)
+            ->where('user_id', $request->user()->id);
+
+        $userCourse->delete();
 
         event(new RemoveUserCourse($course, $request->user()));
 
@@ -100,7 +103,7 @@ class UserCourseController extends Controller{
      */
     public function detail(Course $course, Request $request)
     {
-        $userCourseReport = new UserCourseReportService($course, $request->user());
+        $userCourseReport = new UserCourseReportService($request->user(), $course);
 
         return $this->respondOk($userCourseReport->get());
     }

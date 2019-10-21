@@ -18,7 +18,12 @@
      </div>
    </div>
    <div class="close_course">
-    <a href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="fa fa-close"></a>   
+       @if($var['lesson']->level == \App\Models\Lesson::LEVEL_2)
+           <a href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'course_id'=> $var['course']->id, 'lesson_id'=>$var['lesson']->id]) }}" class="fa fa-close"></a>
+       @else
+           <a href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="fa fa-close"></a>
+       @endif
+
   </div>
 </div>
 </div>

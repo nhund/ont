@@ -19,6 +19,7 @@ use App\Models\ExamUser;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Transformers\Exam\ExamUserTransformer;
+use App\Transformers\Exam\FullExamTransformer;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
@@ -85,5 +86,16 @@ class ExamController extends Controller
         $questions      = $examService->getQuestionExam($lesson);
         $answerQuestions   = $examService->resultQuestion($questions, $lesson->id, $request->user()->id);
         return $this->respondOk($answerQuestions);
+    }
+
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function detail(Lesson $lesson, Request $request)
+    {
+        return fractal()->item($lesson, new FullExamTransformer)
+            ->respond();
     }
 }

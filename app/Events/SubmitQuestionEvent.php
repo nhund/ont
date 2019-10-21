@@ -17,17 +17,17 @@ class SubmitQuestionEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $question;
+    public $questionId;
     public $user;
 
     /**
      * SubmitQuestionEvent constructor.
-     * @param Question $question
+     * @param $questionId
      * @param User $user
      */
-    public function __construct(Question $question, User $user)
+    public function __construct($questionId, User $user)
     {
-        $this->question = $question;
+        $this->questionId = $questionId;
         $this->user = $user;
     }
 }

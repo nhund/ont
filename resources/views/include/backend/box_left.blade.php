@@ -10,7 +10,7 @@
                     <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
                     <ul class="dropdown-menu pull-right">
                         <li><a onclick="showModalAddLesson(0, '{{ $course['name'] }}', 'lesson')">Tạo bài giảng</a></li>
-                        <li><a onclick="showModalAddExercise(0, 'exam')">Tạo bài Kiểm tra</a></li>
+                        <li><a onclick="showModalAddExam(0, 'exam', 1)">Tạo bài Kiểm tra</a></li>
                         <li><a onclick="showModalAddLevel2('{{ $course['name'] }}', 'level2')">Tạo bài level 2</a></li>
                     </ul>
                 </div>
@@ -41,7 +41,7 @@
                                                 <ul class="dropdown-menu pull-right">
                                                     <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}', 1)">Tạo lý thuyết</a></li>
                                                     <li><a onclick="showModalAddExercise('{{ $cl['id'] }}', 'lesson', 1)">Tạo bài tập</a></li>
-                                                    <li><a onclick="showModalAddExercise('{{ $cl['id'] }}', 'exam', 1)">Tạo bài Kiểm tra</a></li>
+                                                    <li><a onclick="showModalAddExam('{{ $cl['id'] }}', 'exam', 1)">Tạo bài Kiểm tra</a></li>
                                                 </ul>
                                             </div>
                                         @endif
@@ -106,7 +106,7 @@
                                                     <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
                                                     <ul class="dropdown-menu pull-right">
                                                         <li><a onclick="showModalAddLesson('{{ $lesson['id'] }}', '{{ $lesson['name'] }}', 2)">Tạo bài giảng</a></li>
-                                                        <li><a onclick="showModalAddExercise('{{ $lesson['id'] }}', 'exam', 1)">Tạo bài Kiểm tra</a></li>
+                                                        <li><a onclick="showModalAddExam('{{ $lesson['id'] }}', 'exam', 1)">Tạo bài Kiểm tra</a></li>
                                                     </ul>
                                                 </div>
                                             @endif
@@ -132,7 +132,7 @@
                                                                     <ul class="dropdown-menu pull-right">
                                                                         <li><a onclick="showModalAddLesson('{{ $lesson['id'] }}', '{{ $cl['name'] }}', 2)">Tạo lý thuyết</a></li>
                                                                         <li><a onclick="showModalAddExercise('{{ $lesson['id'] }}', 'lesson', 2)">Tạo bài tập</a></li>
-                                                                        <li><a onclick="showModalAddExercise('{{ $lesson['id'] }}', 'exam', 2)">Tạo bài Kiểm tra</a></li>
+                                                                        <li><a onclick="showModalAddExam('{{ $lesson['id'] }}', 'exam', 2)">Tạo bài Kiểm tra</a></li>
                                                                     </ul>
                                                                 </div>
                                                             @endif

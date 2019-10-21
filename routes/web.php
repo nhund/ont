@@ -41,82 +41,81 @@ Route::get('/', 'FrontEnd\HomeController@index')
 Route::get('/chinh-sach-rieng-tu', 'FrontEnd\HomeController@chinhsachriengtu')
             ->name('chinhsachriengtu');
 Route::get('/dieu-khoan-su-dung', 'FrontEnd\HomeController@dieukhoansudung')
-            ->name('dieukhoansudung');
+            ->name('dieukhoansudung');                        
 Route::get('/khoa-hoc', 'FrontEnd\CourseController@courseList')
             ->name('courseList');
 Route::get('khoa-hoc/{title}.{id}', 'FrontEnd\CourseController@courseDetail')
-            ->name('courseDetail');
+            ->name('courseDetail');  
 Route::get('/lien-he', 'FrontEnd\HomeController@contact')
-            ->name('contact');
+            ->name('contact');                 
 Route::post('/contact', 'FrontEnd\HomeController@contactPost')
             ->name('contactPost');
 Route::get('/khoa-hoc-cua-toi', 'FrontEnd\CourseController@myCourse')
             ->name('myCourse');
 Route::get('/khoa-hoc-da-tao', 'FrontEnd\CourseController@courseCreated')
-            ->name('courseCreated');
+            ->name('courseCreated');            
 Route::get('/khoa-hoc-tro-giang', 'FrontEnd\CourseController@courseSupport')
-            ->name('courseSupport');
+            ->name('courseSupport');                        
 Route::get('/user-info', 'FrontEnd\UserController@userInfo')
             ->name('userInfo');
 Route::get('/user/change-password', 'FrontEnd\UserController@userChangePass')
             ->name('user.change.password');
 Route::post('/user/save-password', 'FrontEnd\UserController@saveChangePass')
-            ->name('user.change.password.post');
+            ->name('user.change.password.post');            
 Route::post('/user-info-update', 'FrontEnd\UserController@updateUserInfo')
-            ->name('user.edit.userInfo');
+            ->name('user.edit.userInfo');    
 Route::post('/upload-avatar', 'FrontEnd\UserController@uploadAvatar')
-            ->name('user.upload.avatar');
-Route::prefix('course')->group(function () {
+            ->name('user.upload.avatar');                          
+Route::prefix('course')->group(function () { 
         Route::get('/user/course/add', 'FrontEnd\UserCourseController@add')
                     ->name('user.course.add');
         Route::post('/comment/add', 'FrontEnd\CommentController@addComment')
-                    ->name('user.course.comment.add');
+                    ->name('user.course.comment.add');  
         Route::post('/comment/delete', 'FrontEnd\CommentController@deleteComment')
-            ->name('user.course.comment.delete');
+            ->name('user.course.comment.delete');                       
         Route::post('/buy', 'FrontEnd\UserCourseController@add')
-            ->name('user.course.buy');
+            ->name('user.course.buy');     
         Route::post('/rating', 'FrontEnd\RatingController@add')
-            ->name('user.course.rating');
-        });
-Route::prefix('bai-viet')->group(function () {
+            ->name('user.course.rating');                  
+        }); 
+Route::prefix('bai-viet')->group(function () { 
         Route::get('/{title}.{id}', 'FrontEnd\PostController@detail')
-                    ->name('post.detail');
+                    ->name('post.detail');             
         });
 Route::get('/khoa-hoc/{title}.{id}/tong-quan', 'FrontEnd\CourseLearnController@course')->name('course.learn');
-Route::get('/khoa-hoc/cap-2/{title}.{id}/tong-quan', 'FrontEnd\CourseLearnController@course')->name('course.learn.level2');
+Route::get('/khoa-hoc/cap-2/{title}.{course_id}/tong-quan', 'FrontEnd\CourseLearnController@lessonLevel2')
+                ->name('course.learn.level2');
 
 Route::get('/khoa-hoc/{title}.{id}/tong-quan/{type}', 'FrontEnd\CourseLearnController@courseTypeLearn')
-        ->name('course.courseTypeLearn');
+        ->name('course.courseTypeLearn');  
 Route::get('/search', 'FrontEnd\SearchController@search')
-            ->name('search');
-Route::prefix('bai-tap')->group(function () {
-                // Route::get('/hoc-ly-thuyet.{id}', 'FrontEnd\CourseLearnController@lyThuyet')
-                //             ->name('user.lambaitap.lythuyet');
+            ->name('search');  
+Route::prefix('bai-tap')->group(function () { 
                 Route::post('/get-explain', 'FrontEnd\CourseLearnController@getExplain')
-                        ->name('user.lambaitap.getExplain');
+                        ->name('user.lambaitap.getExplain');       
                 Route::get('/hoc-ly-thuyet.{id}', 'FrontEnd\CourseLearnController@lyThuyet')
-                            ->name('user.lambaitap.lythuyet');
+                            ->name('user.lambaitap.lythuyet');  
 
                 Route::post('/hoc-ly-thuyet', 'FrontEnd\CourseLearnController@lyThuyetSubmit')
-                            ->name('user.lambaitap.lyThuyetSubmit');
+                            ->name('user.lambaitap.lyThuyetSubmit');     
                 Route::get('/lesson/{title}.{id}/{type}', 'FrontEnd\CourseLearnController@question')
-                            ->name('user.lambaitap.question');
+                            ->name('user.lambaitap.question');   
                 Route::post('/question/submit', 'FrontEnd\CourseLearnController@questionSubmit')
-                            ->name('user.lambaitap.questionSubmit');
+                            ->name('user.lambaitap.questionSubmit');    
                 Route::post('/bookmark', 'FrontEnd\BookmarkController@bookMark')
-                            ->name('user.question.bookMark');
-                });
+                            ->name('user.question.bookMark');                                                                     
+                });                
 
-Route::prefix('wallet')->group(function () {
+Route::prefix('wallet')->group(function () { 
                 Route::get('/history', 'FrontEnd\WalletController@history')
-                    ->name('user.wallet.history');
+                    ->name('user.wallet.history');   
                 Route::get('/add', 'FrontEnd\WalletController@add')
-                    ->name('user.wallet.add');
+                    ->name('user.wallet.add');   
                 Route::post('/add', 'FrontEnd\WalletController@addPost')
-                    ->name('user.wallet.addPost');
-                });
-
-Route::post('add-feedback','FrontEnd\HomeController@addFeedback')->name('feedback.add');
+                    ->name('user.wallet.addPost');                  
+                });                
+    
+Route::post('add-feedback','FrontEnd\HomeController@addFeedback')->name('feedback.add');    
 
                     /**      Route admin      * */
 Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
@@ -130,13 +129,13 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
     Route::any('/tool-upload-save', 'BackEnd\DashBoardController@toolUploadSave')
         ->name('admin.toolUploadSave');
     Route::any('/tool-upload-delete-image', 'BackEnd\DashBoardController@toolUploadDelete')
-        ->name('admin.toolUploadDelete');
+        ->name('admin.toolUploadDelete');    
     /** and upload images */
-
+            
     Route::get('/test', 'BackEnd\DashBoardController@test')
-        ->name('admin.test');
+        ->name('admin.test');   
     Route::post('/test-save', 'BackEnd\DashBoardController@testSave')
-        ->name('admin.testSave');
+        ->name('admin.testSave');        
     Route::prefix('code')->group(function () {
         Route::get('/list', 'BackEnd\CodeController@listCode')
             ->name('code.list');
@@ -157,10 +156,10 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/addUser', 'BackEnd\CourseController@addUser')->name('course.addUser');
         Route::get('/{id}/feedback', 'BackEnd\CourseController@feedback')->name('course.feedback');
 
-        Route::get('/list', 'BackEnd\CourseController@listCourse')->name('admin.course.index');
-        Route::post('/delete', 'BackEnd\CourseController@delete')->name('admin.course.delete');
+        Route::get('/list', 'BackEnd\CourseController@listCourse')->name('admin.course.index');     
+        Route::post('/delete', 'BackEnd\CourseController@delete')->name('admin.course.delete');   
 
-        Route::post('/user/approval', 'BackEnd\CourseController@userApproval')->name('admin.course.user.approval');
+        Route::post('/user/approval', 'BackEnd\CourseController@userApproval')->name('admin.course.user.approval');    
 
         Route::post('/sticky', 'BackEnd\CourseController@changeSticky')->name('admin.course.changeSticky');
 
@@ -168,31 +167,31 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
             Route::get('/sugges-user', 'BackEnd\SupportController@suggesUser')->name('admin.course.support.suggesUser');
             Route::get('/{id}', 'BackEnd\SupportController@index')->name('admin.course.support.index');
             Route::get('/add', 'BackEnd\SupportController@add')->name('admin.course.support.add');
-            Route::post('/save', 'BackEnd\SupportController@save')->name('admin.course.support.save');
+            Route::post('/save', 'BackEnd\SupportController@save')->name('admin.course.support.save');            
             Route::post('/delete', 'BackEnd\SupportController@delete')->name('admin.course.support.delete');
         });
     });
     Route::prefix('question')->group(function () {
         Route::get('/get-template-flashcard', 'BackEnd\QuestionController@getTemplateFlashCard')
-            ->name('admin.question.getTemplateFlashCard');
+            ->name('admin.question.getTemplateFlashCard');    
         Route::get('/get-template-trac-nghiem', 'BackEnd\QuestionController@getTemplateTracNghiem')
             ->name('admin.question.getTemplateTracNghiem');
         Route::get('/get-template-dien-tu', 'BackEnd\QuestionController@getTemplateDienTu')
-            ->name('admin.question.getTemplateDienTu');
+            ->name('admin.question.getTemplateDienTu');     
         Route::get('/edit', 'BackEnd\QuestionController@edit')
             ->name('admin.question.edit');
         Route::post('/edit-save', 'BackEnd\QuestionController@editSave')
-            ->name('admin.question.editSave');
+            ->name('admin.question.editSave');    
 
         Route::post('/detele', 'BackEnd\QuestionController@delete')
-            ->name('admin.question.delete');
+            ->name('admin.question.delete');   
         Route::get('/get-template-dien-tu-chuoi', 'BackEnd\QuestionController@getTemplateDienTuDoanvan')
-            ->name('admin.question.getTemplateDienTuDoanvan');
+            ->name('admin.question.getTemplateDienTuDoanvan');      
         Route::get('/order/{id}', 'BackEnd\QuestionController@order')
             ->name('admin.question.order');
         Route::post('/order/save', 'BackEnd\QuestionController@orderSave')
-            ->name('admin.question.order.save');
-
+            ->name('admin.question.order.save');    
+        
     });
     Route::prefix('lesson')->group(function () {
         Route::get('/{id}', 'BackEnd\LessonController@detail')
@@ -206,9 +205,9 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::get('/order/{id}', 'BackEnd\LessonController@order')
             ->name('lesson.order');
         Route::post('/order/save', 'BackEnd\LessonController@orderSave')
-            ->name('lesson.order.save');
+            ->name('lesson.order.save');    
         Route::post('/delete', 'BackEnd\LessonController@deleteLessonPost')
-            ->name('lesson.delete.post');
+            ->name('lesson.delete.post');        
     });
 
     Route::prefix('exam')->group(function () {
@@ -239,7 +238,6 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/infor', 'BackEnd\DocumentController@infor')
             ->name('document.information');
     });
-
     Route::prefix('category')->group(function () {
         Route::get('/', 'BackEnd\CategoryController@index')->name('admin.category.index');
         Route::get('/add', 'BackEnd\CategoryController@add')->name('admin.category.add');
@@ -247,18 +245,7 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::get('/edit/{id}', 'BackEnd\CategoryController@edit')->name('admin.category.edit')->where('id', '[0-9]+');
         Route::post('/update', 'BackEnd\CategoryController@update')->name('admin.category.update');
         Route::post('/delete', 'BackEnd\CategoryController@delete')->name('admin.category.delete');
-    });
-
-
-    Route::prefix('news')->group(function () {
-        Route::get('/', 'BackEnd\CategoryNewsController@index')->name('admin.news.index');
-        Route::get('/add', 'BackEnd\CategoryNewsController@add')->name('admin.news.add');
-        Route::post('/save', 'BackEnd\CategoryNewsController@save')->name('admin.news.save');
-        Route::get('/edit/{id}', 'BackEnd\CategoryNewsController@edit')->name('admin.news.edit')->where('id', '[0-9]+');
-        Route::post('/update', 'BackEnd\CategoryNewsController@update')->name('admin.news.update');
-        Route::post('/delete', 'BackEnd\CategoryNewsController@delete')->name('admin.news.delete');
-    });
-
+    });  
     Route::prefix('slider')->group(function () {
         Route::get('/', 'BackEnd\SliderController@index')->name('admin.slider.index');
         Route::get('/add', 'BackEnd\SliderController@add')->name('admin.slider.add');
@@ -266,7 +253,7 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::get('/edit/{id}', 'BackEnd\SliderController@edit')->name('admin.slider.edit')->where('id', '[0-9]+');
         Route::post('/update', 'BackEnd\SliderController@update')->name('admin.slider.update');
         Route::post('/delete', 'BackEnd\SliderController@delete')->name('admin.slider.delete');
-    });
+    });    
 
     Route::prefix('about')->group(function () {
         Route::get('/', 'BackEnd\AboutController@index')->name('admin.about.index');
@@ -314,7 +301,7 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/delete', 'BackEnd\UserController@delete')->name('admin.user.delete');
     });
      Route::prefix('contact')->group(function () {
-        Route::get('/', 'BackEnd\DashBoardController@indexContact')->name('admin.contact.index');
+        Route::get('/', 'BackEnd\DashBoardController@indexContact')->name('admin.contact.index');        
         Route::post('/delete', 'BackEnd\DashBoardController@deleteContact')->name('admin.contact.delete');
     });
     Route::prefix('import')->group(function () {
@@ -328,10 +315,10 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::get('/export-question/{id}', 'BackEnd\ExportController@exportQuestion')->name('admin.export.question');
     });
     Route::prefix('feedback')->group(function () {
-        Route::get('/', 'BackEnd\FeedbackController@index')->name('admin.feedback.index');
-        Route::get('/edit-question', 'BackEnd\FeedbackController@editQuestion')->name('admin.feedback.editQuestion');
+        Route::get('/', 'BackEnd\FeedbackController@index')->name('admin.feedback.index');       
+        Route::get('/edit-question', 'BackEnd\FeedbackController@editQuestion')->name('admin.feedback.editQuestion');        
     });
-
+    
     Route::prefix('menu')->group(function () {
         Route::get('/', 'BackEnd\MenuController@index')->name('admin.menu.index');
         Route::get('/add', 'BackEnd\MenuController@add')->name('admin.menu.add');
@@ -342,14 +329,12 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/order', 'BackEnd\MenuController@order')->name('admin.menu.order');
     });
 
-
     Route::prefix('news')->group(function () {
         Route::get('/', 'BackEnd\CategoryNewsController@index')->name('admin.news.index');
-        /*Route::get('/add', 'BackEnd\CategoryNewsController@add')->name('admin.category.add');
-        Route::post('/save', 'BackEnd\CategoryNewsController@save')->name('admin.category.save');
-        Route::get('/edit/{id}', 'BackEnd\CategoryNewsController@edit')->name('admin.category.edit')->where('id', '[0-9]+');
-        Route::post('/update', 'BackEnd\CategoryNewsController@update')->name('admin.category.update');
-        Route::post('/delete', 'BackEnd\CategoryNewsController@delete')->name('admin.category.delete');*/
+        Route::get('/add', 'BackEnd\CategoryNewsController@add')->name('admin.news.add');
+        Route::post('/save', 'BackEnd\CategoryNewsController@save')->name('admin.news.save');
+        Route::get('/edit/{id}', 'BackEnd\CategoryNewsController@edit')->name('admin.news.edit')->where('id', '[0-9]+');
+        Route::post('/update', 'BackEnd\CategoryNewsController@update')->name('admin.news.update');
+        Route::post('/delete', 'BackEnd\CategoryNewsController@delete')->name('admin.news.delete');
     });
-
 });

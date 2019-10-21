@@ -50,29 +50,15 @@
                                         <p class="content">Ôn tập câu cũ</p>
                                     </div>
                                     </a>
-                               {{-- @else
-                                    <a class="offer-course" href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI]) }}">
-                                        <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
-                                        <div class="title">
-                                            <p>Đề xuất</p>
-                                            <p class="content">Làm bài mới</p>
-                                        </div>
-                                    </a>--}}
                                 @endif
 
                             @endif
-
-                                {{--<div class="course-learn-other" onclick="openNav()">
-                                    Học kiểu khác
-                                </div>--}}
                                 <a class="offer-course do_new " href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI]) }}" title="Làm bài mới">
                                 <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
                                 <div class="title">
                                     <p class="content">Làm bài mới</p>
                                 </div>
                                 </a>
-
-
                                 <a class="offer-course do_old {{ $var['show_on_tap'] == false ? 'no_action' : '' }}" href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}" title="Ôn tập câu cũ">
                                     <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
                                     <div class="title">
@@ -106,15 +92,10 @@
                     <div class="body">
                         @foreach($var['lessons'] as $lesson)
                                 <div class="title_body">
-                                    @if($lesson->level == \App\Models\Lesson::LEVEL_1)
-                                        {{ $lesson->name }}
-                                    @else
-                                        <a href="{{route('course.learn.level2',['title'=>str_slug($lesson->name),'course_id' =>$lesson->course_id, 'lesson_id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
-                                    @endif
+                                    {{ $lesson->name }}
                                 </div>
                                 @if(isset($lesson->childs))
                                     @foreach($lesson->childs as $lesson_child)
-                                        @if($lesson_child->level == \App\Models\Lesson::LEVEL_1)
                                             @if($lesson_child->is_exercise == \App\Models\Lesson::IS_EXERCISE)
                                                 <div class="item-exercise">
                                                 <a href="{{ route('user.lambaitap.question',['id'=>$lesson_child->id,'title'=>str_slug($lesson_child->name),'type'=>\App\Models\Question::LEARN_LAM_BAI_TAP]) }}" class="name ly_thuyet">{{ $lesson_child->name }}</a>
@@ -141,10 +122,9 @@
                                                     </div>
                                                 </div>
                                             @endif
-                                        @endif
                                     @endforeach
                                 @endif
-                                                            
+
                         @endforeach
                         
                     </div>    

@@ -34,7 +34,6 @@ class BookMarkService
 
         $question = Question::where([
             'id' => $this->request->get('question_id'),
-            'status' => Question::STATUS_ON
         ])->first();
 
         if (!$question)
@@ -44,7 +43,7 @@ class BookMarkService
 
         $lesson = Lesson::where([
             'id' => $question->lesson_id,
-            'status' => Question::STATUS_ON
+            'status' => Lesson::STATUS_ON
         ])->first();
 
         if (!$lesson)

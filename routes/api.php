@@ -45,6 +45,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
         Route::post('/question/{question}', 'ExamController@submitQuestion');
         Route::get('/{lesson}/rank', 'ExamController@rank');
         Route::get('/{lesson}/result', 'ExamController@result');
+        Route::get('/{lesson}/detail', 'ExamController@detail');
     });
 
     Route::namespace('Lesson')->prefix('lesson')->group(function () {
@@ -54,9 +55,10 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
     });
     Route::namespace('Question')->prefix('question')->group(function () {
         Route::post('/{question}', 'QuestionAnswerController@store');
-
+        Route::post('/{lesson}/theory', 'QuestionAnswerController@theory');
 
         Route::post('/{question}/bookmark', 'QuestionController@bookmark');
+        Route::post('/{question}/feedback', 'QuestionController@feedback');
     });
 
     Route::namespace('Comment')->prefix('comment')->group(function (){
@@ -75,9 +77,18 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
     Route::namespace('Course')->group(function (){
         Route::post('courses/{course}/rating', 'RatingController@store');
     });
+
+    Route::namespace('Recommendation')->prefix('recommendation')->group(function (){
+        Route::get('course/{course}/replay', 'RecommendationController@replay');
+        Route::get('course/{course}/new', 'RecommendationController@new');
+        Route::get('course/{course}/bookmark', 'RecommendationController@bookmark');
+        Route::get('course/{course}/wrong', 'RecommendationController@wrong');
+        Route::get('course/{course}/suggest', 'RecommendationController@suggest');
+        Route::get('course/{course}/report', 'RecommendationController@report');
+        Route::get('lesson/{lesson}/click', 'RecommendationController@click');
+    });
+
 });
-
-
 
 Route::namespace('Api')->group(function () {
 

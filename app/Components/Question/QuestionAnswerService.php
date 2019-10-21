@@ -7,17 +7,14 @@
  */
 namespace App\Components\Question;
 
-use App\Models\Course;
+use App\Events\SubmitQuestionEvent;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\QuestionAnswer;
 use App\Models\QuestionLogCurrent;
-use App\Models\TeacherSupport;
-use App\Models\UserCourse;
 use App\Models\UserLessonLog;
 use App\Models\UserQuestionBookmark;
 use App\Models\UserQuestionLog;
-use App\User;
 use Illuminate\Http\Request;
 
 class QuestionAnswerService
@@ -63,31 +60,6 @@ class QuestionAnswerService
         $user           = $this->request->user();
         $questionParent = $this->question->id;
 
-        if ($type == Question::LEARN_LAM_BOOKMARK) {
-            $questionlearnedIds = [];
-            $questionLearned    = QuestionLogCurrent::where('user_id', $user->id)
-                ->where('course_id', $courseId)
-                ->where('type', $type)->first();
-            if ($questionLearned) {
-                $questionlearnedIds = json_decode($questionLearned->content, true);
-                if (!in_array($questionParent, $questionlearnedIds)) {
-                    array_push($questionlearnedIds, $questionParent);
-                    //lay tat ca cac cau bookmark
-                    $questionLogs = UserQuestionBookmark::where('user_id', $user->id)->where('course_id', $courseId)->count();
-                    if ($questionLogs == count($questionlearnedIds)) {
-                        $questionlearnedIds = [];
-                    }
-                    $questionLearned->content = json_encode($questionlearnedIds);
-                    $questionLearned->save();
-                }
-
-            } else {
-                array_push($questionlearnedIds, $questionParent);
-                $questionLearned['content'] = json_encode($questionlearnedIds);
-                $this->questionLearned($questionLearned);
-            }
-        }
-
         if ($type == Question::LEARN_LAM_BAI_TAP) {
             $questionlearnedIds = [];
             $questionLearned    = QuestionLogCurrent::where('user_id', $user->id)->where('course_id', $courseId)->where('type', $type)->first();
@@ -120,7 +92,7 @@ class QuestionAnswerService
 
                     $this->questionLearned($questionLearned);
                 }
-
+                return true;
             }
             //neu dang click lam 1 bai bat ky
             //tong so cau hoi trong 1 lesson
@@ -129,6 +101,16 @@ class QuestionAnswerService
             $userQuestionLog = UserQuestionLog::where('lesson_id', $lessonId)->where('user_id', $user->id)->count();
             if ($lesson_questions == $userQuestionLog) {
                 UserQuestionLog::where('lesson_id', $lessonId)->where('user_id', $user->id)->delete();
+            }
+
+            $bookmarkQuestion = UserQuestionBookmark::where('user_id', $user->id)
+                ->where('lesson_id', $lessonId)
+                ->where('course_id', $courseId)
+                ->where('question_id', $courseId, $questionParent)->first();
+
+            if ($bookmarkQuestion){
+                $bookmarkQuestion->turn += 1;
+                $bookmarkQuestion->save();
             }
         }
 
@@ -358,9 +340,11 @@ class QuestionAnswerService
             $questionLog->update_time = time();
             $questionLog->is_ontap    = $type == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
 
+            $questionLog->total_turn += 1;
+
             if ((int)$data['status'] == Question::REPLY_OK){
                 $questionLog->correct_number += 1;
-            }else{$questionLog->wrong_number += 1;}
+            }
 
             $questionLog->save();
         } else {
@@ -376,9 +360,11 @@ class QuestionAnswerService
             $questionLog->is_ontap        = $type == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
             $questionLog->update_time     = time();
 
+            $questionLog->total_turn += 1;
+
             if ((int)$data['status'] == Question::REPLY_OK){
                 $questionLog->correct_number = 1;
-            }else{$questionLog->wrong_number = 1;}
+            }
 
             $questionLog->save();
         }
@@ -397,52 +383,32 @@ class QuestionAnswerService
         $up_question_true = false;
 
         //tong so cau hoi cua lesson
-        $lesson_questions = Question::where('lesson_id', $lessonId)
-            ->where('parent_id', 0)->count();
+//        $lesson_questions = Question::where('lesson_id', $lessonId)
+//            ->where('parent_id', 0)->count();
 
-        if ($data['question_type'] == Question::TYPE_FLASH_SINGLE || $data['question_type'] == Question::TYPE_FLASH_MUTI) {
-            if ((int)$data['status'] == QuestionAnswer::REPLY_OK) {
-                $up_question_true = true;
-            }
-        }
-        // if($data['question_type'] == Question::TYPE_DIEN_TU || $data['question_type'] == Question::TYPE_TRAC_NGHIEM)
-        else {
-
-            $count_question_child = Question::where('parent_id', $questionParent)->count();
-            //kiem tra xem da lam dung bn cau
-            $count_question_true = UserQuestionLog::where('question_parent', $questionParent)
-                ->where('lesson_id', $lessonId)
-                ->where('user_id', $userId)
-                ->where('status', QuestionAnswer::REPLY_OK)->count();
-
-            if ($count_question_child == $count_question_true && $count_question_true > 0) {
-                $up_question_true = true;
-            }
-        }
+//        if ($data['question_type'] == Question::TYPE_FLASH_SINGLE || $data['question_type'] == Question::TYPE_FLASH_MUTI) {
+//            if ((int)$data['status'] == QuestionAnswer::REPLY_OK) {
+//                $up_question_true = true;
+//            }
+//        }
+//        else {
+//            $count_question_child = Question::where('parent_id', $questionParent)->count();
+//            //kiem tra xem da lam dung bn cau
+//            $count_question_true = UserQuestionLog::where('question_parent', $questionParent)
+//                ->where('lesson_id', $lessonId)
+//                ->where('user_id', $userId)
+//                ->where('status', QuestionAnswer::REPLY_OK)->count();
+//
+//            if ($count_question_child == $count_question_true && $count_question_true > 0) {
+//                $up_question_true = true;
+//            }
+//        }
 
         $lesson_log = UserLessonLog::where('user_id', $userId)
             ->where('lesson_id', $lessonId)->first();
 
-        if ($lesson_log) {
-            if ($up_question_true) {
-                // tang so cau tra loi dung
-                $lesson_log->count_question_true += 1;
-                $lesson_log->save();
+        if (!$lesson_log) {
 
-                //dem so cau tra loi dung cua user trong lesson
-                $countUserLearnPass = UserQuestionLog::where('user_id', $userId)
-                    ->where('lesson_id', $lessonId)
-                    ->where('status', QuestionAnswer::REPLY_OK)->count();
-
-                if ($countUserLearnPass >= $lesson_questions) {
-                    // lam dung het tat ca cau hoi. reset tong so cau tra loi dung
-                    // tang luot lam len
-                    $lesson_log->count_question_true = 0;
-                    $lesson_log->count               += 1;
-                    $lesson_log->save();
-                }
-            }
-        } else {
             $lesson_log                      = new UserLessonLog();
             $lesson_log->user_id             = $userId;
             $lesson_log->course_id           = $courseId;
@@ -451,8 +417,30 @@ class QuestionAnswerService
             $lesson_log->count_all           = 1;
             $lesson_log->create_at           = time();
             $lesson_log->count_question_true = $up_question_true == true ? 1 : 0;
+            $lesson_log->turn_right = 0;
+            $lesson_log->total = 0;
             $lesson_log->save();
+
+//            if ($up_question_true) {
+//                // tang so cau tra loi dung
+//                $lesson_log->count_question_true += 1;
+//                $lesson_log->save();
+//
+//                //dem so cau tra loi dung cua user trong lesson
+//                $countUserLearnPass = UserQuestionLog::where('user_id', $userId)
+//                    ->where('lesson_id', $lessonId)
+//                    ->where('status', QuestionAnswer::REPLY_OK)->count();
+//
+//                if ($countUserLearnPass >= $lesson_questions) {
+//                    // lam dung het tat ca cau hoi. reset tong so cau tra loi dung
+//                    // tang luot lam len
+//                    $lesson_log->count_question_true = 0;
+//                    $lesson_log->count               += 1;
+//                    $lesson_log->save();
+//                }
+//            }
         }
+        event(new SubmitQuestionEvent($data['question_parent'], $this->request->user()));
     }
 
 }
