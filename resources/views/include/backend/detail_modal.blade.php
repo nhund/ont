@@ -210,77 +210,60 @@
                     <div class="row form-group">
                         <div class="col-sm-1">Từ
                         </div>
-                        <div class="col-sm-4">
-                            <input class="form-control date-today" type="text">
+                        <div class="col-sm-3">
+                            <input class="form-control date-today" type="text" name="start_time_at">
                         </div>
                         <div class="col-sm-1">Đến
                         </div>
-                        <div class="col-sm-4 ">
-                            <input class="form-control date-fromday" type="text">
+                        <div class="col-sm-3 ">
+                            <input class="form-control date-fromday" type="text" name="end_time_at">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row ">
+                        <div class="col-sm-3">
+                            <label for="minutes">Thời gian làm bài</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="total_score">Lựa chọn Barem điểm</label>
+                        </div>
+                    </div>
+
+                    <div class="row  form-group">
+                        <div class="col-sm-3 ">
+                            <input class="form-control" id="minutes" type="number"  name="minutes">
+                        </div>
+                        <div class="col-sm-3 ">
+                            <input class="form-control" id="total_score" type="number" name="total_score">
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-sm-3">
+                            <label>Bài thi có mấy phần?</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="number" name="parts">
                         </div>
                     </div>
                     <hr/>
                     <div class="row  form-group">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label>Bài thi được dừng mấy lần?</label>
                         </div>
-                        <div class="col-sm-3 ">
-                            <input class="form-control" type="number">
+                        <div class="col-sm-1 ">
+                            <input class="form-control" type="number"  name="stop_time">
                         </div>
-                    </div>
-                    <div class="row  form-group">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <label>Bài thi được làm lại mấy lần?</label>
                         </div>
-                        <div class="col-sm-3 ">
-                            <input class="form-control" type="number">
+                        <div class="col-sm-1 ">
+                            <input class="form-control" type="number" name="repeat_time">
                         </div>
                     </div>
-
-
-                    <hr/>
-                    <div class="row" style="font-weight: bold">
-                        <div class="col-sm-offset-1 col-sm-2">Phần</div>
-                        <div class="col-sm-3">Điểm</div>
-                        <div class="col-sm-2">Phần</div>
-                        <div class="col-sm-3">Điểm</div>
-                    </div>
-                    <hr/>
-                    <div class="form-group row">
-                        <div class="col-sm-offset-1 col-sm-2">phần 1</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_1 ?? 0}}" type="number" name="part_1"></div>
-                        <div class="col-sm-2">phần 2</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_2 ?? 0}}" type="number" name="part_2"></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-offset-1 col-sm-2">phần 3</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_3 ?? 0}}" type="number" name="part_3"></div>
-                        <div class="col-sm-2">phần 4</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_4 ?? 0}}" type="number" name="part_4"></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-offset-1 col-sm-2">phần 5</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_5 ?? 0}}" type="number" name="part_5"></div>
-                        <div class="col-sm-2">phần 6</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_6 ?? 0}}" type="number" name="part_6"></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-offset-1 col-sm-2">phần 7</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_7 ?? 0}}" type="number" name="part_7"></div>
-                        <div class="col-sm-2">phần 8</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_8 ?? 0}}" type="number" name="part_8"></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-offset-1 col-sm-2">phần 9</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_9 ?? 0}}" type="number" name="part_9"></div>
-                        <div class="col-sm-2">phần 10</div>
-                        <div class="col-sm-3"><input value="{{$parts->part_10 ?? 0}}" type="number" name="part_10"></div>
-                    </div>
-
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="ValidExForm('addcourseEx')">Lưu</button>
+                <button type="button" class="btn btn-primary" onclick="ValidExForm('addcourseExam')">Lưu</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
             </div>
         </div>

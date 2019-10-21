@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Http\Controllers\Controller;
+use App\Models\Exam;
 use App\Models\ExamPart;
 use App\Models\Lesson;
 use App\Models\Question;
@@ -165,8 +166,9 @@ class LessonController extends AdminBaseController
         $lesson->save();
 
         if ($type == Lesson::EXAM){
-            $params = $request->only(['part_1', 'part_2', 'part_3', 'part_4', 'part_5', 'part_6', 'part_7', 'part_8', 'part_9', 'part_10']);
-            ExamPart::updateOrCreate(['exam_id' => $lesson->id], $params);
+            $params = $request->only(['minutes', 'parts', 'repeat_time', 'stop_time', 'total_score', 'start_time_at', 'end_time_at']);
+            $params['lesson_id'] = $lesson->id;
+            Exam::updateOrCreateExam($params);
         }
 
         return redirect()->back();
