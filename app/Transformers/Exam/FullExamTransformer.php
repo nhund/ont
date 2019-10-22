@@ -27,6 +27,7 @@ class FullExamTransformer extends TransformerAbstract
             'id'          => $lesson->id,
             'name'        => $lesson->name,
             'description' => $lesson->description,
+            'description_format' => strip_tags($lesson->description),
             'minutes'   => $exam->minutes,
             'parts'     => $exam->parts,
             'repeat_time'   => $exam->repeat_time,
