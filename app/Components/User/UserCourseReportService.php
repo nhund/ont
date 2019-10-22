@@ -3,6 +3,7 @@
 namespace App\Components\User;
 
 use App\Models\Course;
+use App\Models\Exam;
 use App\Models\ExamPart;
 use App\Models\ExamUser;
 use App\Models\Lesson;
@@ -215,22 +216,16 @@ class UserCourseReportService
      */
     private function exam(Lesson $lesson){
 
-        $score = 0;
         $userScore = 0;
-        $parts = ['part_1','part_2','part_3','part_4','part_5','part_6','part_7','part_8','part_9','part_10'];
-        $examPart = ExamPart::where('lesson_id', $lesson->id)->first();
-        if ($examPart){
-            foreach ($parts as $part){
-                $score += $examPart->$part;
-            }
-        }
+        $exam = Exam::where('lesson_id', $lesson->id)->first();
+
 
         $examUser = ExamUser::where('user_id', $this->user->id)
             ->where('lesson_id', $lesson->id)
             ->first();
         $userScore = $examUser ? $examUser->highest_score : $userScore;
 
-       return [$score, $userScore];
+       return [$exam ? $exam->total_score : 0, $userScore];
 
     }
 }
