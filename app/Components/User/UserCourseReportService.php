@@ -55,7 +55,7 @@ class UserCourseReportService
         {
             $data['lesson_name'] = $lesson->name;
             $data['lesson_id'] = $lesson->id;
-
+            $data['type'] = $this->getType($lesson);
             if ($lesson->level == Lesson::LEVEL_1)
             {
                 $data['level'] =  Lesson::LEVEL_1;

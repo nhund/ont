@@ -23,7 +23,7 @@
                                     <td>{!! $part->name !!}</td>
                                     <td>{!! $part->number_question !!}</td>
                                     <td>{!! $part->score !!}</td>
-                                    <td><button type="button" class="btn btn-info">Sửa</button></td>
+                                    <td><button disabled type="button" class="btn btn-info">Sửa</button></td>
                                     <td><button type="button" data-toggle="modal" onclick="modalConfirm({{$part->id}})" class="btn btn-warning">Xóa</button></td>
                                 </tr>
                             @endforeach
@@ -80,7 +80,7 @@
                                 <label for="score">Tổng số câu hỏi</label>
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control" data-input="Tổng số câu hỏi" type="number" name="number_question"min="0">
+                                <input class="form-control" data-input="Tổng số câu hỏi" type="number" name="number_question" min="0">
                             </div>
                         </div>
                     </div>
