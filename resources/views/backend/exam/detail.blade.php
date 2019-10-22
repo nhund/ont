@@ -238,32 +238,6 @@
         $('.add-question').addClass('active');
     @endif
 
-    async function addQuestionToExam() {
-        let addQuestion = [];
-        let removeQuestion = [];
-        await $('input[name=question_id]').each(function (index, ele) {
-            if($(ele).is(':checked')){
-                addQuestion.push($(ele).val())
-            }else{
-                removeQuestion.push($(ele).val())
-            }
-        });
-        const part = $('select[name=part]').val();
-        const exam_id = $('input[name=exam_id]').val();
-        $.ajax({
-            url: '/admin/exam',
-            data: {removeQuestion, addQuestion, part, exam_id},
-            dataType: 'json',
-            method: 'POST',
-            success: function (response) {
-                console.log(response);
-                if (response.status) {
-                    window.location.reload();
-                }
-            }
-        });
-    }
-
 </script>
 
 @endpush

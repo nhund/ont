@@ -9,12 +9,14 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Components\Exam\ExamService;
+use App\Models\Exam;
 use App\Models\ExamPart;
 use App\Models\ExamQuestion;
 use App\Models\Lesson;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class ExamController
 {
@@ -30,7 +32,11 @@ class ExamController
         $var['course']     = $lesson->course;
         $var['lesson']     = $lesson;
 
-        $questionIds = ExamQuestion::where('lesson_id', $id)->pluck('question_id');
+        $questionIds = ExamQuestion::query()->where('lesson_id', $id);
+        if (!empty($request->get('part'))){
+            $questionIds->where('part', $request->get('part'));
+        }
+        $questionIds = $questionIds->get()->pluck('question_id');
 
         $question = Question::whereIn('id', $questionIds)
             ->where('parent_id',0)->orderBy('order_s','ASC')
@@ -39,13 +45,22 @@ class ExamController
         $suggestQuestions = null;
 
         $keySearch = $request->get('key_search');
-        if ($keySearch){
-            $suggestQuestions = Question::where(function ($q) use ($keySearch){
+        if ($keySearch) {
+
+            $suggestQuestions = Question::query()->where(function ($q) use ($keySearch){
                 $q->where('question', 'like',  '%'.$keySearch.'%');
                 $q->orWhere('content', 'like',  '%'.$keySearch.'%');
-            })
-            ->where('parent_id',0)->orderBy('order_s','ASC')
-            ->paginate(30);
+            });
+
+             if (!empty($request->get('part'))){
+                 $ExceptQuestionIds = ExamQuestion::query()->where('lesson_id', $id);
+                 $ExceptQuestionIds->where('part', '<>',  $request->get('part'));
+                 $ExceptQuestionIds = $ExceptQuestionIds->get()->pluck('question_id');
+                 $suggestQuestions->whereNotIn('id', $ExceptQuestionIds);
+             };
+
+            $suggestQuestions = $suggestQuestions->where('parent_id',0)
+                ->orderBy('order_s','ASC')->paginate(30);
         }
         foreach($question as $q) {
             $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();
@@ -78,6 +93,21 @@ class ExamController
         $part = $request->get('part');
         $exam_id = $request->get('exam_id');
 
+        if ($removeQuestionIds and is_array($removeQuestionIds) && $exam_id && $part){
+            ExamQuestion::whereIn('question_id',$removeQuestionIds)
+                ->where('lesson_id', $exam_id)->delete();
+        }
+
+        $countTotalQuestion = ExamQuestion::where('lesson_id', $exam_id)
+            ->where('part', $part)->count();
+
+
+        $examPart = ExamPart::where('id', $part)->first();
+
+        if ($examPart && (($addQuestionIds && count($addQuestionIds) >  $examPart->number_question )|| $examPart->number_question < $countTotalQuestion)){
+            return response()->json(['status' => 201, 'message' => "Số câu hỏi bạn thêm vướt quá cho phép là {$examPart->number_question} câu"]);
+        }
+
         if ($addQuestionIds and is_array($addQuestionIds) && $exam_id && $part){
             foreach ($addQuestionIds as $questionId){
                 $question = [
@@ -89,10 +119,6 @@ class ExamController
             }
         }
 
-        if ($removeQuestionIds and is_array($removeQuestionIds) && $exam_id && $part){
-            ExamQuestion::whereIn('question_id',$removeQuestionIds)
-                ->where('lesson_id', $exam_id)->delete();
-        }
 
         return response()->json(['status' => 200, 'data' => $request->all()]);
     }
@@ -104,6 +130,25 @@ class ExamController
         if ($examPart){
             $examPart->delete();
         }
+
+        return response()->json(['status' => 200, 'data' => $request->all()]);
+    }
+
+    public function partAdd(Request $request)
+    {
+        $params  = $request->only(['lesson_id', 'name', 'score', 'number_question']);
+
+        $exam = Exam::where('lesson_id', $params['lesson_id'])->first();
+
+        $examPart = ExamPart::select(DB::raw('sum(score) as total_score'))->where('lesson_id', $params['lesson_id'])->groupBy('lesson_id')->first();
+
+        $totalScore = $examPart ? $examPart->total_score + (int) $params['score'] : (int) $params['score'];
+
+        if ($exam->total_score < $totalScore){
+            return response()->json(['status' => 201, 'message' => "Mức điểm tổng các phần vượt quá mức điểm tổng là {$exam->total_score} điểm"]);
+        }
+
+        ExamPart::create($params);
 
         return response()->json(['status' => 200, 'data' => $request->all()]);
     }

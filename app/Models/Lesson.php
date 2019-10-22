@@ -160,4 +160,12 @@ class Lesson extends Model
         return $this->hasMany(Lesson::class, 'parent_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function exam()
+    {
+        return $this->hasOne(Exam::class);
+    }
+
 }

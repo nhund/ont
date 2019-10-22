@@ -1,6 +1,6 @@
 <div class="row top10">
     <div class="col-xs-12">
-        <div><button class="btn btn-info" type="button" data-toggle="modal" href="#add-part-exam">thêm phần kiểm tra</button></div>
+        <div><button class="btn btn-info" type="button" onclick="addPartExam()">thêm phần kiểm tra</button></div>
         <hr/>
         <div class="panel panel-grape panel-bod">
             <div class="panel-heading"><h2>Điểm Từng phần của bài kiểm tra</h2></div>
@@ -23,7 +23,7 @@
                                     <td>{!! $part->name !!}</td>
                                     <td>{!! $part->number_question !!}</td>
                                     <td>{!! $part->score !!}</td>
-                                    <td><button type="button" class="btn btn-info">Sửa</button></td>
+                                    <td><button disabled type="button" class="btn btn-info">Sửa</button></td>
                                     <td><button type="button" data-toggle="modal" onclick="modalConfirm({{$part->id}})" class="btn btn-warning">Xóa</button></td>
                                 </tr>
                             @endforeach
@@ -55,32 +55,39 @@
         <div class="modal-content">
             <div class="modal-body">
                 <p class="text-bold text-center">Thêm phần mới cho bài kiểm tra <strong>{{$lesson->name ?? ''}}</strong></p>
-                <form id="form-add-part-exam" method="POST">
+                <form id="form-add-part-exam" method="POST" action="{{route('part.add')}}">
                     <div class="modal-body">
-                        <input type="hidden" name="exam_id" value="{{$lesson->id ?? ''}}">
+                        <input type="hidden" name="lesson_id" value="{{$lesson->id ?? ''}}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="row">
-                            <div class="col-sm-2">
-                                <label for="part_name">Tên</label>
+                            <div class="col-sm-3">
+                                <label for="name">Tên</label>
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control" id="part_name" type="number" name="part_name">
+                                <input class="form-control" data-input="Tên" id="name" type="text" name="name">
                             </div>
-                        </div>
-                        <br/>
+                        </div><br/>
                         <div class="row">
-                            <div class="col-sm-2">
-                                <label for="part_score">Tổng điểm</label>
+                            <div class="col-sm-3">
+                                <label for="score">Tổng điểm</label>
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control" id="part_score" type="number" name="part_score">
+                                <input class="form-control" data-input="Tổng điểm" id="score" type="number" name="score" min="0">
+                            </div>
+                        </div><br/>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="score">Tổng số câu hỏi</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input class="form-control" data-input="Tổng số câu hỏi" type="number" name="number_question" min="0">
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="addPartExam()">Xóa</button>
+                <button type="button" class="btn btn-primary" id="submit-add-part">Thêm</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
             </div>
         </div>
@@ -103,7 +110,7 @@
                 url: '/admin/exam/part',
                 data: {part_id},
                 dataType: 'json',
-                method: 'POST',
+                method: 'DELETE',
                 success: function (response) {
                     const exam_id =  $('input[name=exam_id]').val();
                     console.log('response', response.status === 200);
@@ -119,7 +126,20 @@
     const addPartExam = function(){
         $("#add-part-exam").modal('show');
 
-        $("#modal-btn-yes").on("click", function(){
+        $("#submit-add-part").on("click", function(){
+
+            CKEDITOR.instances.exDescription.updateElement();
+
+            const inputs = $('form#form-add-part-exam [data-input]');
+            let valid =  true;
+            inputs.each(function ( ele, input) {
+                const value = $(input).val();
+                if ( $.trim($(input).val()) === ''){
+                    valid = false;
+                    showErrorMsg('Vui lòng nhập ' + $(input).data('input') );
+                }
+            });
+
             const serialise = $( "form#form-add-part-exam" ).serialize();
             $.ajax({
                    url: '/admin/exam/part',
@@ -130,7 +150,9 @@
                        const exam_id =  $('input[name=exam_id]').val();
                        console.log('response', response.status === 200);
                        if (response.status === 200) {
-                           // window.location.href = '/admin/exam/'+exam_id;
+                           window.location.href = '/admin/exam/'+exam_id;
+                       }else {
+                           showErrorMsg(response.message);
                        }
                    }
                });

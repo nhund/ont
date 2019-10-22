@@ -15,9 +15,12 @@ class ExamUser extends Model
 {
     protected $table = 'exam_user';
 
+    const ACTIVE = 'Active';
+    const INACTIVE = 'Inactive';
+
     public $timestamps = true;
 
-    protected $fillable = ['lesson_id', 'user_id', 'turn', 'score', 'last_submit_at'];
+    protected $fillable = ['lesson_id', 'user_id', 'turn', 'score'];
 
     public function user()
     {

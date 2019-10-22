@@ -27,15 +27,7 @@ class AddTypeQuestionAndExamQuestionTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('exam_user', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('lesson_id');
-            $table->integer('user_id');
-            $table->integer('turn')->comment('the times a user done');
-            $table->integer('score')->comment('the score user got in the last time');;
-            $table->timestamp('last_submit_at');
-            $table->timestamps();
-        });
+
 
         Schema::create('exam_user_answer', function (Blueprint $table) {
             $table->increments('id');
@@ -63,7 +55,6 @@ class AddTypeQuestionAndExamQuestionTable extends Migration
             $table->dropColumn('type');
         });
         Schema::dropIfExists('exam_question');
-        Schema::dropIfExists('exam_user');
         Schema::dropIfExists('exam_user_answer');
     }
 }

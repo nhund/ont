@@ -262,6 +262,22 @@ function ValidExForm(form) {
     $('form#'+form).submit();
 }
 
+function ValidFormCommon(form) {
+    CKEDITOR.instances.exDescription.updateElement();
+    const inputs = $('#'+form+' [data-input]');
+    let valid =  true;
+    inputs.each(function ( ele, input) {
+        const value = $(input).val();
+        if ( $.trim($(input).val()) === ''){
+            valid = false;
+            showErrorMsg('Vui lòng nhập ' + $(input).data('input') );
+        }
+    });
+    if (valid){
+        $('form#'+form).submit();
+    }
+}
+
 function ValidForm(form) {
     CKEDITOR.instances.content.updateElement();
     var title        = $.trim($('#'+form+' input[name="title"]').val());

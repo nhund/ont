@@ -166,13 +166,13 @@
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h1 class="modal-title">Tạo bài tập</h1>
+                <h1 class="modal-title">Tạo bài kiểm tra</h1>
             </div>
             <form id="addcourseExam" method="POST" action="{{ route('lesson.handleEx') }}"
                   enctype="multipart/form-data">
                 <div class="modal-body">
                     <input type="hidden" name="lesson_id" id="les_id" value="">
-                    <input type="hidden" name="course_id" value="{{ $course['id'] }}">
+                    <input type="hidden" data-input="course_id" name="course_id" value="{{ $course['id'] }}">
                     <input type="hidden" name="type" id="type" value="">
                     <input type="hidden" name="level" id="level" value="">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -182,7 +182,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" placeholder="#Tên bài tập" name="exName">
+                            <input type="text" data-input="Tên bài kiểm tra" class="form-control" placeholder="#Tên bài tập" name="exName">
                         </div>
                         <div class="col-sm-4">
                             <select class="form-control" name="status">
@@ -192,78 +192,70 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <textarea class="form-control" name="sapo"></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">Mô tả</div>
-                    </div>
-                    <div class="row">
-                        <textarea class="ckeditor" name="exDescription"></textarea>
-                    </div>
                     <hr/>
                     <div class="row">
                         <div class="col-sm-12"><label>Bài thi có hiệu lực (*)</label></div>
                     </div>
                     <div class="row form-group">
-                        <div class="col-sm-1">Từ
-                        </div>
                         <div class="col-sm-3">
-                            <input class="form-control date-today" type="text" name="start_time_at">
-                        </div>
-                        <div class="col-sm-1">Đến
+                            <input class="form-control date-today" data-input="từ ngày" type="text"  name="start_time_at" placeholder="từ ngày">
                         </div>
                         <div class="col-sm-3 ">
-                            <input class="form-control date-fromday" type="text" name="end_time_at">
+                            <input class="form-control date-fromday" data-input="Đến ngày" type="text" name="end_time_at" placeholder="Đến ngày">
                         </div>
                     </div>
                     <hr/>
                     <div class="row ">
                         <div class="col-sm-3">
-                            <label for="minutes">Thời gian làm bài</label>
+                            <label for="minutes" >Thời gian làm bài (phút)</label>
                         </div>
                         <div class="col-sm-3">
                             <label for="total_score">Lựa chọn Barem điểm</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="total_score">Bài thi có mấy phần?</label>
                         </div>
                     </div>
 
                     <div class="row  form-group">
                         <div class="col-sm-3 ">
-                            <input class="form-control" id="minutes" type="number"  name="minutes">
+                            <input class="form-control"  data-input="Thời gian làm bài" id="minutes" type="number" min="1"  name="minutes">
                         </div>
                         <div class="col-sm-3 ">
-                            <input class="form-control" id="total_score" type="number" name="total_score">
-                        </div>
-                    </div>
-                    <div class="row ">
-                        <div class="col-sm-3">
-                            <label>Bài thi có mấy phần?</label>
+                            <input class="form-control"  data-input="Lựa chọn Barem điểm" id="total_score" type="number" min="1" name="total_score">
                         </div>
                         <div class="col-sm-3">
-                            <input class="form-control" type="number" name="parts">
+                            <input class="form-control"  data-input="Bài thi có mấy phần?" type="number" min="1" name="parts">
                         </div>
                     </div>
                     <hr/>
-                    <div class="row  form-group">
+                    <div class="row">
                         <div class="col-sm-3">
                             <label>Bài thi được dừng mấy lần?</label>
-                        </div>
-                        <div class="col-sm-1 ">
-                            <input class="form-control" type="number"  name="stop_time">
                         </div>
                         <div class="col-sm-3">
                             <label>Bài thi được làm lại mấy lần?</label>
                         </div>
-                        <div class="col-sm-1 ">
-                            <input class="form-control" type="number" name="repeat_time">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 ">
+                            <input class="form-control" type="number" value="0" min="0" name="stop_time">
                         </div>
+                        <div class="col-sm-3 ">
+                            <input class="form-control" type="number" value="0" min="0" name="repeat_time">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm-12">Mô tả</div>
+                    </div>
+                    <div class="row">
+                        <textarea data-input="Mô tả" class="ckeditor" name="exDescription"></textarea>
                     </div>
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="ValidExForm('addcourseExam')">Lưu</button>
+                <button type="button" class="btn btn-primary" onclick="ValidFormCommon('addcourseExam')">Lưu</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
             </div>
         </div>

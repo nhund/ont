@@ -4,7 +4,8 @@
             <div class="panel-heading"><h2>Chọn cậu hỏi vào đề thi</h2></div>
             <div class="panel-body">
                 <div class="table-responsive SourceSansProSemibold">
-                    <form method="get" action="">
+                    <form method="get" action="" id="add_question">
+                        <input hidden name="exam_id" value="{{$lesson->id ?? ''}}">
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -12,27 +13,21 @@
                                     <td><input id="keySearch" value="{{request('key_search')}}" class="form-control" type="text" name="key_search"></td>
                                     <td> <button class="btn btn-primary" type="submit">tìm kiếm</button> </td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </form>
-                        <input hidden name="exam_id" value="{{$lesson->id ?? ''}}">
-                    <table class="table">
-                            <thead>
                                 <tr>
                                     <td class="text-bold"><label for="part">Câu hỏi thuộc phần</label></td>
                                     <td>
-                                        <select class="form-control" id="part" name="part">
-                                            <option value="1">Phần 1</option>
-                                            <option value="2">Phần 2</option>
-                                            <option value="3">Phần 3</option>
-                                            <option value="4">Phần 4</option>
-                                            <option value="5">Phần 5</option>
-                                            <option value="6">Phần 6</option>
+                                        <select class="form-control" id="part" name="part" data-input="part">
+                                                <option value="">--Chọn phần--</option>
+                                            @foreach($parts as $part)
+                                                <option {{request('part') == $part->id ?'selected' : ''}} value="{{$part->id}}">{{$part->name}}</option>
+                                            @endforeach
                                         </select>
                                     </td>
+                                    <td></td>
                                 </tr>
-                            </thead>
+                            </tbody>
                         </table>
+                    </form>
 
                     @if($suggestQuestions)
                         <table class="table">
@@ -63,3 +58,41 @@
         </div>
     </div>
 </div>
+
+<script>
+    async function addQuestionToExam() {
+
+        if($.trim($('[data-input=part]').val())  == ''){
+            showErrorMsg('Vui chọn phần thi');
+            return false;
+        }
+
+        let addQuestion = [];
+        let removeQuestion = [];
+        await $('input[name=question_id]').each(function (index, ele) {
+            if($(ele).is(':checked')){
+                addQuestion.push($(ele).val())
+            }else{
+                removeQuestion.push($(ele).val())
+            }
+        });
+        const part = $('select[name=part]').val();
+        const exam_id = $('input[name=exam_id]').val();
+        $.ajax({
+            url: '/admin/exam',
+            data: {removeQuestion, addQuestion, part, exam_id},
+            dataType: 'json',
+            method: 'POST',
+            success: function (response) {
+                console.log(response);
+                if (response.status) {
+                    if (response.status === 201){
+                        showErrorMsg(response.message);
+                    } else {
+                        window.location.reload();
+                    }
+                }
+            }
+        });
+    }
+</script>

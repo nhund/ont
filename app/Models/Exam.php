@@ -36,4 +36,9 @@ class Exam extends Model
         $exam->end_time_at = date('Y-m-d h:i:s', strtotime($params['end_time_at']));
         $exam->save();
     }
+
+    public function part()
+    {
+        return $this->hasMany(ExamPart::class, 'lesson_id', 'lesson_id');
+    }
 }
