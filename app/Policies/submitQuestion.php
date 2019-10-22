@@ -3,6 +3,8 @@
 namespace App\Policies;
 
 use App\Models\Course;
+use App\Models\Exam;
+use App\Models\ExamUser;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\TeacherSupport;
@@ -61,14 +63,28 @@ class submitQuestion
 
         $lesson = Lesson::where('id', $examId)->first();
 
+        $examUser = ExamUser::where('lesson_id', $examId)->first();
+        $exam     = Exam::where('lesson_id', $examId)->first();
+
+//        if (){
+//            $add_time=strtotime($old_date)+30;
+//            $add_date= date('m/d/Y h:i:s a',$add_time);
+//        }
+
+        if ($examUser->status == ExamUser::INACTIVE || $examUser->status_stop == ExamUser::INACTIVE){
+            throw new NotFoundException('Bài kiểm tra đang tạm dừng hoặc chưa được bắt đầu.');
+        }
+
+
+
         if (!$lesson){
-            throw new NotFoundException('Bài học không tồn tại hoặc đã bị xóa.');
+            throw new NotFoundException('Bài kiểm tra không tồn tại hoặc đã bị xóa.');
         }
 
         $course = Course::where('id', $lesson->course_id)->first();
 
         if (!$course){
-            throw new NotFoundException('Khóa học không tồn tại hoặc đã bị xóa.');
+            throw new NotFoundException('Khóa kiểm tra không tồn tại hoặc đã bị xóa.');
         }
 
         if( $user->id === $course->user_id){

@@ -142,7 +142,9 @@ class ExamController
 
         $examPart = ExamPart::select(DB::raw('sum(score) as total_score'))->where('lesson_id', $params['lesson_id'])->groupBy('lesson_id')->first();
 
-        if ($exam->total_score < ($examPart->total_score + (int) $params['score'])){
+        $totalScore = $examPart ? $examPart->total_score + (int) $params['score'] : (int) $params['score'];
+
+        if ($exam->total_score < $totalScore){
             return response()->json(['status' => 201, 'message' => "Mức điểm tổng các phần vượt quá mức điểm tổng là {$exam->total_score} điểm"]);
         }
 

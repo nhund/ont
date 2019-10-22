@@ -15,6 +15,7 @@ use App\Exceptions\BadRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\submitQuestionExamRequest;
 use App\Http\Requests\submitQuestionRequest;
+use App\Models\Exam;
 use App\Models\ExamUser;
 use App\Models\Lesson;
 use App\Models\Question;
@@ -35,7 +36,9 @@ class ExamController extends Controller
             ->where('lesson_id', $lessonId)
             ->first();
 
-        if ($userExam && $userExam->turn > $lesson->repeat_time){
+        $exam = Exam::where('lesson_id', $lessonId)->first();
+
+        if ($userExam && $exam && $userExam->turn > $exam->repeat_time){
             throw new BadRequestException('Bạn đã hết lượt làm bài kiểm tra, vui lòng mua thêm');
         }
 
@@ -97,5 +100,81 @@ class ExamController extends Controller
     {
         return fractal()->item($lesson, new FullExamTransformer)
             ->respond();
+    }
+
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws BadRequestException
+     */
+    public function submitExam(Lesson $lesson, Request $request)
+    {
+        $userExam = ExamUser::where('lesson_id', $lesson->id)->first();
+
+        $userExam->last_at = now();
+        $userExam->status = ExamUser::INACTIVE;
+
+        if ($userExam->save()){
+            return $this->message('Chúc mừng bạn đã hoàn thành bài kiểm tra')->respondOk();
+        }
+
+        throw new BadRequestException('Nộp bài kiểm tra không thành công.');
+    }
+
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws BadRequestException
+     */
+    public function stopExam(Lesson $lesson, Request $request)
+    {
+        $userExam = ExamUser::where('lesson_id', $lesson->id)->first();
+
+        $exam  = Exam::where('lesson_id', $lesson->id)->first();
+
+        if($exam->stop_time <= $userExam->turn_stop){
+            throw new BadRequestException('Số lần tạm dừng của bạn đã hết.');
+        }
+
+        $userExam->turn_stop += 1;
+        $userExam->stopped_at = now();
+        $userExam->status_stop = ExamUser::INACTIVE;
+        $userExam->save();
+
+        return $this->message('bạn đang tạm dừng khóa học')->respondOk();
+    }
+
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws BadRequestException
+     */
+    public function restartExam(Lesson $lesson, Request $request)
+    {
+        $userExam = ExamUser::where('lesson_id', $lesson->id)->first();
+
+        if ($userExam->status_stop === ExamUser::ACTIVE){
+            throw new BadRequestException('Bài kiểm tra vẫn đang chạy.');
+        }
+
+        $second = time() - strtotime($userExam->stopped_at);
+
+        $exam  = Exam::where('lesson_id', $lesson->id)->first();
+
+//        $add_time = time() - (strtotime($userExam->begin_at) + $userExam->second_stop);
+//
+//        dd($add_time, $add_time/(24*60), $userExam->begin_at, $userExam->second_stop);
+
+        if($exam->stop_time <= $userExam->turn_stop){
+            throw new BadRequestException('Số lần tạm dừng của bạn đã hết.');
+        }
+        $userExam->status_stop = ExamUser::ACTIVE;
+        $userExam->second_stop += $second;
+        $userExam->save();
+
+        return $this->message('Bài kiểm tra bạn tiếp tục.')->respondOk();
     }
 }
