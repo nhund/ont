@@ -99,7 +99,7 @@ class UserCourseReportService
         {
             foreach ($subLessons as $subLesson)
             {
-                array_push($chapter, ['id' => $subLesson->id, 'name' => $subLesson->name]);
+                array_push($chapter, ['id' => $subLesson->id, 'name' => $subLesson->name, 'type' => $subLesson->type]);
             }
         }
 
