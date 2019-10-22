@@ -16,6 +16,7 @@ use App\Models\Lesson;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class ExamController
 {
@@ -136,8 +137,18 @@ class ExamController
     public function partAdd(Request $request)
     {
         $params  = $request->only(['lesson_id', 'name', 'score', 'number_question']);
+
+        $exam = Exam::where('lesson_id', $params['lesson_id'])->first();
+
+        $examPart = ExamPart::select(DB::raw('sum(score) as total_score'))->where('lesson_id', $params['lesson_id'])->groupBy('lesson_id')->first();
+
+        if ($exam->total_score < $examPart->total_score){
+            return response()->json(['status' => 201, 'message' => "Mức điểm tổng các phần vượt quá mức điểm tổng là {$exam->total_score} điểm"]);
+        }
+
         ExamPart::create($params);
-        return redirect()->route('exam.detail', ['id' => $params['lesson_id']]);
+
+        return response()->json(['status' => 200, 'data' => $request->all()]);
     }
 
 }

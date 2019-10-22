@@ -1,6 +1,6 @@
 <div class="row top10">
     <div class="col-xs-12">
-        <div><button class="btn btn-info" type="button" data-toggle="modal" href="#add-part-exam">thêm phần kiểm tra</button></div>
+        <div><button class="btn btn-info" type="button" onclick="addPartExam()">thêm phần kiểm tra</button></div>
         <hr/>
         <div class="panel panel-grape panel-bod">
             <div class="panel-heading"><h2>Điểm Từng phần của bài kiểm tra</h2></div>
@@ -87,7 +87,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="ValidFormCommon('form-add-part-exam')">Thêm</button>
+                <button type="button" class="btn btn-primary" id="submit-add-part">Thêm</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
             </div>
         </div>
@@ -126,7 +126,20 @@
     const addPartExam = function(){
         $("#add-part-exam").modal('show');
 
-        $("#modal-btn-yes").on("click", function(){
+        $("#submit-add-part").on("click", function(){
+
+            CKEDITOR.instances.exDescription.updateElement();
+
+            const inputs = $('form#form-add-part-exam [data-input]');
+            let valid =  true;
+            inputs.each(function ( ele, input) {
+                const value = $(input).val();
+                if ( $.trim($(input).val()) === ''){
+                    valid = false;
+                    showErrorMsg('Vui lòng nhập ' + $(input).data('input') );
+                }
+            });
+
             const serialise = $( "form#form-add-part-exam" ).serialize();
             $.ajax({
                    url: '/admin/exam/part',
@@ -137,7 +150,9 @@
                        const exam_id =  $('input[name=exam_id]').val();
                        console.log('response', response.status === 200);
                        if (response.status === 200) {
-                           // window.location.href = '/admin/exam/'+exam_id;
+                           window.location.href = '/admin/exam/'+exam_id;
+                       }else {
+                           showErrorMsg(response.message);
                        }
                    }
                });
