@@ -16,16 +16,24 @@ class FullExamTransformer extends TransformerAbstract
 {
     public function transform(Lesson $lesson)
     {
+        $exam = $lesson->exam;
+
+        $parts = [];
+        if ($exam){
+            $parts = $exam->part ? $exam->part->toArray() : [];
+        }
+
         return [
             'id'          => $lesson->id,
             'name'        => $lesson->name,
             'description' => $lesson->description,
-            'description_format' => strip_tags($lesson->description),
-            'is_exercise' => $lesson->is_exercise,
-            'image'       => $lesson->image,
-            'sapo'        => $lesson->sapo,
-            'repeat_time' => $lesson->repeat_time,
-            'parent_id' => $lesson->parent_id
+            'minutes'   => $exam->minutes,
+            'parts'     => $exam->parts,
+            'repeat_time'   => $exam->repeat_time,
+            'stop_time'     => $exam->stop_time,
+            'start_time_at' => $exam->start_time_at,
+            'end_time_at'   => $exam->end_time_at,
+            'sub_parts'         => $parts
         ];
     }
 }

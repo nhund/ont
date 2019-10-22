@@ -21,4 +21,6 @@ class ExamPart extends Model
     public $timestamps = true;
 
     protected $fillable = ['lesson_id', 'name', 'score', 'created_at', 'updated_at', 'number_question'];
+
+    protected $hidden = ['updated_at', 'created_at'];
 }
