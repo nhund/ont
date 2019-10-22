@@ -15,6 +15,8 @@ class Category extends Model
     protected $fillable = [
         'name', 'status', 'type','create_at'
     ];
+
+    protected $hidden = ['create_at'];
     public $timestamps = false;
 
     public function course(){

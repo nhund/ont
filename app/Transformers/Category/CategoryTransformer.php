@@ -17,7 +17,6 @@ class CategoryTransformer extends TransformerAbstract {
             'id' => $category->id,
             'name' => $category->name,
             'type' => $category->type,
-            'created_at' => $category->create_at
         ];
     }
 

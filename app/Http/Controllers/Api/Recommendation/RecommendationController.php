@@ -16,6 +16,7 @@ use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\UserQuestionBookmark;
 use App\Models\UserQuestionLog;
+use App\Transformers\Course\ShortCourseTransformer;
 use Illuminate\Http\Request;
 
 /**
@@ -148,7 +149,10 @@ class RecommendationController extends Controller
         $report['countDid'] = $questionDid->count();
         $report['countNewQuestion'] = $newQuestion;
 
-        return $this->respondOk($report);
+
+        return fractal()->item($course, new ShortCourseTransformer)
+            ->addMeta($report)
+            ->respond();
     }
 
     /**
