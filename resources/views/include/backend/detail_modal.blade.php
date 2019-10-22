@@ -207,7 +207,7 @@
                     <hr/>
                     <div class="row ">
                         <div class="col-sm-3">
-                            <label for="minutes" >Thời gian làm bài</label>
+                            <label for="minutes" >Thời gian làm bài (phút)</label>
                         </div>
                         <div class="col-sm-3">
                             <label for="total_score">Lựa chọn Barem điểm</label>

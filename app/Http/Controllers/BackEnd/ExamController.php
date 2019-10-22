@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Components\Exam\ExamService;
+use App\Models\Exam;
 use App\Models\ExamPart;
 use App\Models\ExamQuestion;
 use App\Models\Lesson;
@@ -91,6 +92,21 @@ class ExamController
         $part = $request->get('part');
         $exam_id = $request->get('exam_id');
 
+        if ($removeQuestionIds and is_array($removeQuestionIds) && $exam_id && $part){
+            ExamQuestion::whereIn('question_id',$removeQuestionIds)
+                ->where('lesson_id', $exam_id)->delete();
+        }
+
+        $countTotalQuestion = ExamQuestion::where('lesson_id', $exam_id)
+            ->where('part', $part)->count();
+
+
+        $examPart = ExamPart::where('id', $part)->first();
+
+        if ($examPart && (($addQuestionIds && count($addQuestionIds) >  $examPart->number_question )|| $examPart->number_question < $countTotalQuestion)){
+            return response()->json(['status' => 201, 'message' => "Số câu hỏi bạn thêm vướt quá cho phép là {$examPart->number_question} câu"]);
+        }
+
         if ($addQuestionIds and is_array($addQuestionIds) && $exam_id && $part){
             foreach ($addQuestionIds as $questionId){
                 $question = [
@@ -102,10 +118,6 @@ class ExamController
             }
         }
 
-        if ($removeQuestionIds and is_array($removeQuestionIds) && $exam_id && $part){
-            ExamQuestion::whereIn('question_id',$removeQuestionIds)
-                ->where('lesson_id', $exam_id)->delete();
-        }
 
         return response()->json(['status' => 200, 'data' => $request->all()]);
     }

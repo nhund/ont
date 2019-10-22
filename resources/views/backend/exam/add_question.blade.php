@@ -86,7 +86,11 @@
             success: function (response) {
                 console.log(response);
                 if (response.status) {
-                    window.location.reload();
+                    if (response.status === 201){
+                        showErrorMsg(response.message);
+                    } else {
+                        window.location.reload();
+                    }
                 }
             }
         });
