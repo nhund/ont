@@ -75,15 +75,11 @@ class submitQuestion
 
         $exam   = Exam::where('lesson_id', $examId)->first();
         $lesson = Lesson::where('id', $examId)->first();
-
-        if (!($lesson || $exam)){
-            throw new NotFoundException('Bài kiểm tra không tồn tại hoặc đã bị xóa.');
-        }
-
         $course = Course::where('id', $lesson->course_id)->first();
 
-        if (!$course){
-            throw new NotFoundException('Khóa kiểm tra không tồn tại hoặc đã bị xóa.');
+
+        if (!($lesson || $exam || $course)){
+            throw new NotFoundException('Bài kiểm tra không tồn tại hoặc đã bị xóa.');
         }
 
         $passTime = (time() - strtotime($examUser->begin_at) - $examUser->second_stop)/60;
