@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Exceptions\BadRequestException;
 use App\Models\Course;
 use App\Models\Exam;
 use App\Models\ExamUser;
@@ -57,27 +58,25 @@ class submitQuestion
     }
 
 
+    /**
+     * @param User $user
+     * @param Question $question
+     * @return bool
+     * @throws BadRequestException
+     */
     public function submitExam(User $user, Question $question)
     {
-        $examId = request('exam_id');
-
-        $lesson = Lesson::where('id', $examId)->first();
-
+        $examId   = request('exam_id');
         $examUser = ExamUser::where('lesson_id', $examId)->first();
-        $exam     = Exam::where('lesson_id', $examId)->first();
-
-//        if (){
-//            $add_time=strtotime($old_date)+30;
-//            $add_date= date('m/d/Y h:i:s a',$add_time);
-//        }
 
         if ($examUser->status == ExamUser::INACTIVE || $examUser->status_stop == ExamUser::INACTIVE){
-            throw new NotFoundException('Bài kiểm tra đang tạm dừng hoặc chưa được bắt đầu.');
+            throw new BadRequestException('Bài kiểm tra đang tạm dừng hoặc chưa được bắt đầu.');
         }
 
+        $exam   = Exam::where('lesson_id', $examId)->first();
+        $lesson = Lesson::where('id', $examId)->first();
 
-
-        if (!$lesson){
+        if (!($lesson || $exam)){
             throw new NotFoundException('Bài kiểm tra không tồn tại hoặc đã bị xóa.');
         }
 
@@ -85,6 +84,12 @@ class submitQuestion
 
         if (!$course){
             throw new NotFoundException('Khóa kiểm tra không tồn tại hoặc đã bị xóa.');
+        }
+
+        $passTime = (time() - strtotime($examUser->begin_at) - $examUser->second_stop)/60;
+
+        if ($exam->minutes < $passTime){
+            throw new BadRequestException('Bạn đã hết thời gian làm bài.');
         }
 
         if( $user->id === $course->user_id){
