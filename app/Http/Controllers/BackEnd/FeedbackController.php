@@ -36,6 +36,8 @@ class FeedbackController extends AdminBaseController
                 'title' => 'Danh sách phản hồi',
             ),
         );
+        //session
+        $request->session()->put('REQUEST_URI', $request->server('REQUEST_URI'));
         //d($var);
         return view('backend.feedback.index',compact('var','data'));
     }
