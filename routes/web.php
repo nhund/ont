@@ -82,6 +82,13 @@ Route::prefix('bai-viet')->group(function () {
         Route::get('/{title}.{id}', 'FrontEnd\PostController@detail')
                     ->name('post.detail');
         });
+
+/*News*/
+Route::get('/tin-tuc', 'FrontEnd\PostController@news')->name('news');
+Route::get('/tin-tuc/{title}.{id}', 'FrontEnd\PostController@newsDetail')->name('news.detail');
+
+/*End News*/
+
 Route::get('/khoa-hoc/{title}.{id}/tong-quan', 'FrontEnd\CourseLearnController@course')->name('course.learn');
 Route::get('/khoa-hoc/cap-2/{title}.{course_id}/tong-quan', 'FrontEnd\CourseLearnController@lessonLevel2')
                 ->name('course.learn.level2');
@@ -345,15 +352,4 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/delete', 'BackEnd\MenuController@delete')->name('admin.menu.delete');
         Route::post('/order', 'BackEnd\MenuController@order')->name('admin.menu.order');
     });
-
-
-    Route::prefix('news')->group(function () {
-        Route::get('/', 'BackEnd\CategoryNewsController@index')->name('admin.news.index');
-        /*Route::get('/add', 'BackEnd\CategoryNewsController@add')->name('admin.category.add');
-        Route::post('/save', 'BackEnd\CategoryNewsController@save')->name('admin.category.save');
-        Route::get('/edit/{id}', 'BackEnd\CategoryNewsController@edit')->name('admin.category.edit')->where('id', '[0-9]+');
-        Route::post('/update', 'BackEnd\CategoryNewsController@update')->name('admin.category.update');
-        Route::post('/delete', 'BackEnd\CategoryNewsController@delete')->name('admin.category.delete');*/
-    });
-
 });

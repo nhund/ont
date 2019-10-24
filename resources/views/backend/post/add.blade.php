@@ -1,5 +1,15 @@
 @extends('backend.layout')
 @section('title', 'Thêm bài viết')
+@push('css')
+    <style>
+        .none{
+            display: none;
+        }
+        .none_hot{
+            display: none;
+        }
+    </style>
+@endpush
 @section('content')
     @include('backend.include.breadcrumb')
     <div class="container-fluid">
@@ -24,7 +34,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Danh mục</label>
                                             <div class="col-sm-2 tabular-border">
-                                                <select name="category_id" class="form-control">
+                                                <select name="category_id" class="form-control" id="category-news">
                                                     <option value="" selected>Chọn danh mục tin</option>
                                                     @foreach($_category as $value)
                                                         <option value="{{$value->id}}">{{$value->name}}</option>
@@ -33,12 +43,58 @@
                                             </div>
                                             <p style="padding-top: 6px">Lưu ý: nếu bài viết là tin tức hãy chọn danh mục</p>
                                         </div>
+
+                                        <div class="form-group hide-show none">
+                                            <label class="col-sm-2 control-label">Tin nổi bật</label>
+                                            <div class="col-sm-2">
+                                                <select name="feature" class="form-control" id="feature">
+                                                    <option value="0" selected>Không</option>
+                                                    <option value="1">Có</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group hide-show-hot none_hot">
+                                            <label class="col-sm-2 control-label">Tin nổi bật nhất</label>
+                                            <div class="col-sm-2">
+                                                <select name="feature_hot" class="form-control">
+                                                    <option value="0" selected>Không</option>
+                                                    <option value="1">Có</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Mô tả</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="note-codable form-control" rows="6" name="des"></textarea>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Nội dung</label>
                                             <div class="col-sm-8">
                                                 <textarea class="note-codable form-control" id="editor" name="content"></textarea>
                                             </div>
-                                        </div>                                                                                                                   
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Hình đại diện</label>
+                                            <div class="col-sm-8">
+                                                <div class="fileinput fileinput-new" style="width: 100%;"
+                                                     data-provides="fileinput">
+                                                    <div class="fileinput-preview thumbnail mb20" data-trigger="fileinput"
+                                                         style="width: 50%; height: 150px;"></div>
+                                                    <div>
+                                                        <a href="#" class="btn btn-default fileinput-exists"
+                                                           data-dismiss="fileinput">Xoá</a>
+                                                        <span class="btn btn-default btn-file">
+                                                        <span class="fileinput-new">Chọn ảnh</span>
+                                                        <span class="fileinput-exists">Thay đổi</span>
+                                                        <input type="file" name="avatar" id="avatar">
+                                                    </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group pb0">
                                             <label for="" class="control-label col-sm-2">Trạng thái</label>
                                             <div class="col-sm-2 tabular-border">
@@ -137,7 +193,28 @@
                 } )();
 
                 initSample();
+
             });
 
+
+            $('#category-news').change(function () {
+                 var val = $(this).val();
+                 if (val === ""){
+                     $('.hide-show').addClass('none');
+                     $('.hide-show-hot').addClass('none');
+                 }else {
+                     $('.hide-show').removeClass('none');
+                     $('.hide-show-hot').removeClass('none');
+                 }
+            });
+
+            $('#feature').change(function () {
+                var val = $(this).val();
+                if (val == 0){
+                    $('.hide-show-hot').addClass('none_hot');
+                }else {
+                    $('.hide-show-hot').removeClass('none_hot');
+                }
+            });
     </script>
 @endpush

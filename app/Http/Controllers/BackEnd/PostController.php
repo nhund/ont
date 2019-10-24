@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Helpers\Helper;
 use App\Models\CategoryNews;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -46,22 +47,51 @@ class PostController extends AdminBaseController
         //     alert()->error('Có lỗi','Cần tải lên ảnh đại diện');
         //     return redirect()->route('admin.user_feel.add');
         // }
-        $post = new Post();      
+        $post = new Post();
         $post->name = $data['name'];
         $post->category_id = $data['category_id'];
-        $post->content = $data['content'];       
+        $post->content = $data['content'];
+        $post->des = $data['des'];
         $post->status = $data['status'];
-        if (!empty($data['category_id'])){
+        if (!empty($data['category_id'])) {
             $post->type = 'news';
+            $post->feature = $data['feature'];
+            $post->feature_hot = $data['feature_hot'];
         }
+        $post->avatar = $data['avatar'];
         $post->create_date = time();
-        if($post->save())
-        {
-            //Helper::thumbImages($name,$avatar,600,600,'fit',$destinationPath.'/600_600');
-            alert()->success('Thông báo','Thêm dữ liệu thành công');
-            return redirect()->route('admin.post.index');
-        }else{
-            alert()->error('Có lỗi','Thêm dữ liệu không thành công');
+        $hasError = false;
+        $post->save();
+        // if have image
+            if ($post->avatar){
+                if (!in_array($post->avatar->clientExtension(), ['jpeg', 'png', 'jpg', 'gif', 'svg', 'webp'])) {
+                    $hasError = true;
+                }
+                if ($post->avatar->getClientSize() > 2048000) {
+                    $hasError = true;
+                }
+                if (!$hasError) {
+                    $name = time().'_'.str_slug($post->avatar->getClientOriginalName()).'.'.$post->avatar->getClientOriginalExtension();
+                    $path = '/images/news/'.$post->id;
+                    $destinationPath = public_path($path);
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0777);
+                    }
+                    $post->avatar->move($destinationPath, $name);
+                    $avatar = 'public/images/news/'.$post->id.'/'.$name;
+                    // $user->avatar_path = $path;
+                    // $user->avatar_name = $name;
+                    //dd($destinationPath);
+                    $post->avatar  = $name;
+                    $post->avatar_path  = $path;
+                    if ($post->save()) {
+                        Helper::thumbImages($name, $avatar, 480, 320, 'fit', $destinationPath . '/480_320');
+                    }
+                }
+                alert()->success('Thông báo', 'Thêm dữ liệu thành công');
+                return redirect()->route('admin.post.index');
+            } else {
+            alert()->error('Có lỗi', 'Thêm dữ liệu không thành công');
             return redirect()->route('admin.post.add');
         }
     }
@@ -99,15 +129,48 @@ class PostController extends AdminBaseController
        }
         $post->name = $data['name'];
         $post->category_id = $data['category_id'];
-        $post->content = $data['content'];       
+        $post->des = $data['des'];
+        $post->content = $data['content'];
         $post->status = $data['status'];
         if (!empty($data['category_id'])){
             $post->type = 'news';
+            $post->feature = $data['feature'];
+            $post->feature_hot = $data['feature_hot'];
         }
+        $post->avatar = $data['avatar'];
         $post->update_date = time();
-        $post->save();
-       alert()->success('Thông báo','Cập nhật thành công');
-       return redirect()->route('admin.post.index');
+        $hasError = false;
+        if ($post->save()){
+            if ($post->avatar){
+                if (!in_array($post->avatar->clientExtension(), ['jpeg', 'png', 'jpg', 'gif', 'svg', 'webp'])) {
+                    $hasError = true;
+                }
+                if ($post->avatar->getClientSize() > 2048000) {
+                    $hasError = true;
+                }
+                if (!$hasError) {
+                    $name = time().'_'.str_slug($post->avatar->getClientOriginalName()).'.'.$post->avatar->getClientOriginalExtension();
+                    $path = '/images/news/'.$post->id;
+                    $destinationPath = public_path($path);
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0777);
+                    }
+                    $post->avatar->move($destinationPath, $name);
+                    $avatar = 'public/images/news/'.$post->id.'/'.$name;
+                    $post->avatar  = $name;
+                    $post->avatar_path  = $path;
+                    if ($post->save()) {
+                        Helper::thumbImages($name, $avatar, 480, 320, 'fit', $destinationPath . '/480_320');
+                    }
+                }
+            }
+            alert()->success('Thông báo','Cập nhật thành công');
+            return redirect()->route('admin.post.index');
+        }else{
+            alert()->error('Có lỗi', 'Cập nhật dữ liệu không thành công');
+            return redirect()->route('admin.post.add');
+        }
+
     }
     public function delete(Request $request)
     {

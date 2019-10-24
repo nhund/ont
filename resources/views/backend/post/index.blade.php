@@ -23,7 +23,7 @@
                                         <th>Nội dung</th>                                                                        
                                         <th width="100">Chuyên mục</th>
                                         <th width="100">Trạng thái</th>
-                                        <th width="200">Ngày tạo</th>                                        
+                                        <th width="150">Ngày tạo</th>
                                         <th width="150">Hành động</th>
                                     </tr>
                                     </thead>
@@ -35,20 +35,17 @@
                                                 <td>{{ $loop->iteration }}</td>                                                
                                                 <td>
                                                     <a target="_blank" href="{{ route('post.detail',['id'=>$post->id,'title'=>str_slug($post->name)]) }}">{{ $post->name }}</a>
-                                                    
                                                 </td>   
-                                                <td>{{ str_limit($post->content,300) }}</td>
-                                                <td>{{ \App\Models\Category::find($post->category_id)['name']}}</td>
+                                                <td>{{substr($post->content, 0, 120)}}</td>
+                                                <td>{{ \App\Models\CategoryNews::find($post->category_id)['name']}}</td>
                                                 <td>
                                                     @if($post->status == \App\Models\Post::STATUS_OFF)
                                                         <span style="color: #c9302c; font-weight: bold;">Ẩn</span>
-                                                        
                                                     @else
                                                         <span style="color: #5cb85c;font-weight: bold;">Hiển thị</span>
                                                     @endif
                                                 </td>                                                 
                                                 <td>{{ date('d-m-Y',$post->create_date) }}</td>
-                                                
                                                 <td>                                                    
                                                     <a href="{{ route('admin.post.edit',['id'=>$post->id]) }}" class="btn btn-default btn-xs btn-label"><i class="fa fa-pencil"></i>Sửa</a>
                                                     <a href="#" data-id="{{ $post->id }}" class="btn btn-danger btn-xs btn-label confirmButton"><i class="fa fa-trash-o"></i>Xóa</a>
