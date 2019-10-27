@@ -6,7 +6,10 @@ use App\Exceptions\BadRequestException;
 use App\Exceptions\UserCourseException;
 use App\Helpers\Helper;
 use App\Models\Course;
+use App\Models\ExamUser;
+use App\Models\Lesson;
 use App\Models\UserCourse;
+use App\Models\UserLessonLog;
 use App\Models\Wallet;
 use App\Models\WalletLog;
 use App\User;
@@ -76,6 +79,11 @@ class UserCourseService
         return 'mua khóa học thành công';
     }
 
+    /**
+     * @param $status_course
+     * @param null $userCourse
+     * @return bool
+     */
     public function createOrUpdateUserCourse($status_course, $userCourse = null)
     {
         if (empty($userCourse)){
@@ -96,6 +104,9 @@ class UserCourseService
 
     }
 
+    /**
+     * @return float|int
+     */
     public function endDate()
     {
         return (int)$this->course->study_time > 0 ? time() + (int)$this->course->study_time * 24 * 60 * 60 : 0;
@@ -134,5 +145,93 @@ class UserCourseService
         $user = User::find($this->userId);
 
         Helper::walletLog($dataLog, $user);
+    }
+
+    /**
+     * @param UserCourse $userCourse
+     * @return float|int
+     */
+    public function getPercentCourse(UserCourse $userCourse)
+    {
+        $percent = 0;
+        $lessons = Lesson::where('course_id', $userCourse->course_id)
+            ->where('parent_id', Lesson::PARENT_ID)
+            ->where('status', Lesson::STATUS_ON)
+            ->get();
+
+        $count = $lessons->count();
+
+        foreach ($lessons as $lesson){
+            $done  = true;
+            if ($lesson->level == Lesson::LEVEL_1){
+                $subLessons = Lesson::where('course_id', $userCourse->course_id)
+                    ->where('parent_id', $lesson->id)
+                    ->where('status', Lesson::STATUS_ON)
+                    ->get();
+
+                $userLessons = UserLessonLog::where('user_id', $userCourse->user_id)
+                    ->whereIn('lesson_id', $subLessons->pluck('id'))
+                    ->get();
+
+                if ($lesson->type = Lesson::EXAM){
+                    $exist = ExamUser::where('lesson_id', $lesson)->exists();
+                    if (!$exist){
+                        $done =  false;
+                    }
+                }else{
+                    if ($userLessons->count() && $userLessons->count() == $subLessons->count()){
+                        foreach ($userLessons as $userLesson){
+                            if (!($userLesson->pas_ly_thuyet == UserLessonLog::PASS_LY_THUYET || $userLesson->turn_right > 0)){
+                                $done =  false;
+                            }
+                        }
+                    } else {
+                        $done =  false;
+                    }
+                }
+
+
+
+                if ($done){
+                    $percent += 100/$count;
+                }
+            }
+
+            if ($lesson->level == Lesson::LEVEL_2){
+
+                $lessonsLv2s = Lesson::where('course_id', $userCourse->course_id)
+                    ->where('parent_id', $lesson->id)
+                    ->where('status', Lesson::STATUS_ON)
+                    ->get();
+
+                foreach ($lessonsLv2s as $lessonsLv2){
+                    $subLessonsLv2 = Lesson::where('course_id', $userCourse->course_id)
+                        ->where('parent_id', $lessonsLv2->id)
+                        ->where('status', Lesson::STATUS_ON)
+                        ->get();
+
+                    $userLessonLv2s = UserLessonLog::where('user_id', $userCourse->user_id)
+                        ->whereIn('lesson_id', $subLessonsLv2->pluck('id'))
+                        ->get();
+
+                    if ($userLessonLv2s->count() == $subLessonsLv2->count()){
+                        foreach ($userLessonLv2s as $userLessonLv2){
+                            if (!($userLessonLv2->pas_ly_thuyet == UserLessonLog::PASS_LY_THUYET || $userLessonLv2->turn_right > 0)){
+                                $done =  false;
+                            }
+                        }
+                    } else {
+                        $done =  false;
+                    }
+
+                    if ($done){
+                        $count = $lessonsLv2s->count()*$count;
+                        $percent += 100/($count);
+                    }
+                }
+            }
+        }
+        dd($percent);
+        return $percent;
     }
 }

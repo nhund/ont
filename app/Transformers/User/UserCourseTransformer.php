@@ -48,4 +48,9 @@ class UserCourseTransformer extends TransformerAbstract
 
         return $school ? $this->item($school, new CategoryTransformer) : null;
     }
+
+    public function getPercentCourse()
+    {
+
+    }
 }
