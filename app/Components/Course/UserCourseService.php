@@ -151,7 +151,7 @@ class UserCourseService
      * @param UserCourse $userCourse
      * @return float|int
      */
-    public function getPercentCourse(UserCourse $userCourse)
+    public static function getPercentCourse(UserCourse $userCourse)
     {
         $percent = 0;
         $lessons = Lesson::where('course_id', $userCourse->course_id)
@@ -162,35 +162,8 @@ class UserCourseService
         $count = $lessons->count();
 
         foreach ($lessons as $lesson){
-            $done  = true;
             if ($lesson->level == Lesson::LEVEL_1){
-                $subLessons = Lesson::where('course_id', $userCourse->course_id)
-                    ->where('parent_id', $lesson->id)
-                    ->where('status', Lesson::STATUS_ON)
-                    ->get();
-
-                $userLessons = UserLessonLog::where('user_id', $userCourse->user_id)
-                    ->whereIn('lesson_id', $subLessons->pluck('id'))
-                    ->get();
-
-                if ($lesson->type = Lesson::EXAM){
-                    $exist = ExamUser::where('lesson_id', $lesson)->exists();
-                    if (!$exist){
-                        $done =  false;
-                    }
-                }else{
-                    if ($userLessons->count() && $userLessons->count() == $subLessons->count()){
-                        foreach ($userLessons as $userLesson){
-                            if (!($userLesson->pas_ly_thuyet == UserLessonLog::PASS_LY_THUYET || $userLesson->turn_right > 0)){
-                                $done =  false;
-                            }
-                        }
-                    } else {
-                        $done =  false;
-                    }
-                }
-
-
+                $done = self::checkProcessLesson($lesson, $userCourse->user_id);
 
                 if ($done){
                     $percent += 100/$count;
@@ -205,24 +178,7 @@ class UserCourseService
                     ->get();
 
                 foreach ($lessonsLv2s as $lessonsLv2){
-                    $subLessonsLv2 = Lesson::where('course_id', $userCourse->course_id)
-                        ->where('parent_id', $lessonsLv2->id)
-                        ->where('status', Lesson::STATUS_ON)
-                        ->get();
-
-                    $userLessonLv2s = UserLessonLog::where('user_id', $userCourse->user_id)
-                        ->whereIn('lesson_id', $subLessonsLv2->pluck('id'))
-                        ->get();
-
-                    if ($userLessonLv2s->count() == $subLessonsLv2->count()){
-                        foreach ($userLessonLv2s as $userLessonLv2){
-                            if (!($userLessonLv2->pas_ly_thuyet == UserLessonLog::PASS_LY_THUYET || $userLessonLv2->turn_right > 0)){
-                                $done =  false;
-                            }
-                        }
-                    } else {
-                        $done =  false;
-                    }
+                    $done = self::checkProcessLesson($lessonsLv2, $userCourse->user_id);
 
                     if ($done){
                         $count = $lessonsLv2s->count()*$count;
@@ -231,7 +187,33 @@ class UserCourseService
                 }
             }
         }
-        dd($percent);
-        return $percent;
+        return ceil($percent);
+    }
+
+    private static function checkProcessLesson(Lesson $lesson, $userId)
+    {
+        $subLessonsLv2 = Lesson::where('course_id', $lesson->course_id)
+            ->where('parent_id', $lesson->id)
+            ->where('status', Lesson::STATUS_ON)
+            ->get();
+
+        $userLessonLv2s = UserLessonLog::where('user_id', $userId)
+            ->whereIn('lesson_id', $subLessonsLv2->pluck('id'))
+            ->get();
+
+        if ($lesson->type == Lesson::EXAM){
+            return ExamUser::where('lesson_id', $lesson)->exists();
+        }
+
+        if ($userLessonLv2s->count() == $subLessonsLv2->count()) {
+            foreach ($userLessonLv2s as $userLessonLv2) {
+                if (!($userLessonLv2->pas_ly_thuyet == UserLessonLog::PASS_LY_THUYET || $userLessonLv2->turn_right > 0)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        return false;
     }
 }

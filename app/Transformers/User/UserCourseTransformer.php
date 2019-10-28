@@ -2,6 +2,7 @@
 
 namespace App\Transformers\User;
 
+use App\Components\Course\UserCourseService;
 use App\Models\Course;
 use App\Transformers\Category\CategoryTransformer;
 use League\Fractal\TransformerAbstract;
@@ -38,7 +39,8 @@ class UserCourseTransformer extends TransformerAbstract
             'avatar_paht' => $course->avatar_paht,
             'status'      => $course->status,
             'sticky'      => $course->sticky,
-            'expired'     => $expired
+            'expired'     => $expired,
+            'percent'    => UserCourseService::getPercentCourse($userCourse)
         ];
     }
 
