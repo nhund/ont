@@ -352,4 +352,10 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/delete', 'BackEnd\MenuController@delete')->name('admin.menu.delete');
         Route::post('/order', 'BackEnd\MenuController@order')->name('admin.menu.order');
     });
+
+    Route::prefix('report')->group(function () {
+        Route::get('/', 'BackEnd\UserController@report')->name('admin.report.index');
+        Route::get('/detail/{id}', 'BackEnd\UserController@detailReport')->name('admin.report.detail')->where('id', '[0-9]+');
+    });
+
 });
