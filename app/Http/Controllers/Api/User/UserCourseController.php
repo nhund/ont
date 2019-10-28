@@ -11,7 +11,7 @@ use App\Http\Requests\AddUserCourseRequest;
 use App\Models\Auth\PassportToken;
 use App\Models\Course;
 use App\Models\UserCourse;
-use App\Transformers\Course\ShortCourseTransformer;
+use App\Transformers\User\UserCourseTransformer;
 use Illuminate\Http\Request;
 use App\Components\Course\CourseService;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
@@ -76,7 +76,7 @@ class UserCourseController extends Controller{
 
         return fractal()
             ->collection($courses)
-            ->transformWith(new ShortCourseTransformer)
+            ->transformWith(new UserCourseTransformer)
             ->paginateWith(new IlluminatePaginatorAdapter($courses))
             ->respond();
     }
@@ -103,6 +103,7 @@ class UserCourseController extends Controller{
      */
     public function detail(Course $course, Request $request)
     {
+
         $userCourseReport = new UserCourseReportService($request->user(), $course);
 
         return $this->respondOk($userCourseReport->get());
