@@ -49,8 +49,18 @@ class PostController extends Controller
 
             return view('news.category', compact('var'));
         }
+
+        $var['newsfeatureHot'] = Post::where('feature', 1)
+            ->where('feature_hot', 1)
+            ->where('status', Post::STATUS_ON)->take(1)->orderBy('id','DESC')->first();
+
+        $var['newsfeature'] = Post::where('feature', 1)
+            ->where('status', Post::STATUS_ON)->take(5)->orderBy('id','DESC')->get();
+
+        $var['newsfeatureOther'] = Post::where('feature', 1)
+            ->where('status', Post::STATUS_ON)->orderBy('id','DESC')->get();
         //TODO
-        //return view('news.index');
+        return view('news.index' , compact('var'));
     }
 
     /**

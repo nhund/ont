@@ -24,69 +24,47 @@
                 <div class="box-content">
                     <div class="wrap-main">
                         <div class="news-main">
-                            <a href="#"><img src="images/img-news-top.png"></a>
-                            <h2 class="tlt"><a href="#">Án tham nhũng khác thường của cựu chủ tịch Uỷ ban Chứng khoán Trung Quốc</a></h2>
-                            <p class="update-news"><span>Tin tuyển dụng</span> - 9 giờ trước</p>
-                            <p>Cựu chủ tịch ủy ban chứng khoán Trung Quốc Liu Shiyu thừa nhận tham nhũng, song không bị ra tòa hay khai trừ đảng, một điều bất thường. </p>
+                            @if(empty($var['newsfeatureHot']))
+                                <a src="{{ asset('/public/images/news/'.$var['newsfeatureHot']->id.'/480_320/'.$var['newsfeatureHot']->avatar)}}" title="{{$var['newsfeatureHot']->name}}"></a>
+                                <h2 class="tlt"><a href="{{route('news.detail',[str_slug($var['newsfeatureHot']->name, '-'), $var['newsfeatureHot']->id])}}">{{$var['newsfeatureHot']->name}}</a></h2>
+                                <p class="update-news"><span>Tin tuyển dụng</span> - 9 giờ trước</p>
+                                <p>{{$var['newsfeatureHot']->des}}</p>
+                            @endif
                         </div>
                         <div class="news-lst">
                             <ul class="lst-top">
-                                <li><a href="#">Buông nhẹ 1 câu cuối đề kiểm tra, giáo viên khiến học sinh sợ xanh mặt</a></li>
-                                <li><a href="#">Buông nhẹ 1 câu cuối đề kiểm tra, giáo viên khiến học sinh sợ xanh mặt</a></li>
-                                <li><a href="#">Buông nhẹ 1 câu cuối đề kiểm tra, giáo viên khiến học sinh sợ xanh mặt</a></li>
-                                <li><a href="#">Buông nhẹ 1 câu cuối đề kiểm tra, giáo viên khiến học sinh sợ xanh mặt</a></li>
-                                <li><a href="#">Buông nhẹ 1 câu cuối đề kiểm tra, giáo viên khiến học sinh sợ xanh mặt</a></li>
+                                @if($var['newsfeature'])
+                                    @foreach($var['newsfeature'] as $data)
+                                        <li><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}" title="{{$data->name}}">{{$data->name}}</a></li>
+                                    @endforeach
+                                @endif
                             </ul>
                         </div>
                     </div>
                     <div class="other-news">
                         <h3 class="tlt">Tin nổi bật khác</h3>
                         <div class="slider responsive slider-news-fl">
-                            <div>
-                                <div class="slider-news">
-                                    <a href="#"><img src="images/news.png"></a>
-                                    <h4 class="tlt-tltle"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    <p><a href="#">Xem thêm <i class="fa fa-angle-right"></i></a></p>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="slider-news">
-                                    <a href="#"><img src="images/news01.png"></a>
-                                    <h4 class="tlt-tltle"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    <p><a href="#">Xem thêm <i class="fa fa-angle-right"></i></a></p>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="slider-news">
-                                    <a href="#"><img src="images/news.png"></a>
-                                    <h4 class="tlt-tltle"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    <p><a href="#">Xem thêm <i class="fa fa-angle-right"></i></a></p>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="slider-news">
-                                    <a href="#"><img src="images/news01.png"></a>
-                                    <h4 class="tlt-tltle"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    <p><a href="#">Xem thêm <i class="fa fa-angle-right"></i></a></p>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="slider-news">
-                                    <a href="#"><img src="images/news.png"></a>
-                                    <h4 class="tlt-tltle"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    <p><a href="#">Xem thêm <i class="fa fa-angle-right"></i></a></p>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="slider-news">
-                                    <a href="#"><img src="images/news01.png"></a>
-                                    <h4 class="tlt-tltle"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    <p><a href="#">Xem thêm <i class="fa fa-angle-right"></i></a></p>
-                                </div>
-                            </div>
+                            @if($var['newsfeatureOther'])
+                                @foreach($var['newsfeatureOther'] as $data)
+                                    <div>
+
+                                        <div class="slider-news">
+                                            <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}"><img
+                                                        src="{{ asset('/public/images/news/'.$data->id.'/480_320/'.$data->avatar)}}"></a>
+                                            <h4 class="tlt-tltle"><a
+                                                        href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{{$data->name}}</a>
+                                            </h4>
+                                            <p>
+                                                <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">Xem
+                                                    thêm <i class="fa fa-angle-right"></i></a></p>
+                                        </div>
+                                    </div>
+
+                                @endforeach
+                            @endif
                         </div>
                     </div>
-                    <div class="group-news">
+                  {{--  <div class="group-news">
                         <h3 class="title-tlt">Thông báo của nhà trường</h3>
                         <div class="group-news-fl">
                             <div class="group-left">
@@ -113,64 +91,8 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div class="group-news">
-                        <h3 class="title-tlt">Thông báo của nhà trường</h3>
-                        <div class="group-news-fl">
-                            <div class="group-left">
-                                <div class="group-news-main">
-                                    <a href="#"><img src="images/news02.png"></a>
-                                    <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    <p>Ông xã Thanh Thanh Hiền - Chế Phong - đưa đón con gái của vợ đi học vì sợ con gặp nhiều cám dỗ ở tuổi dậy thì.</p>
-                                </div>
-                            </div>
-                            <div class="group-right">
-                                <ul>
-                                    <li>
-                                        <div><a href="#"><img src="images/news03.png"></a></div>
-                                        <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    </li>
-                                    <li>
-                                        <div><a href="#"><img src="images/news03.png"></a></div>
-                                        <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    </li>
-                                    <li>
-                                        <div><a href="#"><img src="images/news03.png"></a></div>
-                                        <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="group-news">
-                        <h3 class="title-tlt">Thông báo của nhà trường</h3>
-                        <div class="group-news-fl">
-                            <div class="group-left">
-                                <div class="group-news-main">
-                                    <a href="#"><img src="images/news02.png"></a>
-                                    <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    <p>Ông xã Thanh Thanh Hiền - Chế Phong - đưa đón con gái của vợ đi học vì sợ con gặp nhiều cám dỗ ở tuổi dậy thì.</p>
-                                </div>
-                            </div>
-                            <div class="group-right">
-                                <ul>
-                                    <li>
-                                        <div><a href="#"><img src="images/news03.png"></a></div>
-                                        <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    </li>
-                                    <li>
-                                        <div><a href="#"><img src="images/news03.png"></a></div>
-                                        <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    </li>
-                                    <li>
-                                        <div><a href="#"><img src="images/news03.png"></a></div>
-                                        <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="group-news group-other-news">
+                    </div>--}}
+                   {{-- <div class="group-news group-other-news">
                         <h3 class="title-tlt">Các tin khác</h3>
                         <div class="other-news-fl">
                             <ul>
@@ -213,13 +135,13 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div>--}}
             </div><!-- //col-right -->
-            <div class="col-right">
+            {{--<div class="col-right">
                 <ul class="advertisement">
                     <li><a href="#"><img src="images/add-img.png"></a></li>
                 </ul>
-            </div><!-- //col-left -->
+            </div><!-- //col-left -->--}}
         </div>
 
     </div>
