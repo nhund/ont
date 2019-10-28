@@ -103,6 +103,9 @@ class UserCourseController extends Controller{
      */
     public function detail(Course $course, Request $request)
     {
+        $usercourse = UserCourse::where('user_id',$request->user()->id)->where('course_id', 86)->first();
+        (new UserCourseService($course, $request->user()->id))->getPercentCourse($usercourse);
+
         $userCourseReport = new UserCourseReportService($request->user(), $course);
 
         return $this->respondOk($userCourseReport->get());
