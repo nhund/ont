@@ -48,6 +48,7 @@ class ExamService
             ->where('status', ExamQuestion::ACTIVE)->pluck('question_id');
 
         $questions = Question::whereIn('id', $questionIds)
+            ->typeAllow()
             ->where('parent_id',0)->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->get();
 

@@ -43,6 +43,7 @@ class LessonController extends Controller{
     public function question(Lesson $lesson, Request $request){
 
         $questions = Question::where('lesson_id',$lesson->id)->where('parent_id',0)
+            ->typeAllow()
             ->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->take(10)->get();
 

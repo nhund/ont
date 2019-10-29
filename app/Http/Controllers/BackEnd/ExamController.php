@@ -39,6 +39,7 @@ class ExamController
         $questionIds = $questionIds->get()->pluck('question_id');
 
         $question = Question::whereIn('id', $questionIds)
+            ->typeAllow()
             ->where('parent_id',0)->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->paginate(30);
 
@@ -47,7 +48,8 @@ class ExamController
         $keySearch = $request->get('key_search');
         if ($keySearch) {
 
-            $suggestQuestions = Question::query()->where(function ($q) use ($keySearch){
+            $suggestQuestions = Question::query()->typeAllow()
+                ->where(function ($q) use ($keySearch){
                 $q->where('question', 'like',  '%'.$keySearch.'%');
                 $q->orWhere('content', 'like',  '%'.$keySearch.'%');
             });
@@ -63,7 +65,9 @@ class ExamController
                 ->orderBy('order_s','ASC')->paginate(30);
         }
         foreach($question as $q) {
-            $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();
+            $q->subs = Question::where('lesson_id', '=', $lesson->id)
+                ->typeAllow()
+                ->where('parent_id', '=', $q->id)->get();
         }
 
         $var['parts']           = ExamPart::where('lesson_id', $id)->get();

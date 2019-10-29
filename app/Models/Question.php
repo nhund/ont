@@ -151,4 +151,9 @@ class Question extends Model
     {
         return $this->hasMany(ExamQuestion::class);
     }
+
+    public function scopeTypeAllow($query)
+    {
+        return $query->whereNotIn('type', [self::TYPE_FLASH_MUTI, self::TYPE_FLASH_SINGLE]);
+    }
 }
