@@ -148,6 +148,9 @@ class UserCourseService
     }
 
     /**
+     *
+     * calculate percent a course of user
+     *
      * @param UserCourse $userCourse
      * @return float|int
      */
@@ -190,6 +193,14 @@ class UserCourseService
         return ceil($percent);
     }
 
+    /**
+     *
+     * check user have or don't have study of user
+     *
+     * @param Lesson $lesson
+     * @param $userId
+     * @return bool
+     */
     private static function checkProcessLesson(Lesson $lesson, $userId)
     {
         $subLessonsLv2 = Lesson::where('course_id', $lesson->course_id)
@@ -215,5 +226,13 @@ class UserCourseService
         }
 
         return false;
+    }
+
+    public static function checkExpiredCourse(UserCourse $userCourse)
+    {
+
+        $remainDay  = ceil((time() - $userCourse->created_at)/(60*60*24));
+
+        return $remainDay > $userCourse->learn_day ? 0 : $remainDay;
     }
 }

@@ -24,9 +24,7 @@ class UserCourseTransformer extends TransformerAbstract
 
         $userCourse = $course->userCourse()->where('user_id', $user->id)->first();
 
-        $remainDay  = ceil((time() - $userCourse->created_at)/(60*60*24));
-
-        $expired = $remainDay > $userCourse->learn_day ? 0 : $remainDay;
+        $expired = UserCourseService::checkExpiredCourse($userCourse);
 
         return [
             'id'          => $course->id,
