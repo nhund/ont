@@ -40,10 +40,13 @@ class LessonController extends AdminBaseController
         $var['course']              = $lesson->course;
         $var['lesson']              = $lesson;
         $question                   = Question::where('lesson_id', '=', $lesson->id)
+        ->typeAllow()
         ->where('parent_id',0)->orderBy('order_s','ASC')
         ->orderBy('id','ASC')->paginate(30);
         foreach($question as $q) {
-            $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();
+            $q->subs = Question::where('lesson_id', '=', $lesson->id)
+                ->typeAllow()
+                ->where('parent_id', '=', $q->id)->get();
         }
         //$userCourse = UserCourse::where('course_id',$lesson->course_id)->count();
         $var['questions']           = $question;

@@ -107,6 +107,7 @@ class RecommendationService
             {
                 //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
                 $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
+                    ->typeAllow()
                     ->where('parent_id', Question::PARENT_ID)
                     ->where('lesson_id',$lesson->id)
                     ->orderBy('order_s','ASC')
@@ -121,6 +122,7 @@ class RecommendationService
                         ->pluck('question_parent')->toArray();
 
                     $questions = Question::where('lesson_id', $lesson->id)
+                        ->typeAllow()
                         ->where('parent_id', Question::PARENT_ID)
                         ->whereNotIn('id',$question_log)->orderBy('order_s','ASC')
                         ->orderBy('id','ASC')->take($limit)->get();
@@ -165,6 +167,7 @@ class RecommendationService
 
         //loai bo cac cau da luu de phan trang
         $questions = Question::where('lesson_id',$lesson->id)
+            ->typeAllow()
             ->where('parent_id',Question::PARENT_ID)
             ->orderByRaw('RAND()')->take($limit)
             ->get();
@@ -191,7 +194,9 @@ class RecommendationService
             ->orderBy('turn', 'ASC')->get()
             ->pluck('question_id')->toArray();
 
-        $questions = Question::query()->whereIn('id',$userBookmark)
+        $questions = Question::query()
+            ->typeAllow()
+            ->whereIn('id',$userBookmark)
             ->where('parent_id',Question::PARENT_ID)
         ;
 
@@ -313,7 +318,9 @@ class RecommendationService
                 $listQuestionLearned = $listId[$lesson->id];
             }
         }
-        $questions = Question::where('lesson_id',$lesson->id)->whereNotIn('id',$listQuestionLearned)->where('parent_id',0)
+        $questions = Question::where('lesson_id',$lesson->id)
+            ->typeAllow()
+            ->whereNotIn('id',$listQuestionLearned)->where('parent_id',0)
             ->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->take($limit)->get();
 
@@ -340,10 +347,13 @@ class RecommendationService
             {
                 if($type == Question::LEARN_LAM_BAI_MOI)
                 {
-                    $question->child = Question::where('parent_id',$question->id)->whereNotIn('id',$notIn)->orderBy('order_s','ASC')
+                    $question->child = Question::where('parent_id',$question->id)
+                        ->typeAllow()->whereNotIn('id',$notIn)
+                        ->orderBy('order_s','ASC')
                         ->orderBy('id','ASC')->get();
                 }else{
-                    $question->child = Question::where('parent_id',$question->id)->orderBy('order_s','ASC')
+                    $question->child = Question::where('parent_id',$question->id)
+                        ->typeAllow()->orderBy('order_s','ASC')
                         ->orderBy('id','ASC')->get();
                 }
 
@@ -364,7 +374,8 @@ class RecommendationService
 
                 if($type == Question::LEARN_LAM_BAI_MOI)
                 {
-                    $questionChilds = Question::where('parent_id',$question->id)->whereNotIn('id',$notIn)->orderBy('order_s','ASC')
+                    $questionChilds = Question::where('parent_id',$question->id)
+                        ->typeAllow()->whereNotIn('id',$notIn)->orderBy('order_s','ASC')
                         ->orderBy('id','ASC')->get();
                 }else{
                     $questionChilds = Question::where('parent_id',$question->id)->orderBy('order_s','ASC')
@@ -457,6 +468,7 @@ class RecommendationService
             $questionErrors = $question->pluck('question_parent')->toArray();
 
             $questions = Question::whereIn('id',$questionErrors)
+                ->typeAllow()
                 ->where('parent_id', Question::PARENT_ID)->orderBy('order_s','ASC')
                 ->orderBy('id','ASC')->take($limit)->get();
 
