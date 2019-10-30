@@ -3,6 +3,7 @@
 namespace App\Components\Auth\Social;
 
 use App\User;
+use Exception;
 
 class SocialService
 {
@@ -39,7 +40,7 @@ class SocialService
 
             if(empty($authUser['avatar']))
             {
-//                $this->_updateAvatar($authUser);
+                $this->_updateAvatar($authUser);
             }
            return $authUser;
         }
@@ -57,7 +58,7 @@ class SocialService
         $user_new->save();
 
         //update avatar
-//        $this->_updateAvatar($user_new);
+        $this->_updateAvatar($user_new);
 
         return $user_new;
     }
@@ -69,18 +70,23 @@ class SocialService
     {
         if(empty($user->avatar) && !empty($this->fields['avatar']))
         {
-            $avatar = $this->fields['avatar'];
+            try {
+                $avatar = $this->fields['avatar'];
 
-            $name = time().'_'.str_slug($user->name_full).'.png';
-            $path = 'images/user/avatar/'.$user->id;
-            //$this->removeFolder(public_path($path));
-            $destinationPath = public_path($path);
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777);
+                $name = time().'_'.str_slug($user->name_full).'.png';
+                $path = 'images/user/avatar/'.$user->id;
+                //$this->removeFolder(public_path($path));
+                $destinationPath = public_path($path);
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0777);
+                }
+                $this->downloadFile($avatar,public_path($path.'/'.$name));
+                $user->avatar = 'public/'.$path.'/'.$name;
+                $user->save();
+            }catch (Exception $exception){
+                \Log::error('message'.'---'.$exception->getMessage().'---file---'.$exception->getCode());
             }
-            $this->downloadFile($avatar,public_path($path.'/'.$name));
-            $user->avatar = 'public/'.$path.'/'.$name;
-            $user->save();
+
         }
     }
 
