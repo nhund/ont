@@ -19,6 +19,7 @@ class FullCourseTransformer extends TransformerAbstract
     const BOUGHT = 1;
     const NOT_YET_BUY = 2;
     const EXPIRED = 3;
+    const FREE = 4;
 
 
     /**
@@ -74,6 +75,12 @@ class FullCourseTransformer extends TransformerAbstract
         $userId = request()->get('user_id');
 
         $userCourse = $course->userCourse()->where('user_id', $userId)->first();
+
+        if ($course->status == Course::TYPE_FREE_TIME ||
+            $course->status == Course::TYPE_FREE_NOT_TIME ||
+            $course->status == Course::TYPE_APPROVAL){
+            return self::FREE;
+        }
 
         if (empty($userCourse) || $userCourse->status == UserCourse::STATUS_OFF){
             return self::NOT_YET_BUY;
