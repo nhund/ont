@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Components\Course\UserCourseService;
 use App\Components\User\UserCourseReportService;
 use App\Events\RemoveUserCourse;
+use App\Exceptions\BadRequestException;
 use App\Exceptions\UserCourseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddUserCourseRequest;
@@ -14,6 +15,7 @@ use App\Models\UserCourse;
 use App\Transformers\User\UserCourseTransformer;
 use Illuminate\Http\Request;
 use App\Components\Course\CourseService;
+use Intervention\Image\Exception\NotFoundException;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 /**
@@ -41,7 +43,7 @@ class UserCourseController extends Controller{
         try{
             $result = (new UserCourseService($course, $tokenInstance->user->id))->addingORExtentCourse();
          }catch (\Exception $exception){
-            throw new UserCourseException('Mua khóa học không thành công.');
+            throw new NotFoundException('Mua khóa học không thành công. '.$exception->getMessage());
         }
 
        return $this->respondOk($result);

@@ -76,7 +76,7 @@ class UserCourseService
             $userCourse->learn_day = $course->study_time;
             $userCourse->created_at = time();
         }
-        return 'mua khóa học thành công';
+        return 'gia hạn khóa học thành công';
     }
 
     /**
