@@ -33,49 +33,58 @@
                             </div>
                     </div>
                     <div class="btn-offer">
-                            @if($var['user_learn_error']  > 0)                            
-                                <a class="offer-course do_false" href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}">
-                                    <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
-                                    <div class="title">
-                                        <p>Đề xuất</p>
-                                        <p class="content">Làm lại câu sai</p>
-                                    </div>
-                                </a>
-                            @else
-                                @if(($var['total_user_learn']) == (int)$var['total_question'] && $var['total_user_learn'] > 0)
-                                    <a class="offer-course do_old" href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}" title="Ôn tập câu cũ">
+                        @if($var['user_learn_error']  > 0)
+                            <a class="offer-course do_false"
+                               href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}">
+                                <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
+                                <div class="title">
+                                    <p>Đề xuất</p>
+                                    <p class="content">Làm lại câu sai</p>
+                                </div>
+                            </a>
+                        @else
+                            @if(($var['total_user_learn']) == (int)$var['total_question'] && $var['total_user_learn'] > 0)
+                                <a class="offer-course do_old"
+                                   href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}"
+                                   title="Ôn tập câu cũ">
                                     <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
                                     <div class="title">
                                         <p>Đề xuất</p>
                                         <p class="content">Ôn tập câu cũ</p>
                                     </div>
-                                    </a>
-                                @endif
-
+                                </a>
                             @endif
-                                <a class="offer-course do_new " href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI]) }}" title="Làm bài mới">
-                                <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
-                                <div class="title">
-                                    <p class="content">Làm bài mới</p>
-                                </div>
-                                </a>
-                                <a class="offer-course do_old {{ $var['show_on_tap'] == false ? 'no_action' : '' }}" href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}" title="Ôn tập câu cũ">
-                                    <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
-                                    <div class="title">
-                                        <p class="content">ôn tập câu cũ</p>
-                                    </div>
-                                </a>
-                    </div>
-                    <div  class="btn-offer block-tow">
 
-                        <a class="offer-course do_false {{ $var['user_learn_error'] == 0 ? 'no_action' : '' }}" href="{{ $var['user_learn_error'] == 0 ? 'javascript:void(0)' :  route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}" title="Làm lại câu sai">
+                        @endif
+                        <a class="offer-course do_new "
+                           href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI]) }}"
+                           title="Làm bài mới">
+                            <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
+                            <div class="title">
+                                <p class="content">Làm bài mới</p>
+                            </div>
+                        </a>
+                        <a class="offer-course do_old {{ $var['show_on_tap'] == false ? 'no_action' : '' }}"
+                           href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}"
+                           title="Ôn tập câu cũ">
+                            <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
+                            <div class="title">
+                                <p class="content">ôn tập câu cũ</p>
+                            </div>
+                        </a>
+
+                        <a class="offer-course do_false {{ $var['user_learn_error'] == 0 ? 'no_action' : '' }}"
+                           href="{{ $var['user_learn_error'] == 0 ? 'javascript:void(0)' :  route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}"
+                           title="Làm lại câu sai">
                             <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
                             <div class="title">
                                 <p class="content">Làm lại câu sai</p>
                             </div>
                         </a>
 
-                        <a class="offer-course do_bookmark {{ $var['user_learn_bookmark'] == 0 ? 'no_action' : '' }}" href="{{ $var['user_learn_bookmark'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BOOKMARK]) }}" title="Làm câu bookmark">
+                        <a class="offer-course do_bookmark {{ $var['user_learn_bookmark'] == 0 ? 'no_action' : '' }}"
+                           href="{{ $var['user_learn_bookmark'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BOOKMARK]) }}"
+                           title="Làm câu bookmark">
                             <img src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
                             <div class="title">
                                 <p class="content">Làm câu bookmark</p>
