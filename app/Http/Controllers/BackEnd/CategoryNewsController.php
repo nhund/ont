@@ -61,7 +61,7 @@ class CategoryNewsController extends AdminBaseController
         $category = new CategoryNews();
         $category->name = $data['name'];
         $category->status = $data['status'];
-        $category->create_at = time();
+        $category->created_at = time();
         if($category->save())
         {
             alert()->success('Thông báo','Thêm dữ liệu thành công');
@@ -114,7 +114,7 @@ class CategoryNewsController extends AdminBaseController
         }
         $category->name = $data['name'];
         $category->status = $data['status'];
-        $category->update_at = time();
+        $category->updated_at = time();
         $category->save();
         alert()->success('Thông báo','Cập nhật thành công');
         return redirect()->route('admin.news.index');

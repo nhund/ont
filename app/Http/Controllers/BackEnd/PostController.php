@@ -43,10 +43,6 @@ class PostController extends AdminBaseController
     public function save(Request $request)
     {
         $data = $request->all();
-        // if (empty($data['avatar'])) {
-        //     alert()->error('Có lỗi','Cần tải lên ảnh đại diện');
-        //     return redirect()->route('admin.user_feel.add');
-        // }
         $post = new Post();
         $post->name = $data['name'];
         $post->category_id = $data['category_id'];
@@ -56,45 +52,46 @@ class PostController extends AdminBaseController
         if (!empty($data['category_id'])) {
             $post->type = 'news';
             $post->feature = $data['feature'];
-            $post->feature_hot = $data['feature_hot'];
         }
-        $post->avatar = $data['avatar'];
         $post->create_date = time();
         $hasError = false;
-        $post->save();
+
         // if have image
-            if ($post->avatar){
-                if (!in_array($post->avatar->clientExtension(), ['jpeg', 'png', 'jpg', 'gif', 'svg', 'webp'])) {
-                    $hasError = true;
-                }
-                if ($post->avatar->getClientSize() > 2048000) {
-                    $hasError = true;
-                }
-                if (!$hasError) {
-                    $name = time().'_'.str_slug($post->avatar->getClientOriginalName()).'.'.$post->avatar->getClientOriginalExtension();
-                    $path = '/images/news/'.$post->id;
-                    $destinationPath = public_path($path);
-                    if (!file_exists($destinationPath)) {
+        if ($request->hasFile('avatar') && $post->save()){
+
+            $avatar = $request->file('avatar');
+
+            if (!in_array($avatar->clientExtension(), ['jpeg', 'png', 'jpg', 'gif', 'svg', 'webp'])) {
+                $hasError = true;
+            }
+            if ($avatar->getClientSize() > 2048000) {
+                $hasError = true;
+            }
+            if (!$hasError) {
+                $name = time().'_'.str_slug($avatar->getClientOriginalName()).'.'.$avatar->getClientOriginalExtension();
+                $path = 'images/news/'.$post->id;
+                $destinationPath = public_path($path);
+                if (!file_exists($destinationPath)) {
                         mkdir($destinationPath, 0777);
-                    }
-                    $post->avatar->move($destinationPath, $name);
-                    $avatar = 'public/images/news/'.$post->id.'/'.$name;
-                    // $user->avatar_path = $path;
-                    // $user->avatar_name = $name;
-                    //dd($destinationPath);
-                    $post->avatar  = $name;
-                    $post->avatar_path  = $path;
-                    if ($post->save()) {
-                        Helper::thumbImages($name, $avatar, 480, 320, 'fit', $destinationPath . '/480_320');
-                    }
                 }
-                alert()->success('Thông báo', 'Thêm dữ liệu thành công');
-                return redirect()->route('admin.post.index');
-            } else {
+                $avatar->move($destinationPath, $name);
+                $avatar = 'public/images/news/'.$post->id.'/'.$name;
+                $post->avatar  = $name;
+                $post->avatar_path  = $path;
+                Helper::thumbImages($name, $avatar, 480, 320, 'fit', $destinationPath . '/480_320');
+            }
+        }
+
+        if ($post->save()){
+            alert()->success('Thông báo', 'Thêm dữ liệu thành công');
+            return redirect()->route('admin.post.index');
+        }
+        else {
             alert()->error('Có lỗi', 'Thêm dữ liệu không thành công');
             return redirect()->route('admin.post.add');
         }
     }
+
     public function edit($id,Request $request)
     {
         $post = Post::find($id);
@@ -135,42 +132,44 @@ class PostController extends AdminBaseController
         if (!empty($data['category_id'])){
             $post->type = 'news';
             $post->feature = $data['feature'];
-            $post->feature_hot = $data['feature_hot'];
         }
-        $post->avatar = $data['avatar'];
-        $post->update_date = time();
-        $hasError = false;
-        if ($post->save()){
-            if ($post->avatar){
-                if (!in_array($post->avatar->clientExtension(), ['jpeg', 'png', 'jpg', 'gif', 'svg', 'webp'])) {
-                    $hasError = true;
+
+        if ($request->hasFile('avatar')){
+            $avatar = $request->file('avatar');
+
+            $hasError = false;
+
+            if (!in_array($avatar->clientExtension(), ['jpeg', 'png', 'jpg', 'gif', 'svg', 'webp'])) {
+                $hasError = true;
+            }
+            if ($avatar->getClientSize() > 2048000) {
+                $hasError = true;
+            }
+            if (!$hasError) {
+                $name = time().'_'.str_slug($avatar->getClientOriginalName()).'.'.$avatar->getClientOriginalExtension();
+                $path = '/images/news/'.$post->id;
+                $destinationPath = public_path($path);
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0777);
                 }
-                if ($post->avatar->getClientSize() > 2048000) {
-                    $hasError = true;
-                }
-                if (!$hasError) {
-                    $name = time().'_'.str_slug($post->avatar->getClientOriginalName()).'.'.$post->avatar->getClientOriginalExtension();
-                    $path = '/images/news/'.$post->id;
-                    $destinationPath = public_path($path);
-                    if (!file_exists($destinationPath)) {
-                        mkdir($destinationPath, 0777);
-                    }
-                    $post->avatar->move($destinationPath, $name);
-                    $avatar = 'public/images/news/'.$post->id.'/'.$name;
-                    $post->avatar  = $name;
-                    $post->avatar_path  = $path;
-                    if ($post->save()) {
-                        Helper::thumbImages($name, $avatar, 480, 320, 'fit', $destinationPath . '/480_320');
-                    }
+                $avatar->move($destinationPath, $name);
+                $avatar = 'public/images/news/'.$post->id.'/'.$name;
+                $post->avatar  = $name;
+                $post->avatar_path  = $path;
+                if ($post->save()) {
+                    Helper::thumbImages($name, $avatar, 480, 320, 'fit', $destinationPath . '/480_320');
                 }
             }
+        }
+        $post->update_date = time();
+
+        if ($post->save()){
             alert()->success('Thông báo','Cập nhật thành công');
             return redirect()->route('admin.post.index');
         }else{
             alert()->error('Có lỗi', 'Cập nhật dữ liệu không thành công');
             return redirect()->route('admin.post.add');
         }
-
     }
     public function delete(Request $request)
     {

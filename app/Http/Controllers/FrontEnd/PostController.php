@@ -28,7 +28,6 @@ class PostController extends Controller
             //posts by category
             $var['postbyCate'] = Post::where('category_id', $data['cate-id'])
                 ->where('feature', '!=', 1)
-                ->where('feature_hot', '!=', 1)
                 ->where('status', Post::STATUS_ON)
                 ->orderBy('id','DESC')
                 ->paginate($limit);
@@ -36,14 +35,12 @@ class PostController extends Controller
             //post with feature == 1 anh feature_hot != 1
             $var['featurePost'] = Post::where('category_id', $data['cate-id'])
                 ->where('feature', 1)
-                ->where('feature_hot', '!=', 1)
                 ->orderBy('id', 'DESC')
                 ->where('status', Post::STATUS_ON)->take(2)->get();
 
             //post feature_hot == 1
             $var['featureHot'] =  Post::where('category_id', $data['cate-id'])
             ->where('feature', 1)
-            ->where('feature_hot', 1)
             ->where('status', Post::STATUS_ON)->take(1)->orderBy('id','DESC')->first();
 
 
@@ -51,7 +48,6 @@ class PostController extends Controller
         }
 
         $var['newsfeatureHot'] = Post::where('feature', 1)
-            ->where('feature_hot', 1)
             ->where('status', Post::STATUS_ON)->take(1)->orderBy('id','DESC')->first();
 
         $var['newsfeature'] = Post::where('feature', 1)
