@@ -9,9 +9,8 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 if (App::environment('production')) {
-    URL::forceScheme("https");
+	URL::forceScheme("https");
 }
-Route::get('/get-question', 'FrontEnd\HomeController@test')->name('test');
-
+Route::get('/get-question', 'App\AppController@getQuestion')->name('getQuestion');

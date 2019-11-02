@@ -18,7 +18,9 @@
 
 <div id="app">
     @if($question['type'] == \App\Models\Question::TYPE_TRAC_NGHIEM)
-        @include('app.trac_nghiem')
+        @foreach ($question['childs'] as $item)
+            @include('app.trac_nghiem')
+        @endforeach        
     @endif
 </div>
 <!---------------- Javascript ----------------->
@@ -26,7 +28,7 @@
     var base_url = '{{ URL::to('/') }}';
 </script>
 <script src='{{ web_asset('public/js/jquery-1.12.4.min.js') }}' type='text/javascript'></script>
-
+<script src='{{ web_asset('public/app/js/question.js') }}' type='text/javascript'></script>
 
 </body>
 </html>
