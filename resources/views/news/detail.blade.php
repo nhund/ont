@@ -37,7 +37,7 @@
                                         <div class="other-box">
                                             <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">
                                                 <img src="{{ asset('/public/images/news/'.$data->id.'/480_320/'.$data->avatar)}}" title="{{$data->name}}"></a>
-                                            <h4 class="other-title"><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{{$data->name}}</a></h4>
+                                            <h4 class="other-title"><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{{substr($data->name, 0, 120)}}...</a></h4>
                                         </div>
                                     </li>
                                 @endforeach
@@ -60,7 +60,7 @@
                                         </a>
                                     </div>
                                     <div class="posts-txt">
-                                        <a href="#">{{ucfirst($data->name)}}</a>
+                                        <a href="#">{{ucfirst(substr($data->name, 0, 120))}}...</a>
                                         {{--<p>Ngày cập nhật: 14:06 22/10/2019</p>--}}
                                     </div>
                                 </li>
