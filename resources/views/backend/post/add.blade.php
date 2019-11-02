@@ -25,43 +25,47 @@
                                 <div class="col-md-12">
                                     <form method="POST" action="{{ route('admin.post.save') }}" class="form-horizontal row-border" enctype="multipart/form-data">
                                         {{ csrf_field() }}
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Loại bài viết</label>
+                                            <div class="col-sm-2">
+                                                <select name="type" class="form-control" id="type">
+                                                    <option value="news">Tin tức</option>
+                                                    <option value="posting">Bài viết</option>
+                                                </select>
+                                            </div>
+                                            <label for="" class="control-label col-sm-1">Trạng thái</label>
+                                            <div class="col-sm-2 tabular-border">
+                                                <select class="form-control" name="status">
+                                                    <option value="{{ App\Models\Post::STATUS_ON }}">Hiển thị</option>
+                                                    <option value="{{ App\Models\Post::STATUS_OFF }}">Ẩn</option>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label" for="feature">Nổi bật</label>
+                                            <div class="col-sm-1">
+                                                <input class="checkbox form-control" name="feature" id="feature" type="checkbox"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Danh mục</label>
+                                            <div class="col-sm-4 tabular-border">
+                                                <select name="category_id" class="form-control" id="category-news">
+                                                    @foreach($_category as $value)
+                                                        <option value="{{$value->id}}">{{$value->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <p style="padding-top: 6px; color: red"><i>(Lưu ý: Chỉ dành cho tin tức)</i></p>
+                                        </div>
+
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Tiêu đề</label>
                                             <div class="col-sm-8">
                                                 <input type="text" name="name" autocomplete="off" placeholder="Tiêu đề" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Danh mục</label>
-                                            <div class="col-sm-2 tabular-border">
-                                                <select name="category_id" class="form-control" id="category-news">
-                                                    <option value="" selected>Chọn danh mục tin</option>
-                                                    @foreach($_category as $value)
-                                                        <option value="{{$value->id}}">{{$value->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <p style="padding-top: 6px">Lưu ý: nếu bài viết là tin tức hãy chọn danh mục</p>
-                                        </div>
 
-                                        <div class="form-group hide-show none">
-                                            <label class="col-sm-2 control-label">Tin nổi bật</label>
-                                            <div class="col-sm-2">
-                                                <select name="feature" class="form-control" id="feature">
-                                                    <option value="0" selected>Không</option>
-                                                    <option value="1">Có</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group hide-show-hot none_hot">
-                                            <label class="col-sm-2 control-label">Tin nổi bật nhất</label>
-                                            <div class="col-sm-2">
-                                                <select name="feature_hot" class="form-control">
-                                                    <option value="0" selected>Không</option>
-                                                    <option value="1">Có</option>
-                                                </select>
-                                            </div>
-                                        </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Mô tả</label>
                                             <div class="col-sm-8">
@@ -95,20 +99,12 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group pb0">
-                                            <label for="" class="control-label col-sm-2">Trạng thái</label>
-                                            <div class="col-sm-2 tabular-border">
-                                                <select class="form-control" name="status">                                                                    
-                                                    <option value="{{ App\Models\Post::STATUS_ON }}">Hiển thị</option>
-                                                    <option value="{{ App\Models\Post::STATUS_OFF }}">Ẩn</option>
-                                                </select>
-                                            </div>
-                                        </div>
+
                                         <div class="panel-footer">
                                             <div class="row">
                                                 <div class="col-sm-8 col-sm-offset-2">
                                                     <input type="submit" class="btn-primary btn" value="Save">
-                                                    <a href="{{ route('admin.post.index')}}" class="btn-default btn">Cancel</a>
+                                                    <a href="{{ route('admin.post.index')}}" class="btn-warning btn">Cancel</a>
                                                 </div>
                                             </div>
                                         </div>

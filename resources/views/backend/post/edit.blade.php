@@ -16,17 +16,39 @@
                                     <form method="POST" action="{{ route('admin.post.update') }}" class="form-horizontal row-border" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{ $var['post']->id }}">
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Loại bài viết</label>
+                                            <div class="col-sm-2">
+                                                <select name="type" class="form-control" id="type">
+                                                    <option value="news" {{request('type') == 'news' ? 'selected' :''}}>Tin tức</option>
+                                                    <option value="posting"  {{request('type') == 'posting' ? 'selected' :''}} >Bài viết</option>
+                                                </select>
+                                            </div>
+                                            <label for="" class="control-label col-sm-2">Trạng thái</label>
+                                            <div class="col-sm-2 tabular-border">
+                                                <select class="form-control" name="status">
+                                                    <option @if(App\Models\Post::STATUS_ON == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_ON }}">Hiển thị</option>
+                                                    <option @if(App\Models\Post::STATUS_OFF == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_OFF }}">Ẩn</option>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label" for="feature">Nổi bật</label>
+                                            <div class="col-sm-1">
+                                                <input class="checkbox form-control" name="feature" id="feature" type="checkbox"/>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Tiêu đề</label>
                                             <div class="col-sm-8">
                                                 <input type="text" name="name" autocomplete="off" value="{{ $var['post']->name }}" placeholder="Tiêu đề" class="form-control">
                                             </div>
                                         </div>
+
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Danh mục</label>
                                             <div class="col-sm-2 tabular-border">
                                                 <select name="category_id" class="form-control">
-                                                    <option value="">Chọn danh mục tin</option>
                                                     @foreach($_category as $value)
                                                         <option @if($var['post']->category_id == $value->id) selected @endif value="{{$value->id}}">{{$value->name}}</option>
                                                     @endforeach
@@ -40,15 +62,6 @@
                                                 <select name="feature" class="form-control" id="feature">
                                                     <option value="0" @if($var['post']->feature == 0) selected @endif>Không</option>
                                                     <option value="1" @if($var['post']->feature == 1) selected @endif>Có</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group hide-show-hot none_hot">
-                                            <label class="col-sm-2 control-label">Tin nổi bật nhất</label>
-                                            <div class="col-sm-2">
-                                                <select name="feature_hot" class="form-control">
-                                                    <option value="0" @if($var['post']->feature_hot == 0) selected @endif>Không</option>
-                                                    <option value="1" @if($var['post']->feature_hot == 1) selected @endif>Có</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -83,15 +96,6 @@
                                                     </span>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group pb0">
-                                            <label for="" class="control-label col-sm-2">Trạng thái</label>
-                                            <div class="col-sm-2 tabular-border">
-                                                <select class="form-control" name="status">                                                                   
-                                                    <option @if(App\Models\Post::STATUS_ON == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_ON }}">Hiển thị</option>
-                                                    <option @if(App\Models\Post::STATUS_OFF == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_OFF }}">Ẩn</option>
-                                                </select>
                                             </div>
                                         </div>
                                         <div class="panel-footer">

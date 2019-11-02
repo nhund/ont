@@ -11,10 +11,17 @@ class PostController extends AdminBaseController
 {
     protected $_category;
 
-    public function index(){
+    public function index(Request $request){
 
         $limit = 20;
-        $posts = Post::orderBy('id','DESC')->paginate($limit);
+        $posts = Post::query();
+
+        if ($request->get('type')){
+            $posts->where('type', $request->get('type'));
+        }
+
+        $posts = $posts->orderBy('id','DESC')->paginate($limit);
+
         $var['posts'] = $posts;
         $var['breadcrumb'] = array(
             array(
@@ -49,10 +56,14 @@ class PostController extends AdminBaseController
         $post->content = $data['content'];
         $post->des = $data['des'];
         $post->status = $data['status'];
-        if (!empty($data['category_id'])) {
-            $post->type = 'news';
-            $post->feature = $data['feature'];
+
+        if ($data['type'] == Post::NEWS)
+        {
+            $post->type = Post::NEWS;
+            $post->category_id = $data['category_id'];
         }
+
+        $post->feature = $data['feature'];
         $post->create_date = time();
         $hasError = false;
 
@@ -129,10 +140,17 @@ class PostController extends AdminBaseController
         $post->des = $data['des'];
         $post->content = $data['content'];
         $post->status = $data['status'];
-        if (!empty($data['category_id'])){
-            $post->type = 'news';
-            $post->feature = $data['feature'];
+
+        if ($data['type'] == Post::NEWS)
+        {
+            $post->type = Post::NEWS;
+            $post->category_id = $data['category_id'];
+
+        }else{
+            $post->type = Post::POSTING;
         }
+
+        $post->feature = $data['feature'];
 
         if ($request->hasFile('avatar')){
             $avatar = $request->file('avatar');

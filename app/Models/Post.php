@@ -9,6 +9,12 @@ class Post extends Model
     const STATUS_ON = 1;
     const STATUS_OFF = 2;
 
+    const NEWS = 'news';
+    const POSTING = 'posting';
+
+    const FEATURE = 1;
+    const NORMAL = 0;
+
     protected $table = 'post';
     protected $primaryKey = 'id';
 

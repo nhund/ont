@@ -49,13 +49,13 @@
                 <li class="">
                   <a href="{{ $menu->url }}" title="{{ $menu->name }}">{{ $menu->name }} @if(count($menu->child) > 0)<i class="fa fa-angle-down">@endif</i></a>
                   @if(count($menu->child) > 0)
-                    <ul class="dropdown-menu submenu-level1-children" role="menu">            
+                    <ul class="dropdown-menu submenu-level1-children" role="menu">
                         @foreach($menu->child as $menu_child)
                           <li class="">
                             <a href="{{ $menu_child->url }}" title="{{ $menu_child->name }}">{{ $menu_child->name }}</a>
-                          </li>  
+                          </li>
                         @endforeach
-                    </ul>  
+                    </ul>
                   @endif
                 </li>
               @endforeach

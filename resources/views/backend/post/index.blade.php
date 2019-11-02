@@ -6,10 +6,23 @@
         <div id="panel-advancedoptions">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
+                    <div class="form-group">
+                        <div class="col-sm-2">
                             <a href="{{ route('admin.post.add') }}" class="btn-primary btn">Thêm bài viết</a>
                         </div>
+                        <div class="col-sm-4">
+                            <select name="category_id" class="form-control" id="category-news" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                                <option value="">--Chọn Loại bài viết --</option>
+                                <option {{request('type') == 'news' ? 'selected' :''}} value="{{route('admin.post.index', ['type' => 'news'])}}">Tin tức</option>
+                                <option {{request('type') == 'posting' ? 'selected' :''}} value="{{route('admin.post.index', ['type' => 'posting'])}}">Bài viết</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12">
+
                         <div class="panel">
                             <div class="panel-body panel-no-padding">
                                 <table class="table table-striped table-bordered">
@@ -31,12 +44,11 @@
                                     @if($var['posts'])
                                         @foreach($var['posts'] as $key => $post)
                                             <tr class="tr">
-                                                {{-- <td><div class="icheck checkbox-inline"><input type="checkbox"></div></td> --}}
-                                                <td>{{ $loop->iteration }}</td>                                                
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>
                                                     <a target="_blank" href="{{ route('post.detail',['id'=>$post->id,'title'=>str_slug($post->name)]) }}">{{ $post->name }}</a>
                                                 </td>   
-                                                <td>{{substr($post->content, 0, 120)}}</td>
+                                                <td>{!! substr($post->content, 0, 120)  !!}</td>
                                                 <td>{{ \App\Models\CategoryNews::find($post->category_id)['name']}}</td>
                                                 <td>
                                                     @if($post->status == \App\Models\Post::STATUS_OFF)
@@ -47,7 +59,7 @@
                                                 </td>                                                 
                                                 <td>{{ date('d-m-Y',$post->create_date) }}</td>
                                                 <td>                                                    
-                                                    <a href="{{ route('admin.post.edit',['id'=>$post->id]) }}" class="btn btn-default btn-xs btn-label"><i class="fa fa-pencil"></i>Sửa</a>
+                                                    <a href="{{ route('admin.post.edit',['id'=>$post->id, 'type' => $post->type]) }}" class="btn btn-default btn-xs btn-label"><i class="fa fa-pencil"></i>Sửa</a>
                                                     <a href="#" data-id="{{ $post->id }}" class="btn btn-danger btn-xs btn-label confirmButton"><i class="fa fa-trash-o"></i>Xóa</a>
                                                 </td>
                                             </tr>
