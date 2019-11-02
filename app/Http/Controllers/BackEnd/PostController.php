@@ -63,7 +63,7 @@ class PostController extends AdminBaseController
             $post->category_id = $data['category_id'];
         }
 
-        $post->feature = $data['feature'];
+        $post->feature = $data['feature'] ?? Post::NORMAL;
         $post->create_date = time();
         $hasError = false;
 
@@ -150,7 +150,7 @@ class PostController extends AdminBaseController
             $post->type = Post::POSTING;
         }
 
-        $post->feature = $data['feature'];
+        $post->feature = $data['feature'] ?? Post::NORMAL;
 
         if ($request->hasFile('avatar')){
             $avatar = $request->file('avatar');
