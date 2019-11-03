@@ -18,9 +18,14 @@
 
 <div id="app">
     @if($question['type'] == \App\Models\Question::TYPE_TRAC_NGHIEM)
-        @foreach ($question['childs'] as $item)
-            @include('app.trac_nghiem')
-        @endforeach        
+        <form class="form_trac_nghiem">
+            <input type="hidden" name="question_id" value="{{ $question->id }}" >
+            <input type="hidden" name="type" value="lam-bai-tap" >  
+            @foreach ($question['childs'] as $item)
+                @include('app.trac_nghiem')
+            @endforeach        
+        </form>
+        
     @endif
 </div>
 <!---------------- Javascript ----------------->

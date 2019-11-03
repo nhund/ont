@@ -3,7 +3,18 @@
         {!! $item->question !!}
     </div>
     <div class="list-action">
-
+        <div class="icon active icon-comment">
+            <img src="{{ web_asset('public/app/icon/question-comt.png') }}" />
+        </div>
+        <div class="icon icon-sugess">
+                <img src="{{ web_asset('public/app/icon/question-sugess.png') }}" />
+            </div>
+            <div class="icon icon-report">
+                    <img src="{{ web_asset('public/app/icon/question-rp.png') }}" />
+                </div>
+                <div class="icon icon-bookmark">
+                        <img src="{{ web_asset('public/app/icon/question-bookmark.png') }}" />
+                    </div>    
     </div>
     <div class="content">
         {{-- <div class="question_all">
@@ -14,7 +25,7 @@
                 Gợi ý
             </div>
             <div class="content">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                    {!! $item->explain_before !!}
             </div>
         </div>
         <div class="box-answer">
@@ -24,6 +35,7 @@
             <div class="list-answer">
                 @foreach ($item->answers as $answer)
                     <div class="answer">
+                        <input type="radio" class="answer_radio answer_{{ $answer->id }}" value="{{ $answer->id }}" name="answers[{{ $item->id }}]">
                         <div class="box-icon">
                             <img src="{{ web_asset('public/app/icon/question-check.png') }}" class="question-check" />
                             <img src="{{ web_asset('public/app/icon/question-error.png') }}" class="question-error" />

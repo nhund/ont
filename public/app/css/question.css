@@ -11,6 +11,7 @@
 }
 #question-app-trac-nghiem .content .sugess_all {
   margin-top: 5px;
+  display: none;
 }
 #question-app-trac-nghiem .content .sugess_all .title {
   color: #f87b54;
@@ -20,6 +21,9 @@
 }
 #question-app-trac-nghiem .content .box-answer {
   margin-top: 15px;
+}
+#question-app-trac-nghiem .content .box-answer .answer .answer_radio {
+  display: none;
 }
 #question-app-trac-nghiem .content .box-answer .answer {
   margin-top: 5px;
@@ -88,4 +92,23 @@
   margin-top: 5px;
   color: #35365e;
   font-size: 12px;
+}
+#question-app-trac-nghiem .list-action {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+#question-app-trac-nghiem .list-action .icon.active {
+  background: #ffc646;
+}
+#question-app-trac-nghiem .list-action .icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
 }
