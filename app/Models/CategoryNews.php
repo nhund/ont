@@ -18,4 +18,9 @@ class CategoryNews extends Model
         'name', 'status','create_at','update_at'
     ];
     public $timestamps = true;
+
+    public function news()
+    {
+        return $this->hasMany(Post::class, 'category_id', 'id')->where('type', Post::NEWS);
+    }
 }

@@ -12,7 +12,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-md-12">
                                     <form method="POST" action="{{ route('admin.post.update') }}" class="form-horizontal row-border" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{ $var['post']->id }}">
@@ -34,7 +34,7 @@
                                             </div>
                                             <label class="col-sm-1 control-label" for="feature">Nổi bật</label>
                                             <div class="col-sm-1">
-                                                <input class="checkbox form-control" name="feature" id="feature" type="checkbox"/>
+                                                <input {{$var['post']->feature ?'checked' : ''}} class="checkbox form-control" name="feature" id="feature" type="checkbox"/>
                                             </div>
                                         </div>
 
@@ -54,16 +54,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <p style="padding-top: 6px">Lưu ý: nếu bài viết là tin tức hãy chọn danh mục</p>
-                                        </div>
-                                        <div class="form-group hide-show none">
-                                            <label class="col-sm-2 control-label">Tin nổi bật</label>
-                                            <div class="col-sm-2">
-                                                <select name="feature" class="form-control" id="feature">
-                                                    <option value="0" @if($var['post']->feature == 0) selected @endif>Không</option>
-                                                    <option value="1" @if($var['post']->feature == 1) selected @endif>Có</option>
-                                                </select>
-                                            </div>
+                                            <p style="padding-top: 6px; color: red"><i>(Lưu ý: Chỉ dành cho tin tức)</i></p>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Mô tả</label>

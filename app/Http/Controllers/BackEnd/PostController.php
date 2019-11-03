@@ -63,7 +63,7 @@ class PostController extends AdminBaseController
             $post->category_id = $data['category_id'];
         }
 
-        $post->feature = $data['feature'] ?? Post::NORMAL;
+        $post->feature = isset($data['feature']) ? Post::FEATURE : Post::NORMAL;
         $post->create_date = time();
         $hasError = false;
 
@@ -83,7 +83,7 @@ class PostController extends AdminBaseController
                 $path = 'images/news/'.$post->id;
                 $destinationPath = public_path($path);
                 if (!file_exists($destinationPath)) {
-                        mkdir($destinationPath, 0777);
+                    mkdir($destinationPath, 0777, true);
                 }
                 $avatar->move($destinationPath, $name);
                 $avatar = 'public/images/news/'.$post->id.'/'.$name;
@@ -150,7 +150,7 @@ class PostController extends AdminBaseController
             $post->type = Post::POSTING;
         }
 
-        $post->feature = $data['feature'] ?? Post::NORMAL;
+        $post->feature = isset($data['feature']) ? Post::FEATURE : Post::NORMAL;
 
         if ($request->hasFile('avatar')){
             $avatar = $request->file('avatar');
@@ -168,7 +168,7 @@ class PostController extends AdminBaseController
                 $path = '/images/news/'.$post->id;
                 $destinationPath = public_path($path);
                 if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777);
+                    mkdir($destinationPath, 0777, true);
                 }
                 $avatar->move($destinationPath, $name);
                 $avatar = 'public/images/news/'.$post->id.'/'.$name;

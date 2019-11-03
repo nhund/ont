@@ -22,28 +22,31 @@
                 <div class="col-left">
                     <div class="box-content">
                         <div class="wrap-main">
-                            @if(!empty($var['featureHot']))
+                            @if(count($var['featureNewses']))
                                 <div class="news-main">
-                                    <a href="{{route('news.detail',[str_slug($var['featureHot']->name, '-'), $var['featureHot']->id])}}">
-                                        <img src="{{ asset('/public/images/news/'.$var['featureHot']->id.'/480_320/'.$var['featureHot']->avatar)}}"></a>
-                                    <h2 class="tlt"><a href="{{route('news.detail',[str_slug($var['featureHot']->name, '-'), $var['featureHot']->id])}}">{{ucfirst($var['featureHot']->name)}}</a></h2>
+                                    <a href="{{route('news.detail',[str_slug($var['featureNewses'][0]->name, '-'), $var['featureNewses'][0]->id])}}">
+                                        <img src="{{ $var['featureNewses'][0]->thumbnail}}"></a>
+                                    <h2 class="tlt"><a href="{{route('news.detail',[str_slug($var['featureNewses'][0]->name, '-'), $var['featureNewses'][0]->id])}}">{{ucfirst($var['featureNewses'][0]->name)}}</a></h2>
                                     <p class="update-news"><span>Tin tuyển dụng</span> - 9 giờ trước</p>
-                                    <p>{!! substr($var['featureHot']->content, 0, 200) !!}</p>
+                                    <p>{!! substr($var['featureNewses'][0]->content, 0, 200) !!}</p>
                                 </div>
+                                    @if(count($var['featureNewses']) > 1)
+                                        <div class="news-lst">
+                                            <ul class="lst-top-fl">
+                                                @foreach($var['featureNewses'] as $index => $featureNews)
+                                                    @if($index > 0)
+                                                    <li>
+                                                        <a href="{{route('news.detail',[str_slug($featureNews->name, '-'),$featureNews->id])}}">
+                                                            <img src="{{ $featureNews->thumbnail }}" title="{{$featureNews->name}}"></a>
+                                                        <h3 class="tlt"><a href="{{route('news.detail',[str_slug($featureNews->name, '-'), $featureNews->id])}}">{{ ucfirst($featureNews->name) }}</a></h3>
+                                                    </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                             @endif
-                            @if(!empty($var['featurePost']))
-                                <div class="news-lst">
-                                    <ul class="lst-top-fl">
-                                        @foreach($var['featurePost'] as $data)
-                                            <li>
-                                                <a href="{{route('news.detail',[str_slug($data->name, '-'),$data->id])}}">
-                                                    <img src="{{ asset('/public/images/news/'.$data->id.'/480_320/'.$data->avatar)}}" title="{{$data->name}}"></a>
-                                                <h3 class="tlt"><a href="{{route('news.detail',[str_slug($var['featureHot']->name, '-'), $var['featureHot']->id])}}">{{ ucfirst($data->name) }}</a></h3>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+
                         </div>
                         <div class="news">
                             <ul>
@@ -61,6 +64,9 @@
                                         </li>
                                     @endforeach
                                 @endif
+                            </ul>
+                            <ul>
+                                {{ $var['postbyCate']->appends(Request::except('page'))->render() }}
                             </ul>
                         </div>
 

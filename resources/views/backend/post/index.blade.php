@@ -12,7 +12,7 @@
                         </div>
                         <div class="col-sm-4">
                             <select name="category_id" class="form-control" id="category-news" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                                <option value="">--Chọn Loại bài viết --</option>
+                                <option value="{{route('admin.post.index')}}">--Chọn Loại bài viết --</option>
                                 <option {{request('type') == 'news' ? 'selected' :''}} value="{{route('admin.post.index', ['type' => 'news'])}}">Tin tức</option>
                                 <option {{request('type') == 'posting' ? 'selected' :''}} value="{{route('admin.post.index', ['type' => 'posting'])}}">Bài viết</option>
                             </select>
@@ -33,7 +33,7 @@
                                         </th> --}}
                                         <th width="100">STT</th>
                                         <th>Tiêu đề</th>                   
-                                        <th>Nội dung</th>                                                                        
+{{--                                        <th>Nội dung</th>                                                                        --}}
                                         <th width="100">Chuyên mục</th>
                                         <th width="100">Trạng thái</th>
                                         <th width="150">Ngày tạo</th>
@@ -48,7 +48,7 @@
                                                 <td>
                                                     <a target="_blank" href="{{ route('post.detail',['id'=>$post->id,'title'=>str_slug($post->name)]) }}">{{ $post->name }}</a>
                                                 </td>   
-                                                <td>{!! substr($post->content, 0, 120)  !!}</td>
+{{--                                                <td>{{ substr($post->des, 0, 100)  }}</td>--}}
                                                 <td>{{ \App\Models\CategoryNews::find($post->category_id)['name']}}</td>
                                                 <td>
                                                     @if($post->status == \App\Models\Post::STATUS_OFF)
