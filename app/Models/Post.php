@@ -21,6 +21,12 @@ class Post extends Model
     protected $fillable = [
         'category_id', 'name', 'url', 'content','des','avatar','status','sicky','seo_title','seo_description','feature','seo_keyword','create_date','update_date'
     ];
+//    protected $dates = ['create_date', 'update_date'];
     public $timestamps = false;
-  
+
+    public function getThumbnailAttribute()
+    {
+        $path = "/public/images/news/{$this->getOriginal('id')}/480_320/{$this->getOriginal('avatar')}";
+        return asset($path);
+    }
 }

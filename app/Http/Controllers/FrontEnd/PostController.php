@@ -16,48 +16,53 @@ class PostController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function news(Request $request){
-
         $data = $request->all();
-        $limit = 20;
+        $limit = 10;
         $var = [];
         $var['params'] = [];
         if(isset($data['cate-id']) && $data['cate-id'] !== '')
         {
             $var['params']['cate-id'] = explode(',',$data['cate-id']);
-            $var['cate'] = CategoryNews::find($data['cate-id']);
+            $var['cate'] = CategoryNews::findOrFail($data['cate-id']);
+
+            //post feature_hot == 1
+             $newsFeature =  Post::where('category_id', $var['cate']->id)
+                 ->where('type', Post::NEWS)
+                 ->where('status', Post::STATUS_ON)->take(3)
+                 ->orderBy('feature', 'DESC')
+                 ->orderBy('id','DESC');
+
+            $var['featureNewses'] = $newsFeature->get();
+
             //posts by category
             $var['postbyCate'] = Post::where('category_id', $data['cate-id'])
-                ->where('feature', '!=', 1)
                 ->where('type', Post::NEWS)
+                ->whereNotIn('id', $newsFeature->pluck('id'))
                 ->where('status', Post::STATUS_ON)
                 ->orderBy('id','DESC')
                 ->paginate($limit);
 
-            //post with feature == 1 anh feature_hot != 1
-            $var['featurePost'] = Post::where('category_id', $data['cate-id'])
-                ->where('type', Post::NEWS)
-                ->where('feature', 1)
-                ->orderBy('id', 'DESC')
-                ->where('status', Post::STATUS_ON)->take(2)->get();
-
-            //post feature_hot == 1
-            $var['featureHot'] =  Post::where('category_id', $data['cate-id'])
-            ->where('feature', 1)->where('type', Post::NEWS)
-            ->where('status', Post::STATUS_ON)->take(1)->orderBy('id','DESC')->first();
-
-
             return view('news.category', compact('var'));
         }
 
-        $var['newsfeatureHot'] = Post::where('feature', 1)
-            ->where('status', Post::STATUS_ON)->where('type', Post::NEWS)->take(1)->orderBy('id','DESC')->first();
+        $newsFeatureHot = Post::where('feature', Post::FEATURE)
+            ->where('status', Post::STATUS_ON)->where('type', Post::NEWS)->limit(5)->orderBy('id','DESC');
 
-        $var['newsfeature'] = Post::where('feature', 1)
-            ->where('status', Post::STATUS_ON)->where('type', Post::NEWS)->take(5)->orderBy('id','DESC')->get();
+        $var['newsFeature'] = $newsFeatureHot->get();
 
-        $var['newsfeatureOther'] = Post::where('feature', 1)
-            ->where('status', Post::STATUS_ON)->where('type', Post::NEWS)->orderBy('id','DESC')->get();
-        //TODO
+        $var['otherNewsFeature'] = Post::where('feature', Post::FEATURE)
+            ->where('status', Post::STATUS_ON)->whereNotIn('id', $newsFeatureHot->pluck('id'))
+            ->where('type', Post::NEWS)
+            ->limit(5)
+            ->orderBy('id','DESC')
+            ->get();
+
+        $var['newsCategories'] = CategoryNews::where('status', CategoryNews::STATUS_ON)
+            ->whereHas('news')
+            ->with(['news' => function ($q){
+                $q->orderBy('create_date', 'DESC')->limit(5);
+            }])->get();;
+
         return view('news.index' , compact('var'));
     }
 
@@ -74,7 +79,6 @@ class PostController extends Controller
         $var = [];
 
         $var['news'] = $news;
-
         //related posts
         $var['relatedPosts'] = Post::where('category_id', $var['news']->category_id)
             ->where('id', '!=', $var['news']->id)
@@ -97,6 +101,7 @@ class PostController extends Controller
 
             return redirect()->route('home');
         }
+        dd(21212);
         $var = [];
         $var['post'] =  $post;       
         return view('post.detail',$var);

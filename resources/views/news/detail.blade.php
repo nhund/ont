@@ -13,7 +13,7 @@
                         <li><i class="fa fa-angle-right"></i></li>
                         <li><a href="{{route('news', ['cate-id='. $var['news']->category_id])}}" target="_self">Tin tức</a></li>
                         <li><i class="fa fa-angle-right"></i></li>
-                        <li>{{ucfirst($var['news']->name)}}</li>
+                        <li>{!! substr($var['news']->name, 0, 50) !!} ...</li>
                     </ol>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                                         <div class="other-box">
                                             <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">
                                                 <img src="{{ asset('/public/images/news/'.$data->id.'/480_320/'.$data->avatar)}}" title="{{$data->name}}"></a>
-                                            <h4 class="other-title"><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{{substr($data->name, 0, 120)}}...</a></h4>
+                                            <h4 class="other-title"><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{!! substr($data->name, 0, 120) !!}...</a></h4>
                                         </div>
                                     </li>
                                 @endforeach
@@ -60,7 +60,7 @@
                                         </a>
                                     </div>
                                     <div class="posts-txt">
-                                        <a href="#">{{ucfirst(substr($data->name, 0, 120))}}...</a>
+                                        <a href="#">{!! ucfirst(substr($data->name, 0, 120))!!}...</a>
                                         {{--<p>Ngày cập nhật: 14:06 22/10/2019</p>--}}
                                     </div>
                                 </li>

@@ -24,18 +24,20 @@
                 <div class="box-content">
                     <div class="wrap-main">
                         <div class="news-main">
-                            @if(empty($var['newsfeatureHot']))
-                                <a src="{{ asset('/public/images/news/'.$var['newsfeatureHot']->id.'/480_320/'.$var['newsfeatureHot']->avatar)}}" title="{{$var['newsfeatureHot']->name}}"></a>
-                                <h2 class="tlt"><a href="{{route('news.detail',[str_slug($var['newsfeatureHot']->name, '-'), $var['newsfeatureHot']->id])}}">{{$var['newsfeatureHot']->name}}</a></h2>
+                            @if(count($var['newsFeature']) > 0)
+                                <img src="{{ $var['newsFeature'][0]->thumbnail}}" title="{{$var['newsFeature'][0]->name}}"/>
+                                <h2 class="tlt"><a href="{{route('news.detail',[str_slug($var['newsFeature'][0]->name, '-'), $var['newsFeature'][0]->id])}}">{{$var['newsFeature'][0]->name}}</a></h2>
                                 <p class="update-news"><span>Tin tuyển dụng</span> - 9 giờ trước</p>
-                                <p>{{$var['newsfeatureHot']->des}}</p>
+                                <p>{{$var['newsFeature'][0]->des}}</p>
                             @endif
                         </div>
                         <div class="news-lst">
                             <ul class="lst-top">
-                                @if($var['newsfeature'])
-                                    @foreach($var['newsfeature'] as $data)
+                                @if(count($var['newsFeature']) > 1)
+                                    @foreach($var['newsFeature'] as $index => $data)
+                                        @if($index > 0)
                                         <li><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}" title="{{$data->name}}">{{$data->name}}</a></li>
+                                        @endif
                                     @endforeach
                                 @endif
                             </ul>
@@ -44,19 +46,15 @@
                     <div class="other-news">
                         <h3 class="tlt">Tin nổi bật khác</h3>
                         <div class="slider responsive slider-news-fl">
-                            @if($var['newsfeatureOther'])
-                                @foreach($var['newsfeatureOther'] as $data)
+                            @if($var['otherNewsFeature'])
+                                @foreach($var['otherNewsFeature'] as $data)
                                     <div>
 
                                         <div class="slider-news">
-                                            <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}"><img
-                                                        src="{{ asset('/public/images/news/'.$data->id.'/480_320/'.$data->avatar)}}"></a>
-                                            <h4 class="tlt-tltle"><a
-                                                        href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{{$data->name}}</a>
-                                            </h4>
-                                            <p>
-                                                <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">Xem
-                                                    thêm <i class="fa fa-angle-right"></i></a></p>
+                                            <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">
+                                                <img src="{{$data->thumbnail}}"  title="{{$data->name}}"/></a>
+                                            <h4 class="tlt-tltle"><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{{$data->name}}</a></h4>
+                                            <p><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">Xem thêm <i class="fa fa-angle-right"></i></a></p>
                                         </div>
                                     </div>
 
@@ -64,35 +62,37 @@
                             @endif
                         </div>
                     </div>
-                  {{--  <div class="group-news">
-                        <h3 class="title-tlt">Thông báo của nhà trường</h3>
-                        <div class="group-news-fl">
-                            <div class="group-left">
-                                <div class="group-news-main">
-                                    <a href="#"><img src="images/news02.png"></a>
-                                    <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    <p>Ông xã Thanh Thanh Hiền - Chế Phong - đưa đón con gái của vợ đi học vì sợ con gặp nhiều cám dỗ ở tuổi dậy thì.</p>
-                                </div>
-                            </div>
-                            <div class="group-right">
-                                <ul>
-                                    <li>
-                                        <div><a href="#"><img src="images/news03.png"></a></div>
-                                        <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    </li>
-                                    <li>
-                                        <div><a href="#"><img src="images/news03.png"></a></div>
-                                        <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    </li>
-                                    <li>
-                                        <div><a href="#"><img src="images/news03.png"></a></div>
-                                        <h4 class="tlt"><a href="#">Thanh Thanh Hiền: 'Chồng yêu thương con riêng của tôi'</a></h4>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>--}}
-                   {{-- <div class="group-news group-other-news">
+                    @foreach($var['newsCategories'] as $newsCategory)
+                    <div class="group-news">
+                           <h3 class="title-tlt">{!! $newsCategory->name !!}</h3>
+                           <div class="group-news-fl">
+                               <div class="group-left">
+                                   @if($newsCategory->news)
+                                       <div class="group-news-main">
+                                           <a href="#"><img src="{{$newsCategory->news[0]->thumbnail}}"></a>
+                                           <h4 class="tlt"><a href="#">{!! $newsCategory->news[0]->name !!}</a></h4>
+                                           <p>{!! $newsCategory->news[0]->des !!}</p>
+                                       </div>
+                                   @endif
+                               </div>
+                               <div class="group-right">
+                                   <ul>
+                                       @if(count($newsCategory->news) > 1)
+                                           @foreach($newsCategory->news as $index => $posting)
+                                               @if($index > 0)
+                                                   <li>
+                                                       <div><a href="#"><img src="{{$posting->thumbnail}}"></a></div>
+                                                       <h4 class="tlt"><a href="#">{!! substr($posting->name, 0, 120) !!}...</a></h4>
+                                                   </li>
+                                               @endif
+                                           @endforeach
+                                       @endif
+                                   </ul>
+                               </div>
+                           </div>
+                    </div>
+                    @endforeach
+                    <div class="group-news group-other-news">
                         <h3 class="title-tlt">Các tin khác</h3>
                         <div class="other-news-fl">
                             <ul>
@@ -135,7 +135,7 @@
                             </ul>
                         </div>
                     </div>
-                </div>--}}
+                </div>
             </div><!-- //col-right -->
             {{--<div class="col-right">
                 <ul class="advertisement">
