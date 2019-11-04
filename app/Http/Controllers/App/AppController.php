@@ -58,9 +58,30 @@ class AppController extends Controller {
                                 return ''.$m_x[1].'';
                             },$m[1]);
 
-                            return '<nobr><input title="" type="text" name="txtLearnWord['.$sub_q->id.']['.$incr.']" class="input_answer" value= ""><img class="show_suggest" data-title='.$get_title.' src="'.asset('/public/images/course/icon/bong_den_size.png').'" align="baseline" border="0" title="Xem gợi ý" style="margin-left:6px;cursor: pointer;"></nobr>';
+                            return '<nobr>
+                                        <span class="text">
+                                            <span class="input">
+                                                <span class="stt">'.$incr.'. </span>
+                                                <input title="" type="text" name="txtLearnWord['.$sub_q->id.']['.$incr.']" class="input_answer" value= "">
+                                            </span>
+                                            <span class="result"></span>
+                                            </span>
+                                            <img class="icon-error" src="'.asset('/public/app/icon/question-error.png').'">     
+                                            <img class="icon-success" src="'.asset('/public/app/icon/question-success.png').'">     
+                                        <img class="show_suggest" data-title='.$get_title.' src="'.asset('/public/app/icon/question-sugess.png').'" align="baseline" border="0" title="Xem gợi ý" style="margin-left:6px;cursor: pointer;">
+                                    </nobr>';
                         }else{
-                            return '<input title="" type="text" name="txtLearnWord['.$sub_q->id.']['.$incr.']" class="input_answer" value= "">';
+                            return '<nobr>
+                                <span class="text">
+                                    <span class="input">
+                                        <span class="stt">'.$incr.'. </span>
+                                        <input title="" type="text" name="txtLearnWord['.$sub_q->id.']['.$incr.']" class="input_answer" value= "">
+                                    </span>
+                                    <span class="result"></span>
+                                    </span>
+                                    <img class="icon-error" src="'.asset('/public/app/icon/question-error.png').'">     
+                                    <img class="icon-success" src="'.asset('/public/app/icon/question-success.png').'">                                     
+                            </nobr>';
                         }
 
                     }, $str);
