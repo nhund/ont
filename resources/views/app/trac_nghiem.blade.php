@@ -1,4 +1,4 @@
-<div id="question-app-trac-nghiem">
+<div class="question-app-trac-nghiem">
     <div class="title">
         {!! $item->question !!}
     </div>
@@ -32,7 +32,7 @@
             <div class="title">
                 Trả lời
             </div>
-            <div class="list-answer">
+            <div class="list-answer" data-id="{{ $item->id }}">
                 @foreach ($item->answers as $answer)
                     <div class="answer">
                         <input type="radio" class="answer_radio answer_{{ $answer->id }}" value="{{ $answer->id }}" name="answers[{{ $item->id }}]">
