@@ -1,14 +1,98 @@
 $(document).ready(function() {
+  var stt_start = 1;
+  function toObject(arr) {
+    var rv = {};
+    for (var i = 0; i < arr.length; ++i)
+      if (arr[i] !== undefined) rv[i] = arr[i];
+    return rv;
+  }
   document.addEventListener(
     "message",
     function(event) {
+      alert(event.data);
       let params = JSON.parse(event.data);
       if (params.action == "check_submit") {
+        checkSubmit();
       }
-      alert(event.data);
+      if(params.action == "next_question")
+      {
+        $('.question_type').hide();
+        $('.question_type.question_stt_'+parseInt(params.stt)).show();
+        let params = {
+          action: "next_question_success",
+        };
+        window.ReactNativeWebView.postMessage(JSON.stringify(params));
+      }
+      //alert(event.data);
     },
     false
   );
+  //ham kiem tra submit cau hoi
+  function checkSubmit()
+  {
+    var form_active  = $("#app").find(".question_type[data-stt='" + stt_start + "']");
+
+    var question_type =  form_active.find('input[name="question_type"]').val();
+    alert(question_type);
+    if(parseInt(question_type) == 4)
+    {
+      //cau hoi trac nghiem
+      processCauHoiTracNghiem(form_active);
+    }
+    if(parseInt(question_type) == 3)
+    {
+      //cau hoi dien tu
+    }
+    if(parseInt(question_type) == 5)
+    {
+      //cau hoi dien tu doan van
+    }
+    //console.log(form_active);
+  }
+  function processCauHoiTracNghiem(form_active)
+  {
+    var form_data = form_active.serializeArray();
+    alert("form_data",JSON.stringify(form_data));
+    let $all_answer = [];
+    form_active.find(".form_trac_nghiem").find("input[type=radio]").each(function() {
+      if (jQuery.inArray($(this).attr("name"), $all_answer) == -1) {
+        $all_answer.push($(this).attr("name"));
+      }
+    });
+    let data = {};
+    let check_answer = 0;
+    for (let i = 0; i < form_data.length; i++) {
+      var element = {};
+      let name = form_data[i].name;
+
+      if (jQuery.inArray(name, $all_answer) != -1) {
+        check_answer += 1;
+      }
+      data[name] = form_data[i].value;
+      //element[name] = form_data[i].value;
+      //data.push(element);
+    }
+
+    let params = {};
+    if(check_answer == $all_answer.length)
+    {
+      params = {
+        action: "submitQuestion",
+        typeQuestion: "multiple_Choice",
+        replyALl: true,
+        data: data
+      };
+    }else{
+      params = {
+        action: "submitQuestion",
+        typeQuestion: 4,
+        replyALl: false,
+        data: []
+      };
+    }
+
+    window.ReactNativeWebView.postMessage(JSON.stringify(params));
+  }
   //cau hoi trac nghiem
   $(".question-app-trac-nghiem .list-answer .answer").on("click", function(e) {
     var $this = $(this);
@@ -18,34 +102,36 @@ $(document).ready(function() {
       .removeClass("checked");
     $this.find(".answer_radio").prop("checked", true);
     $this.addClass("checked");
-    var form_data = $this.closest(".form_trac_nghiem").serializeArray();
 
-    let $all_answer = [];
-    $(".form_trac_nghiem input[type=radio]").each(function() {
-      if (jQuery.inArray($(this).attr("name"), $all_answer) == -1) {
-        $all_answer.push($(this).attr("name"));
-      }
-    });
-    let data = [];
-    let check_answer = 0;
-    for (let i = 0; i < form_data.length; i++) {
-      var element = {};
-      let name = form_data[i].name;
-
-      if (jQuery.inArray(name, $all_answer) != -1) {
-        check_answer += 1;
-      }
-      element[name] = form_data[i].value;
-      data.push(element);
-    }
-
-    let params = {
-      action: "submitQuestion",
-      typeQuestion: "multiple_Choice",
-      replyALl: check_answer == $all_answer.length ? true : false,
-      data: data
-    };
-    window.ReactNativeWebView.postMessage(JSON.stringify(params));
+    //checkSubmit();
+    // var form_data = $this.closest(".form_trac_nghiem").serializeArray();
+    //
+    // let $all_answer = [];
+    // $(".form_trac_nghiem input[type=radio]").each(function() {
+    //   if (jQuery.inArray($(this).attr("name"), $all_answer) == -1) {
+    //     $all_answer.push($(this).attr("name"));
+    //   }
+    // });
+    // let data = [];
+    // let check_answer = 0;
+    // for (let i = 0; i < form_data.length; i++) {
+    //   var element = {};
+    //   let name = form_data[i].name;
+    //
+    //   if (jQuery.inArray(name, $all_answer) != -1) {
+    //     check_answer += 1;
+    //   }
+    //   element[name] = form_data[i].value;
+    //   data.push(element);
+    // }
+    //
+    // let params = {
+    //   action: "submitQuestion",
+    //   typeQuestion: "multiple_Choice",
+    //   replyALl: check_answer == $all_answer.length ? true : false,
+    //   data: data
+    // };
+    // window.ReactNativeWebView.postMessage(JSON.stringify(params));
   });
   //comment
   $(".question-app-trac-nghiem .list-action .icon-comment").on(

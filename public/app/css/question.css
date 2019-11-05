@@ -1,5 +1,18 @@
+#app{
+  background: #FFFFFF;
+}
+#app .question_type{
+  display: none;
+}
+#app .question_type.question_stt_1{
+  display: block;
+}
+#app .question_type .stt{
+  font-size: 12px;
+  font-weight: bold;
+  color: #35365E;
+}
 .question-app-trac-nghiem {
-  background: "#FFFFFF";
   font-size: 12px;
   margin-top: 5px;
 }

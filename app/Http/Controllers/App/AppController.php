@@ -12,33 +12,55 @@ class AppController extends Controller {
 	public function getQuestion(Request $request) {
 
 		$input = $request->all();
-		$question_id = 0;
-		if (isset($input['question_id']) && !empty($input['question_id'])) {
-			$question_id = $input['question_id'];
+		$user_id = 0;
+        $question_ids = [];
+		if (isset($input['question_ids']) && !empty($input['question_ids'])) {
+		    //dd(explode(',',$input['question_ids']));
+			$question_ids = explode(',',$input['question_ids']);
 		}
-		$question = Question::find($question_id);
-		if (!$question) {
+		if(isset($input['user_id']) && !empty($input['user_id']))
+        {
+            $user_id = $input['user_id'];
+        }
+		$questions = Question::whereIn('id',$question_ids)->get();
+		if (count($questions) == 0) {
 
 			//return redirect()->route('home');
 		}
-		if($question->type == Question::TYPE_TRAC_NGHIEM)
+
+        foreach ($questions as $question)
+        {
+            $question->childs = $this->getQuestionDetail($question);
+        }
+		//dd($questions);
+		$var = [];
+		$var['questions'] = $questions;
+		//$var['answers'] =  $answers;
+		return view('app.question', $var);
+	}
+
+	public function getQuestionDetail($question)
+    {
+        if($question->type == Question::TYPE_TRAC_NGHIEM)
         {
             if ($question->parent_id == 0) {
-                $questionChilds = Question::where('parent_id', $question_id)->orderBy('id', 'ASC')->get();
+                $questionChilds = Question::where('parent_id', $question->id)->orderBy('id', 'ASC')->get();
                 if (count($questionChilds) > 0) {
                     foreach ($questionChilds as $key => $questionChild) {
                         $questionChilds[$key]->answers = QuestionAnswer::where('question_id', $questionChild->id)->orderByRaw('RAND()')->get();
                     }
                 }
-                $question->childs = $questionChilds;
+                return $questionChilds;
             }
+            return [];
 
         }
-		if($question->type == Question::TYPE_DIEN_TU)
+        if($question->type == Question::TYPE_DIEN_TU)
         {
             if ($question->parent_id == 0) {
-                $question->childs = Question::where('parent_id', $question_id)->orderBy('id', 'ASC')->get();
+                return Question::where('parent_id', $question->id)->orderBy('id', 'ASC')->get();
             }
+            return [];
         }
         if($question->type == Question::TYPE_DIEN_TU_DOAN_VAN)
         {
@@ -68,7 +90,7 @@ class AppController extends Controller {
                                             </span>
                                             <img class="icon-error" src="'.asset('/public/app/icon/question-error.png').'">     
                                             <img class="icon-success" src="'.asset('/public/app/icon/question-success.png').'">     
-                                        <img class="show_suggest" data-title='.$get_title.' src="'.asset('/public/app/icon/question-sugess.png').'" align="baseline" border="0" title="Xem gợi ý" style="margin-left:6px;cursor: pointer;">
+                                            <img class="show_suggest" src="'.asset('/public/app/icon/question-sugess.png').'" align="baseline" border="0" title="Xem gợi ý" style="margin-left:6px;cursor: pointer;">
                                     </nobr>';
                         }else{
                             return '<nobr>
@@ -88,14 +110,10 @@ class AppController extends Controller {
 
                     $sub_q->question_display = $content;
                 }
-                $question->childs =  $quesChilds;
+                return  $quesChilds;
             }
+            return [];
         }
 
-		//dd($question);
-		$var = [];
-		$var['question'] = $question;
-		//$var['answers'] =  $answers;
-		return view('app.question', $var);
-	}
+    }
 }
