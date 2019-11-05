@@ -50,7 +50,8 @@ class submitQuestion
 
         $checkExist = UserCourse::where('user_id', $user->id)->where('course_id', $course->id)->first();
 
-        if (!$checkExist || ($checkExist->status != UserCourse::STATUS_APPROVAL) || ($checkExist->and_date > 0 && $checkExist->and_date < time())){
+        if (!$checkExist || ($checkExist->status != UserCourse::STATUS_ON) ||
+            ($checkExist->and_date > 0 && $checkExist->and_date < time())){
             return false;
         }
 
