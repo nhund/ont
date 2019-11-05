@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use App\Components\Recommendation\RecommendationService;
 use App\Events\SubmitQuestionEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -264,25 +265,34 @@ class CourseLearnController extends Controller
            return response()->json(array('error' => true, 'msg' => 'Có lỗi xẩy ra'));     
         }
         $lesson = Lesson::find($data['lesson_id']);
-        $logLesson = UserLessonLog::where('user_id',$user->id)->where('lesson_id',$data['lesson_id'])->first();
-        if($logLesson)
+
+        $logLesson = UserLessonLog::where('user_id',$user->id)
+            ->where('lesson_id',$data['lesson_id'])->first();
+        if(!$logLesson)
         {
-            $logLesson->count += 1;
-            $logLesson->pass_ly_thuyet = UserLessonLog::PASS_LY_THUYET;
-            $logLesson->save();
-        }else{
             $logLesson = new UserLessonLog();
             $logLesson->lesson_id = $data['lesson_id'];
             $logLesson->user_id = $user->id;
-            $logLesson->count = 1;
             $logLesson->course_id = $lesson->course_id;
             $logLesson->count_question_true = 0;
-            $logLesson->pass_ly_thuyet = UserLessonLog::PASS_LY_THUYET;
             $logLesson->create_at = time();
-            $logLesson->save();
         }
-        return response()->json(array('error' => false, 'msg' => 'success'));     
+
+        $logLesson->turn += 1;
+        $logLesson->count += 1;
+        $logLesson->pass_ly_thuyet = UserLessonLog::PASS_LY_THUYET;
+        $logLesson->save();
+
+        return response()->json(array('error' => false, 'msg' => 'success'));
     }
+
+    /**
+     * @param $title
+     * @param $id
+     * @param $type
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @throws \App\Exceptions\BadRequestException
+     */
     public function question($title, $id ,$type)
     {
         if(!Auth::check())
@@ -327,13 +337,17 @@ class CourseLearnController extends Controller
         // }
         if($type == Question::LEARN_LAM_BAI_MOI)
         {
-            //lay cac cau hoi da lam
-            $question_log = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$id)->get()->pluck('question_parent')->toArray();
-            
-            $questions = Question::where('lesson_id',$id)->where('parent_id',0)->whereNotIn('id',$question_log)
-            ->orderBy('order_s','ASC')
-            ->orderBy('id','ASC')->take($limit)->get();
-            $getQuestionDetail = $this->_getQuestion($user, $questions, $question_log);
+//            //lay cac cau hoi da lam
+//            $question_log = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$id)->get()->pluck('question_parent')->toArray();
+//
+//            $questions = Question::where('lesson_id',$id)->where('parent_id',0)->whereNotIn('id',$question_log)
+//            ->orderBy('order_s','ASC')
+//            ->orderBy('id','ASC')->take($limit)->get();
+
+            $recommendation = new RecommendationService();
+
+            $getQuestionDetail = $recommendation->doingNewQuestions($course, $user);
+
         }else{
             if($type == Question::LEARN_LAM_BAI_TAP)
             {
@@ -485,200 +499,323 @@ class CourseLearnController extends Controller
             'userBookmark'=>$userBookmark
         );
     }
+
+//    /**
+//     * @param $title
+//     * @param $id
+//     * @param $type
+//     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+//     * @throws \App\Exceptions\BadRequestException
+//     */
+//    public function courseTypeLearn($title, $id , $type)
+//    {
+//        $recomendation = new RecommendationService();
+//
+//        if(!Auth::check())
+//        {
+//            alert()->error('Bạn cần đăng nhập để thực hiện hành động này');
+//            return redirect()->route('home');
+//        }
+//        $user = Auth::user();
+//        $course = Course::find($id);
+//        if(!$course)
+//        {
+//            alert()->error('Khóa học không tồn tại');
+//            return redirect()->route('home');
+//        }
+//        $check_permision = $this->checkPermission($user->id,$id);
+//        if($check_permision['error'] == true)
+//        {
+//            alert()->error($check_permision['msg']);
+//            return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);
+//        }
+//
+//        $var = [];
+//        $var['course'] = $course;
+//        $var['type'] = $type;
+//        $limit = 10;
+//
+//        if($type == Question::LEARN_LAM_BOOKMARK)
+//        {
+//
+//            $bookmarkQuestions = $recomendation->doingBookmarkQuestions($course, $user);
+//
+//            $var = array_merge($var, $bookmarkQuestions);
+//
+////            //lay cac cau da lam , de phan trang
+////            $questionlearnedIds = [];
+////            $questionLearned = QuestionLogCurrent::where('user_id',$user->id)->where('type',$type)->where('course_id',$course->id)->first();
+////            if($questionLearned)
+////            {
+////                $questionlearnedIds = json_decode($questionLearned->content,true);
+////            }
+////
+////            //lay danh sach bookmark
+////
+////            $userBookmark = UserQuestionBookmark::whereNotIn('question_id',$questionlearnedIds)->where('user_id',$user->id)->where('course_id',$id)->get()->pluck('question_id')->toArray();
+////            $questions = Question::whereIn('id',$userBookmark)->where('parent_id',0)->orderBy('order_s','ASC')
+////            ->orderBy('id','ASC')->take($limit)->get();
+////            $getQuestionDetail = $this->_getQuestion($user, $questions);
+////
+////            $var['userBookmark'] = $getQuestionDetail['userBookmark'];
+////
+////            $var['questions'] = $getQuestionDetail['questions'];
+//
+//        }
+//        if($type == Question::LEARN_LAM_CAU_SAI)
+//        {
+//            $questionlearnedIds = [];
+////            $questionLearned = QuestionLogCurrent::where('user_id',$user->id)->where('type',$type)->where('course_id',$course->id)->first();
+////            if($questionLearned)
+////            {
+////                $questionlearnedIds = json_decode($questionLearned->content,true);
+////            }
+//            //dd($questionlearnedIds);
+//            //lay danh sach cac cau sai
+//            // $questionErrors = UserQuestionLog::where('course_id',$id)
+//            //             ->where('user_id',$user->id)
+//            //             //->whereNotIn('question_parent',$questionlearnedIds)
+//            //             ->where('status',Question::REPLY_ERROR)
+//            //             ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
+//            //on tap cau sai theo tung lesson
+////            $lesson_error_all = UserQuestionLog::where('course_id',$id)
+////                        ->where('user_id',$user->id)
+////                        //->whereNotIn('question_parent',$questionlearnedIds)
+////                        ->where('status',Question::REPLY_ERROR)
+////                        ->orderBy('create_at','ASC')->get();
+////            $lesson_error_first = [];
+////            foreach ($lesson_error_all as $lesson_error) {
+////                        $question_check = Question::find($lesson_error->question_id);
+////                            if($question_check){
+////                                $lesson_error_first = $lesson_error;
+////                                break;
+////                            }
+////                        }
+////            if(!$lesson_error_first)
+////            {
+////                $questionErrors = [];
+////            }else{
+////                $questionErrors = UserQuestionLog::where('course_id',$id)
+////                        ->where('user_id',$user->id)
+////                        //->whereNotIn('question_parent',$questionlearnedIds)
+////                        ->where('lesson_id',$lesson_error_first->lesson_id)
+////                        ->where('status',Question::REPLY_ERROR)
+////                        ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
+////            }
+////
+////            $questions = Question::whereIn('id',$questionErrors)->where('parent_id',0)->orderBy('order_s','ASC')
+////            ->orderBy('id','ASC')->take($limit)->get();
+////
+////            $getQuestionDetail = $this->_getQuestion($user, $questions);
+////
+////            $var['userBookmark'] = $getQuestionDetail['userBookmark'];
+////
+////            $var['questions'] = $getQuestionDetail['questions'];
+//
+//            $wrongQuestions = $recomendation->doingWrongQuestions($course, $user);
+//
+//            $var = array_merge($var, $wrongQuestions);
+//
+//        }
+//        if($type == Question::LEARN_LAM_BAI_MOI)
+//        {
+//            //lay lesson da hoc
+////            $lesson_log = UserLessonLog::where('user_id',$user->id)->where('course_id',$id)->get()->pluck('lesson_id')->toArray();
+//            $lesson_all = Lesson::where('course_id',$id)
+//                ->where('parent_id', '<>', Lesson::PARENT_ID)
+//                ->where('type', Lesson::LESSON)
+//                ->orderBy('order_s','ASC')
+//                ->orderBy('created_at','ASC')->get();
+//
+//            $questionLearnedLogs = UserQuestionLog::where('course_id',$id)
+//                        ->where('user_id',$user->id)
+//                        ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
+//
+//            foreach ($lesson_all as $key => $lesson)
+//            {
+//                //kiem tra xem co ly thuyet trong bai hoc ko
+//                $lythuyets = Lesson::where('course_id',$id)
+//                            ->where('parent_id',$lesson->id)
+//                            ->where('type', Lesson::LESSON)
+//                            ->where('is_exercise',Lesson::IS_DOC)
+//                            ->orderBy('order_s','ASC')
+//                            ->orderBy('created_at','ASC')->get();
+//                if(count($lythuyets) > 0)
+//                {
+//                    foreach ($lythuyets as $lythuyet) {
+//                        //kiem tra xem bai nay da hoc ly thuyet chua
+//                        //$check_lesson_log = in_array($lesson->id, $lesson_log);
+//                        $check_ly_thuyet = UserLessonLog::where('user_id',$user->id)
+//                            ->where('course_id',$id)
+//                            ->where('pass_ly_thuyet',UserLessonLog::PASS_LY_THUYET)
+//                            ->where('lesson_id',$lythuyet->id)->first();
+//
+//                        if(!$check_ly_thuyet && !empty($lesson->description))
+//                        {
+//                            return redirect()->route('user.lambaitap.lythuyet',['id'=>$lythuyet->id]);
+//
+//                        }
+//                    }
+//                }
+//                //dd($lythuyets);
+//                if($lesson->is_exercise == Lesson::IS_EXERCISE)
+//                {
+//                    //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
+//                    $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)->where('parent_id',0)->where('lesson_id',$lesson->id)->orderBy('order_s','ASC')
+//                    ->orderBy('id','ASC')->count();
+//
+//                    if($check_has_question > 0)
+//                    {
+//                        return redirect()->route('user.lambaitap.question',['id'=>$lesson->id,'title'=>str_slug($lesson->name),'type'=>$type]);
+//                    }
+//                }
+//            }
+//            alert()->success('Bạn đã học hết các bài mới');
+//            return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
+//
+//        }
+//        if($type == Question::LEARN_LAM_CAU_CU)
+//        {
+//
+////            //lay all lesson
+////            $lessons = Lesson::where('course_id',$id)
+////            ->where('type', Lesson::LESSON)
+////            ->where('is_exercise',Lesson::IS_EXERCISE)
+////            ->orderBy('order_s','ASC')
+////            ->orderBy('created_at','ASC')->get()->pluck('id')->toArray();
+////            //lay cac cau da lam , de phan trang
+////            $questionlearnedIds = [];
+////            $questionLearned = QuestionLogCurrent::where('user_id',$user->id)->where('type',Question::LEARN_LAM_CAU_CU)->where('course_id',$course->id)->first();
+////            if($questionLearned)
+////            {
+////                $questionlearnedIds = json_decode($questionLearned->content,true);
+////            }
+////
+////            //loai bo cac cau da luu de phan trang
+////            $questions = Question::whereIn('lesson_id',$lessons)
+////            ->where('parent_id',0)
+////            ->whereNotIn('id',$questionlearnedIds)
+////                    //->where('id','>',$id_start)
+////            ->orderByRaw('RAND()')->take($limit)->get();
+////
+////            $getQuestionDetail = $this->_getQuestion($user, $questions);
+////            $var['userBookmark'] = $getQuestionDetail['userBookmark'];
+////            $var['questions'] = $getQuestionDetail['questions'];
+////            $var['type'] = $type;
+//
+//            $replyQuestions = $recomendation->doingReplayQuestions($course, $user);
+//
+//            $var = array_merge($var, $replyQuestions);
+//
+//        }
+//        if(count($var['questions']) == 0)
+//        {
+//            alert()->error('Bài tập chưa có câu hỏi.');
+//            return redirect()->route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]);
+//        }
+//
+//        return view('learn.lambaitap.layoutQuestion',compact('var'));
+//    }
+
+
     /**
-     * 
+     * @param $title
+     * @param $id
+     * @param $type
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @throws \App\Exceptions\BadRequestException
      */
     public function courseTypeLearn($title, $id , $type)
     {
+        $recommendation = new RecommendationService();
+
         if(!Auth::check())
         {
             alert()->error('Bạn cần đăng nhập để thực hiện hành động này');
             return redirect()->route('home');
         }
         $user = Auth::user();
-        $course = Course::find($id);  
+        $course = Course::find($id);
         if(!$course)
         {
             alert()->error('Khóa học không tồn tại');
             return redirect()->route('home');
-        }     
+        }
         $check_permision = $this->checkPermission($user->id,$id);
         if($check_permision['error'] == true)
         {
-            alert()->error($check_permision['msg']);            
+            alert()->error($check_permision['msg']);
             return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);
         }
 
         $var = [];
-        $var['course'] = $course;  
+        $var['course'] = $course;
         $var['type'] = $type;
-        $limit = 10;
+
         if($type == Question::LEARN_LAM_BOOKMARK)
-        { 
-            //lay cac cau da lam , de phan trang
-            $questionlearnedIds = [];
-            $questionLearned = QuestionLogCurrent::where('user_id',$user->id)->where('type',$type)->where('course_id',$course->id)->first();
-            if($questionLearned)
-            {
-                $questionlearnedIds = json_decode($questionLearned->content,true);
-            }
-            
-            //lay danh sach bookmark
-            
-            $userBookmark = UserQuestionBookmark::whereNotIn('question_id',$questionlearnedIds)->where('user_id',$user->id)->where('course_id',$id)->get()->pluck('question_id')->toArray();
-            $questions = Question::whereIn('id',$userBookmark)->where('parent_id',0)->orderBy('order_s','ASC')
-            ->orderBy('id','ASC')->take($limit)->get();    
-            $getQuestionDetail = $this->_getQuestion($user, $questions);    
-
-            $var['userBookmark'] = $getQuestionDetail['userBookmark'];
-
-            $var['questions'] = $getQuestionDetail['questions'];
-            
+        {
+            $bookmarkQuestions = $recommendation->doingBookmarkQuestions($course, $user);
+            $var = array_merge($var, $bookmarkQuestions);
         }
         if($type == Question::LEARN_LAM_CAU_SAI)
         {
-            $questionlearnedIds = [];
-            $questionLearned = QuestionLogCurrent::where('user_id',$user->id)->where('type',$type)->where('course_id',$course->id)->first();
-            if($questionLearned)
-            {
-                $questionlearnedIds = json_decode($questionLearned->content,true);
-            }
-            //dd($questionlearnedIds);
-            //lay danh sach cac cau sai
-            // $questionErrors = UserQuestionLog::where('course_id',$id)
-            //             ->where('user_id',$user->id)
-            //             //->whereNotIn('question_parent',$questionlearnedIds)
-            //             ->where('status',Question::REPLY_ERROR)                        
-            //             ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
-            //on tap cau sai theo tung lesson
-            $lesson_error_all = UserQuestionLog::where('course_id',$id)
-                        ->where('user_id',$user->id)
-                        //->whereNotIn('question_parent',$questionlearnedIds)
-                        ->where('status',Question::REPLY_ERROR)
-                        ->orderBy('create_at','ASC')->get();
-            $lesson_error_first = [];                        
-            foreach ($lesson_error_all as $lesson_error) {
-                        $question_check = Question::find($lesson_error->question_id);
-                            if($question_check){
-                                $lesson_error_first = $lesson_error;
-                                break;
-                            }
-                        }                                
-            if(!$lesson_error_first)
-            {
-                $questionErrors = [];
-            }else{
-                $questionErrors = UserQuestionLog::where('course_id',$id)
-                        ->where('user_id',$user->id)
-                        //->whereNotIn('question_parent',$questionlearnedIds)
-                        ->where('lesson_id',$lesson_error_first->lesson_id)
-                        ->where('status',Question::REPLY_ERROR)                        
-                        ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
-            }            
-                                  
-            $questions = Question::whereIn('id',$questionErrors)->where('parent_id',0)->orderBy('order_s','ASC')
-            ->orderBy('id','ASC')->take($limit)->get();    
-            
-            $getQuestionDetail = $this->_getQuestion($user, $questions);    
+            $wrongQuestions = $recommendation->doingWrongQuestions($course, $user);
 
-            $var['userBookmark'] = $getQuestionDetail['userBookmark'];
+            $var = array_merge($var, $wrongQuestions);
 
-            $var['questions'] = $getQuestionDetail['questions'];
-            
         }
         if($type == Question::LEARN_LAM_BAI_MOI)
         {
-            //lay lesson da hoc
-//            $lesson_log = UserLessonLog::where('user_id',$user->id)->where('course_id',$id)->get()->pluck('lesson_id')->toArray();
-            $lesson_all = Lesson::where('course_id',$id)
-                ->where('parent_id', '<>', Lesson::PARENT_ID)
-                ->where('type', Lesson::LESSON)
-                ->orderBy('order_s','ASC')
-                ->orderBy('created_at','ASC')->get();
 
             $questionLearnedLogs = UserQuestionLog::where('course_id',$id)
-                        ->where('user_id',$user->id)                        
-                        ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();            
-            
-            foreach ($lesson_all as $key => $lesson) 
-            {
-                //kiem tra xem co ly thuyet trong bai hoc ko
-                $lythuyets = Lesson::where('course_id',$id)
-                            ->where('parent_id',$lesson->id)
-                            ->where('type', Lesson::LESSON)
-                            ->where('is_exercise',Lesson::IS_DOC)
-                            ->orderBy('order_s','ASC')
-                            ->orderBy('created_at','ASC')->get();
-                if(count($lythuyets) > 0)
-                {
-                    foreach ($lythuyets as $lythuyet) {
-                        //kiem tra xem bai nay da hoc ly thuyet chua                
-                        //$check_lesson_log = in_array($lesson->id, $lesson_log); 
-                        $check_ly_thuyet = UserLessonLog::where('user_id',$user->id)
-                            ->where('course_id',$id)
-                            ->where('pass_ly_thuyet',UserLessonLog::PASS_LY_THUYET)
-                            ->where('lesson_id',$lythuyet->id)->first();
-                        
-                        if(!$check_ly_thuyet && !empty($lesson->description))
-                        {
-                            return redirect()->route('user.lambaitap.lythuyet',['id'=>$lythuyet->id]);
-                            
-                        }
-                    }
-                }            
-                //dd($lythuyets);            
-                if($lesson->is_exercise == Lesson::IS_EXERCISE)
-                {
-                    //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
-                    $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)->where('parent_id',0)->where('lesson_id',$lesson->id)->orderBy('order_s','ASC')
-                    ->orderBy('id','ASC')->count(); 
+                ->where('user_id',$user->id)
+                ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
 
-                    if($check_has_question > 0)
-                    { 
-                        return redirect()->route('user.lambaitap.question',['id'=>$lesson->id,'title'=>str_slug($lesson->name),'type'=>$type]);
-                    } 
+            $lesson = $recommendation->_getLessonLogUser($course, $user);
+
+            if ($lesson->is_exercise == Lesson::IS_DOC){
+                $checkTheory = UserLessonLog::where('user_id',$user->id)
+                    ->where('course_id',$course->id)
+                    ->where('pass_ly_thuyet',UserLessonLog::PASS_LY_THUYET)
+                    ->where('lesson_id',$lesson->id)
+                    ->first();
+
+                if((!$checkTheory || $checkTheory->turn == 0) && !empty($lesson->description))
+                {
+                    return redirect()->route('user.lambaitap.lythuyet',['id'=>$lesson->id]);
                 }
-            }            
+            }
+
+            if($lesson->is_exercise == Lesson::IS_EXERCISE)
+            {
+                //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
+                $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
+                    ->where('parent_id',0)->where('lesson_id',$lesson->id)
+                    ->orderBy('order_s','ASC')
+                    ->orderBy('id','ASC')->count();
+
+                if($check_has_question > 0)
+                {
+                    return redirect()->route('user.lambaitap.question',['id'=>$lesson->id,'title'=>str_slug($lesson->name),'type'=>$type]);
+                }
+            }
+
             alert()->success('Bạn đã học hết các bài mới');
             return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
-            
+
         }
         if($type == Question::LEARN_LAM_CAU_CU)
-        {            
-            
-            //lay all lesson
-            $lessons = Lesson::where('course_id',$id)
-            ->where('type', Lesson::LESSON)
-            ->where('is_exercise',Lesson::IS_EXERCISE)
-            ->orderBy('order_s','ASC')
-            ->orderBy('created_at','ASC')->get()->pluck('id')->toArray();            
-            //lay cac cau da lam , de phan trang
-            $questionlearnedIds = [];
-            $questionLearned = QuestionLogCurrent::where('user_id',$user->id)->where('type',Question::LEARN_LAM_CAU_CU)->where('course_id',$course->id)->first();
-            if($questionLearned)
-            {
-                $questionlearnedIds = json_decode($questionLearned->content,true);
-            }
-            
-            //loai bo cac cau da luu de phan trang    
-            $questions = Question::whereIn('lesson_id',$lessons)
-            ->where('parent_id',0)
-            ->whereNotIn('id',$questionlearnedIds)
-                    //->where('id','>',$id_start)
-            ->orderByRaw('RAND()')->take($limit)->get();
-
-            $getQuestionDetail = $this->_getQuestion($user, $questions);
-            $var['userBookmark'] = $getQuestionDetail['userBookmark'];
-            $var['questions'] = $getQuestionDetail['questions'];
-            $var['type'] = $type;
+        {
+            $replyQuestions = $recommendation->doingReplayQuestions($course, $user);
+            $var = array_merge($var, $replyQuestions);
 
         }
         if(count($var['questions']) == 0)
         {
             alert()->error('Bài tập chưa có câu hỏi.');
             return redirect()->route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]);
-        } 
-        
+        }
+
         return view('learn.lambaitap.layoutQuestion',compact('var'));
     }
 

@@ -31,26 +31,27 @@ class submitQuestion
             throw new NotFoundException('Khóa học không tồn tại hoặc đã bị xóa.');
         }
 
-        if( $user->id === $course->user_id){
-            return true;
-        }
+//        if( $user->id === $course->user_id){
+//            return true;
+//        }
 
-        if (!($user->id == $course->user_id || $user->level == User::USER_ADMIN)){
-            return false;
-        }
+//        if (!($user->id == $course->user_id || $user->level == User::USER_ADMIN)){
+//            return false;
+//        }
 
         $support = TeacherSupport::where('course_id', $course->id)
                     ->where('user_id', $user->id)
                     ->where('status', TeacherSupport::STATUS_ON)
                     ->first();
 
-        $checkExist = UserCourse::where('user_id', $user->id)->where('course_id', $course->id)->first();
-        if ( !($support || $checkExist || $user->id == $course->user_id || $user->level == User::USER_ADMIN)
-            || $checkExist->status == UserCourse::STATUS_APPROVAL) {
-            return false;
+        if ($support){
+            return true;
         }
 
-        if ($checkExist->and_date > 0 && $checkExist->and_date < time()) {
+        $checkExist = UserCourse::where('user_id', $user->id)->where('course_id', $course->id)->first();
+
+        if (!$checkExist || ($checkExist->status != UserCourse::STATUS_ON) ||
+            ($checkExist->and_date > 0 && $checkExist->and_date < time())){
             return false;
         }
 

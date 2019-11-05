@@ -204,7 +204,7 @@ class RecommendationService
             $questions->where('lesson_id', $this->lesson->id);
         }
 
-        $questions->orderBy('order_s','ASC')
+        $questions = $questions->orderBy('order_s','ASC')
             ->orderBy('id','ASC')
             ->take($limit)->get()
         ;
@@ -443,8 +443,8 @@ class RecommendationService
         );
     }
 
-    protected function _getLessonLogUser($course, $user){
-        return Lesson::select('lesson.*')
+    public function _getLessonLogUser($course, $user){
+        return Lesson::select('lesson.*', 'user_lesson_log.turn')
             ->leftJoin('user_lesson_log', function ($q) use ($user){
                 $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
                     ->where('user_lesson_log.user_id', $user->id);
@@ -452,6 +452,8 @@ class RecommendationService
             ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
             ->where('lesson.course_id', $course->id)
             ->orderBy('turn')
+            ->orderBy('lesson.parent_id')
+            ->orderBy('order_s')
             ->first()
         ;
     }
