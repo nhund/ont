@@ -77,7 +77,7 @@
                         @foreach($var['lessons'] as $lesson)
                                 <div class="title_body">
                                     @if($lesson->level == \App\Models\Lesson::LEVEL_1)
-                                        {{ $lesson->name }}
+                                        <a href="{{route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
                                     @else
                                         <a href="{{route('course.learn.level2',['title'=>str_slug($lesson->name),'course_id' =>$lesson->course_id, 'lesson_id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
                                     @endif
@@ -177,7 +177,7 @@
                             <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
                             <div class="title-p">
                                 <p>Đề xuất</p>
-                                <p class="content">Làm bài mới22454</p>
+                                <p class="content">Làm bài mới</p>
                             </div>
                     </a>
                     @endif

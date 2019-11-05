@@ -112,33 +112,7 @@ class CourseLearnController extends Controller
             alert()->error($check_permision['msg']);
             return redirect()->route('courseDetail',['title'=>str_slug($title),'id'=>$id]);
         }
-        // if($user->id != $course->user_id && $user->level != User::USER_ADMIN)
-        // {
-        //     //check user co da mua khoa hoc chua
-        //     $checkExist = UserCourse::where('user_id',$user->id)->where('course_id',$id)->first();
-        //     if(!$checkExist)
-        //     {
-        //         alert()->error('Bạn chưa mua khóa học này');
-        //         return redirect()->route('courseDetail',['title'=>$title,'id'=>$id]);
-        //     }
-        //     //kiem tra xem trạng thai khoa hoc
-        //     if($checkExist->status == UserCourse::STATUS_APPROVAL)
-        //     {
-        //         alert()->error('Bạn chưa được duyệt để tham gia khóa học này');
-        //         return redirect()->route('courseDetail',['title'=>$title,'id'=>$id]);
-        //     }
-        //     //kiem tra xem trạng thai khoa hoc
-        //     if($checkExist->status == UserCourse::STATUS_OFF)
-        //     {
-        //         alert()->error('Bạn đã bị block khỏi khóa học');
-        //         return redirect()->route('courseDetail',['title'=>$title,'id'=>$id]);
-        //     }
-        //     if($checkExist->and_date > 0 && $checkExist->and_date < time())
-        //     {
-        //         alert()->error('Khóa học của bạn đã hết hạn. Vui lòng gia hạn để học tiếp');
-        //         return redirect()->route('courseDetail',['title'=>$title,'id'=>$id]);
-        //     }
-        // }
+
         $var['support'] = isset($check_permision['support']) ? $check_permision['support'] : false;
         $var['course'] = $course;
         $lessons = Lesson::where('course_id',$id)->where('parent_id',0)
@@ -221,10 +195,9 @@ class CourseLearnController extends Controller
         $var['user_rating'] = $user_rating;
         $var['rating_avg'] = number_format((float)$rating_avg, 1, '.', '');
 
-//        dd($var);
-
         return view('learn.course',compact('var'));
     }
+
     public function lyThuyet($id,Request $request)
     {
         $var = [];
@@ -251,6 +224,7 @@ class CourseLearnController extends Controller
         return view('learn.lambaitap.lythuyet',compact('var'));
         
     }
+
     public function lyThuyetSubmit(Request $request)
     {
         $data = $request->all();
@@ -1432,5 +1406,53 @@ class CourseLearnController extends Controller
         $var['rating_avg'] = number_format((float)$rating_avg, 1, '.', '');
 
         return view('learn.course_l2',compact('var'));
+    }
+
+    public function detailLesson($title, $id, Request $request)
+    {
+        $lessons = Lesson::findOrFail($id);
+        $var['lessons'] = $lessons;
+        $course = Course::findOrFail($lessons->course_id);
+        $var['course'] = $course;
+        $var['course_same'] = Course::where('status','!=',Course::TYPE_PRIVATE)->orderBy('id','DESC')->take(5)->get();
+
+        if(!Auth::check())
+        {
+            alert()->error('Bạn cần đăng nhập để thực hiện hành động này');
+            return redirect()->route('home');
+        }
+        $user = Auth::user();
+
+        $check_permision = $this->checkPermission($user->id, $course->id);
+        if($check_permision['error'] == true)
+        {
+            alert()->error($check_permision['msg']);
+            return redirect()->route('courseDetail',['title'=>str_slug($title),'id'=> $course->id]);
+        }
+
+        $var['support'] = isset($check_permision['support']) ? $check_permision['support'] : false;
+        $var['rating'] = Rating::select('rating_value',DB::raw('count(*) as total'))->where('course_id',$course->id)->groupBy('rating_value')->get();
+
+        $rating_avg = 0;
+        $rating_value = 0;
+        $user_rating = 0;
+        foreach($var['rating'] as $rating)
+        {
+            $rating_value += (int)$rating->total * (int)$rating->rating_value;
+            $user_rating += $rating->total;
+
+            $ratingValue[$rating->rating_value] = array(
+                'users'=>$rating->total,
+                'total'=>(int)$rating->total
+            );
+        }
+        if($rating_value > 0)
+        {
+            $rating_avg = $rating_value / $user_rating;
+        }
+        $var['user_rating'] = $user_rating;
+        $var['rating_avg'] = number_format((float)$rating_avg, 1, '.', '');
+
+        return view('learn.detailLesson',compact('var'));
     }
 }
