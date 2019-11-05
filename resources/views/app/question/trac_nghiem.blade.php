@@ -6,7 +6,7 @@
         Câu {{ $key + 1 }}.
     </div>
     <div class="list-action">
-        <div class="icon active icon-comment">
+        <div class="icon icon-comment">
             <img src="{{ web_asset('public/app/icon/question-comt.png') }}" />
         </div>
         <div class="icon icon-sugess">
