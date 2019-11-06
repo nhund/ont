@@ -440,7 +440,7 @@ class QuestionAnswerService
 //                }
 //            }
         }
-        event(new SubmitQuestionEvent($data['question_parent'], $this->request->user()));
+        event(new SubmitQuestionEvent($questionParent, $this->request->user()));
     }
 
 }
