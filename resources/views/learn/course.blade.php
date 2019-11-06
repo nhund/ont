@@ -166,12 +166,12 @@
                 @else
                     @if(($var['total_user_learn']) == (int)$var['total_question'])
                         <a class="offer-course do_old" href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}" title="Ôn tập câu cũ">
-                                    <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
-                                    <div class="title">
-                                        <p>Đề xuất</p>
-                                        <p class="content">Ôn tập câu cũ</p>
-                                    </div>
-                                    </a>
+                            <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
+                            <div class="title">
+                                <p>Đề xuất</p>
+                                <p class="content">Ôn tập câu cũ</p>
+                            </div>
+                        </a>
                     @else
                     <a class="offer-course" href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI]) }}" title="Làm bài mới">
                             <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">

@@ -418,7 +418,7 @@ class QuestionAnswerService
             $lesson_log->create_at           = time();
             $lesson_log->count_question_true = $up_question_true == true ? 1 : 0;
             $lesson_log->turn_right = 0;
-            $lesson_log->total = 0;
+//            $lesson_log->total = 0;
             $lesson_log->save();
 
 //            if ($up_question_true) {
