@@ -131,7 +131,7 @@
                                     <div class="border-lesson theory-lesson row">
                                         <div class="col-md-9 content">
                                             <div class="title">Bài tập</div>
-                                            <div>{{$subLesson->name}}</div>
+                                            <div><a href="{{ route('user.lambaitap.question',['id'=>$subLesson->id,'title'=>str_slug($subLesson->name),'type'=>\App\Models\Question::LEARN_LAM_BAI_TAP]) }}" class="name ly_thuyet">{{$subLesson->name}}</a></div>
                                         </div>
                                         <div  class="col-md-3 score"><span>120</span>/200 câu</div>
                                     </div>
@@ -143,7 +143,7 @@
                                         <div class="border-lesson exercise-lesson row">
                                             <div class="col-md-9 content">
                                                 <div class="title">Lý thuyết</div>
-                                                <div>{{$subLesson->name}}</div>
+                                                <div><a href="{{ route('user.lambaitap.lythuyet',['id'=>$subLesson->id]) }}" class="name bai_tap">{{$subLesson->name}}</a></div>
                                             </div>
                                             <div  class="col-md-3 score"><span>120</span>/200 câu</div>
                                         </div>
