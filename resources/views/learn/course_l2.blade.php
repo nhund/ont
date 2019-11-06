@@ -1,6 +1,6 @@
 @extends('layout')
 @push('css')
-   <link href="{{ web_asset('public/css/course-learn.css') }}" rel="stylesheet" type="text/css">   
+   <link href="{{ web_asset('public/css/course-learn.css') }}" rel="stylesheet" type="text/css">
    <link href="{{ web_asset('public/css/bootstrap-rating.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
@@ -20,16 +20,16 @@
        </div>
     </div>
     <section id="course_learn" class="clearfix">
-       <input type="hidden" name="course_id" value="{{ $var['course']->id }}"> 
+       <input type="hidden" name="course_id" value="{{ $var['course']->id }}">
        <div class="container">
-          <div class="row">             
+          <div class="row">
               <h1 class="course_title">{{ $var['course']->name }}</h1>
-             <div class="box_left col-lg-9 col-md-9 col-sm-8 col-xs-12">                
+             <div class="box_left col-lg-9 col-md-9 col-sm-8 col-xs-12">
                 <div class="box_head">
                     <div class="title">Đã học {{ $var['total_user_learn'] }}/{{ $var['total_question'] }} câu</div>
                     <div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                            aria-valuemin="0" aria-valuemax="100" style="width:{{ $var['total_question'] > 0 ? ($var['total_user_learn']/$var['total_question'])*100 : 0 }}%">                              
+                            aria-valuemin="0" aria-valuemax="100" style="width:{{ $var['total_question'] > 0 ? ($var['total_user_learn']/$var['total_question'])*100 : 0 }}%">
                             </div>
                     </div>
                     <div class="btn-offer">
@@ -101,7 +101,7 @@
                     <div class="body">
                         @foreach($var['lessons'] as $lesson)
                                 <div class="title_body">
-                                    {{ $lesson->name }}
+                                    <a href="{{route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
                                 </div>
                                 @if(isset($lesson->childs))
                                     @foreach($lesson->childs as $lesson_child)
@@ -135,8 +135,8 @@
                                 @endif
 
                         @endforeach
-                        
-                    </div>    
+
+                    </div>
                 </div>
              </div>
              <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 pd5 pr-none-destop box-filter">
@@ -153,8 +153,8 @@
                                             <p>Đề xuất</p>
                                             <p class="content">Làm bài tập mới</p>
                                         </div>
-                                    </a>                                       
-                            </div> 
+                                    </a>
+                            </div>
                     </div>
                     <div class="col-md-3 item">
                             <div class="btn-offer do_old {{ $var['total_user_learn'] == 0 ? 'no_action' : '' }}" title="Ôn tập câu cũ">
@@ -164,8 +164,8 @@
                                             <p>Đề xuất</p>
                                             <p class="content">Ôn tập câu cũ</p>
                                         </div>
-                                    </a>                                       
-                            </div> 
+                                    </a>
+                            </div>
                     </div>
                     <div class="col-md-3 item">
                             <div class="btn-offer do_false {{ $var['user_learn_error'] == 0 ? 'no_action' : '' }}" title="Làm câu sai">
@@ -175,8 +175,8 @@
                                             <p>Đề xuất</p>
                                             <p class="content">Làm lại câu sai</p>
                                         </div>
-                                    </a>                                       
-                            </div> 
+                                    </a>
+                            </div>
                     </div>
                     <div class="col-md-3 item">
                             <div class="btn-offer do_book_mark {{ $var['user_learn_bookmark'] == 0 ? 'no_action' : '' }}" title="làm câu bookmark">
@@ -186,10 +186,10 @@
                                             <p>Đề xuất</p>
                                             <p class="content">làm câu bookmark</p>
                                         </div>
-                                    </a>                                       
-                            </div> 
+                                    </a>
+                            </div>
                     </div>
-                <div>    
+                <div>
           </div> --}}
        </div>
        <div id="myNav" class="overlay">
@@ -222,7 +222,7 @@
                 </div>
             </div>
             <div class="overlay-footer">
-                @if($var['user_learn_error']  > 9) 
+                @if($var['user_learn_error']  > 9)
                     <a class="offer-course do_false" href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}" title="Làm lại câu sai">
                         <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
                         <div class="title">
@@ -248,10 +248,10 @@
                             </div>
                     </a>
                     @endif
-                @endif    
+                @endif
             </div>
       </div>
-    </section>    
+    </section>
 @stop
 @push('js')
 <script src='{{ web_asset('public/js/detail/bootstrap-rating.min.js') }}' type='text/javascript'></script>
@@ -261,10 +261,10 @@
         function openNav() {
           document.getElementById("myNav").style.height = "100%";
         }
-        
+
         function closeNav() {
           document.getElementById("myNav").style.height = "0%";
         }
 </script>
-             
+
 @endpush
