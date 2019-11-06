@@ -22,7 +22,7 @@
             <div class="list-answer" data-id="{{ $item->id }}">
                 @foreach ($item->answers as $answer)
                     <div class="answer">
-                        <input type="radio" class="answer_radio answer_{{ $answer->id }}" value="{{ $answer->id }}" name="answers[{{ $item->id }}]">
+                        <input type="radio" class="answer_radio answer_{{ $answer->id }}" value="{{ $answer->id }}" data-question={{ $item->id }} name="answers[{{ $item->id }}]">
                         <div class="box-icon">
                             <img src="{{ web_asset('public/app/icon/question-check.png') }}" class="question-check" />
                             <img src="{{ web_asset('public/app/icon/question-error.png') }}" class="question-error" />

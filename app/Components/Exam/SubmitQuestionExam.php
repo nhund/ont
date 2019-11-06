@@ -152,30 +152,26 @@ class SubmitQuestionExam
             $reply = QuestionAnswer::REPLY_ERROR;
             //lay dap an dung
             $answerCheck = QuestionAnswer::where('question_id', $key)->where('status', QuestionAnswer::REPLY_OK)->first();
-            if (!$answerCheck) {
-                return response()->json(array(
-                    'error' => true,
-                    'msg'   => 'Câu hỏi chưa có đáp án',
-                    'data'  => '',
-                ));
-            }
 
-            $this->flag = $flag = $answerCheck && (int)$answer == (int)$answerCheck->id;
+            $flag = $answerCheck && (int)$answer == (int)$answerCheck->id;
 
             if ($flag) {
                 $reply = QuestionAnswer::REPLY_OK;
             }
 
+            if (!$flag){
+                $this->flag = false;
+            }
+
             $question_child = Question::find($key);
             $text           = $question_child ? $question_child->interpret : '';
-
-            $interpret_all = $this->question ? $this->question->interpret_all : '';
+            $interpret_all  = $this->question ? $this->question->interpret_all : '';
 
             $result[$key] = array(
                 'question_id'   => $key,
                 'error'         => $reply,
                 'input'         => !empty($answer) ? (int)$answer : '',
-                'answer'        => $answerCheck->id,
+                'answer'        => $answerCheck->id ?? '',
                 'interpret'     => $text ?: '',
                 'interpret_all' => $interpret_all ?: '',
             );
