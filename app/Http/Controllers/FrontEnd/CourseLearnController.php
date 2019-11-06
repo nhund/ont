@@ -341,12 +341,12 @@ class CourseLearnController extends Controller
                         $listQuestionLearned = $listId[$lesson->id];
                     }
                 }
-                $questions = Question::where('lesson_id',$id)->whereNotIn('id',$listQuestionLearned)->where('parent_id',0)
+                $questions = Question::where('lesson_id',$id)->typeAllow()->whereNotIn('id',$listQuestionLearned)->where('parent_id',0)
                 ->orderBy('order_s','ASC')
                 ->orderBy('id','ASC')->take($limit)->get();
 
             }else{
-                $questions = Question::where('lesson_id',$id)->where('parent_id',0)->take($limit)->get();  
+                $questions = Question::where('lesson_id',$id)->typeAllow()->where('parent_id',0)->take($limit)->get();
                 if(!$questions)
                 {
                     //neu bai dau tien ko co cau hoi nao. tim lesson co cau hoi                
