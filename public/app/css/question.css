@@ -223,6 +223,21 @@
   width: 100%;
   position: relative;
 }
+.form_dien_tu .question-app-dien-tu .question-item .answer .answer-input.error .input_answer{
+  background: rgba(248, 123, 84, 0.4);
+}
+.form_dien_tu .question-app-dien-tu .question-item .answer .answer-input.success .input_answer{
+  background: rgba(123, 205, 199, 0.4);
+}
+.form_dien_tu .question-app-dien-tu .question-item .answer .answer-input .box-icon img{
+  display: none;
+}
+.form_dien_tu .question-app-dien-tu .question-item .answer .answer-input.error .box-icon .question-error{
+  display: block;
+}
+.form_dien_tu .question-app-dien-tu .question-item .answer .answer-input.success .box-icon .question-success{
+  display: block;
+}
 .form_dien_tu
   .question-app-dien-tu
   .question-item
@@ -230,7 +245,7 @@
   .answer-input
   .box-icon {
   position: absolute;
-  top: 25px;
+  top: 13px;
   left: 10px;
 }
 .form_dien_tu
@@ -258,24 +273,36 @@
   color: #35365e;
 }
 .form_dien_tu .question-app-dien-tu .question-item .answer input {
+  box-sizing : border-box;
   margin-top: 8px;
   border-radius: 8px;
+  display: block;
   width: 100%;
-  height: 44px;
-  background-color: #f2f2f2;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  /*height: 34px;*/
+  padding: 11px 32px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
 }
 .form_dien_tu .question-app-dien-tu .question-item .answer input:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #80bdff;
+  border-color: #66afe9;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
 }
 .form_dien_tu_doan_van {
-  background: "#FFFFFF";
+  background: #FFFFFF;
   font-size: 12px;
 }
 .form_dien_tu_doan_van .question-app-dien-tu {

@@ -33,4 +33,5 @@
     @foreach ($question['childs'] as $item)
         @include('app.question_item.dien_tu_item')
     @endforeach
+    <input type="button" value="submit" name="submit" />
 </form>

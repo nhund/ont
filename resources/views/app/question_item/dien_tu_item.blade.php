@@ -26,7 +26,7 @@
                     <img src="{{ web_asset('public/app/icon/question-error.png') }}" class="question-error" />
                     <img src="{{ web_asset('public/app/icon/question-success.png') }}" class="question-success" />
                 </div>
-                <input type="text" placeholder="Nhập câu trả lời" name="answers[{{ $item->id }}]" />
+                <input type="text" class="input_answer" data-question="{{ $item->id }}" placeholder="Nhập câu trả lời" name="answers[{{ $item->id }}]" />
             </div>
 
         </div>
