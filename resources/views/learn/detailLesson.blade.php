@@ -6,32 +6,55 @@
         .border-lesson{
             border:0.09em solid;
             border-radius: 5px;
-            padding: 8px;
+            display: flex;
+            margin: 0;
         }
         .border-lesson .title{
             font-weight: bold;
         }
+        .border-lesson .content{
+            background: #f5f7f999;
+            line-height: 1.9em;
+        }
         .detail-lesson{
             margin: 10px 0;
         }
-        .exercise-lesson .title{
+        .exercise-lesson .title, .exercise-lesson .score{
             color: #259bfe;
         }
-        .theory-lesson .title{
+        .theory-lesson .title, .theory-lesson .score{
             color: #fa8b00;
         }
-        .exam-lesson .title{
+        .exam-lesson .title, .exam-lesson .score{
             color: #fbbc06
         }
 
         .exercise-lesson{
-            border-color: #259bfe;
+            border-color: #259bfe2e;
         }
         .theory-lesson{
-            border-color: #fa8b00;
+            border-color: #fa8b0030;
         }
         .exam-lesson{
-            border-color: #fbbc06
+            border-color: #fcdb4963
+        }
+        .exercise-lesson  .score{
+           background: #259bfe2e;
+        }
+        .theory-lesson  .score{
+            background: #fa8b0030;
+        }
+        .exam-lesson  .score{
+            background: #fcdb4963;
+        }
+
+        .border-lesson .score{
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        .border-lesson .score span{
+          font-size: 26px;
         }
     </style>
 @endpush
@@ -54,9 +77,11 @@
     <section id="course_learn" class="clearfix">
        <input type="hidden" name="course_id" value="{{ $var['course']->id ?? ''}}">
        <div class="container">
-          <div class="row">             
-              <h1 class="course_title">{{ $var['course']->name ?? '' }}</h1>
-             <div class="box_left col-lg-9 col-md-9 col-sm-8 col-xs-12">                
+          <div class="row">
+              <div class="box_left col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                  <h1 class="course_title">{{ $var['lessons']->name}}</h1>
+              </div>
+             <div class="box_left col-lg-9 col-md-9 col-sm-8 col-xs-12">
                 <div class="box_head">
                     <div class="title">Đã học 2 câu</div>
                     <div class="progress">
@@ -66,7 +91,7 @@
                     </div>
 
                     <div class="btn-offer">
-                        <a class="offer-course do_new " onclick="openNav()"
+                        <a class="offer-course do_new "  href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI, 'lesson_id' => $var['lessons']->id]) }}"
                            title="Làm bài mới">
                             <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
                             <div class="title">
@@ -74,7 +99,7 @@
                             </div>
                         </a>
                         <a class="offer-course do_old "
-                           href=""
+                           href="{{ 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU, 'lesson_id' => $var['lessons']->id]) }}"
                            title="Ôn tập câu cũ">
                             <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
                             <div class="title">
@@ -82,14 +107,14 @@
                             </div>
                         </a>
                         <a class="offer-course do_false "
-                           href="">
+                           href="{{ 0 ? 'javascript:void(0)' :  route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI, 'lesson_id' => $var['lessons']->id]) }}">
                             <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
                             <div class="title">
                                 <p class="content" onclick="openNav()">Làm câu sai</p>
                             </div>
                         </a>
                         <a class="offer-course do_bookmark "
-                           href=""
+                           href="{{ 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BOOKMARK, 'lesson_id' => $var['lessons']->id]) }}"
                            title="Làm câu bookmark">
                             <img src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
                             <div class="title">
@@ -99,39 +124,46 @@
                     </div>
                 </div>
                 <div class="box_content">
-                    <div class="head">
-                            <div class="topic">Giáo trình</div>
-                            <div class="count_learn">Lượt học</div>
-                            <div class="topic_progress">Tiến độ</div>
-                    </div>
                     <div class="body row">
-                        <div class="col-md-12 detail-lesson">
-                            <div class="border-lesson exercise-lesson col-md-12">
-                                <div class="col-md-9">
-                                    <div class="title">Bài tập</div>
-                                    <div> CHƯƠNG 3: Một số nội dung cơ bản của Luật dân sự </div>
+                        @foreach($var['subLessons'] as $subLesson)
+                            @if($subLesson->type == \App\Models\Lesson::LESSON && $subLesson->is_exercise == \App\Models\Lesson::IS_EXERCISE)
+                                <div class="col-md-12 detail-lesson">
+                                    <div class="border-lesson theory-lesson row">
+                                        <div class="col-md-9 content">
+                                            <div class="title">Bài tập</div>
+                                            <div>{{$subLesson->name}}</div>
+                                        </div>
+                                        <div  class="col-md-3 score"><span>120</span>/200 câu</div>
+                                    </div>
                                 </div>
-                                <div  class="col-md-3"><span>120</span>/200 câu</div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 detail-lesson">
-                            <div class="border-lesson theory-lesson col-md-12">
-                                <div class="col-md-9">
-                                    <div class="title">Bài tập</div>
-                                    <div> CHƯƠNG 3: Một số nội dung cơ bản của Luật dân sự </div>
-                                </div>
-                                <div  class="col-md-3"><span>120</span>/200 câu</div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 detail-lesson">
-                            <div class="border-lesson exam-lesson col-md-12">
-                                <div class="col-md-9">
-                                    <div class="title">Bài tập</div>
-                                    <div> CHƯƠNG 3: Một số nội dung cơ bản của Luật dân sự </div>
-                                </div>
-                                <div class="col-md-3"><span>120</span>/200 câu</div>
-                            </div>
-                        </div>
+                            @endif
+
+                            @if($subLesson->type == \App\Models\Lesson::LESSON && $subLesson->is_exercise == \App\Models\Lesson::IS_DOC)
+                                    <div class="col-md-12 detail-lesson">
+                                        <div class="border-lesson exercise-lesson row">
+                                            <div class="col-md-9 content">
+                                                <div class="title">Lý thuyết</div>
+                                                <div>{{$subLesson->name}}</div>
+                                            </div>
+                                            <div  class="col-md-3 score"><span>120</span>/200 câu</div>
+                                        </div>
+                                    </div>
+                            @endif
+                            @if($subLesson->type == \App\Models\Lesson::EXAM)
+                                    <div class="col-md-12 detail-lesson">
+                                        <div class="border-lesson exam-lesson row">
+                                            <div class="col-md-9 content">
+                                                <div class="title">Kiểm tra</div>
+                                                <div>{{$subLesson->name}}</div>
+                                            </div>
+                                            <div class="col-md-3 score"><span>120</span>/200 câu</div>
+                                        </div>
+                                    </div>
+                            @endif
+                        @endforeach
+
+
+
                     </div>    
                 </div>
              </div>
@@ -139,8 +171,6 @@
                 @include('learn.course_info')
              </div>
           </div>
-
-
        </div>
 
 
@@ -149,25 +179,25 @@
             <p class="title">Chọn phương thức học</p>
             <div class="overlay-content">
                 <div class="method do_new">
-                    <a href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI]) }}" title="Làm bài mới">
+                    <a href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI, 'lesson_id' => $var['lessons']->id]) }}" title="Làm bài mới">
                         <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
                     </a>
                     <p>Làm bài mới</p>
                 </div>
                 <div class="method do_old">
-                    <a href="{{ 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}" title="Ôn tập câu cũ">
+                    <a href="{{ 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU, 'lesson_id' => $var['lessons']->id]) }}" title="Ôn tập câu cũ">
                         <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
                     </a>
                     <p>Ôn tập câu cũ</p>
                 </div>
                 <div class="method do_false">
-                        <a href="{{ 0 ? 'javascript:void(0)' :  route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}" title="Làm lại câu sai">
+                        <a href="{{ 0 ? 'javascript:void(0)' :  route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI, 'lesson_id' => $var['lessons']->id]) }}" title="Làm lại câu sai">
                             <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
                         </a>
                         <p>Làm lại câu sai</p>
                 </div>
                 <div class="method do_bookmark}">
-                        <a href="{{ 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BOOKMARK]) }}" title="Làm câu bookmark">
+                        <a href="{{ 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BOOKMARK, 'lesson_id' => $var['lessons']->id]) }}" title="Làm câu bookmark">
                             <img src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
                         </a>
                         <p>Làm câu bookmark</p>

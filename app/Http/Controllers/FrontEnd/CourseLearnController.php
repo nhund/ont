@@ -1450,6 +1450,7 @@ class CourseLearnController extends Controller
         {
             $rating_avg = $rating_value / $user_rating;
         }
+        $var['subLessons'] = $var['lessons']->subLesson ?: [];
         $var['user_rating'] = $user_rating;
         $var['rating_avg'] = number_format((float)$rating_avg, 1, '.', '');
 
