@@ -22,6 +22,7 @@ class submitQuestion
      * @param User $user
      * @param Question $question
      * @return bool
+     * @throws BadRequestException
      */
     public function submit(User $user, Question $question)
     {
@@ -30,14 +31,6 @@ class submitQuestion
         if (!$course){
             throw new NotFoundException('Khóa học không tồn tại hoặc đã bị xóa.');
         }
-
-//        if( $user->id === $course->user_id){
-//            return true;
-//        }
-
-//        if (!($user->id == $course->user_id || $user->level == User::USER_ADMIN)){
-//            return false;
-//        }
 
         $support = TeacherSupport::where('course_id', $course->id)
                     ->where('user_id', $user->id)
@@ -50,11 +43,14 @@ class submitQuestion
 
         $checkExist = UserCourse::where('user_id', $user->id)->where('course_id', $course->id)->first();
 
-        if (!$checkExist || ($checkExist->status != UserCourse::STATUS_ON) ||
-            ($checkExist->and_date > 0 && $checkExist->and_date < time())){
+        if (!$checkExist || ($checkExist->status != UserCourse::STATUS_ON)){
+
             return false;
         }
 
+        if ($checkExist->and_date > 0 && $checkExist->and_date < time()){
+            throw new BadRequestException('Khóa học bạn đã hết hạn xin vui lòng gia hạn!');
+        }
         return true;
     }
 

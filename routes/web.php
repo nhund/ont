@@ -98,31 +98,23 @@ Route::get('/khoa-hoc/{title}.{id}/tong-quan/{type}', 'FrontEnd\CourseLearnContr
 Route::get('/search', 'FrontEnd\SearchController@search')
             ->name('search');
 Route::prefix('bai-tap')->group(function () {
-                // Route::get('/hoc-ly-thuyet.{id}', 'FrontEnd\CourseLearnController@lyThuyet')
-                //             ->name('user.lambaitap.lythuyet');
-                Route::post('/get-explain', 'FrontEnd\CourseLearnController@getExplain')
-                        ->name('user.lambaitap.getExplain');
-                Route::get('/hoc-ly-thuyet.{id}', 'FrontEnd\CourseLearnController@lyThuyet')
-                            ->name('user.lambaitap.lythuyet');
+    // Route::get('/hoc-ly-thuyet.{id}', 'FrontEnd\CourseLearnController@lyThuyet')
+    //             ->name('user.lambaitap.lythuyet');
+    Route::post('/get-explain', 'FrontEnd\CourseLearnController@getExplain')->name('user.lambaitap.getExplain');
+    Route::get('/hoc-ly-thuyet.{id}', 'FrontEnd\CourseLearnController@lyThuyet')->name('user.lambaitap.lythuyet');
 
-                Route::post('/hoc-ly-thuyet', 'FrontEnd\CourseLearnController@lyThuyetSubmit')
-                            ->name('user.lambaitap.lyThuyetSubmit');
-                Route::get('/lesson/{title}.{id}/{type}', 'FrontEnd\CourseLearnController@question')
-                            ->name('user.lambaitap.question');
-                Route::post('/question/submit', 'FrontEnd\CourseLearnController@questionSubmit')
-                            ->name('user.lambaitap.questionSubmit');
-                Route::post('/bookmark', 'FrontEnd\BookmarkController@bookMark')
-                            ->name('user.question.bookMark');
-                });
+    Route::post('/hoc-ly-thuyet', 'FrontEnd\CourseLearnController@lyThuyetSubmit')->name('user.lambaitap.lyThuyetSubmit');
+    Route::get('/lesson/{title}.{id}', 'FrontEnd\CourseLearnController@detailLesson')->name('user.lambaitap.detailLesson');
+    Route::get('/lesson/{title}.{id}/{type}', 'FrontEnd\CourseLearnController@question')->name('user.lambaitap.question');
+    Route::post('/question/submit', 'FrontEnd\CourseLearnController@questionSubmit')->name('user.lambaitap.questionSubmit');
+    Route::post('/bookmark', 'FrontEnd\BookmarkController@bookMark')->name('user.question.bookMark');
+});
 
 Route::prefix('wallet')->group(function () {
-                Route::get('/history', 'FrontEnd\WalletController@history')
-                    ->name('user.wallet.history');
-                Route::get('/add', 'FrontEnd\WalletController@add')
-                    ->name('user.wallet.add');
-                Route::post('/add', 'FrontEnd\WalletController@addPost')
-                    ->name('user.wallet.addPost');
-                });
+    Route::get('/history', 'FrontEnd\WalletController@history')->name('user.wallet.history');
+    Route::get('/add', 'FrontEnd\WalletController@add')->name('user.wallet.add');
+    Route::post('/add', 'FrontEnd\WalletController@addPost')->name('user.wallet.addPost');
+});
 
 Route::post('add-feedback','FrontEnd\HomeController@addFeedback')->name('feedback.add');
 

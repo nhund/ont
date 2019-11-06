@@ -43,7 +43,7 @@ class RecommendationService
     {
         if (request()->has('lesson_id')){
             $this->lesson = Lesson::findOrFail(request('lesson_id'));
-            if (request()->route()->parameter('course') != $this->lesson->course_id){
+            if (request()->route()->parameter('id') != $this->lesson->course_id){
                 throw new BadRequestException('mã bài học không hợp lệ');
             }
         }
