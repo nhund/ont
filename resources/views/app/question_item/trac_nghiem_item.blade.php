@@ -35,7 +35,7 @@
                 @endforeach                                
             </div>
             @if(!empty($item->interpret))
-                <div class="explain-answer">
+                <div class="explain-answer box_interpret_{{ $item->id }}">
                     <div class="title">Giải thích</div>
                     <div class="content">{!! $item->interpret !!}</div>
                 </div>
