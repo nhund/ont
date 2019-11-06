@@ -84,7 +84,7 @@ class AppController extends Controller {
                                         <span class="text">
                                             <span class="input">
                                                 <span class="stt">'.$incr.'. </span>
-                                                <input title="" type="text" name="txtLearnWord['.$sub_q->id.']['.$incr.']" class="input_answer" value= "">
+                                                <input title="" type="text" data-question="'.$sub_q->id.'" data-stt="'.$incr.'" name="txtLearnWord['.$sub_q->id.']['.$incr.']" class="input_answer" value= "">
                                             </span>
                                             <span class="result"></span>
                                             </span>
@@ -97,7 +97,7 @@ class AppController extends Controller {
                                 <span class="text">
                                     <span class="input">
                                         <span class="stt">'.$incr.'. </span>
-                                        <input title="" type="text" name="txtLearnWord['.$sub_q->id.']['.$incr.']" class="input_answer" value= "">
+                                        <input title="" type="text" data-question="'.$sub_q->id.'" data-stt="'.$incr.'" name="txtLearnWord['.$sub_q->id.']['.$incr.']" class="input_answer" value= "">
                                     </span>
                                     <span class="result"></span>
                                     </span>

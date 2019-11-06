@@ -13,7 +13,10 @@ $(document).ready(function() {
       if (params.action == "check_submit") {
         checkSubmit();
       }
-
+      if(params.action  == 'return_result')
+      {
+        showResult(params.data);
+      }
       if (params.action == "next_question") {
         let param = {};
         if (parseInt(count_question) == parseInt(params.stt)) {
@@ -34,6 +37,39 @@ $(document).ready(function() {
     },
     false
   );
+  $('.form_dien_tu input[type="button"]').on('click',function (e) {
+    e.preventDefault();
+    var $this = $(this);
+    var form_active = $this.closest('.form_dien_tu');
+    processDienTu(form_active);
+  });
+  //function hien thi ket qua tra ve
+  function showResult(data) {
+    if(data.question_type == 4)
+    {
+      //cau hoi trac nghiem
+      showResultTracNghiem(data);
+    }
+    if(data.question_type == 3)
+    {
+      //cau hoi dien tu
+      showResultDienTu(data);
+    }
+    if(data.question_type == 5)
+    {
+      //cau hoi dien tu doan van
+      showResultDienTuDoanVan(data);
+    }
+  }
+  function showResultTracNghiem(data) {
+    
+  }
+  function showResultDienTu(data) {
+    
+  }
+  function showResultDienTuDoanVan(data) {
+
+  }
   //function kiem tra submit cau hoi
   function checkSubmit() {
     var form_active = $("#app").find(
@@ -48,11 +84,120 @@ $(document).ready(function() {
     }
     if (parseInt(question_type) == 3) {
       //cau hoi dien tu
+      processDienTu(form_active);
     }
     if (parseInt(question_type) == 5) {
       //cau hoi dien tu doan van
+      processDienTuDoanVan(form_active);
     }
     //console.log(form_active);
+  }
+  function processDienTu(form_active) {
+    var form_data = form_active.serializeArray(); console.log("xxx",form_data);
+    let $all_answer = [];
+    form_active.find(".input_answer").each(function() {
+      if (jQuery.inArray($(this).attr("name"), $all_answer) == -1) {
+        $all_answer.push($(this).attr("name"));
+      }
+    });
+    let data = {};
+    let check_answer = 0;
+    let answers = {};
+    for (let i = 0; i < form_data.length; i++) {
+      var element = {};
+      let name = form_data[i].name;
+
+      if (jQuery.inArray(name, $all_answer) != -1) {
+        if(form_data[i].value)
+        {
+          check_answer += 1;
+        }
+      }
+      if (name.indexOf("answer") != -1) {
+        var question_id = $(
+            ".form_dien_tu input[name='" + name + "']"
+        ).attr("data-question");
+        answers[question_id] = form_data[i].value;
+      }
+      data[name] = form_data[i].value;
+    }
+    data["answers"] = answers;
+    let params = {};
+    if (check_answer == $all_answer.length) {
+      params = {
+        action: "submitQuestion",
+        typeQuestion: "multiple_Choice",
+        replyALl: true,
+        data: data
+      };
+    } else {
+      params = {
+        action: "submitQuestion",
+        typeQuestion: 4,
+        replyALl: false,
+        data: []
+      };
+    }
+    console.log(params);
+    window.ReactNativeWebView.postMessage(JSON.stringify(params));
+
+  }
+  function processDienTuDoanVan(form_active) {
+    var form_data = form_active.serializeArray();
+    let $all_answer = [];
+    form_active.find(".input_answer").each(function() {
+      if (jQuery.inArray($(this).attr("name"), $all_answer) == -1) {
+        $all_answer.push($(this).attr("name"));
+      }
+    });
+    let data = {};
+    let check_answer = 0;
+    let answers = {};
+    for (let i = 0; i < form_data.length; i++) {
+      var element = {};
+      let name = form_data[i].name;
+
+      if (jQuery.inArray(name, $all_answer) != -1) {
+        if(form_data[i].value)
+        {
+          check_answer += 1;
+        }
+      }
+      if (name.indexOf("txtLearnWord") != -1) {
+        var question_id = $(
+            ".form_dien_tu_doan_van .content input[name='" + name + "']"
+        ).attr("data-question");
+        var question_stt = $(
+            ".form_dien_tu_doan_van .content input[name='" + name + "']"
+        ).attr("data-stt");
+        if(typeof answers[question_id] == 'undefined' || typeof answers[question_id] == undefined)
+        {
+          answers[question_id] = {};
+        }
+        answers[question_id][question_stt] = form_data[i].value;
+      }
+      data[name] = form_data[i].value;
+    }
+    data["answers"] = answers;
+
+    let params = {};
+    if (check_answer == $all_answer.length) {
+      params = {
+        action: "submitQuestion",
+        typeQuestion: "multiple_Choice",
+        replyALl: true,
+        data: data
+      };
+    } else {
+      params = {
+        action: "submitQuestion",
+        typeQuestion: 4,
+        replyALl: false,
+        data: []
+      };
+    }
+    // alert($all_answer.length);
+    window.ReactNativeWebView.postMessage(JSON.stringify(params));
   }
   function processCauHoiTracNghiem(form_active) {
     var form_data = form_active.serializeArray();
