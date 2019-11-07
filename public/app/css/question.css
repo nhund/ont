@@ -1,3 +1,7 @@
+h1,h2,h3,h4,p,span{
+  font-size: 12px;
+}
+
 #app {
   background: #ffffff;
 }
@@ -23,14 +27,14 @@
 .question-app-trac-nghiem .content {
   margin-top: 10px;
 }
-.question-app-trac-nghiem .content .sugess_all {
+.form_trac_nghiem .sugess_all, .question-app-trac-nghiem .content .sugess_item {
   margin-top: 5px;
   display: none;
 }
-.question-app-trac-nghiem .content .sugess_all .title {
+.form_trac_nghiem .sugess_all .title, .question-app-trac-nghiem .content .sugess_item .title {
   color: #f87b54;
 }
-.question-app-trac-nghiem .content .sugess_all .content {
+.form_trac_nghiem .sugess_all .content, .question-app-trac-nghiem .content .sugess_item .content {
   margin-top: 6px;
 }
 .question-app-trac-nghiem .content .box-answer {
@@ -393,6 +397,19 @@
 .form_dien_tu_doan_van {
   background: #ffffff;
   font-size: 12px;
+  color: #35365e;
+}
+.form_dien_tu_doan_van .sugess_all{
+  margin-top: 5px;
+  display: none;
+}
+.form_dien_tu_doan_van .sugess_all .title{
+  color: #f87b54;
+  font-weight: bold;
+  font-size: 12px;
+}
+.form_dien_tu_doan_van .sugess_all .content{
+
 }
 .form_dien_tu_doan_van .question-app-dien-tu {
   margin-top: 5px;
@@ -418,6 +435,7 @@
 }
 .form_dien_tu_doan_van .question-app-dien-tu .explain {
   margin-top: 10px;
+  display: none;
 }
 .form_dien_tu_doan_van .question-app-dien-tu .explain .title {
   color: #f87b54;
@@ -436,6 +454,16 @@
   border-radius: 8px;
   padding: 7px 10px;
   background: #f2f2f2;
+  margin-top: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+.form_dien_tu_doan_van .question-app-dien-tu .content nobr input{
+  background: #f2f2f2;
+  border: none;
+}
+.form_dien_tu_doan_van .question-app-dien-tu .content nobr input:focus{
+  outline: none;
 }
 .form_dien_tu_doan_van .question-app-dien-tu .content nobr .stt {
   font-size: 12px;
@@ -445,6 +473,7 @@
   display: block;
   margin-top: 5px;
   display: none;
+  padding-left: 10px;
 }
 .form_dien_tu_doan_van .question-app-dien-tu .content nobr .icon-error {
   display: none;
@@ -474,8 +503,12 @@
 .form_dien_tu_doan_van .question-app-dien-tu .content nobr.error .show_suggest {
   display: none;
 }
+.form_dien_tu_doan_van .question-app-dien-tu .content nobr.success input{
+  background: rgba(189, 247, 243, 0.4);
+}
 .form_dien_tu_doan_van .question-app-dien-tu .content nobr.error input {
   text-decoration: line-through;
+  background: rgba(245, 196, 180, 0.4);
 }
 .form_dien_tu_doan_van
   .question-app-dien-tu

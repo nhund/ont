@@ -22,6 +22,16 @@
     <div class="question_com">
         {!! $question['content'] !!}
     </div>
+    @if(!empty($question['explain_before']))
+        <div class="sugess_all">
+            <div class="title">
+                Gợi ý
+            </div>
+            <div class="content">
+                {!! $question['explain_before'] !!}
+            </div>
+        </div>
+    @endif
     @foreach ($question['childs'] as $item)
         @include('app.question_item.dien_tu_doan_van_item')
     @endforeach

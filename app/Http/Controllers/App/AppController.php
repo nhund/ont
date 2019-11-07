@@ -22,7 +22,7 @@ class AppController extends Controller {
         {
             $user_id = $input['user_id'];
         }
-		$questions = Question::whereIn('id',$question_ids)->get();
+		$questions = Question::whereIn('id',$question_ids)->orderBy('id','ASC')->get();
 		if (count($questions) == 0) {
 
 			//return redirect()->route('home');
@@ -80,7 +80,7 @@ class AppController extends Controller {
                                 return ''.$m_x[1].'';
                             },$m[1]);
 
-                            return '<nobr>
+                            return '<nobr class="box-input">
                                         <span class="text">
                                             <span class="input">
                                                 <span class="stt">'.$incr.'. </span>
@@ -93,7 +93,7 @@ class AppController extends Controller {
                                             <img class="show_suggest" src="'.asset('/public/app/icon/question-sugess.png').'" align="baseline" border="0" title="Xem gợi ý" style="margin-left:6px;cursor: pointer;">
                                     </nobr>';
                         }else{
-                            return '<nobr>
+                            return '<nobr class="box-input">
                                 <span class="text">
                                     <span class="input">
                                         <span class="stt">'.$incr.'. </span>
