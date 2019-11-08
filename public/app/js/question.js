@@ -33,7 +33,10 @@ $(document).ready(function() {
         }
         window.ReactNativeWebView.postMessage(JSON.stringify(param));
       }
-      //alert(event.data);
+      if(params.action == "comment")
+      {
+        ShowComment(params.data);
+      }
     },
     false
   );
@@ -43,6 +46,13 @@ $(document).ready(function() {
     var form_active = $this.closest(".form_dien_tu");
     processDienTu(form_active);
   });
+  //function xu ly an/hien comment
+  function ShowComment(data) {
+      if(data == "close_comment")
+      {
+        $('.question_type .icon-comment').removeClass('active');
+      }
+  }
   //function hien thi ket qua tra ve
   function showResult(data) {
     if (data.question_type == 4) {
@@ -320,18 +330,25 @@ $(document).ready(function() {
   //comment
   $(".list-action .icon-comment").on("click", function(e) {
     var $this = $(this);
+    var question_id = $this.closest('.question_type').find('input[name="question_id"]').val();
     if ($this.hasClass("active")) {
       $this.removeClass("active");
       let data = {
         action: "comment",
-        show_comment: false
+        data : {
+          question_id : question_id,
+          show_comment: false,
+        }
       };
       window.ReactNativeWebView.postMessage(JSON.stringify(data));
     } else {
       $this.addClass("active");
       let data = {
         action: "comment",
-        show_comment: true
+        data : {
+          question_id : question_id,
+          show_comment: true,
+        }
       };
       window.ReactNativeWebView.postMessage(JSON.stringify(data));
     }
