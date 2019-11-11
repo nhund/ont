@@ -2,10 +2,12 @@
     <div class="content">
         {!! $item->question_display !!}
     </div>
-    <div class="explain">
-        <div class="title">Giải thích</div>
-        <div class="content">
-
+    @if(!empty($item->interpret))
+        <div class="explain box_interpret_{{ $item->id  }}">
+            <div class="title">Giải thích</div>
+            <div class="content">
+                {!! $item->interpret  !!}
+            </div>
         </div>
-    </div>
+    @endif
 </div>
