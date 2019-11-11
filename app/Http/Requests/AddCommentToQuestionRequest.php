@@ -14,7 +14,7 @@ class AddCommentToQuestionRequest extends AuthorizedFormRequest
     {
         return [
 //            'course_id' => 'required|numeric|exist:course,id',
-            'parent_id' => 'numeric',
+            'parent_id' => 'numeric|exists:question_comment,id',
             'content'   => 'required|max:525',
         ];
     }
