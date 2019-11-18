@@ -219,8 +219,14 @@ class CourseLearnController extends Controller
         $var['course'] = Course::find($lesson->course_id);   
         $var['lesson'] = $lesson;
 
-        $var['child'] = route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]);
-        
+
+        if ($request->has('lesson_id')){
+            $parentLesson =  Lesson::findOrFail($request->get('lesson_id'));
+            $var['child'] = route('user.lambaitap.detailLesson',['title'=>str_slug($parentLesson->name),'id'=> $parentLesson->id]);
+        }else{
+            $var['child'] = route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]);
+        }
+
         return view('learn.lambaitap.lythuyet',compact('var'));
         
     }
