@@ -83,7 +83,7 @@
               </div>
              <div class="box_left col-lg-9 col-md-9 col-sm-8 col-xs-12">
                 <div class="box_head">
-                    <div class="title">Đã học {{$var['total_user_learn']}} câu</div>
+                    <div class="title">Đã học {{$var['total_user_learn']}}/{{$var['total_question']}} câu</div>
                     <div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="70"
                             aria-valuemin="0" aria-valuemax="100" style="width: {{ $var['total_question'] > 0 ? ($var['total_user_learn']/$var['total_question'])*100 : 0 }}%" >
