@@ -267,7 +267,7 @@ class CourseLearnController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      * @throws \App\Exceptions\BadRequestException
      */
-    public function question($title, $id ,$type)
+    public function question($title, $id ,$type, Request $request)
     {
         if(!Auth::check())
         {
@@ -291,32 +291,12 @@ class CourseLearnController extends Controller
             return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);
         }
 
-        // $userCourse = UserCourse::where('user_id',$user->id)->where('course_id',$lesson->course_id)->first();
-        // if(!$userCourse)
-        // {
-        //     alert()->error('Bạn chưa tham ra khóa học này');
-        //     return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);
-        // }
-        // if(!$userCourse->status == UserCourse::STATUS_OFF)
-        // {
-        //     alert()->error('Bạn đã bị block khỏi khóa học');
-        //     return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);
-        // }
-        // if($userCourse->and_date > 0 && $userCourse->and_date < time())
-        // {
-            
-        //     //$msg = 'Khóa học của bạn đã hết hạn. Vui lòng gia hạn để học tiếp';  
-        //     alert()->error('Khóa học của bạn đã hết hạn. Vui lòng gia hạn để học tiếp');
-        //     return redirect()->route('courseDetail',['id'=>$course->id,'title'=>str_slug($course->name)]);              
-        // }
+        if ($request->has('lesson_id')){
+            $var['parentLesson'] =  Lesson::findOrFail($request->get('lesson_id'));
+        }
+
         if($type == Question::LEARN_LAM_BAI_MOI)
         {
-//            //lay cac cau hoi da lam
-//            $question_log = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$id)->get()->pluck('question_parent')->toArray();
-//
-//            $questions = Question::where('lesson_id',$id)->where('parent_id',0)->whereNotIn('id',$question_log)
-//            ->orderBy('order_s','ASC')
-//            ->orderBy('id','ASC')->take($limit)->get();
 
             $recommendation = new RecommendationService();
 
@@ -347,10 +327,6 @@ class CourseLearnController extends Controller
 
             }else{
                 $questions = Question::where('lesson_id',$id)->typeAllow()->where('parent_id',0)->take($limit)->get();
-                if(!$questions)
-                {
-                    //neu bai dau tien ko co cau hoi nao. tim lesson co cau hoi                
-                }
             }
             
             $getQuestionDetail = $this->_getQuestion($user, $questions);
@@ -799,7 +775,6 @@ class CourseLearnController extends Controller
                 return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
             }
         }
-        $var['lesson_id'] = $request->get('lesson_id');
 
         return view('learn.lambaitap.layoutQuestion',compact('var'));
     }
