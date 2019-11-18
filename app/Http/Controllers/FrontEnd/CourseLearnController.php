@@ -699,7 +699,7 @@ class CourseLearnController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      * @throws \App\Exceptions\BadRequestException
      */
-    public function courseTypeLearn($title, $id , $type)
+    public function courseTypeLearn($title, $id , $type, Request $request)
     {
         $recommendation = new RecommendationService();
 
@@ -756,7 +756,7 @@ class CourseLearnController extends Controller
 
                 if((!$checkTheory || $checkTheory->turn == 0) && !empty($lesson->description))
                 {
-                    return redirect()->route('user.lambaitap.lythuyet',['id'=>$lesson->id]);
+                    return redirect()->route('user.lambaitap.lythuyet',['id'=>$lesson->id, 'lesson_id' => $request->get('lesson_id')]);
                 }
             }
 
@@ -770,12 +770,17 @@ class CourseLearnController extends Controller
 
                 if($check_has_question > 0)
                 {
-                    return redirect()->route('user.lambaitap.question',['id'=>$lesson->id,'title'=>str_slug($lesson->name),'type'=>$type]);
+                    return redirect()->route('user.lambaitap.question',['id'=>$lesson->id,'title'=>str_slug($lesson->name),'type'=>$type, 'lesson_id' => $request->get('lesson_id')]);
                 }
             }
 
             alert()->success('Bạn đã học hết các bài mới');
-            return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
+            if ($request->has('lesson_id')){
+                $lesson            = Lesson::findOrFail($request->get('lesson_id'));
+                redirect()->route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id]);
+            }else{
+                return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
+            }
 
         }
         if($type == Question::LEARN_LAM_CAU_CU)
@@ -787,8 +792,14 @@ class CourseLearnController extends Controller
         if(count($var['questions']) == 0)
         {
             alert()->error('Bài tập chưa có câu hỏi.');
-            return redirect()->route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]);
+            if ($request->has('lesson_id')){
+                $lesson            = Lesson::findOrFail($request->get('lesson_id'));
+                redirect()->route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id]);
+            }else{
+                return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
+            }
         }
+        $var['lesson_id'] = $request->get('lesson_id');
 
         return view('learn.lambaitap.layoutQuestion',compact('var'));
     }
