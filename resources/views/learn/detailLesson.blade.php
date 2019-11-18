@@ -83,10 +83,10 @@
               </div>
              <div class="box_left col-lg-9 col-md-9 col-sm-8 col-xs-12">
                 <div class="box_head">
-                    <div class="title">Đã học 2 câu</div>
+                    <div class="title">Đã học {{$var['total_user_learn']}} câu</div>
                     <div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                            aria-valuemin="0" aria-valuemax="100" style="width: 80%" >
+                            aria-valuemin="0" aria-valuemax="100" style="width: {{ $var['total_question'] > 0 ? ($var['total_user_learn']/$var['total_question'])*100 : 0 }}%" >
                             </div>
                     </div>
 
@@ -133,7 +133,7 @@
                                             <div class="title">Bài tập</div>
                                             <div><a href="{{ route('user.lambaitap.question',['id'=>$subLesson->id,'title'=>str_slug($subLesson->name),'type'=>\App\Models\Question::LEARN_LAM_BAI_TAP]) }}" class="name ly_thuyet">{{$subLesson->name}}</a></div>
                                         </div>
-                                        <div  class="col-md-3 score"><span>120</span>/200 câu</div>
+                                        <div  class="col-md-3 score"><span>{{$subLesson->userLearnPass}}</span>/{{$subLesson->countQuestion}} câu</div>
                                     </div>
                                 </div>
                             @endif
@@ -145,7 +145,7 @@
                                                 <div class="title">Lý thuyết</div>
                                                 <div><a href="{{ route('user.lambaitap.lythuyet',['id'=>$subLesson->id]) }}" class="name bai_tap">{{$subLesson->name}}</a></div>
                                             </div>
-                                            <div  class="col-md-3 score"><span>120</span>/200 câu</div>
+                                            <div  class="col-md-3 score">{{$subLesson->lesson_ly_thuyet_pass ? '100' : '0'}}%</div>
                                         </div>
                                     </div>
                             @endif
