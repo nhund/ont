@@ -116,7 +116,7 @@ class CourseLearnController extends Controller
         $var['support'] = isset($check_permision['support']) ? $check_permision['support'] : false;
         $var['course'] = $course;
         $lessons = Lesson::where('course_id',$id)->where('parent_id',0)
-        ->where('type', Lesson::LESSON)
+//        ->where('type', Lesson::LESSON)
         ->orderBy('order_s','ASC')
         ->orderBy('created_at','ASC')->get();
         $total_question = 0;
@@ -354,7 +354,7 @@ class CourseLearnController extends Controller
         
     }
     
-    protected function _getQuestion($user, $questions, $notIn = array() , $type = '')
+    public function _getQuestion($user, $questions, $notIn = array() , $type = '')
     {
         $lesson_id = 0;
         foreach($questions as $question)

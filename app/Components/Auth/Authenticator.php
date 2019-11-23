@@ -206,7 +206,7 @@ class Authenticator
             $request->session()->regenerate();
         }
 
-        auth()->guard()->logout();
+//        auth()->guard()->logout();
         session()->invalidate();
         session()->regenerate();
     }

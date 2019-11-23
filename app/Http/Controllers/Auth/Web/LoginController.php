@@ -48,7 +48,19 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        return $this->message('đăng nhập thành công')-> respondOk();
+
+        $authenticator = new Authenticator();
+
+        $tokenEntity = $authenticator->issueTokensUsingPasswordGrant(
+            'password',
+            config('auth.web_app_client.id'),
+            config('auth.web_app_client.secret'),
+            $user->{$this->username()},
+            $request->input('password')
+        );
+
+        return $authenticator->respondWithTokens($request, $tokenEntity);
+
     }
 
 }

@@ -76,10 +76,15 @@
                     <div class="body">
                         @foreach($var['lessons'] as $lesson)
                                 <div class="title_body">
-                                    @if($lesson->level == \App\Models\Lesson::LEVEL_1)
-                                        <a href="{{route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
+                                    @if($lesson->type == \App\Models\Lesson::EXAM)
+                                        <a href="{{route('exam.question',['title'=>str_slug($lesson->name), 'id'=>$lesson->id])}}"> {{ $lesson->name }}</a>
+
                                     @else
-                                        <a href="{{route('course.learn.level2',['title'=>str_slug($lesson->name),'course_id' =>$lesson->course_id, 'lesson_id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
+                                        @if($lesson->level == \App\Models\Lesson::LEVEL_1)
+                                            <a href="{{route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
+                                        @else
+                                            <a href="{{route('course.learn.level2',['title'=>str_slug($lesson->name),'course_id' =>$lesson->course_id, 'lesson_id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
+                                        @endif
                                     @endif
                                 </div>
                                 @if(isset($lesson->childs))
