@@ -43,26 +43,25 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="other-news">
-                        <h3 class="tlt">Tin nổi bật khác</h3>
-                        <div class="slider responsive slider-news-fl">
-                            @if($var['otherNewsFeature'])
-                                @foreach($var['otherNewsFeature'] as $data)
-                                    <div>
-
-                                        <div class="slider-news">
-                                            <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">
-                                                <img src="{{$data->thumbnail}}"  title="{{$data->name}}"/></a>
-                                            <h4 class="tlt-tltle"><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{{$data->name}}</a></h4>
-                                            <p><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">Xem thêm <i class="fa fa-angle-right"></i></a></p>
+                    @if(count($var['otherNewsFeature']))
+                        <div class="other-news">
+                            <h3 class="tlt">Tin nổi bật khác</h3>
+                            <div class="slider responsive slider-news-fl">
+                                    @foreach($var['otherNewsFeature'] as $data)
+                                        <div>
+                                            <div class="slider-news">
+                                                <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">
+                                                    <img src="{{$data->thumbnail}}"  title="{{$data->name}}"/></a>
+                                                <h4 class="tlt-tltle"><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{{$data->name}}</a></h4>
+                                                <p><a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">Xem thêm <i class="fa fa-angle-right"></i></a></p>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                @endforeach
-                            @endif
+                                    @endforeach
+                            </div>
                         </div>
-                    </div>
-                    @foreach($var['newsCategories'] as $newsCategory)
+                    @endif
+
+                @foreach($var['newsCategories'] as $newsCategory)
                     <div class="group-news">
                            <h3 class="title-tlt">{!! $newsCategory->name !!}</h3>
                            <div class="group-news-fl">
@@ -81,8 +80,8 @@
                                            @foreach($newsCategory->news as $index => $posting)
                                                @if($index > 0)
                                                    <li>
-                                                       <div><a href="#"><img src="{{$posting->thumbnail}}"></a></div>
-                                                       <h4 class="tlt"><a href="#">{!! substr($posting->name, 0, 120) !!}...</a></h4>
+                                                       <div><a  href="{{route('news.detail',[str_slug($posting->name, '-'), $posting->id])}}"><img src="{{$posting->thumbnail}}"></a></div>
+                                                       <h4 class="tlt"><a href="{{route('news.detail',[str_slug($posting->name, '-'), $posting->id])}}">{!! substr($posting->name, 0, 120) !!}...</a></h4>
                                                    </li>
                                                @endif
                                            @endforeach
@@ -96,42 +95,15 @@
                         <h3 class="title-tlt">Các tin khác</h3>
                         <div class="other-news-fl">
                             <ul>
-                                <li>
-                                    <div class="other-box">
-                                        <a href="#"><img src="images/news.png"></a>
-                                        <h4 class="other-title"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="other-box">
-                                        <a href="#"><img src="images/news.png"></a>
-                                        <h4 class="other-title"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="other-box">
-                                        <a href="#"><img src="images/news.png"></a>
-                                        <h4 class="other-title"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="other-box">
-                                        <a href="#"><img src="images/news.png"></a>
-                                        <h4 class="other-title"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="other-box">
-                                        <a href="#"><img src="images/news.png"></a>
-                                        <h4 class="other-title"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="other-box">
-                                        <a href="#"><img src="images/news.png"></a>
-                                        <h4 class="other-title"><a href="#">Đoạn đường sắt 1,5 tỷ USD Trung Quốc xây ở Kenya</a></h4>
-                                    </div>
-                                </li>
+
+                                @foreach($var['otherNews'] as $other)
+                                    <li>
+                                        <div class="other-box">
+                                            <a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}"><img src="{{$other->thumbnail}}"></a>
+                                            <h4 class="other-title"><a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}">{!! substr($other->name, 0, 120) !!}...</a></h4>
+                                        </div>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>

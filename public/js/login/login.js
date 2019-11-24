@@ -34,10 +34,11 @@ $(document).ready(function () {
                     if(result.code === 200)
                     {
                         swal({
-                            title: result.message,
+                            title: 'Chúc mừng bạn đã đăng nhập thành công',
                             timer: 1000,
                             type : 'success',
                         },function(){
+                            localStorage.setItem('access_token', `${result.data.token_type} ${result.data.access_token}`);
                             window.location.reload();
                         });
                     }else{

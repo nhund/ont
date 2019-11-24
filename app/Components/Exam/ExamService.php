@@ -49,6 +49,7 @@ class ExamService
 
         $questions = Question::whereIn('id', $questionIds)
             ->typeAllow()
+            ->where('type', 4)
             ->where('parent_id',0)->orderBy('order_s','ASC')
             ->orderBy('id','ASC')->get();
 

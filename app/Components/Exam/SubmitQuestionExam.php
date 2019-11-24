@@ -36,7 +36,7 @@ class SubmitQuestionExam
         $this->question = $question;
         $this->examId   = $this->request->get('exam_id');
 
-        if ($this->question->type == $this->question->type)
+        if ($this->request->question_type == $this->question->type)
         {
             if ($this->question->type == Question::TYPE_FLASH_MUTI) {
                 return $this->multiFlash();
@@ -273,7 +273,7 @@ class SubmitQuestionExam
         $totalQuestions = ExamQuestion::where($condition)->count();
 
         $conditionPart = [
-            'exam_id' => $this->examId,
+            'lesson_id' => $this->examId,
         ];
 
         // tổng điểm của phần

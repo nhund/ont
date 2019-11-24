@@ -24,7 +24,6 @@ class submitQuestionExamRequest extends AuthorizedFormRequest
 
         $rules =  [
             'question_type' => 'required|in:'.implode($types, ','),
-            'type' => 'required',
             'exam_id' => 'required|exists:lesson,id',
         ];
 

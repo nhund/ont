@@ -89,6 +89,13 @@ Route::get('/tin-tuc/{title}.{id}', 'FrontEnd\PostController@newsDetail')->name(
 
 /*End News*/
 
+/*exam*/
+
+Route::prefix('kiem-tra')->namespace('FrontEnd')->group(function (){
+    Route::get('/{title}.{id}', 'ExamController@index')->name('exam.question');
+});
+/*exam*/
+
 Route::get('/khoa-hoc/{title}.{id}/tong-quan', 'FrontEnd\CourseLearnController@course')->name('course.learn');
 Route::get('/khoa-hoc/cap-2/{title}.{course_id}/tong-quan', 'FrontEnd\CourseLearnController@lessonLevel2')
                 ->name('course.learn.level2');

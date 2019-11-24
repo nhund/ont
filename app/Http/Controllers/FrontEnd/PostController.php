@@ -18,7 +18,6 @@ class PostController extends Controller
     public function news(Request $request){
         $data = $request->all();
         $limit = 10;
-        $var = [];
         $var['params'] = [];
         if(isset($data['cate-id']) && $data['cate-id'] !== '')
         {
@@ -45,23 +44,34 @@ class PostController extends Controller
             return view('news.category', compact('var'));
         }
 
-        $newsFeatureHot = Post::where('feature', Post::FEATURE)
-            ->where('status', Post::STATUS_ON)->where('type', Post::NEWS)->limit(5)->orderBy('id','DESC');
+        $newsFeatureHot = Post::where('status', Post::STATUS_ON)
+            ->where('type', Post::NEWS)
+            ->limit(5)
+            ->orderBy('feature','DESC')
+            ->orderBy('id','DESC')
+            ;
 
         $var['newsFeature'] = $newsFeatureHot->get();
 
-        $var['otherNewsFeature'] = Post::where('feature', Post::FEATURE)
-            ->where('status', Post::STATUS_ON)->whereNotIn('id', $newsFeatureHot->pluck('id'))
+        $var['otherNewsFeature'] = Post::where('status', Post::STATUS_ON)
+            ->whereNotIn('id', $newsFeatureHot->pluck('id'))
             ->where('type', Post::NEWS)
             ->limit(5)
+            ->orderBy('feature','DESC')
             ->orderBy('id','DESC')
+            ->get();
+
+        $var['otherNews'] = Post::where('status', Post::STATUS_ON)
+            ->where('type', Post::NEWS)
+            ->limit(5)
+            ->orderBy('update_date','DESC')
             ->get();
 
         $var['newsCategories'] = CategoryNews::where('status', CategoryNews::STATUS_ON)
             ->whereHas('news')
             ->with(['news' => function ($q){
                 $q->orderBy('create_date', 'DESC')->limit(5);
-            }])->get();;
+            }])->get();
 
         return view('news.index' , compact('var'));
     }
@@ -76,7 +86,6 @@ class PostController extends Controller
         $news = Post::find($id);
         if (!$news)
             return redirect()->route('home');
-        $var = [];
 
         $var['news'] = $news;
         //related posts
@@ -101,9 +110,7 @@ class PostController extends Controller
 
             return redirect()->route('home');
         }
-        dd(21212);
-        $var = [];
-        $var['post'] =  $post;       
+        $var['post'] =  $post;
         return view('post.detail',$var);
     }    
 }

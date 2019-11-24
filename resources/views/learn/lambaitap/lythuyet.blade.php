@@ -42,8 +42,8 @@
                 <div class="next">
                     <form action="{{ $var['child'] }}">
                                 {{-- <input type="hidden" name="type" value="" >
-                                <input type="hidden" name="type" value="" >
-                                <input type="hidden" name="type" value="" > --}}
+                                {{--<input type="hidden" name="type" value="" >--}}
+                        <input type="hidden" name="parentLesson" value="{{request('lesson_id')}}" >
                         <button class="btn btn_submit_doc" data-id="{{ $var['lesson']->id }}">Đã hoàn thành</button>
                     </form>
                 </div>                    
