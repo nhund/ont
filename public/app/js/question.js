@@ -33,9 +33,11 @@ $(document).ready(function() {
         }
         window.ReactNativeWebView.postMessage(JSON.stringify(param));
       }
-      if(params.action == "comment")
-      {
+      if (params.action == "comment") {
         ShowComment(params.data);
+      }
+      if (params.action == "feedback") {
+        ShowFeedback(params.data);
       }
     },
     false
@@ -48,10 +50,15 @@ $(document).ready(function() {
   });
   //function xu ly an/hien comment
   function ShowComment(data) {
-      if(data == "close_comment")
-      {
-        $('.question_type .icon-comment').removeClass('active');
-      }
+    if (data == "close_comment") {
+      $(".question_type .icon-comment").removeClass("active");
+    }
+  }
+  //funcion xu ly an/hien feedback
+  function ShowFeedback(data) {
+    if (data == "close_feedback") {
+      $(".question_type .icon-report").removeClass("active");
+    }
   }
   //function hien thi ket qua tra ve
   function showResult(data) {
@@ -119,24 +126,28 @@ $(document).ready(function() {
     });
   }
   function showResultDienTuDoanVan(data) {
-    $.each(data.data, function (key, val) {
-      $.each(val, function (key2, val2) {
-        var input_answer =  $('.form_dien_tu_doan_van .question-app-dien-tu input[name="txtLearnWord['+key+']['+key2+']"]');
-        if(val2.error == 2)
-        {
+    $.each(data.data, function(key, val) {
+      $.each(val, function(key2, val2) {
+        var input_answer = $(
+          '.form_dien_tu_doan_van .question-app-dien-tu input[name="txtLearnWord[' +
+            key +
+            "][" +
+            key2 +
+            ']"]'
+        );
+        if (val2.error == 2) {
           //tra loi dung
-          var parent = input_answer.closest('.box-input');
+          var parent = input_answer.closest(".box-input");
           //parent.find('.result').text(val2.answer);
-          parent.addClass('success');
-        }else{
+          parent.addClass("success");
+        } else {
           //tra loi sai
-          var parent = input_answer.closest('.box-input');
-          parent.find('.result').text(val2.answer);
-          parent.addClass('error');
+          var parent = input_answer.closest(".box-input");
+          parent.find(".result").text(val2.answer);
+          parent.addClass("error");
         }
-        if($('.box_interpret_'+key).length > 0)
-        {
-          $('.box_interpret_'+key).show();
+        if ($(".box_interpret_" + key).length > 0) {
+          $(".box_interpret_" + key).show();
         }
       });
     });
@@ -330,14 +341,17 @@ $(document).ready(function() {
   //comment
   $(".list-action .icon-comment").on("click", function(e) {
     var $this = $(this);
-    var question_id = $this.closest('.question_type').find('input[name="question_id"]').val();
+    var question_id = $this
+      .closest(".question_type")
+      .find('input[name="question_id"]')
+      .val();
     if ($this.hasClass("active")) {
       $this.removeClass("active");
       let data = {
         action: "comment",
-        data : {
-          question_id : question_id,
-          show_comment: false,
+        data: {
+          question_id: question_id,
+          show_comment: false
         }
       };
       window.ReactNativeWebView.postMessage(JSON.stringify(data));
@@ -345,9 +359,38 @@ $(document).ready(function() {
       $this.addClass("active");
       let data = {
         action: "comment",
-        data : {
-          question_id : question_id,
-          show_comment: true,
+        data: {
+          question_id: question_id,
+          show_comment: true
+        }
+      };
+      window.ReactNativeWebView.postMessage(JSON.stringify(data));
+    }
+  });
+  //report cau hoi
+  $(".list-action .icon-report").on("click", function(e) {
+    var $this = $(this);
+    var question_id = $this
+      .closest(".question_type")
+      .find('input[name="question_id"]')
+      .val();
+    if ($this.hasClass("active")) {
+      $this.removeClass("active");
+      let data = {
+        action: "feedback",
+        data: {
+          question_id: question_id,
+          show_comment: false
+        }
+      };
+      window.ReactNativeWebView.postMessage(JSON.stringify(data));
+    } else {
+      $this.addClass("active");
+      let data = {
+        action: "feedback",
+        data: {
+          question_id: question_id,
+          show_comment: true
         }
       };
       window.ReactNativeWebView.postMessage(JSON.stringify(data));
