@@ -274,12 +274,12 @@ class SubmitQuestionExam
 
         $conditionPart = [
             'lesson_id' => $this->examId,
+            'id' => $examQuestion->part,
         ];
 
         // tổng điểm của phần
         $parts = ExamPart::where($conditionPart)->first();
-        $scoreTotal = $parts->{'part_'.$examQuestion->part};
 
-        return round($scoreTotal/$totalQuestions, 1);
+        return round($parts->score/$totalQuestions, 1);
     }
 }

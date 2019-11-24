@@ -103,12 +103,13 @@ class ExamController
         }
 
         $countTotalQuestion = ExamQuestion::where('lesson_id', $exam_id)
-            ->where('part', $part)->count();
+            ->where('part', $part)->pluck('question_id')->toArray();
 
+        $countTotalQuestion = array_unique(array_merge($addQuestionIds, $countTotalQuestion));
 
         $examPart = ExamPart::where('id', $part)->first();
 
-        if ($examPart && (($addQuestionIds && count($addQuestionIds) >  $examPart->number_question )|| $examPart->number_question < $countTotalQuestion)){
+        if ($examPart && ($addQuestionIds &&  $examPart->number_question < $countTotalQuestion)){
             return response()->json(['status' => 201, 'message' => "Số câu hỏi bạn thêm vướt quá cho phép là {$examPart->number_question} câu"]);
         }
 
