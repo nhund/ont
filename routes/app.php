@@ -14,3 +14,4 @@ if (App::environment('production')) {
 	URL::forceScheme("https");
 }
 Route::get('/get-question', 'App\AppController@getQuestion')->name('getQuestion');
+Route::get('/get-lythuyet', 'App\AppController@getLythuyet')->name('getLythuyet');

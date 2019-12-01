@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\QuestionAnswer;
 use Illuminate\Http\Request;
@@ -115,5 +116,17 @@ class AppController extends Controller {
             return [];
         }
 
+    }
+
+    public function getLythuyet(Request $request)
+    {
+        $input = $request->all();
+        if(!isset($input['id']))
+        {
+            die("");
+        }
+        $lesson = Lesson::find($input['id']);
+        $var['lesson'] = $lesson;
+        return view('app.lythuyet', $var);
     }
 }
