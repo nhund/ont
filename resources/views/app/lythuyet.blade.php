@@ -12,7 +12,7 @@
 
     </title>
     <!---------------- CSS ----------------->
-    <link href='{{ web_asset('public/app/css/ly_thuyet.css') }}' rel='stylesheet' type='text/css'  media='all'  />
+    <link href='{{ secure_asset('public/app/css/ly_thuyet.css'). '?v='.time() }}' rel='stylesheet' type='text/css'  media='all'  />
 </head>
 <body>
 
@@ -30,8 +30,8 @@
 <script>
     var base_url = '{{ URL::to('/') }}';
 </script>
-<script src='{{ web_asset('public/js/jquery-1.12.4.min.js') }}' type='text/javascript'></script>
-<script src='{{ web_asset('public/app/js/ly_thuyet.js') }}' type='text/javascript'></script>
+<script src='{{ secure_asset('public/js/jquery-1.12.4.min.js'). '?v='.time() }}' type='text/javascript'></script>
+<script src='{{ secure_asset('public/app/js/ly_thuyet.js'). '?v='.time() }}' type='text/javascript'></script>
 
 </body>
 </html>
