@@ -47,7 +47,7 @@
 }
 #course_learn .box_head .btn-offer .offer-course{
     background: #18C305;
-    /*width: 215px;*/
+    width: 215px;
     height: 55px;
     border-radius:4px; 
     margin-right: 10px; 
@@ -498,7 +498,7 @@
 }
 #myNav .overlay-footer .offer-course{
     background: #18C305;
-    width: 215px;
+    width: 215px !important;
     height: 55px;
     border-radius: 4px;
     margin-right: 10px;
