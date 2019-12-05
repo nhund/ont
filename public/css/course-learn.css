@@ -47,7 +47,7 @@
 }
 #course_learn .box_head .btn-offer .offer-course{
     background: #18C305;
-    width: 215px;
+    /*width: 215px;*/
     height: 55px;
     border-radius:4px; 
     margin-right: 10px; 
@@ -358,10 +358,10 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0, 0.9);
+    background-color: #2d2e4d;
     overflow-y: hidden;
     transition: 0.5s;
+    opacity: 0.95;
 }
 
 .overlay-content {
@@ -448,6 +448,17 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+#myNav .overlay-content .total{
+    width: 290px;
+    height: 255px;
+    border-radius: 4px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.4;
 }
 #myNav .overlay-footer .offer-course .title{
     position: initial;

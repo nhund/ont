@@ -133,60 +133,49 @@
        <div id="myNav" class="overlay">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <p class="title">Chọn phương thức học</p>
-            <div class="overlay-content">
-                <div class="method do_new">
-                    <a href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI]) }}" title="Làm bài mới">
-                        <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
-                    </a>
-                    <p>Làm bài mới</p>
+            <div class="overlay-content row">
+                <div class="total total-question  col-md-2" style="background: #337ab7">
+                    <div>Tổng câu hỏi</div>
+                    <div>100</div>
                 </div>
-                <div class="method do_old {{ $var['show_on_tap'] == false ? 'no_action' : '' }} ">
-                    <a href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}" title="Ôn tập câu cũ">
-                        <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
-                    </a>
-                    <p>Ôn tập câu cũ</p>
+                <div class="total total-question-did  col-md-2" style="background: #FF8515">
+                    <div>Số câu đã làm</div>
+                    <div>100</div>
                 </div>
-                <div class="method do_false {{ $var['user_learn_error'] == 0 ? 'no_action' : '' }}">
-                        <a href="{{ $var['user_learn_error'] == 0 ? 'javascript:void(0)' :  route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}" title="Làm lại câu sai">
-                            <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
-                        </a>
-                        <p>Làm lại câu sai</p>
-                </div>
-                <div class="method do_bookmark {{ $var['user_learn_bookmark'] == 0 ? 'no_action' : '' }}">
-                        <a href="{{ $var['user_learn_bookmark'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BOOKMARK]) }}" title="Làm câu bookmark">
-                            <img src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
-                        </a>
-                        <p>Làm câu bookmark</p>
+                <div class="total total-question-correct  col-md-2"  style="background:#fcc647 ">
+                    <div>Số câu trả lời đúng</div>
+                    <div>100</div>
                 </div>
             </div>
-            <div class="overlay-footer">
-                @if($var['user_learn_error']  > 9) 
-                    <a class="offer-course do_false" href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}" title="Làm lại câu sai">
-                        <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
-                        <div class="title">
-                            <p>Đề xuất</p>
-                            <p class="content">Làm lại câu sai</p>
-                        </div>
-                    </a>
-                @else
-                    @if(($var['total_user_learn']) == (int)$var['total_question'])
-                        <a class="offer-course do_old" href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}" title="Ôn tập câu cũ">
-                            <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
-                            <div class="title">
-                                <p>Đề xuất</p>
-                                <p class="content">Ôn tập câu cũ</p>
-                            </div>
-                        </a>
-                    @else
-                    <a class="offer-course" href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI]) }}" title="Làm bài mới">
-                            <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
-                            <div class="title-p">
-                                <p>Đề xuất</p>
-                                <p class="content">Làm bài mới</p>
-                            </div>
-                    </a>
-                    @endif
-                @endif
+            <div class="overlay-footer row">
+                <a class="offer-course do_false col-md-2" title="Làm lại câu sai">
+                    <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
+                    <div class="title">
+                        <p>Đề xuất</p>
+                        <p class="content">Làm lại câu sai</p>
+                    </div>
+                </a>
+                <a class="offer-course do_old col-md-2"  title="Ôn tập câu cũ">
+                    <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
+                    <div class="title">
+                        <p>Đề xuất</p>
+                        <p class="content">Ôn tập câu cũ</p>
+                    </div>
+                </a>
+                <a class="offer-course col-md-2" title="Làm bài mới">
+                    <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
+                    <div class="title-p">
+                        <p>Đề xuất</p>
+                        <p class="content">Làm bài mới</p>
+                    </div>
+                </a>
+                <a class="offer-course do_bookmark col-md-2" title="Làm câu bookmark">
+                    <img src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
+                    <div class="title-p">
+                        <p>Đề xuất</p>
+                        <p class="content">Làm bài mới</p>
+                    </div>
+                </a>
             </div>
       </div>
     </section>    
@@ -196,9 +185,9 @@
 <script src='{{ web_asset('public/js/learn/course_learn.js') }}' type='text/javascript'></script>
 
 <script>
-        function openNav() {
+        // function openNav() {
           document.getElementById("myNav").style.height = "100%";
-        }
+        // }
         
         function closeNav() {
           document.getElementById("myNav").style.height = "0%";
