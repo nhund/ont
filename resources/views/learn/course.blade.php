@@ -133,47 +133,56 @@
        <div id="myNav" class="overlay">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <p class="title">Chọn phương thức học</p>
+            <p class="sub-title">Chọn phương thức học</p>
             <div class="overlay-content row">
-                <div class="total total-question  col-md-2" style="background: #337ab7">
-                    <div>Tổng câu hỏi</div>
-                    <div>100</div>
+                <div class="total total-question">
+                    <div class="title">
+                    <p>Tổng câu hỏi</p>
+                    <p>100</p>
+                    </div>
                 </div>
-                <div class="total total-question-did  col-md-2" style="background: #FF8515">
-                    <div>Số câu đã làm</div>
-                    <div>100</div>
+                <div class="total total-question-did">
+                    <div class="title">
+                        <p>Tổng câu hỏi</p>
+                        <p>100</p>
+                    </div>
                 </div>
-                <div class="total total-question-correct  col-md-2"  style="background:#fcc647 ">
-                    <div>Số câu trả lời đúng</div>
-                    <div>100</div>
+                <div class="total total-question-correct">
+                    <div class="title">
+                        <p>Tổng câu hỏi</p>
+                        <p>100</p>
+                    </div>
                 </div>
             </div>
-            <div class="overlay-footer row">
-                <a class="offer-course do_false col-md-2" title="Làm lại câu sai">
-                    <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
-                    <div class="title">
+            <div class="overlay-footer row footer-1">
+
+                <a class="offer-course do-new"  title="Làm bài mới">
+                    <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
+                    <div class="title ">
                         <p>Đề xuất</p>
-                        <p class="content">Làm lại câu sai</p>
+                        <p class="content">Ôn tập bài mới</p>
                     </div>
                 </a>
-                <a class="offer-course do_old col-md-2"  title="Ôn tập câu cũ">
+
+                <a class="offer-course did-1"  title="Ôn tập câu cũ">
                     <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
                     <div class="title">
                         <p>Đề xuất</p>
                         <p class="content">Ôn tập câu cũ</p>
                     </div>
                 </a>
-                <a class="offer-course col-md-2" title="Làm bài mới">
-                    <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
-                    <div class="title-p">
+                <a class="offer-course do-false-1" title="Làm lại câu sai">
+                    <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
+                    <div class="title">
                         <p>Đề xuất</p>
-                        <p class="content">Làm bài mới</p>
+                        <p class="content">Làm lại câu sai</p>
                     </div>
                 </a>
-                <a class="offer-course do_bookmark col-md-2" title="Làm câu bookmark">
+                <a class="offer-course  do-bookmark-1" title="Làm câu bookmark">
                     <img src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
-                    <div class="title-p">
+                    <div class="title">
                         <p>Đề xuất</p>
-                        <p class="content">Làm bài mới</p>
+                        <p class="content">Làm câu bookmark</p>
                     </div>
                 </a>
             </div>

@@ -348,8 +348,66 @@
     text-align: center;
     color: #FFFFFF;
     position: relative;
-    top: 25%;
+    top: 7%;
     width: 100%;
+}
+
+.total .title p{
+    margin: 25px;
+    text-align: left;
+    font-size: 30px;
+}
+
+.total-question {
+    background: rgb(43, 160, 254);
+    background-color: rgba(43, 160, 254, 0.23)
+}
+.total-question .title p{
+    color: #2bd6fe;
+}
+.total-question-did .title p{
+   color: #fa7a1d;
+}
+.total-question-did {
+    background-color: rgba(248, 123, 84, 0.32);
+}
+.total-question-correct .title p{
+   color: #fce747
+}
+.total-question-correct {
+    background-color: rgba(252, 198, 71, 0.36);
+}
+
+#myNav .sub-title{
+    font-weight: 500;
+    line-height: 22px;
+    font-size: 22px;
+    text-align: center;
+    color: #FFFFFF;
+    position: relative;
+    top: 9%;
+    width: 100%;
+}
+
+.do-false-1{
+    border: 1px solid #fa7b1c;
+    border-radius: 7px;
+}
+.do-bookmark-1{
+    border:1px solid #fce852;
+    border-radius: 7px;
+}
+.did-1{
+    border: 1px solid #38d5f2;
+    border-radius: 7px;
+}
+.do-new{
+    border: 1px solid #7bcdc7;
+    border-radius: 7px;
+}
+
+.footer-1 .offer-course{
+    background: none !important;
 }
 .overlay {
     height: 0%;
@@ -366,7 +424,7 @@
 
 .overlay-content {
     position: relative;
-    top: 25%;
+    top: 10%;
     width: 100%;
     text-align: center;
     margin-top: 80px;
@@ -431,7 +489,7 @@
 }
 #myNav .overlay-footer{
     position: relative;
-    top: 39%;
+    top: 15%;
     width: 100%;
     text-align: center;
     display: flex;
@@ -451,14 +509,13 @@
 }
 #myNav .overlay-content .total{
     width: 290px;
-    height: 255px;
+    height: 158px;
     border-radius: 4px;
     margin-right: 10px;
     display: flex;
     justify-content: center;
-    align-items: center;
     cursor: pointer;
-    opacity: 0.4;
+    /*opacity: 0.4;*/
 }
 #myNav .overlay-footer .offer-course .title{
     position: initial;
