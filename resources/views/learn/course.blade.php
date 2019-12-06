@@ -54,7 +54,7 @@
                            href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}">
                             <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
                             <div class="title">
-                                <p class="content" onclick="openNav()">Làm câu sai</p>
+                                <p class="content" >Làm câu sai</p>
                             </div>
                         </a>
                         <a class="offer-course do_bookmark {{ $var['user_learn_bookmark'] == 0 ? 'no_action' : '' }}"
@@ -92,7 +92,7 @@
                                         @if($lesson_child->level == \App\Models\Lesson::LEVEL_1)
                                             @if($lesson_child->is_exercise == \App\Models\Lesson::IS_EXERCISE)
                                                 <div class="item-exercise">
-                                                <a href="{{ route('user.lambaitap.question',['id'=>$lesson_child->id,'title'=>str_slug($lesson_child->name),'type'=>\App\Models\Question::LEARN_LAM_BAI_TAP]) }}" class="name ly_thuyet">{{ $lesson_child->name }}</a>
+                                                <a href="#" onclick="openNav()" class="name ly_thuyet">{{ $lesson_child->name }}</a>
                                                     <div class="count_learn">
                                                         <p>
                                                             @if(isset($lesson_child->userLearn->count))
@@ -194,9 +194,9 @@
 <script src='{{ web_asset('public/js/learn/course_learn.js') }}' type='text/javascript'></script>
 
 <script>
-        // function openNav() {
+        function openNav() {
           document.getElementById("myNav").style.height = "100%";
-        // }
+        }
         
         function closeNav() {
           document.getElementById("myNav").style.height = "0%";
