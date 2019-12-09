@@ -20,7 +20,7 @@ class Exam extends Model
 
     public $timestamps = true;
 
-    protected $fillable = ['lesson_id', 'minutes', 'parts', 'repeat_time', 'stop_time', 'total_score', 'start_time_at', 'end_time_at'];
+    protected $fillable = ['lesson_id', 'minutes', 'parts', 'repeat_time', 'stop_time', 'total_score', 'start_time_at', 'end_time_at', 'min_score', 'total_question'];
 
     public static function updateOrCreateExam($params)
     {
@@ -32,6 +32,8 @@ class Exam extends Model
         $exam->repeat_time = $params['repeat_time'];
         $exam->stop_time = $params['stop_time'];
         $exam->total_score = $params['total_score'];
+        $exam->min_score = $params['min_score'];
+        $exam->total_question = $params['total_question'];
         $exam->start_time_at = date('Y-m-d h:i:s', strtotime($params['start_time_at']));
         $exam->end_time_at = date('Y-m-d h:i:s', strtotime($params['end_time_at']));
         $exam->save();

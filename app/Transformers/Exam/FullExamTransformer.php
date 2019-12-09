@@ -32,6 +32,8 @@ class FullExamTransformer extends TransformerAbstract
             'parts'     => $exam->parts,
             'repeat_time'   => $exam->repeat_time,
             'stop_time'     => $exam->stop_time,
+            'min_score'         => $exam->min_score,
+            'total_question'         => $exam->total_question,
             'start_time_at' => date('d-m-Y h:i', strtotime($exam->start_time_at)),
             'end_time_at'   => date('d-m-Y h:i', strtotime($exam->end_time_at)),
             'sub_parts'         => $parts

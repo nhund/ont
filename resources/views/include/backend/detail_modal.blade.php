@@ -203,6 +203,9 @@
                         <div class="col-sm-3 ">
                             <input class="form-control date-fromday" data-input="Đến ngày" type="text" name="end_time_at" placeholder="Đến ngày">
                         </div>
+                        <div class="col-sm-3 ">
+                            <input class="form-control" data-input="Tông câu hỏi" type="text" name="total_question" placeholder="Tông câu hỏi">
+                        </div>
                     </div>
                     <hr/>
                     <div class="row ">
@@ -213,7 +216,7 @@
                             <label for="total_score">Lựa chọn Barem điểm</label>
                         </div>
                         <div class="col-sm-3">
-                            <label for="total_score">Bài thi có mấy phần?</label>
+                            <label for="min_score">Số điểm tối thiểu?</label>
                         </div>
                     </div>
 
@@ -222,11 +225,12 @@
                             <input class="form-control"  data-input="Thời gian làm bài" id="minutes" type="number" min="1"  name="minutes">
                         </div>
                         <div class="col-sm-3 ">
-                            <input class="form-control"  data-input="Lựa chọn Barem điểm" id="total_score" type="number" min="1" name="total_score">
+                            <input class="form-control"  data-input="Chọn điểm" id="total_score" type="number" min="1" name="total_score">
                         </div>
-                        <div class="col-sm-3">
-                            <input class="form-control"  data-input="Bài thi có mấy phần?" type="number" min="1" name="parts">
+                        <div class="col-sm-3 ">
+                            <input class="form-control"  data-input="Chọn điểm" id="min_score" type="number" min="1" name="min_score">
                         </div>
+
                     </div>
                     <hr/>
                     <div class="row">
@@ -236,6 +240,9 @@
                         <div class="col-sm-3">
                             <label>Bài thi được làm lại mấy lần?</label>
                         </div>
+                        <div class="col-sm-3">
+                            <label for="total_score">Bài thi có mấy phần?</label>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-3 ">
@@ -244,13 +251,16 @@
                         <div class="col-sm-3 ">
                             <input class="form-control" type="number" value="0" min="0" name="repeat_time">
                         </div>
+                        <div class="col-sm-3">
+                            <input class="form-control"  data-input="Bài thi có mấy phần?" type="number" min="1" name="parts">
+                        </div>
                     </div>
                     <hr/>
                     <div class="row">
                         <div class="col-sm-12">Mô tả</div>
                     </div>
                     <div class="row">
-                        <textarea data-input="Mô tả" class="ckeditor" name="exDescription"></textarea>
+                        <textarea class="ckeditor" name="exDescription"></textarea>
                     </div>
                 </div>
             </form>
