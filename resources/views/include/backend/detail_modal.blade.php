@@ -204,7 +204,7 @@
                             <input class="form-control date-fromday" data-input="Đến ngày" type="text" name="end_time_at" placeholder="Đến ngày">
                         </div>
                         <div class="col-sm-3 ">
-                            <input class="form-control" data-input="Tông câu hỏi" type="text" name="total_question" placeholder="Tông câu hỏi">
+                            <input class="form-control" data-input="Tông câu hỏi" type="number" name="total_question" placeholder="Tông câu hỏi">
                         </div>
                     </div>
                     <hr/>
