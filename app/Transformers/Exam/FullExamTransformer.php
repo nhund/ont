@@ -14,29 +14,30 @@ use League\Fractal\TransformerAbstract;
 
 class FullExamTransformer extends TransformerAbstract
 {
+    protected $exam;
     public function transform(Lesson $lesson)
     {
-        $exam = $lesson->exam;
+        $this->exam = $lesson->exam;
 
         $parts = [];
-        if ($exam){
-            $parts = $exam->part ? $exam->part->toArray() : [];
+        if ($this->exam){
+            $parts = $this->exam->part ? $this->exam->part->toArray() : [];
         }
 
         return [
-            'id'          => $lesson->id,
-            'name'        => $lesson->name,
-            'description' => $lesson->description,
+            'id'                 => $lesson->id,
+            'name'               => $lesson->name,
+            'description'        => $lesson->description,
             'description_format' => strip_tags($lesson->description),
-            'minutes'   => $exam->minutes,
-            'parts'     => $exam->parts,
-            'repeat_time'   => $exam->repeat_time,
-            'stop_time'     => $exam->stop_time,
-            'min_score'         => $exam->min_score,
-            'total_question'         => $exam->total_question,
-            'start_time_at' => date('d-m-Y h:i', strtotime($exam->start_time_at)),
-            'end_time_at'   => date('d-m-Y h:i', strtotime($exam->end_time_at)),
-            'sub_parts'         => $parts
+            'minutes'            => $this->exam->minutes,
+            'parts'              => $this->exam->parts,
+            'repeat_time'        => $this->exam->repeat_time,
+            'stop_time'          => $this->exam->stop_time,
+            'min_score'          => $this->exam->min_score,
+            'total_question'     => $this->exam->total_question,
+            'start_time_at'      => date('d-m-Y h:i', strtotime($this->exam->start_time_at)),
+            'end_time_at'        => date('d-m-Y h:i', strtotime($this->exam->end_time_at)),
+            'sub_parts'          => $parts
         ];
     }
 }
