@@ -75,7 +75,7 @@ class submitQuestion
         $course = Course::where('id', $lesson->course_id)->first();
 
 
-        if (!($lesson || $exam || $course)){
+        if (!($lesson && $exam && $course)){
             throw new NotFoundException('Bài kiểm tra không tồn tại hoặc đã bị xóa.');
         }
 
