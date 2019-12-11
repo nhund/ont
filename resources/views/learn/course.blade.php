@@ -138,21 +138,21 @@
                 <div class="total total-question">
 
                     <div class="title">
-                    <p>Tổng câu hỏi</p>
+                    <p style="min-height: 70px;">Tổng số câu hỏi</p>
                     <p>100</p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #2bd6fe;"></i>
                 </div>
                 <div class="total total-question-did">
                     <div class="title">
-                        <p>Tổng câu hỏi</p>
+                        <p style="min-height: 70px;">Số câu đã làm</p>
                         <p>100</p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fa7a1d;"></i>
                 </div>
                 <div class="total total-question-correct">
                     <div class="title">
-                        <p>Tổng câu hỏi</p>
+                        <p style="min-height: 70px;">Số câu trả lời đúng</p>
                         <p>100</p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fce747;"></i>
