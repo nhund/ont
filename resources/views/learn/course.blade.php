@@ -132,8 +132,7 @@
        </div>
        <div id="myNav" class="overlay">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <p class="title">Chọn phương thức học</p>
-            <p class="sub-title">Chọn phương thức học</p>
+            <p class="title" data-lesson="title">Bài học</p>
             <div class="overlay-content row">
                 <div class="total total-question">
 

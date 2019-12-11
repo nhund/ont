@@ -32,6 +32,7 @@ function reportLesson(lesson_id){
                 $('[data-lesson=total-question]').html(report.totalQuestions);
                 $('[data-lesson=question-did]').html(did);
                 $('[data-lesson=question-correct]').html(`${correct}%`);
+                $('[data-lesson=title]').html(data.data.name);
                 document.getElementById("myNav").style.height = "100%";
                 lessonId = lesson_id;
             }
