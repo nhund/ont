@@ -41,5 +41,5 @@ function reportLesson(lesson_id){
 }
 
 function recommendationLesson(name, courseId, type) {
-    location.href = `/bai-tap/lesson/${name}.${courseId}/${type}?lesson_id=${lessonId}`
+    location.href = `/khoa-hoc/${name}.${courseId}/tong-quan/${type}?lesson_id=${lessonId}`
 }
