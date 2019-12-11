@@ -146,7 +146,7 @@
                 <div class="total total-question-did">
                     <div class="title">
                         <p style="min-height: 70px;">Số câu đã làm</p>
-                        <p>100</p>
+                        <p>10/<span style="font-size: 15px;">100</span></p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fa7a1d;"></i>
                 </div>
