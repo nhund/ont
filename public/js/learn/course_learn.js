@@ -12,4 +12,33 @@ $(document).ready(function(){
             }
         });
         });
+
 });
+var lessonId;
+
+function reportLesson(lesson_id){
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': $('meta[name=csrf-token]').attr("content"),
+            'Authorization': localStorage.getItem('access_token'),
+        },
+        type   : "GET",
+        url    :  `/api/lesson/${lesson_id}/report`,
+        success: function (data) {
+            if (data.meta) {
+                const report = data.meta;
+                const did = `${report.totalDid}<span style="font-size: 15px;">/${report.totalQuestions}</span>`;
+                const correct =  Number(report.totalCorrectQuestions/report.totalQuestions).toFixed(2);
+                $('[data-lesson=total-question]').html(report.totalQuestions);
+                $('[data-lesson=question-did]').html(did);
+                $('[data-lesson=question-correct]').html(`${correct}%`);
+                document.getElementById("myNav").style.height = "100%";
+                lessonId = lesson_id;
+            }
+        }
+    })
+}
+
+function recommendationLesson(name, courseId, type) {
+    location.href = `/bai-tap/lesson/${name}.${courseId}/${type}?lesson_id=${lessonId}`
+}

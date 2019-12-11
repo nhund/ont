@@ -42,7 +42,7 @@
                                 <p class="content">Làm tập mới</p>
                             </div>
                         </a>
-                        <a class="offer-course do_old  {{ $var['show_on_tap'] == false ? 'no_action' : '' }} "
+                        <a class="offer-course do_old  {{ $var['total_user_learn'] == false ? 'no_action' : '' }} "
                            href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}"
                            title="Ôn tập câu cũ">
                             <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
@@ -92,7 +92,7 @@
                                         @if($lesson_child->level == \App\Models\Lesson::LEVEL_1)
                                             @if($lesson_child->is_exercise == \App\Models\Lesson::IS_EXERCISE)
                                                 <div class="item-exercise">
-                                                <a href="#" onclick="openNav()" class="name ly_thuyet">{{ $lesson_child->name }}</a>
+                                                <a href="#" onclick="reportLesson(`{{ $lesson_child->id }}`)" class="name ly_thuyet">{{ $lesson_child->name }}</a>
                                                     <div class="count_learn">
                                                         <p>
                                                             @if(isset($lesson_child->userLearn->count))
@@ -139,28 +139,28 @@
 
                     <div class="title">
                     <p style="min-height: 70px;">Tổng số câu hỏi</p>
-                    <p>100</p>
+                    <p data-lesson="total-question">100</p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #2bd6fe;"></i>
                 </div>
                 <div class="total total-question-did">
                     <div class="title">
                         <p style="min-height: 70px;">Số câu đã làm</p>
-                        <p>10/<span style="font-size: 15px;">100</span></p>
+                        <p data-lesson="question-did">10/<span style="font-size: 15px;">100</span></p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fa7a1d;"></i>
                 </div>
                 <div class="total total-question-correct">
                     <div class="title">
                         <p style="min-height: 70px;">Số câu trả lời đúng</p>
-                        <p>100</p>
+                        <p data-lesson="question-correct">100</p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fce747;"></i>
                 </div>
             </div>
             <div class="overlay-footer row footer-1">
 
-                <a class="offer-course do-new"  title="Làm bài mới">
+                <a class="offer-course do-new" onclick="recommendationLesson(`{{str_slug($var['course']->name)}}`, `{{$var['course']->id}}`,`{{\App\Models\Question::LEARN_LAM_BAI_MOI}}`)"  title="Làm bài mới">
                     <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
                     <div class="title ">
                         <p>Đề xuất</p>
@@ -168,21 +168,21 @@
                     </div>
                 </a>
 
-                <a class="offer-course did-1"  title="Ôn tập câu cũ">
+                <a class="offer-course did-1" onclick="recommendationLesson(`{{str_slug($var['course']->name)}}`, `{{$var['course']->id}}`,`{{\App\Models\Question::LEARN_LAM_CAU_CU}}`)"   title="Ôn tập câu cũ">
                     <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
                     <div class="title">
                         <p>Đề xuất</p>
                         <p class="content">Ôn tập câu cũ</p>
                     </div>
                 </a>
-                <a class="offer-course do-false-1" title="Làm lại câu sai">
+                <a class="offer-course do-false-1" onclick="recommendationLesson(`{{str_slug($var['course']->name)}}`, `{{$var['course']->id}}`,`{{\App\Models\Question::LEARN_LAM_CAU_SAI}}`)"  title="Làm lại câu sai">
                     <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
                     <div class="title">
                         <p>Đề xuất</p>
                         <p class="content">Làm lại câu sai</p>
                     </div>
                 </a>
-                <a class="offer-course  do-bookmark-1" title="Làm câu bookmark">
+                <a class="offer-course  do-bookmark-1"  onclick="recommendationLesson(`{{str_slug($var['course']->name)}}`, `{{$var['course']->id}}`,`{{\App\Models\Question::LEARN_LAM_BOOKMARK}}`)" title="Làm câu bookmark">
                     <img src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
                     <div class="title">
                         <p>Đề xuất</p>
@@ -199,7 +199,6 @@
 
 <script>
         function openNav() {
-          document.getElementById("myNav").style.height = "100%";
         }
         
         function closeNav() {
