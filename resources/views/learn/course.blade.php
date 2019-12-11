@@ -136,22 +136,26 @@
             <p class="sub-title">Chọn phương thức học</p>
             <div class="overlay-content row">
                 <div class="total total-question">
+
                     <div class="title">
                     <p>Tổng câu hỏi</p>
                     <p>100</p>
                     </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #2bd6fe;"></i>
                 </div>
                 <div class="total total-question-did">
                     <div class="title">
                         <p>Tổng câu hỏi</p>
                         <p>100</p>
                     </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fa7a1d;"></i>
                 </div>
                 <div class="total total-question-correct">
                     <div class="title">
                         <p>Tổng câu hỏi</p>
                         <p>100</p>
                     </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fce747;"></i>
                 </div>
             </div>
             <div class="overlay-footer row footer-1">

@@ -517,6 +517,12 @@
     cursor: pointer;
     /*opacity: 0.4;*/
 }
+
+.circle{
+    font-size: 11px;
+    padding: 11px;
+}
+
 #myNav .overlay-footer .offer-course .title{
     position: initial;
 }
