@@ -41,5 +41,9 @@ function reportLesson(lesson_id){
 }
 
 function recommendationLesson(name, courseId, type) {
-    location.href = `/khoa-hoc/${name}.${courseId}/tong-quan/${type}?lesson_id=${lessonId}`
+    if (type === 'lam-bai-tap') {
+        location.href = `/bai-tap/lesson/${name}.${lessonId}/${type}?lesson_id=${lessonId}`
+    }else {
+        location.href = `/khoa-hoc/${name}.${courseId}/tong-quan/${type}?lesson_id=${lessonId}`
+    }
 }

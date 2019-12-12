@@ -722,11 +722,6 @@ class CourseLearnController extends Controller
         }
         if($type == Question::LEARN_LAM_BAI_MOI)
         {
-
-            $questionLearnedLogs = UserQuestionLog::where('course_id',$id)
-                ->where('user_id',$user->id)
-                ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
-
             $lesson = $recommendation->_getLessonLogUser($course, $user);
 
             if ($lesson->is_exercise == Lesson::IS_DOC){
@@ -735,8 +730,7 @@ class CourseLearnController extends Controller
                     ->where('pass_ly_thuyet',UserLessonLog::PASS_LY_THUYET)
                     ->where('lesson_id',$lesson->id)
                     ->first();
-
-                if((!$checkTheory || $checkTheory->turn == 0) && !empty($lesson->description))
+                if((!$checkTheory || $checkTheory->turn == 0))
                 {
                     return redirect()->route('user.lambaitap.lythuyet',['id'=>$lesson->id, 'lesson_id' => $request->get('lesson_id')]);
                 }
@@ -744,6 +738,9 @@ class CourseLearnController extends Controller
 
             if($lesson->is_exercise == Lesson::IS_EXERCISE)
             {
+                $questionLearnedLogs = UserQuestionLog::where('course_id',$id)
+                    ->where('user_id',$user->id)
+                    ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
                 //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
                 $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
                     ->where('parent_id',0)->where('lesson_id',$lesson->id)

@@ -159,11 +159,11 @@
             </div>
             <div class="overlay-footer row footer-1">
 
-                <a class="offer-course do-new" onclick="recommendationLesson(`{{str_slug($var['course']->name)}}`, `{{$var['course']->id}}`,`{{\App\Models\Question::LEARN_LAM_BAI_MOI}}`)"  title="Làm bài mới">
+                <a class="offer-course do-new" onclick="recommendationLesson(`{{str_slug($var['course']->name)}}`, `{{$var['course']->id}}`,`{{\App\Models\Question::LEARN_LAM_BAI_TAP}}`)"  title="Làm bài tập">
                     <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
                     <div class="title ">
                         <p>Đề xuất</p>
-                        <p class="content">Ôn tập bài mới</p>
+                        <p class="content">Ôn tập bài tập</p>
                     </div>
                 </a>
 
