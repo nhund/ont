@@ -10,7 +10,7 @@ use App\Models\QuestionAnswer;
 use App\Models\UserLessonLog;
 use App\Models\UserQuestionLog;
 
-class RemoveCourseListener
+class RefundCourseListener
 {
     protected $userCourse;
     protected $condition;

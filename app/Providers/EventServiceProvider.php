@@ -25,7 +25,7 @@ class EventServiceProvider extends ServiceProvider
         ]
         ,
         Events\RefundCourseEvent::class => [
-            Listeners\CountTurnLessonListen::class
+            Listeners\RefundCourseListener::class
         ]
     ];
 
