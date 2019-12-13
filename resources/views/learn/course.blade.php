@@ -163,7 +163,7 @@
                     <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
                     <div class="title ">
                         <p>Đề xuất</p>
-                        <p class="content">Làm tập bài</p>
+                        <p class="content">Làm bài tập</p>
                     </div>
                 </a>
 
