@@ -41,7 +41,7 @@
                                                     {{ $item->note }}
                                                 </td>
                                                 <td data-title="Ngày tạo :">{{ date('d/m/Y H:i',$item->created_at) }}</td>
-                                                <td><button class="btn-warning btn refundButton" >Hoàn khóa học</button></td>
+                                                <td><button class="btn-warning btn refundButto n" >Hoàn khóa học</button></td>
 
                                             </tr>
                                         @endforeach
