@@ -162,7 +162,7 @@
                 <a class="offer-course do-new" onclick="recommendationLesson(`{{str_slug($var['course']->name)}}`, `{{$var['course']->id}}`,`{{\App\Models\Question::LEARN_LAM_BAI_TAP}}`)"  title="Làm bài tập">
                     <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
                     <div class="title ">
-                        <p>Đề xuất</p>
+                        <p>Làm bài</p>
                         <p class="content">Làm bài tập</p>
                     </div>
                 </a>
