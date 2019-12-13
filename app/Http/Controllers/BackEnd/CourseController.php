@@ -597,7 +597,6 @@ class CourseController extends AdminBaseController
             $userCourse->delete();
 
             event(new RefundCourseEvent($userCourse));
-            //todo xóa tất cả những thứ liên quan
         });
 
         return response()->json(array('error' => false, 'msg' => 'Cập nhật thành công'));
