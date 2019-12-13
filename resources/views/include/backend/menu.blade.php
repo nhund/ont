@@ -16,9 +16,6 @@
             <ul class="acc-menu">
                 @if(Auth::user()->level == \App\User::USER_ADMIN)
                     <li><a href="{{ route('dashboard') }}"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
-
-                    <li><a href="{{ route('admin.report.index') }}"><i class="fa fa-area-chart"></i><span>Thông kế tài khoản</span></a></li>
-
                     <li class="hasChild {{ Request()->route()->getPrefix() == 'admin/user' ? 'active':''  }}"><a href="javascript:;"><i class="fa fa-group"></i><span>Thành viên</span></a>
                         <ul class="acc-menu" @if(Request()->route()->getPrefix() == 'admin/user' ? 'active':'')  style="display: block" @endif>    
                             <li ><a class="{{ url()->current() == route('admin.user.add') ? 'active':''  }}" href="{{ route('admin.user.add') }}">Thêm thành viên</a></li>                    

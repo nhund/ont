@@ -563,4 +563,11 @@ class CourseController extends AdminBaseController
             return response()->json(array('error' => true, 'msg' => 'Cập nhật không thành công'));
         }
     }
+
+    public function refund(Request $request)
+    {
+        $data = $request->only(['user_id', 'course_id']);
+
+        dd($data);
+    }
 }

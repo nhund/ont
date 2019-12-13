@@ -18,12 +18,14 @@
                                         <th>Loại giao dịch</th>
                                         <th>Ghi chú</th>
                                         <th width="150">Ngày giao dịch</th>
+                                        <th width="150">Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if($var['histories']))
+                                    @if($var['histories'])
                                         @foreach ($var['histories'] as $item)
-                                            <tr>
+                                            <?php dd($item)?>
+                                            <tr data-user="{{$item->user->id}}" data-id="">
                                                 <td data-title="Họ tên :">{{ $item->user->name_full }}</td>
                                                 <td data-title="Tài khoảnn :">{{ number_format($item->xu_current) }}</td>
                                                 <td data-title="Tiền thay đổi :">{{ number_format($item->xu_change) }}</td>
@@ -39,6 +41,8 @@
                                                     {{ $item->note }}
                                                 </td>
                                                 <td data-title="Ngày tạo :">{{ date('d/m/Y H:i',$item->created_at) }}</td>
+                                                <td><button class="btn-warning btn refundButton" >Hoàn khóa học</button></td>
+
                                             </tr>
                                         @endforeach
                                     @else
@@ -62,3 +66,45 @@
         </div>
     </div>
 @stop
+
+@push('js')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.refundButton').on('click',function () {
+                var $this = $(this);
+                swal({
+                     title: "Xác nhận",
+                     text: "Bạn có chắc muốn xóa dữ liệu!",
+                     type: "warning",
+                     showCancelButton: true,
+                     confirmButtonColor: "#DD6B55",
+                     confirmButtonText: "Đồng ý",
+                     closeOnConfirm: false
+                 },
+                 function () {
+                     $.ajax({
+                            headers: { 'X-CSRF-Token' : $('meta[name=csrf-token]').attr("content") },
+                            type: "POST",
+                            url: '{{ route('admin.course.refund') }}',
+                            data: {
+                                id: $this.attr('data-id')
+                            },
+                            success: function (data) {
+                                if(data.error == false){
+                                    $this.closest('tr').remove();
+                                    swal(
+                                        'Deleted!',
+                                        'Xóa thành công',
+                                        'success'
+                                    )
+                                }
+                            },
+                            error: function (e) {
+                                console.log(e);
+                            }
+                        });
+                 });
+            });
+        });
+    </script>
+@endpush
