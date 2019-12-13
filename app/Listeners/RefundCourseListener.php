@@ -29,12 +29,6 @@ class RefundCourseListener
 
         $this->removeUserQuestionLog();
         $this->removeUserLessonLog();
-        $this->removeQuestionAnswer();
-    }
-
-    private function removeQuestionAnswer()
-    {
-        QuestionAnswer::where($this->condition)->delete();
     }
 
     private function removeUserLessonLog()
