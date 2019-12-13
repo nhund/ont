@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Models\UserCourse;
 use App\Models\Wallet;
 use App\Models\WalletLog;
 use Illuminate\Http\Request;
@@ -289,7 +290,10 @@ class UserController extends AdminBaseController
 
         $limit = 25;
         $var = [];
-        $var['histories'] = WalletLog::where('user_id', $id)->orderBy('created_at','DESC')->paginate($limit);
+        $var['histories'] =UserCourse::where('user_id',$id )->with(['user', 'course'])->orderBy('created_at','DESC')->paginate($limit);
+
+
+//        dd($var['histories']);
         $var['breadcrumb'] = array(
             array(
                 'url' => '',

@@ -163,7 +163,7 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/changeUserStatus', 'BackEnd\CourseController@changeUserStatus')->name('course.changeUserStatus');
         Route::post('/addUser', 'BackEnd\CourseController@addUser')->name('course.addUser');
         Route::get('/{id}/feedback', 'BackEnd\CourseController@feedback')->name('course.feedback');
-        Route::get('/refund', 'BackEnd\CourseController@refund')->name('admin.course.refund');
+        Route::post('/refund', 'BackEnd\CourseController@refund')->name('admin.course.refund');
 
         Route::get('/list', 'BackEnd\CourseController@listCourse')->name('admin.course.index');
         Route::post('/delete', 'BackEnd\CourseController@delete')->name('admin.course.delete');

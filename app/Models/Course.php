@@ -32,6 +32,14 @@ class Course extends Model
     protected $table = 'course';
     protected $primaryKey = 'id';
 
+    const STATUS = [
+        self::TYPE_FREE_TIME => '<span style="color: #FF8515;font-weight: bold;">Miễn phí có thời hạn</span>',
+        self::TYPE_FREE_NOT_TIME => '<span style="color: #3c3bb3; font-weight: bold;">Miễn phí không thời hạn</span>',
+        self::TYPE_PUBLIC  => '<span style="color: #5cb85c; font-weight: bold;">Công khai</span>',
+        self::TYPE_APPROVAL => '<span style="color: #000; font-weight: bold;">Cần xét duyệt</span>',
+        self::TYPE_PRIVATE => '<span style="color: #c9302c; font-weight: bold;">Riêng tư</span>'
+    ];
+
     protected $fillable = [
         'name', 'status', 'avatar', 'user_id', 'begin_time', 'end_time', 'price', 'study_time', 'type', 'discount', 'category_id', 'is_free', 'description', 'sapo', 'avatar_path', 'created_at', 'updated_at', 'sticky', 'rating_1', 'rating_2', 'rating_3', 'rating_4', 'rating_5'
     ];

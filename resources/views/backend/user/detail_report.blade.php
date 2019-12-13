@@ -13,10 +13,9 @@
                                     <thead>
                                     <tr>
                                         <th>Họ và tên</th>
-                                        <th>Tài khoản trước giao dịch</th>
-                                        <th>Số tiền thay đổi</th>
-                                        <th>Loại giao dịch</th>
-                                        <th>Ghi chú</th>
+                                        <th>Tên khóa học</th>
+                                        <th>Giá</th>
+                                        <th>status</th>
                                         <th width="150">Ngày giao dịch</th>
                                         <th width="150">Hành động</th>
                                     </tr>
@@ -24,24 +23,13 @@
                                     <tbody>
                                     @if($var['histories'])
                                         @foreach ($var['histories'] as $item)
-                                            <tr data-user="{{$item->user->id}}" data-id="">
-                                                <td data-title="Họ tên :">{{ $item->user->name_full }}</td>
-                                                <td data-title="Tài khoảnn :">{{ number_format($item->xu_current) }}</td>
-                                                <td data-title="Tiền thay đổi :">{{ number_format($item->xu_change) }}</td>
-                                                <td data-title="Giao dịch :">
-                                                    @if($item->type == App\Models\WalletLog::TYPE_NAP_XU)
-                                                        Nạp mã thẻ
-                                                    @endif
-                                                    @if($item->type == App\Models\WalletLog::TYPE_MUA_KHOA_HOC)
-                                                        Mua khóa học
-                                                    @endif
-                                                </td>
-                                                <td data-title="Ghi chú :">
-                                                    {{ $item->note }}
-                                                </td>
+                                            <tr data-user="{{$item->id}}">
+                                                <td data-title="Họ tên :">{{$item->user->name_full}}</td>
+                                                <td data-title="Họ tên :">{{ $item->course->name }}</td>
+                                                <td data-title="Giá :">{{ number_format($item->course->price) }} VNĐ</td>
+                                                <td data-title="Trạng thái :">{!! App\Models\Course::STATUS[$item->course->status] !!} </td>
                                                 <td data-title="Ngày tạo :">{{ date('d/m/Y H:i',$item->created_at) }}</td>
-                                                <td><button class="btn-warning btn refundButto n" >Hoàn khóa học</button></td>
-
+                                                <td><button  data-user="{{$item->user->id}}" data-id="{{$item->course->id}}" class="btn-warning btn refundButton" >Hoàn khóa học</button></td>
                                             </tr>
                                         @endforeach
                                     @else
@@ -73,7 +61,7 @@
                 var $this = $(this);
                 swal({
                      title: "Xác nhận",
-                     text: "Bạn có chắc muốn xóa dữ liệu!",
+                     text: "Bạn có chắc muốn hoàn lại khóa học!",
                      type: "warning",
                      showCancelButton: true,
                      confirmButtonColor: "#DD6B55",
@@ -86,14 +74,15 @@
                             type: "POST",
                             url: '{{ route('admin.course.refund') }}',
                             data: {
-                                id: $this.attr('data-id')
+                                user_id: $this.attr('data-user'),
+                                course_id: $this.attr('data-id')
                             },
                             success: function (data) {
                                 if(data.error == false){
                                     $this.closest('tr').remove();
                                     swal(
-                                        'Deleted!',
-                                        'Xóa thành công',
+                                        'Hoàn khóa học!',
+                                        'Hoàn khóa học thành công',
                                         'success'
                                     )
                                 }
