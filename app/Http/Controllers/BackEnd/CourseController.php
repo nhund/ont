@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Components\Course\CourseService;
+use App\Events\RefundCourseEvent;
 use App\Exceptions\UserCourseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddExamRequest;
@@ -589,11 +590,14 @@ class CourseController extends AdminBaseController
 
         $course = Course::findOrFail($data['course_id']);
 
-        DB::transaction(function () use ($wallet, $userCourse, $course){
+        DB::transaction(function () use ($wallet, $userCourse, $course, $data){
 
             $wallet->xu += $course->price - $course->discount;
             $wallet->save();
             $userCourse->delete();
+
+            event(new RefundCourseEvent($userCourse));
+            //todo xóa tất cả những thứ liên quan
         });
 
         return response()->json(array('error' => false, 'msg' => 'Cập nhật thành công'));

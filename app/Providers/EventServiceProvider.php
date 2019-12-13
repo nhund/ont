@@ -23,6 +23,10 @@ class EventServiceProvider extends ServiceProvider
         Events\SubmitQuestionEvent::class => [
             Listeners\CountTurnLessonListen::class
         ]
+        ,
+        Events\RefundCourseEvent::class => [
+            Listeners\CountTurnLessonListen::class
+        ]
     ];
 
     /**
