@@ -29,7 +29,7 @@ class CodeController extends AdminBaseController
         }
         $search_code   = Request::capture()->input('search_code', 0);
         if ($search_code) {
-            $code = Code::where('code', 'LIKE', '%'.$search_code.'%');
+            $code = Code::where('code.code', 'LIKE', '%'.$search_code.'%');
             $var['search_code']     = $search_code;
         } else {
             $code = new Code();
