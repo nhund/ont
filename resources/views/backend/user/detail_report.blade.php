@@ -24,7 +24,6 @@
                                     <tbody>
                                     @if($var['histories'])
                                         @foreach ($var['histories'] as $item)
-                                            <?php dd($item)?>
                                             <tr data-user="{{$item->user->id}}" data-id="">
                                                 <td data-title="Họ tên :">{{ $item->user->name_full }}</td>
                                                 <td data-title="Tài khoảnn :">{{ number_format($item->xu_current) }}</td>
