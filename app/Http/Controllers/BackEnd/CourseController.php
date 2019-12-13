@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Components\Course\CourseService;
+use App\Exceptions\UserCourseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddExamRequest;
 use App\Models\Category;
@@ -10,6 +11,7 @@ use App\Models\CommentCourse;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\UserCourse;
+use App\Models\Wallet;
 use App\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -564,10 +566,37 @@ class CourseController extends AdminBaseController
         }
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws UserCourseException
+     * @throws \Throwable
+     */
     public function refund(Request $request)
     {
         $data = $request->only(['user_id', 'course_id']);
 
-        dd($data);
+        $userCourse = UserCourse::where([
+            'user_id' => $data['user_id'],
+            'course_id' => $data['course_id']
+        ])->firstOrFail();
+
+        //check wallet
+        $wallet = Wallet::where('user_id',$data['user_id'])->first();
+        if(!$wallet) {
+            throw new UserCourseException('Bạn chưa có xu để mua khóa học.');
+        }
+
+        $course = Course::findOrFail($data['course_id']);
+
+        DB::transaction(function () use ($wallet, $userCourse, $course){
+
+            $wallet->xu += $course->price - $course->discount;
+            $wallet->save();
+            $userCourse->delete();
+        });
+
+        return response()->json(array('error' => false, 'msg' => 'Cập nhật thành công'));
+
     }
 }
