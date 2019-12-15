@@ -66,6 +66,10 @@ class submitQuestion
         $examId   = request('exam_id');
         $examUser = ExamUser::where('lesson_id', $examId)->first();
 
+        if (!$examUser){
+            throw new NotFoundException('Bài kiểm tra không tồn tại hoặc đã bị xóa.');
+        }
+
         if ($examUser->status == ExamUser::INACTIVE || $examUser->status_stop == ExamUser::INACTIVE){
             throw new BadRequestException('Bài kiểm tra đang tạm dừng hoặc chưa được bắt đầu.');
         }
@@ -73,7 +77,6 @@ class submitQuestion
         $exam   = Exam::where('lesson_id', $examId)->first();
         $lesson = Lesson::where('id', $examId)->first();
         $course = Course::where('id', $lesson->course_id)->first();
-
 
         if (!($lesson && $exam && $course)){
             throw new NotFoundException('Bài kiểm tra không tồn tại hoặc đã bị xóa.');
