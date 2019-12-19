@@ -31,6 +31,9 @@
                                         @endif
                                     </div>
                                     <div class="col-md-2">
+                                        {{--<div style="text-align: center;color: red; font-weight: bold;">--}}
+                                            {{--<span class="text-uppercase">Hết thời gian làm bài</span>--}}
+                                        {{--</div>--}}
                                         <div class="time-exam text-center">
                                             <div class="text-score">
                                                  <span class="text-uppercase">

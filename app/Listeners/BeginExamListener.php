@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\BeginExamEvent;
+use App\Models\Exam;
 use App\Models\ExamUser;
 use App\Models\ExamUserAnswer;
 
@@ -32,13 +33,18 @@ class BeginExamListener
             ->first();
 
         if (!$userExam) {
+
+            $exam = Exam::where('lesson_id', $this->exam->id)->firstOrFail();
+
             ExamUser::create([
                  'lesson_id'      => $this->exam->id,
                  'user_id'        => $this->user->id,
                  'turn'           => 1,
                  'score'          => 0,
-                 'begin_at' => now(),
+                 'begin_at'       => now(),
+                 'time'           => $exam->minutes,
              ]);
+
         }else{
             $userExam->score = 0;
             $userExam->turn += 1;

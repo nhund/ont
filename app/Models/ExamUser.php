@@ -20,10 +20,22 @@ class ExamUser extends Model
 
     public $timestamps = true;
 
-    protected $fillable = ['lesson_id', 'user_id', 'turn', 'score'];
+    protected $fillable = ['lesson_id', 'user_id', 'turn', 'score', 'time'];
+
+    protected $appends = ['doing_time', 'still_time'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getDoingTimeAttribute()
+    {
+        return  $doingTime  = (strtotime($this->last_at) - strtotime($this->begin_at) - $this->second_stop)/60;
+    }
+
+    public function getStillTimeAttribute()
+    {
+        return  $doingTime  = (strtotime($this->last_at) - strtotime($this->begin_at) - $this->second_stop)/60;
     }
 }

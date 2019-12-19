@@ -13,9 +13,6 @@ class ExamUserTransformer extends TransformerAbstract
 
     public function transform(ExamUser $examUser)
     {
-
-        $doingTime  = (strtotime($examUser->last_at) - strtotime($examUser->begin_at) - $examUser->second_stop)/60;
-
         return [
             'id'          => $examUser->id,
             'user_id'     => $examUser->user_id,
@@ -23,7 +20,7 @@ class ExamUserTransformer extends TransformerAbstract
             'turn'        => $examUser->turn,
             'exam_id'     => $examUser->lesson_id,
             'status_stop' => $examUser->status_stop,
-            'doing_time'  => $doingTime,
+            'doing_time'  => $examUser->doing_time,
             'unit'        => 'phút'
         ];
 

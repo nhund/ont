@@ -15,6 +15,7 @@ class AddNumberQuestionUserExamTable extends Migration
     {
         Schema::table('exam_user', function (Blueprint $table) {
             $table->integer('until_number')->default(1);
+            $table->integer('time')->default(1);
         });
     }
 
@@ -27,6 +28,7 @@ class AddNumberQuestionUserExamTable extends Migration
     {
         Schema::table('exam_user', function (Blueprint $table) {
             $table->dropColumn('until_number');
+            $table->dropColumn('time');
         });
     }
 }
