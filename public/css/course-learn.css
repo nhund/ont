@@ -608,3 +608,39 @@
     clear: both;
     margin-top: 15px;
 }
+.container-exam{
+    margin-top: 30px;
+}
+.time-exam{
+ border: 1px solid #7bcdc7;
+ border-radius: 5px 5px 0 0;
+ font-weight: bold;
+}
+
+.time-exam .text-score{
+    background: #7bcdc7;
+    padding: 12px;
+    color: white;
+}
+
+.time-exam .time-score{
+    padding: 12px;
+    font-size: 30px;
+}
+
+.action-exam{
+    margin-top: 20px;
+    color: white;
+    font-weight: bold;
+}
+.action-exam .stop{
+    width: 100%;
+    margin-bottom: 15px;
+    background: rgb(43, 160, 254);
+    background-color: rgba(43, 160, 254, 0.81);
+}
+
+.action-exam .replay{
+    width: 100%;
+    background-color: rgba(252, 198, 71, 0.89);
+}

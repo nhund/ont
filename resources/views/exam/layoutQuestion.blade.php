@@ -1,6 +1,11 @@
 @extends('layoutCourse')
 @push('css')
 <link href="{{ web_asset('public/css/course-learn.css') }}" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        #box-wrapper{
+            background: #f2f3f5;
+        }
+    </style>
 @endpush
 @section('content')
 <div class="hoclythuyet type_flash_card type_do_new">
@@ -8,21 +13,43 @@
   @include('exam.lam_bai_moi')
 
 <section id="hoclythuyet" class="clearfix flash_card">
-  <div class="container">
+  <div class="container container-exam">
    <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pd5 box_do_learn">
       <input type="hidden" name="count_question" value="{{ count($var['questions']) }}">
      @foreach($var['questions'] as $key => $question)
      <div class="question_type question_stt_{{ $key + 1 }}" data-key="{{ $key + 1 }}">
-      @if($question->type == \App\Models\Question::TYPE_DIEN_TU)
-        @include('exam.baitapDienTu')
-      @endif
-      @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM)
-        @include('exam.baitapTracNghiem')
-      @endif
-      @if($question->type == \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN)
-        @include('exam.baitapDienTuDoanVan')
-      @endif
+        <div class="row">
+            <div class="col-md-10">
+                @if($question->type == \App\Models\Question::TYPE_DIEN_TU)
+                    @include('exam.baitapDienTu')
+                @endif
+                @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM)
+                    @include('exam.baitapTracNghiem')
+                @endif
+                @if($question->type == \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN)
+                    @include('exam.baitapDienTuDoanVan')
+                @endif
+            </div>
+            <div class="col-md-2">
+                <div class="time-exam text-center">
+                    <div class="text-score">
+                         <span class="text-uppercase">
+                            Thời gian
+                        </span>
+                    </div>
+                   <div class="time-score">
+                        <span>80 : 08</span>
+                   </div>
+                </div>
+                <div class="action-exam">
+                    <span style="color: black">Bạn còn 2 lần dừng lại</span>
+                    <button class="btn text-uppercase stop"><i class="fa fa-pause"></i> tạm dừng</button>
+                    <button class="btn text-uppercase stop"><i class="fa fa-play" aria-hidden="true"></i> tạm dừng</button>
+                    <button class="btn text-uppercase replay"><i class="fa fa-repeat"></i> làm lại</button>
+                </div>
+            </div>
+        </div>
     </div>
     @endforeach
     @include('learn.feedback.popup_feedback')
