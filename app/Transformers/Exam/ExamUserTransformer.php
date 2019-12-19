@@ -17,13 +17,14 @@ class ExamUserTransformer extends TransformerAbstract
         $doingTime  = (strtotime($examUser->last_at) - strtotime($examUser->begin_at) - $examUser->second_stop)/60;
 
         return [
-            'id' => $examUser->id,
-            'user_id' => $examUser->user_id,
-            'score' => $examUser->highest_score,
-            'turn' => $examUser->turn,
-            'exam_id' => $examUser->lesson_id,
-            'doing_time' => $doingTime,
-            'unit' => 'phút'
+            'id'          => $examUser->id,
+            'user_id'     => $examUser->user_id,
+            'score'       => $examUser->highest_score,
+            'turn'        => $examUser->turn,
+            'exam_id'     => $examUser->lesson_id,
+            'status_stop' => $examUser->status_stop,
+            'doing_time'  => $doingTime,
+            'unit'        => 'phút'
         ];
 
     }

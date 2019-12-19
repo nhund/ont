@@ -143,7 +143,7 @@ class ExamController extends Controller
         $userExam->status_stop = ExamUser::INACTIVE;
         $userExam->save();
 
-        return $this->message('bạn đang tạm dừng khóa học')->respondOk();
+        return fractal()->item($userExam, new ExamUserTransformer)->respond();
     }
 
     /**
@@ -171,7 +171,6 @@ class ExamController extends Controller
         $userExam->status_stop = ExamUser::ACTIVE;
         $userExam->second_stop += $second;
         $userExam->save();
-
-        return $this->message('Bài kiểm tra bạn tiếp tục.')->respondOk();
+        return fractal()->item($userExam, new ExamUserTransformer)->respond();
     }
 }

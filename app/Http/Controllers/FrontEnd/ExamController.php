@@ -70,6 +70,7 @@ class ExamController extends Controller
         $var['questions'] = $questions;
         $var['course'] = Course::find($lesson->course_id);
         $var['lesson'] = $lesson;
+        $var['userExam'] = ExamUser::where(['user_id' => $request->user()->id, 'lesson_id' => $lesson->id])->first();
 
         event(new BeginExamEvent($lesson, $request->user()));
 
