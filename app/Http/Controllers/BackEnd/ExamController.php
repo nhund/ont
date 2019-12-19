@@ -109,7 +109,7 @@ class ExamController
 
         $examPart = ExamPart::where('id', $part)->first();
 
-        if ($examPart && ($addQuestionIds &&  $examPart->number_question < $countTotalQuestion)){
+        if ($examPart && ($addQuestionIds &&  $examPart->number_question < count($countTotalQuestion))){
             return response()->json(['status' => 201, 'message' => "Số câu hỏi bạn thêm vướt quá cho phép là {$examPart->number_question} câu"]);
         }
 

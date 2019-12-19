@@ -11,6 +11,7 @@
     <div class="hoclythuyet type_flash_card type_do_new">
         @include('exam.lam_bai_moi')
         <input type="hidden" name="status_stop" value="{{$var['userExam']->status_stop ?? \App\Models\ExamUser::ACTIVE}}">
+        <input type="hidden" name="still_time" value="{{$var['userExam']->still_time}}">
         <section id="hoclythuyet" class="clearfix flash_card">
             <div class="container container-exam">
                 <div class="row">
@@ -31,6 +32,7 @@
                                         @endif
                                     </div>
                                     <div class="col-md-2">
+
                                         {{--<div style="text-align: center;color: red; font-weight: bold;">--}}
                                             {{--<span class="text-uppercase">Hết thời gian làm bài</span>--}}
                                         {{--</div>--}}
@@ -41,7 +43,7 @@
                                                 </span>
                                             </div>
                                             <div class="time-score">
-                                                <span>80 : 08</span>
+                                                <span id="count-down">00 : 00</span>
                                             </div>
                                         </div>
                                         <div class="action-exam">
@@ -125,5 +127,34 @@
            }
         });
     }
+    
+    function countDown() {
+        let timeLeft = $('input[name=still_time]').val();
+        let countDownDate = new Date(timeLeft);
+
+        console.log(timeLeft, countDownDate, new Date())
+        // Update the count down every 1 second
+        let x = setInterval(function() {
+            // Get today's date and time
+            let now = new Date().getTime();
+            // Find the distance between now and the count down date
+            let distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result in the element with id="demo"
+            document.getElementById("count-down").innerHTML =    hours + "h " + minutes + "m " + seconds + "s ";
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("count-down").innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    }
+    countDown()
 </script>
 @endpush
