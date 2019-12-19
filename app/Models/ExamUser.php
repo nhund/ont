@@ -36,6 +36,6 @@ class ExamUser extends Model
 
     public function getStillTimeAttribute()
     {
-        return  $doingTime  = (strtotime($this->last_at) - strtotime($this->begin_at) - $this->second_stop)/60;
+        return  $doingTime  = strtotime(now()->addMinutes($this->time)) - strtotime($this->begin_at) - $this->second_stop;
     }
 }
