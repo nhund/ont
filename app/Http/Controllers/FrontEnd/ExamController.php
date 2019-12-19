@@ -52,7 +52,6 @@ class ExamController extends Controller
             $var['parentLesson'] =  Lesson::findOrFail($request->get('lesson_id'));
         }
 
-
         $lesson = Lesson::findOrfail($id);
 
         $userExam = ExamUser::where('user_id', $request->user()->id)
