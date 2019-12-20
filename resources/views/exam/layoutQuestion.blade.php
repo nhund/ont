@@ -43,7 +43,7 @@
                                                 </span>
                                             </div>
                                             <div class="time-score">
-                                                <span id="count-down">00 : 00</span>
+                                                <span id="count-down">00:00</span>
                                             </div>
                                         </div>
                                         <div class="action-exam">
