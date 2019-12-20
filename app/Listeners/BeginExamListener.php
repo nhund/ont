@@ -41,14 +41,14 @@ class BeginExamListener
                  'user_id'        => $this->user->id,
                  'turn'           => 1,
                  'score'          => 0,
-                 'begin_at'       => now(),
+//                 'begin_at'       => now(),
                  'time'           => $exam->minutes,
              ]);
 
         }else{
             $userExam->score = 0;
             $userExam->turn += 1;
-            $userExam->begin_at = now();
+//            $userExam->begin_at = now();
             $userExam->save();
         }
     }

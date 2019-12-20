@@ -84,6 +84,8 @@
 <script src="{{ asset('/public/admintrator/assets/js/bootstrap-notify.min.js?ver=1') }}"></script>
 <script src='{{ web_asset('public/js/exam/exam.js') }}' type='text/javascript'></script>
 <script>
+    let countInterval;
+
     function  pauseExam(examId){
         const status = $('input[name=status_stop]').val();
         const url = status === 'Inactive' ? `/api/exam/${examId}/restart` : `/api/exam/${examId}/stop`;
@@ -120,20 +122,22 @@
                $('input[name=status_stop]').val(userExam.status_stop);
 
                if (userExam.status_stop === 'Inactive') {
+                   clearInterval(countInterval);
                    $('.stop').html('<i class="fa fa-play" aria-hidden="true"></i> Tiếp tục')
                } else {
+                   clearInterval(countInterval);
+                   countDown(userExam.still_time)
                    $('.stop').html(' <i class="fa fa-pause"></i> Tạm dừng')
                }
            }
         });
     }
-    
-    function countDown() {
-        let timeLeft = $('input[name=still_time]').val();
+
+    function countDown(timeLeft) {
         let countDownDate = new Date(timeLeft);
 
         // Update the count down every 1 second
-        let x = setInterval(function() {
+        countInterval = setInterval(function() {
             // Get today's date and time
             let now = new Date().getTime();
             // Find the distance between now and the count down date
@@ -144,20 +148,26 @@
             let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+            console.log(distance)
             // Display the result in the element with id="demo"
             if (hours > 0){
-                document.getElementById("count-down").innerHTML =    hours + "h " + minutes + "m " + seconds + "s ";
+                document.getElementById("count-down").innerHTML =    custom(hours) + ":" + custom(minutes) + ":" + custom(seconds);
             } else {
-                document.getElementById("count-down").innerHTML =    minutes + "m " + seconds + "s ";
+                document.getElementById("count-down").innerHTML =    custom(minutes) + ":" + custom(seconds);
+            }
+            
+            function custom(number) {
+                return number > 9 ? number : '0'+number;
             }
 
             // If the count down is finished, write some text
             if (distance < 0) {
-                clearInterval(x);
+                clearInterval(countInterval);
                 document.getElementById("count-down").innerHTML = "EXPIRED";
             }
         }, 1000);
     }
-    countDown()
+    let timeLeft = $('input[name=still_time]').val();
+    countDown(timeLeft)
 </script>
 @endpush

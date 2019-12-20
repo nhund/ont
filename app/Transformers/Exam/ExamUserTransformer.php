@@ -21,6 +21,7 @@ class ExamUserTransformer extends TransformerAbstract
             'exam_id'     => $examUser->lesson_id,
             'status_stop' => $examUser->status_stop,
             'doing_time'  => $examUser->doing_time,
+            'still_time'  => $examUser->still_time,
             'unit'        => 'phút'
         ];
 
