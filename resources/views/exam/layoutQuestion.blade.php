@@ -132,7 +132,6 @@
         let timeLeft = $('input[name=still_time]').val();
         let countDownDate = new Date(timeLeft);
 
-        console.log(timeLeft, countDownDate, new Date())
         // Update the count down every 1 second
         let x = setInterval(function() {
             // Get today's date and time
@@ -146,7 +145,11 @@
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             // Display the result in the element with id="demo"
-            document.getElementById("count-down").innerHTML =    hours + "h " + minutes + "m " + seconds + "s ";
+            if (hours > 0){
+                document.getElementById("count-down").innerHTML =    hours + "h " + minutes + "m " + seconds + "s ";
+            } else {
+                document.getElementById("count-down").innerHTML =    minutes + "m " + seconds + "s ";
+            }
 
             // If the count down is finished, write some text
             if (distance < 0) {
