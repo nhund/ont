@@ -51,7 +51,7 @@ class submitQuestion
         if ($checkExist->and_date > 0 && $checkExist->and_date < time()){
             throw new BadRequestException('Khóa học bạn đã hết hạn xin vui lòng gia hạn!');
         }
-        return true;E
+        return true;
     }
 
 

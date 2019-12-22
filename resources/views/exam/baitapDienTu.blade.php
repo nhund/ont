@@ -2,6 +2,8 @@
     <form class="form_dien_tu">
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="exam_id" value="{{ $var['lesson']->id }}" >
+        <input type="hidden" name="until_number" value="{{ $key + 2 }}">
+
         <div class="head_content">
             <div class="audio_box">
 

@@ -642,6 +642,6 @@
 
 .action-exam .replay{
     width: 100%;
-    background-color: rgba(252, 198, 71, 0.89);
+    background-color: rgb(252, 198, 71);
     color: white;
 }

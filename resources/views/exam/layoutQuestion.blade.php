@@ -12,6 +12,7 @@
         @include('exam.lam_bai_moi')
         <input type="hidden" name="status_stop" value="{{$var['userExam']->status_stop ?? \App\Models\ExamUser::ACTIVE}}">
         <input type="hidden" name="still_time" value="{{$var['userExam']->still_time}}">
+        <input type="hidden" name="until_number" value="{{$var['userExam']->until_number}}">
         <section id="hoclythuyet" class="clearfix flash_card">
             <div class="container container-exam">
                 <div class="row">
@@ -32,10 +33,6 @@
                                         @endif
                                     </div>
                                     <div class="col-md-2">
-
-                                        {{--<div style="text-align: center;color: red; font-weight: bold;">--}}
-                                            {{--<span class="text-uppercase">Hết thời gian làm bài</span>--}}
-                                        {{--</div>--}}
                                         <div class="time-exam text-center">
                                             <div class="text-score">
                                                  <span class="text-uppercase">
@@ -43,7 +40,7 @@
                                                 </span>
                                             </div>
                                             <div class="time-score">
-                                                <span id="count-down">00:00</span>
+                                                <span class="count-down">00:00</span>
                                             </div>
                                         </div>
                                         <div class="action-exam">
@@ -55,7 +52,7 @@
                                                     <i class="fa fa-pause"></i> Tạm dừng
                                                 @endif
                                             </button>
-                                            <a class="btn text-uppercase replay"><i class="fa fa-repeat"></i> làm lại</a>
+                                            <a href="{{route('exam.start', ['title' =>$var['lesson']->name, 'id' =>$var['lesson']->id ])}}" class="btn text-uppercase replay"><i class="fa fa-repeat"></i> làm lại</a>
                                         </div>
                                     </div>
                                 </div>
@@ -148,12 +145,11 @@
             let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            console.log(distance)
             // Display the result in the element with id="demo"
             if (hours > 0){
-                document.getElementById("count-down").innerHTML =    custom(hours) + ":" + custom(minutes) + ":" + custom(seconds);
+                $('.count-down').html(custom(hours) + ":" + custom(minutes) + ":" + custom(seconds))
             } else {
-                document.getElementById("count-down").innerHTML =    custom(minutes) + ":" + custom(seconds);
+                $('.count-down').html(custom(minutes) + ":" + custom(seconds));
             }
             
             function custom(number) {
@@ -163,11 +159,18 @@
             // If the count down is finished, write some text
             if (distance < 0) {
                 clearInterval(countInterval);
-                document.getElementById("count-down").innerHTML = "EXPIRED";
+                $('.count-down').html('<span style="color: red">Hết thời gian</span>');
             }
         }, 1000);
     }
     let timeLeft = $('input[name=still_time]').val();
-    countDown(timeLeft)
+    countDown(timeLeft);
+
+    $('.question_type').hide();
+    let until_number =  parseInt($('input[name=until_number]').val());
+    $('.question_type.question_stt_' + until_number).show();
+    let count_question_current = $('.hoclythuyet .course_process .count_question_done');
+    count_question_current.text(until_number - 1);
+
 </script>
 @endpush

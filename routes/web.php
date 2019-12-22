@@ -93,6 +93,7 @@ Route::get('/tin-tuc/{title}.{id}', 'FrontEnd\PostController@newsDetail')->name(
 
 Route::prefix('kiem-tra')->namespace('FrontEnd')->group(function (){
     Route::get('/{title}.{id}', 'ExamController@index')->name('exam.question');
+    Route::get('/bat-dau/{title}.{id}', 'ExamController@startExam')->name('exam.start');
 });
 /*exam*/
 

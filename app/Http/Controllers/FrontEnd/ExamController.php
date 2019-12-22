@@ -71,8 +71,13 @@ class ExamController extends Controller
         $var['lesson'] = $lesson;
         $var['userExam'] = ExamUser::where(['user_id' => $request->user()->id, 'lesson_id' => $lesson->id])->first();
 
-        event(new BeginExamEvent($lesson, $request->user()));
-
         return view('exam.layoutQuestion',compact('var'));
+    }
+
+    public function startExam($title, $id , Request $request)
+    {
+        $lesson = Lesson::findOrfail($id);
+        event(new BeginExamEvent($lesson, $request->user()));
+        return redirect()->route('exam.question', ['title' =>str_slug($title), 'id' =>$id ]);
     }
 }

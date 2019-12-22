@@ -9,38 +9,9 @@ $(document).ready(function () {
         process_bar.css('width', percent + '%');
         $(window).scrollTop(0);
     }
-
     var submit_question     = false;
-
     var submit_doc_loadding = false;
-    //submit doc
-    $('#hoclythuyet .btn_submit_doc').on('click', function (e) {
-        e.preventDefault();
-        //console.log(submit_doc);
-        var $this     = $(this);
-        var lesson_id = $this.attr('data-id');
 
-        var data = {lesson_id: lesson_id};
-        if (submit_doc_loadding == false) {
-            submit_doc_loadding = true;
-            $.ajax({
-               headers: {'X-CSRF-Token': $('meta[name=csrf-token]').attr("content")},
-               type   : "POST",
-               url    : submit_doc,
-               data   : data,
-               success: function (data) {
-                   if (data.error == false) {
-                       $this.parent('form').submit();
-                   }
-               },
-               error  : function (e) {
-               }
-           }).always(function () {
-            submit_doc_loadding = false;
-            });
-        }
-
-    });
     // trac nghiem
     $('.trac_nghiem_box .submit_question .btn_next').on('click', function (e) {
         e.preventDefault();
@@ -51,6 +22,7 @@ $(document).ready(function () {
         $('.question_type.question_stt_' + parseInt(key + 1)).show();
 
     });
+
     //hien thi goi y trac nghiem
     $('.trac_nghiem_box .form_trac_nghiem .head_content .box_action .suggest').on('click', function (e) {
         e.preventDefault();
@@ -63,6 +35,7 @@ $(document).ready(function () {
             $this.closest('.form_trac_nghiem').find('.head_content .box_suggest').hide();
         }
     });
+
     //hien thi goi y trac nghiem cau hoi
     $('.trac_nghiem_box .form_trac_nghiem .list_question .box_suggest_answer .suggest').on('click', function (e) {
         e.preventDefault();
@@ -75,6 +48,7 @@ $(document).ready(function () {
             $this.closest('.box_suggest_answer').find('.suggest_answer_content p').hide();
         }
     });
+
     //kiem tra neu co 1 cau trac nghiem thi submit luon
     $('.trac_nghiem_box .list_answer input[type="radio"]').on('change', function () {
         var $this          = $(this);
@@ -83,6 +57,7 @@ $(document).ready(function () {
             $this.closest('.content_question').find('.submit_question .btn_submit').click();
         }
     });
+
     //submit bai tap trac nghiem
     $('.trac_nghiem_box .submit_question .btn_submit').on('click', function (e) {
         e.preventDefault();
@@ -151,6 +126,7 @@ $(document).ready(function () {
 
         });
     });
+
     //next dien tu
     $('.dientu_box .submit_question .btn_next').on('click', function (e) {
         e.preventDefault();
@@ -270,7 +246,6 @@ $(document).ready(function () {
         }
     });
 
-
     //submit dien tu doan van
     $('.dien_tu_doan_van .submit_question .btn_submit').on('click', function (e) {
         e.preventDefault();
@@ -324,7 +299,6 @@ $(document).ready(function () {
         });
     });
 
-
     //lay goi y
     $('.list_question .answer .explain').on('click', function (e) {
         e.preventDefault();
@@ -359,44 +333,6 @@ $(document).ready(function () {
 
     });
 
-
-    //bookmark
-    var send_bookmark = false;
-    $('body').on('click', '.icon.bookmark', function (e) {
-        var $this       = $(this);
-        var question_id = $this.attr('data-id');
-        //book_mark
-        if (!send_bookmark) {
-            send_bookmark = true;
-            var data      = {question_id: question_id};
-            $.ajax({
-                       headers: {'X-CSRF-Token': $('meta[name=csrf-token]').attr("content")},
-                       type   : "POST",
-                       url    : book_mark_url,
-                       data   : data,
-                       success: function (data) {
-
-                           if (data.error == false) {
-                               toastr.success('Thông báo!', data.msg, {timeOut: 600, positionClass: "toast-top-modify"})
-                               if (data.type == 'add') {
-                                   $this.attr('title', 'Bỏ bookmark');
-                                   $this.addClass('bookmarked');
-                               } else {
-                                   $this.attr('title', 'Thêm bookmark');
-                                   $this.removeClass('bookmarked');
-                               }
-                           } else {
-                               toastr.error('Thông báo!', data.msg, {timeOut: 600, positionClass: "toast-top-modify"})
-                           }
-                       },
-                       error  : function (e) {
-
-                       }
-                   }).always(function () {
-                send_bookmark = false;
-            });
-        }
-    });
     $(window).load(function () {
         $('#hoclythuyet .report.send_report').on('click', function (e) {
             e.preventDefault();
@@ -405,9 +341,7 @@ $(document).ready(function () {
             var question_type = $this.attr('data-type');
             $('#feedbackModel .modal-body input[name="question_id"]').val(question_id);
             $('#feedbackModel .modal-body input[name="type"]').val(question_type);
-            $('#feedbackModel').modal({
-                                          show: 'false'
-                                      });
+            $('#feedbackModel').modal({show: 'false'});
         });
     });
 

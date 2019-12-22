@@ -92,19 +92,19 @@ class SubmitQuestionExam
         $userQuestion->answer    = \json_encode($data);
         $userQuestion->submit_at = now();
 
+        $examUser = ExamUser::where([
+            'user_id' => $this->user->id,
+            'lesson_id' => $this->examId
+        ])->first();
         if ($this->flag){
-            $examUser = ExamUser::where([
-                'user_id' => $this->user->id,
-                'lesson_id' => $this->examId
-            ])->first();
             $examUser->score += $score;
 
             if ($examUser->score > $examUser->highest_score){
                 $examUser->highest_score = $examUser->score;
             }
-
-            $examUser->save();
         }
+        $examUser->until_number = $this->request->get('until_number');
+        $examUser->save();
 
         return $userQuestion->save();
     }
