@@ -131,6 +131,12 @@
     }
 
     function countDown(timeLeft) {
+
+        const status = $('input[name=status_stop]').val();
+        if (status === 'Inactive') {
+            $('.count-down').html('<span style="color: red">Đang tạm dừng</span>');
+            return false;
+        }
         let countDownDate = new Date(timeLeft);
 
         // Update the count down every 1 second
