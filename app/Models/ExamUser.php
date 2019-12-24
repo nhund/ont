@@ -20,7 +20,7 @@ class ExamUser extends Model
 
     public $timestamps = true;
 
-    protected $fillable = ['lesson_id', 'user_id', 'turn', 'score', 'time'];
+    protected $fillable = ['lesson_id', 'user_id', 'turn', 'score', 'time', 'status_stop', 'second_stop'];
 
     protected $appends = ['doing_time', 'still_time'];
 

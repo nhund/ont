@@ -42,8 +42,12 @@ class BeginExamListener
                  'turn'           => 1,
                  'score'          => 0,
                  'until_number'   => 1,
+                 'status_stop'    => ExamUser::ACTIVE,
                  'begin_at'       => now(),
                  'time'           => $exam->minutes,
+                 'second_stop'    => 0,
+                 'stopped_at'     => null,
+                 'turn_stop'      => 0,
              ]);
 
         }else{
@@ -51,6 +55,10 @@ class BeginExamListener
             $userExam->turn += 1;
             $userExam->until_number = 1;
             $userExam->begin_at = now();
+            $userExam->status_stop = ExamUser::ACTIVE;
+            $userExam->second_stop = 0;
+            $userExam->stopped_at  = null;
+            $userExam->turn_stop   = 0;
             $userExam->save();
         }
     }
