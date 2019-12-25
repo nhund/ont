@@ -87,7 +87,7 @@
                                     <P class="title"><strong>VƯỢT QUA BÀI KIỂM TRA</strong></P>
                                     <div class="row">
                                         <div class="col-md-6 score-1">
-                                            <h1><strong class="score">10</strong></h1>
+                                            <h1><strong class="score">{{$var['userExam']->score}}</strong></h1>
                                         </div>
                                         <div class="col-md-6 title-score">
                                             <h2><span class="score-text"><strong>Điểm</strong></span></h2>
