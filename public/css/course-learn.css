@@ -645,3 +645,55 @@
     background-color: rgb(252, 198, 71);
     color: white;
 }
+.congratulation {
+    padding-top: 30px;
+    background: white;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.competition {
+    color: white;
+    margin-top: 10px;
+    background: #9a7e52;
+    border-radius: 5px;
+}
+
+.ket-qua {
+    text-align: center;
+}
+
+.congratulation .title {
+    font-size: 26px;
+}
+
+.title, .minute-1 {
+    color: #35365e;
+}
+
+.score-1 {
+    text-align: right;
+    padding-right: 0;
+}
+
+.score {
+    text-align: center;
+    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    font-size: 80px;
+    height: 100px;
+    padding-top: 40px;
+    color: #ffc646;
+    letter-spacing: .1em;
+    text-shadow: 0 -1px 0 #fff, 0 1px 0 #f87b54, 0 2px 0 #f87b54, 0 3px 0 #f87b54, 0 4px 0 #f87b54, 0 5px 0 #f87b54, 0 6px 0 #f87b54
+}
+
+.score-text {
+    color: #f87b54;
+}
+
+.title-score {
+    text-align: left;
+    height: 118px;
+    vertical-align: middle;
+    padding: 11px 0px;
+}

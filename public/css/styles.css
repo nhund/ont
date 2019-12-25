@@ -5349,6 +5349,19 @@ button.update-cart{
     	text-align: center;
     	text-transform: uppercase;
     }
+
+    .btn_finish{
+        background: #FF8515;
+        border-radius: 4px;
+        width: 170px;
+        height: 50px;
+        color: #fff;
+        font-size: 16px;
+        line-height: 24px;
+        text-align: center;
+        text-transform: uppercase;
+		display: none;
+    }
     #hoclythuyet .dientu_chuoi_box .content_question .submit_question .btn_next{
     	background: #FF8515;
     	border-radius: 4px;

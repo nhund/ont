@@ -88,8 +88,7 @@ $(document).ready(function () {
                    }
 
                    upCountQuestion();
-                   $this.closest('.submit_question').find('.btn_next').show();
-                   $this.closest('.submit_question').find('.btn_submit').remove();
+                   checkButton($this)
 
                    $.each(data.data, function (key, val) {
 
@@ -163,9 +162,7 @@ $(document).ready(function () {
                    box_interpret_all.show();
 
                    upCountQuestion();
-                   $this.closest('.submit_question').find('.btn_next').show();
-                   $this.closest('.submit_question').find('.btn_submit').remove();
-
+                   checkButton($this);
 
                    $.each(data.data, function (key, val) {
                        if (parseInt(val.error) === 2) {
@@ -268,8 +265,7 @@ $(document).ready(function () {
                            $this.closest('form').find('.head_content .box_interpret_all').show();
 
                            upCountQuestion();
-                           $this.closest('.submit_question').find('.btn_next').show();
-                           $this.closest('.submit_question').find('.btn_submit').remove();
+                           checkButton($this)
 
                            $.each(data.data, function (key, val) {
                                $.each(val, function (key2, val2) {
@@ -333,6 +329,20 @@ $(document).ready(function () {
 
     });
 
+    function checkButton($button){
+        let key   = parseInt($button.closest('.question_type').attr('data-key'));
+        let totalQuestion = $('input[name=totalQuestion]').val();
+        if (key == totalQuestion ){
+            $button.closest('.submit_question').find('.btn_finish').show();
+            $button.closest('.submit_question').find('.btn_next').remove();
+            $button.closest('.submit_question').find('.btn_submit').remove();
+        } else {
+            $button.closest('.submit_question').find('.btn_next').show();
+            $button.closest('.submit_question').find('.btn_submit').remove();
+            $button.closest('.submit_question').find('.btn_finish').remove();
+        }
+
+    }
     $(window).load(function () {
         $('#hoclythuyet .report.send_report').on('click', function (e) {
             e.preventDefault();

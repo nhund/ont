@@ -70,6 +70,8 @@ class ExamController extends Controller
         $var['course'] = Course::find($lesson->course_id);
         $var['lesson'] = $lesson;
         $var['userExam'] = ExamUser::where(['user_id' => $request->user()->id, 'lesson_id' => $lesson->id])->first();
+        $var['totalQuestion'] = count($var['questions']);
+        $var['finish']        = $var['totalQuestion'] && $var['userExam']->until_number > $var['totalQuestion'];
 
         return view('exam.layoutQuestion',compact('var'));
     }
