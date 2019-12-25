@@ -14,6 +14,8 @@
         <input type="hidden" name="still_time" value="{{$var['userExam']->still_time}}">
         <input type="hidden" name="until_number" value="{{$var['userExam']->until_number}}">
         <input type="hidden" name="totalQuestion" value="{{$var['totalQuestion']}}">
+        <input type="hidden" name="time_stop" value="{{$var['exam']->stop_time}}">
+        <input type="hidden" name="time_stopped" value="{{$var['userExam']->turn_stop}}">
 
         @if(!$var['finish'])
             <section id="hoclythuyet" class="clearfix flash_card">
@@ -47,7 +49,7 @@
                                                 </div>
                                             </div>
                                             <div class="action-exam">
-                                                <span style="color: black">Bạn còn 2 lần dừng lại</span>
+                                                <span style="color: black">Còn <span class="time-stop"></span> lần dừng lại</span>
                                                 <button class="btn text-uppercase stop" onclick="pauseExam(`{{$var['lesson']->id}}`)">
                                                     @if($var['userExam'] && $var['userExam']->status_stop === \App\Models\ExamUser::INACTIVE)
                                                         <i class="fa fa-play" aria-hidden="true"></i> Tiếp tục
@@ -126,7 +128,7 @@
     <script src='{{ web_asset('public/js/exam/exam.js') }}' type='text/javascript'></script>
     <script>
         let countInterval;
-
+        const stoppedTime = parseInt($('input[name=time_stopped]').val());
         function pauseExam(examId) {
             const status = $('input[name=status_stop]').val();
             const url    = status === 'Inactive' ? `/api/exam/${examId}/restart` : `/api/exam/${examId}/stop`;
@@ -161,7 +163,7 @@
 
                    let userExam = result.data;
                    $('input[name=status_stop]').val(userExam.status_stop);
-
+                   stopTime(userExam.turn_stop)
                    if (userExam.status_stop === 'Inactive') {
                        clearInterval(countInterval);
                        $('.stop').html('<i class="fa fa-play" aria-hidden="true"></i> Tiếp tục')
@@ -214,9 +216,16 @@
             }, 1000);
         }
 
+        function stopTime(stoppedTime){
+            const stopTime = parseInt($('input[name=time_stop]').val());
+            const $stopTime  = $('.time-stop');
+            console.log(stopTime, stoppedTime)
+            $stopTime.html(stopTime- stoppedTime)
+        }
+
         let timeLeft = $('input[name=still_time]').val();
         countDown(timeLeft);
-
+        stopTime(stoppedTime);
         $('.question_type').hide();
         let until_number = parseInt($('input[name=until_number]').val());
         $('.question_type.question_stt_' + until_number).show();

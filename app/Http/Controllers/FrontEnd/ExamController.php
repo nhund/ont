@@ -66,6 +66,7 @@ class ExamController extends Controller
 
         $questions = (new ExamService())->getQuestionExam($lesson);
 
+        $var['exam']    = $exam;
         $var['questions'] = $questions;
         $var['course'] = Course::find($lesson->course_id);
         $var['lesson'] = $lesson;

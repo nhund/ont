@@ -162,12 +162,6 @@ class ExamController extends Controller
 
         $second = time() - strtotime($userExam->stopped_at);
 
-        $exam  = Exam::where('lesson_id', $lesson->id)->first();
-
-        if($exam->stop_time <= $userExam->turn_stop){
-            throw new BadRequestException('Số lần tạm dừng của bạn đã hết.');
-        }
-
         $userExam->status_stop = ExamUser::ACTIVE;
         $userExam->second_stop += $second;
         $userExam->save();

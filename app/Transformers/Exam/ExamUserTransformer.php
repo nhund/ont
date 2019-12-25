@@ -22,6 +22,7 @@ class ExamUserTransformer extends TransformerAbstract
             'status_stop' => $examUser->status_stop,
             'doing_time'  => $examUser->doing_time,
             'still_time'  => $examUser->still_time,
+            'turn_stop'  => $examUser->turn_stop,
             'unit'        => 'phút'
         ];
 
