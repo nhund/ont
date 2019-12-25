@@ -110,12 +110,15 @@ $(document).ready(function () {
                            var format_content_temp = document.getElementById('box_interpret_all_' + val.question_id);
                            MathJax.Hub.Queue(["Typeset", MathJax.Hub, format_content_temp]);
                            box_interpret_child.show();
-
                        }
                    });
 
                } else {
-                   toastr.error('Thông báo!', data.msg, {timeOut: 600, positionClass: "toast-top-modify"})
+                   if (data.error) {
+                       notify(data.error.answers[0])
+                   }else {
+                       notify(data.message)
+                   }
                }
            },
            error  : function (e) {
@@ -179,6 +182,8 @@ $(document).ready(function () {
                        box_interpret_child.show();
 
                    });
+               } else {
+                   notify(data.message)
                }
            },
            error  : function (e) {}})
@@ -285,6 +290,8 @@ $(document).ready(function () {
                                });
 
                            });
+                       }else {
+                           notify(data.message)
                        }
                    },
                    error  : function (e) {
@@ -342,6 +349,24 @@ $(document).ready(function () {
             $button.closest('.submit_question').find('.btn_finish').remove();
         }
 
+    }
+
+    function notify(message= '', type = 'danger'){
+        $.notify({
+                     icon   : 'fa fa-warning',
+                     title  : 'Lỗi! ',
+                     message: message
+                 }, {
+                     element  : 'body',
+                     type     : type,
+                     placement: {
+                         from : "top",
+                         align: "center"
+                     },
+                     z_index  : 9999,
+                     delay    : 3000,
+                     timer    : 1000,
+                 });
     }
     $(window).load(function () {
         $('#hoclythuyet .report.send_report').on('click', function (e) {

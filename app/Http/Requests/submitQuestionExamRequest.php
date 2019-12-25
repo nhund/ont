@@ -44,4 +44,13 @@ class submitQuestionExamRequest extends AuthorizedFormRequest
             ]);
         }
     }
+
+    public function attributes()
+    {
+        return [
+            'answers' => 'câu trả lời',
+            'txtLearnWord' => 'câu trả lời',
+            'reply' => 'câu trả lời'
+        ];
+    }
 }
