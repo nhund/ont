@@ -60,10 +60,6 @@ class ExamController extends Controller
 
         $exam = Exam::where('lesson_id', $id)->first();
 
-        if ($userExam && $exam && $userExam->turn > $exam->repeat_time){
-            throw new BadRequestException('Bạn đã hết lượt làm bài kiểm tra, vui lòng mua thêm');
-        }
-
         $questions = (new ExamService())->getQuestionExam($lesson);
 
         $var['exam']    = $exam;
@@ -72,15 +68,37 @@ class ExamController extends Controller
         $var['lesson'] = $lesson;
         $var['userExam'] = ExamUser::where(['user_id' => $request->user()->id, 'lesson_id' => $lesson->id])->first();
         $var['totalQuestion'] = count($var['questions']);
-        $var['finish']        = $var['totalQuestion'] && $var['userExam']->until_number > $var['totalQuestion'];
+        $var['finish']        = ($var['totalQuestion'] && $var['userExam']->until_number > $var['totalQuestion']) || ($userExam && $exam && $userExam->turn > $exam->repeat_time);
+        $var['overtime']      = $userExam && $exam && $userExam->turn > $exam->repeat_time;
 
         return view('exam.layoutQuestion',compact('var'));
     }
 
     public function startExam($title, $id , Request $request)
     {
-        $lesson = Lesson::findOrfail($id);
-        event(new BeginExamEvent($lesson, $request->user()));
+
+        if(!Auth::check())
+        {
+            alert()->error('Bạn cần đăng nhập để thực hiện hành động này');
+            return redirect()->back();
+        }
+        $lesson = Lesson::find($id);
+        if(!$lesson)
+        {
+            alert()->error('Bài học không tồn tại');
+            return redirect()->route('home');
+        }
+
+        $userExam = ExamUser::where('user_id', $request->user()->id)
+            ->where('lesson_id', $id)
+            ->first();
+
+        $exam = Exam::where('lesson_id', $id)->first();
+
+        if (!($userExam && $exam && $userExam->turn > $exam->repeat_time)){
+            event(new BeginExamEvent($lesson, $request->user()));
+        }
+
         return redirect()->route('exam.question', ['title' =>str_slug($title), 'id' =>$id ]);
     }
 }

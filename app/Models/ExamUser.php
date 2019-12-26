@@ -18,7 +18,7 @@ class ExamUser extends Model
     const ACTIVE = 'Active';
     const INACTIVE = 'Inactive';
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     protected $fillable = ['lesson_id', 'user_id', 'turn', 'score', 'time', 'status_stop', 'second_stop'];
 
