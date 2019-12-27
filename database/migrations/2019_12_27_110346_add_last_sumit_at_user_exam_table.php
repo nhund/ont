@@ -15,6 +15,7 @@ class AddLastSumitAtUserExamTable extends Migration
     {
         Schema::table('exam_user', function (Blueprint $table) {
             $table->timestamp('last_submit_at')->nullable()->comment('lần gửi câu hỏi cuối cùng của bài lượt cao điểm nhất');
+            $table->timestamp('begin_highest_at')->nullable()->comment('thời gian bắt đâu lượt cao điểm nhất');
         });
     }
 
@@ -27,6 +28,7 @@ class AddLastSumitAtUserExamTable extends Migration
     {
         Schema::table('exam_user', function (Blueprint $table) {
             $table->dropColumn('last_submit_at');
+            $table->dropColumn('begin_highest_at');
         });
     }
 }

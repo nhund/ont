@@ -102,6 +102,7 @@ class SubmitQuestionExam
             if ($examUser->score > $examUser->highest_score){
                 $examUser->highest_score = $examUser->score;
                 $examUser->last_submit_at = now();
+                $examUser->begin_highest_at = $examUser->begin_at;
             }
         }
         $examUser->until_number = $this->request->get('until_number');

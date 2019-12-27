@@ -109,7 +109,7 @@
                                                     <span>{{$rank->user->name_full ?? 'Ẩn danh'}}</span>
                                                 </td>
                                                 <td>{{$rank->highest_score}} Điểm</td>
-                                                <td>90 phut</td>
+                                                <td>{{number_format($rank->doing_time,0, ',','')}} phút</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
