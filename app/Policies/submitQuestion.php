@@ -64,7 +64,8 @@ class submitQuestion
     public function submitExam(User $user, Question $question)
     {
         $examId   = request('exam_id');
-        $examUser = ExamUser::where('lesson_id', $examId)->first();
+        $examUser = ExamUser::where(['lesson_id'=> $examId,
+                                    'user_id' => $user->id])->first();
 
         if (!$examUser){
             throw new NotFoundException('Bài kiểm tra không tồn tại hoặc đã bị xóa.');
@@ -84,7 +85,9 @@ class submitQuestion
 
         $passTime = (time() - strtotime($examUser->begin_at) - $examUser->second_stop)/60;
 
+
         if ($exam->minutes < $passTime){
+            dd($exam->minutes, $passTime, $examUser->begin_at );
             throw new BadRequestException('Bạn đã hết thời gian làm bài.');
         }
 
