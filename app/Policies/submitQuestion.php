@@ -87,7 +87,6 @@ class submitQuestion
 
 
         if ($exam->minutes < $passTime){
-            dd($exam->minutes, $passTime, $examUser->begin_at );
             throw new BadRequestException('Bạn đã hết thời gian làm bài.');
         }
 
