@@ -31,7 +31,7 @@ class ExamUser extends Model
 
     public function getDoingTimeAttribute()
     {
-        return  $doingTime  = (strtotime($this->last_at) - strtotime($this->begin_at) - $this->second_stop)/60;
+        return  $doingTime  = (strtotime($this->last_submit_at) - strtotime($this->begin_highest_at) - $this->second_stop)/60;
     }
 
     public function getStillTimeAttribute()
