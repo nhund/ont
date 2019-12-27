@@ -83,19 +83,29 @@
                              style="background: #35365e">
                             <div class="ket-qua">
                                 <div class="congratulation">
-                                    <P class="title"><strong>Chúc mừng bạn</strong></P>
-                                    @if($var['overtime'])
-                                    <P class="title"><strong>SỐ ĐIỂM CAO NHẤT BẠN ĐẠT ĐƯỢC LÀ</strong></P>
+                                    @if($var['userExam']->highest_score >= $var['exam']->min_score)
+                                        <P class="title"><strong>Chúc mừng bạn</strong></P>
+                                        <P class="title"><strong>ĐÃ VƯỢT QUA BÀI KIỂM TRA</strong></P>
                                     @else
-                                        <P class="title"><strong>VƯỢT QUA BÀI KIỂM TRA</strong></P>
+                                        <P class="title"><strong>Bạn <span class="score-text">không</span> vượt qua bài kiểm tra</strong></P>
                                     @endif
+                                    {{--@if($var['overtime'])--}}
+
+                                    {{--@else--}}
+                                        {{--<P class="title"><strong>VƯỢT QUA BÀI KIỂM TRA</strong></P>--}}
+                                    {{--@endif--}}
                                     <div class="row">
                                         <div class="col-md-6 score-1">
-                                            <h1><strong class="score">@if($var['overtime']){{$var['userExam']->highest_score}} @else {{$var['userExam']->score}} @endif</strong></h1>
+                                            <h1><strong class="score">
+                                                    {{--@if($var['overtime'])--}}
+                                                        {{$var['userExam']->highest_score}}
+                                                    {{--@else {{$var['userExam']->score}}--}}
+                                                    {{--@endif--}}
+                                                </strong></h1>
                                         </div>
                                         <div class="col-md-6 title-score">
                                             <h2><span class="score-text"><strong>Điểm</strong></span></h2>
-                                            <span><strong class="minute-1">09:00 Phút</strong></span>
+                                            <span><strong class="minute-1">{{number_format($var['userExam']->doing_time, 0, ',','')}}  Phút</strong></span>
                                         </div>
                                     </div>
                                 </div>
