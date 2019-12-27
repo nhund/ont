@@ -71,6 +71,16 @@ class ExamController extends Controller
         $var['finish']        = ($var['totalQuestion'] && $var['userExam']->until_number > $var['totalQuestion']) || ($userExam && $exam && $userExam->turn > $exam->repeat_time);
         $var['overtime']      = $userExam && $exam && $userExam->turn > $exam->repeat_time;
 
+        if ($var['finish']){
+            $examUser = ExamUser::where('lesson_id', $id)
+                ->with('user')
+                ->orderBy('highest_score', 'DESC')
+                ->orderBy('created_at', 'DESC')
+                ->orderBy('turn', 'ASC')
+                ->limit(15)->get();
+            $var['ranks'] = $examUser;
+        }
+
         return view('exam.layoutQuestion',compact('var'));
     }
 

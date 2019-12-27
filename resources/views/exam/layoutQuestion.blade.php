@@ -102,14 +102,16 @@
                                 <div class="competition ">
                                     <table class="table">
                                         <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><img width="28"
-                                                     src="https://image.freepik.com/free-vector/businessman-character-avatar-icon-vector-illustration-design_24877-18271.jpg">&nbsp;<span>Nguyen DInh Nhu</span>
-                                            </td>
-                                            <td>100 Điểm</td>
-                                            <td>90 phut</td>
-                                        </tr>
+                                        @foreach($var['ranks'] as $key => $rank)
+                                            <tr>
+                                                <td>{{$key + 1}}</td>
+                                                <td><img width="28" src="{{$rank->user->avatar_full ?? asset(env('APP_URL').'public/images/avatar-default.png')}}">&nbsp;
+                                                    <span>{{$rank->user->name_full ?? 'Ẩn danh'}}</span>
+                                                </td>
+                                                <td>{{$rank->highest_score}} Điểm</td>
+                                                <td>90 phut</td>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
