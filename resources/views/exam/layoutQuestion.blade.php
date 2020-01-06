@@ -38,7 +38,7 @@
                                             @endif
                                         </div>
                                         <div class="col-md-2">
-                                            <div class="time-exam text-center">
+                                            <div class="time-exam text-center row">
                                                 <div class="text-score">
                                                      <span class="text-uppercase">
                                                         Thời gian
@@ -48,7 +48,7 @@
                                                     <span class="count-down">00:00</span>
                                                 </div>
                                             </div>
-                                            <div class="action-exam">
+                                            <div class="action-exam row">
                                                 <span style="color: black">Còn <span class="time-stop"></span> lần dừng lại</span>
                                                 <button class="btn text-uppercase stop" onclick="pauseExam(`{{$var['lesson']->id}}`)">
                                                     @if($var['userExam'] && $var['userExam']->status_stop === \App\Models\ExamUser::INACTIVE)
@@ -58,6 +58,25 @@
                                                     @endif
                                                 </button>
                                                 <a href="{{route('exam.start', ['title' =>$var['lesson']->name, 'id' =>$var['lesson']->id ])}}" class="btn text-uppercase replay"><i class="fa fa-repeat"></i> làm lại</a>
+                                            </div>
+                                            <div class="row result-exam">
+                                                @foreach($var['partAnswers'] as $key => $part)
+                                                    <div class="part-{{$part->id}}">
+                                                        <div>{{$part->name}}</div>
+                                                        @if($part->userExamAnswer)
+                                                            @foreach($part->userExamAnswer as $key => $question)
+                                                                @if($question->answer)
+                                                                <div>
+                                                                    <div class="number-question answer-true">Câu {{$key}}</div>
+                                                                    @foreach($question->answer as $answer)
+                                                                        <div class="answer-question answer-false"> {{$answer->input ?: '--------'}} </div>
+                                                                    @endforeach
+                                                                </div> <div class="clearfix"></div>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    </div>  <div class="clearfix"></div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>

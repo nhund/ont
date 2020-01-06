@@ -702,3 +702,22 @@
     color: #1075e0;
     font-size: 21px;
 }
+.result-exam{
+    height: 550px;
+    margin-top: 20px;
+    overflow-y: scroll;
+}
+.number-question{
+    width: 36%;
+    float: left;
+}
+.answer-question{
+    width: 63%;
+    float: right;
+}
+.answer-false{
+    color: rgb(255, 80, 59)
+}
+.answer-true{
+    color: rgb(0, 200, 25);
+}

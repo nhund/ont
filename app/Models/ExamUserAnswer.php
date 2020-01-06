@@ -24,4 +24,9 @@ class ExamUserAnswer extends Model
         }
         return [];
     }
+
+    public function part()
+    {
+        return $this->belongsTo(ExamPart::class, 'part');
+    }
 }

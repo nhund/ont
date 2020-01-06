@@ -16,7 +16,9 @@ use App\Exceptions\BadRequestException;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Exam;
+use App\Models\ExamPart;
 use App\Models\ExamUser;
+use App\Models\ExamUserAnswer;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\QuestionLogCurrent;
@@ -74,6 +76,12 @@ class ExamController extends Controller
             || ($var['userExam']->still_time <=  date('Y-m-d H:i:s'));
 
         $var['overtime']      = $userExam && $exam && $userExam->turn > $exam->repeat_time;
+
+        $var['partAnswers'] = ExamPart::where('lesson_id', $id)
+            ->whereHas('userExamAnswer', function ($q) use ($request){
+                $q->where('user_id', $request->user()->id);
+            })->with('userExamAnswer')->get();
+
         if ($var['finish']){
             $examUser = ExamUser::where('lesson_id', $id)
                 ->with('user')
