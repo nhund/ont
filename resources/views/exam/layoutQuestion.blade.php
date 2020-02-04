@@ -67,9 +67,11 @@
                                                             @foreach($part->userExamAnswer as $key => $question)
                                                                 @if($question->answer)
                                                                 <div>
-                                                                    <div class="number-question answer-true">Câu {{$key}}</div>
-                                                                    @foreach($question->answer as $answer)
-                                                                        <div class="answer-question answer-false"> {{$answer->input ?: '--------'}} </div>
+                                                                    <div class="number-question answer-true">Câu {{$key + 1}}</div>
+                                                                    @foreach($question->answer as $key => $answers)
+                                                                        @foreach($answers as $key => $answer)
+                                                                            <div class="answer-question answer-false">{{$key}} - {{$answer->input ?: '--------'}} </div>
+                                                                        @endforeach
                                                                     @endforeach
                                                                 </div> <div class="clearfix"></div>
                                                                 @endif
