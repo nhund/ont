@@ -381,3 +381,29 @@ $(document).ready(function () {
     });
 
 });
+
+function showAnswers(results){
+    let resultHtml ='';
+    if (results){
+        results.forEach(function (result, index) {
+            let element  = `<div class="part-${result.id}"><div>${result.name}</div>`;
+            let userExamAnswers = result.user_exam_answer;
+                if (userExamAnswers) {
+                    userExamAnswers.forEach(function (userExamAnswer, indexUserExamAnswer) {
+                        const answers = userExamAnswer.answer;
+                        if (answers) {
+                            element += `<div><div class="number-question answer-true">Câu ${indexUserExamAnswer + 1}</div>`;
+                            Object.keys(answers).forEach(function (key, index) {
+                                    element += `<div class="answer-question answer-false">${index + 1} - ${answers[key].input ? answers[key].input : '------' }</div>`
+                            });
+                            element += `</div><div class="clearfix"></div>`;
+                        }
+                    })
+                }
+
+            element += `</div><div class="clearfix"></div>`;
+            resultHtml += element;
+        });
+        $('.result-exam').html(resultHtml)
+    } 
+}

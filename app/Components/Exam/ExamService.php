@@ -11,6 +11,7 @@ namespace App\Components\Exam;
 
 use App\Components\Question\QuestionService;
 use App\Events\BeginExamEvent;
+use App\Models\ExamPart;
 use App\Models\ExamQuestion;
 use App\Models\ExamUserAnswer;
 use App\Models\Lesson;
@@ -57,19 +58,11 @@ class ExamService
         return $questions;
     }
 
-
-
-    public function resultQuestion($questions, $lessonId, $userId)
+    public function resultQuestion($lessonId, $userId)
     {
-        foreach ($questions as $question){
-            $answer = ExamUserAnswer::where([
-                'question_id' => $question->id,
-                'lesson_id'   => $lessonId,
-                'user_id'     => $userId])->first();
-
-                $question->result = $answer ? $answer->answer : null ;
-        }
-
-        return $questions;
+        return ExamPart::where('lesson_id', $lessonId)
+            ->whereHas('userExamAnswer', function ($q) use ($userId){
+                $q->where('user_id',$userId);
+            })->with('userExamAnswer')->get()->toArray();
     }
 }

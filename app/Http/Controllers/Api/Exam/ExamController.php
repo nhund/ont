@@ -86,8 +86,7 @@ class ExamController extends Controller
     public function result(Lesson $lesson, Request $request)
     {
         $examService    = new ExamService();
-        $questions      = $examService->getQuestionExam($lesson);
-        $answerQuestions   = $examService->resultQuestion($questions, $lesson->id, $request->user()->id);
+        $answerQuestions   = $examService->resultQuestion($lesson->id, $request->user()->id);
         return $this->respondOk($answerQuestions);
     }
 

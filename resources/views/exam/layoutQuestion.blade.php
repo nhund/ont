@@ -59,27 +59,7 @@
                                                 </button>
                                                 <a href="{{route('exam.start', ['title' =>$var['lesson']->name, 'id' =>$var['lesson']->id ])}}" class="btn text-uppercase replay"><i class="fa fa-repeat"></i> làm lại</a>
                                             </div>
-                                            <div class="row result-exam">
-                                                @foreach($var['partAnswers'] as $key => $part)
-                                                    <div class="part-{{$part->id}}">
-                                                        <div>{{$part->name}}</div>
-                                                        @if($part->userExamAnswer)
-                                                            @foreach($part->userExamAnswer as $key => $question)
-                                                                @if($question->answer)
-                                                                <div>
-                                                                    <div class="number-question answer-true">Câu {{$key + 1}}</div>
-                                                                    @foreach($question->answer as $key => $answers)
-                                                                        @foreach($answers as $key => $answer)
-                                                                            <div class="answer-question answer-false">{{$key}} - {{$answer->input ?: '--------'}} </div>
-                                                                        @endforeach
-                                                                    @endforeach
-                                                                </div> <div class="clearfix"></div>
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
-                                                    </div>  <div class="clearfix"></div>
-                                                @endforeach
-                                            </div>
+                                            <div class="row result-exam"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -165,7 +145,8 @@
     <script src='{{ web_asset('public/js/exam/exam.js') }}' type='text/javascript'></script>
     <script>
         let countInterval;
-        const stoppedTime = parseInt($('input[name=time_stopped]').val());
+        let resultExam;
+
         function pauseExam(examId) {
             const status = $('input[name=status_stop]').val();
             const url    = status === 'Inactive' ? `/api/exam/${examId}/restart` : `/api/exam/${examId}/stop`;
@@ -260,14 +241,30 @@
             $stopTime.html(stopTime- stoppedTime)
         }
 
-        let timeLeft = $('input[name=still_time]').val();
-        countDown(timeLeft);
-        stopTime(stoppedTime);
-        $('.question_type').hide();
-        let until_number = parseInt($('input[name=until_number]').val());
-        $('.question_type.question_stt_' + until_number).show();
-        let count_question_current = $('.hoclythuyet .course_process .count_question_done');
-        count_question_current.text(until_number - 1);
+        function intiExam(){
+            countDown($('input[name=still_time]').val());
+            stopTime(parseInt($('input[name=time_stopped]').val()));
+            $('.question_type').hide();
+            let until_number = parseInt($('input[name=until_number]').val());
+            $('.question_type.question_stt_' + until_number).show();
+            $('.hoclythuyet .course_process .count_question_done').text(until_number - 1);
+
+            $.ajax({
+               headers: {
+                   'X-CSRF-Token' : $('meta[name=csrf-token]').attr("content"),
+                   'Authorization': localStorage.getItem('access_token'),
+               },
+               type   : "GET",
+               url    : '/api/exam/1428/result',
+               data   : {},
+               success: function (result) {
+                   if (result.code === 200 && result.data) {
+                       showAnswers(resultExam = result.data);
+                   }
+               }
+            });
+        }
+        intiExam();
 
     </script>
 @endpush

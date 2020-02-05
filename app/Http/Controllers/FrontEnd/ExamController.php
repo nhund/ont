@@ -77,11 +77,6 @@ class ExamController extends Controller
 
         $var['overtime']      = $userExam && $exam && $userExam->turn > $exam->repeat_time;
 
-        $var['partAnswers'] = ExamPart::where('lesson_id', $id)
-            ->whereHas('userExamAnswer', function ($q) use ($request){
-                $q->where('user_id', $request->user()->id);
-            })->with('userExamAnswer')->get();
-
         if ($var['finish']){
             $examUser = ExamUser::where('lesson_id', $id)
                 ->with('user')
