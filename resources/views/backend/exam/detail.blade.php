@@ -30,12 +30,7 @@
                                 <div class="panel-heading">
                                     <h2>
                                         <ul class="nav nav-tabs">
-                                            <li class="common-question active">
-                                                <a href="#tab-des" data-toggle="tab" class="tabDescription">
-                                                    <span class="tabDes">Câu hỏi</span>
-                                                </a>
-                                            </li>
-                                            <li class="add-question">
+                                            <li class="add-question active">
                                                 <a href="#tab-add-question" data-toggle="tab" class="a-add-question">
                                                     <img src="{{ asset('/public/images/course/icon/icon-comment.png')}}" class="tab-des">Thêm câu hỏi</a>
                                             </li>
@@ -54,64 +49,8 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="tab-content">
-                                        <div class="tab-pane active" id="tab-des">
-                                            <div class="change-lesson-des" style="display: none">
-                                                <div class="text-center form-group">
-                                                    <button type="button" class="btn btn-primary" onclick="saveDesLesson()"><i class="fa fa-save"></i> &nbsp;&nbsp;Lưu</button>
-                                                    <button type="button" class="btn btn-danger left10" onclick="handleLessonForm()">Hủy</button>
-                                                </div>
-                                                @if(!$lesson['is_exercise'])
-                                                <form id="editDesLesson" action="{{ route('lesson.handle') }}" method="POST" enctype="multipart/form-data">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <input type="hidden" name="id" value="{{ $lesson['id'] }}">
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <div class="col-sm-6">Tên</div>
-                                                            <div class="col-sm-6">Status</div>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <input type="text" class="form-control" placeholder="#Lesson name" name="lname" value="{{ $lesson['name'] }}">
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <select class="form-control" name="status">
-                                                                <option value="1" @if ($lesson['status'] == 1) selected="selected" @endif>Public</option>
-                                                                <option value="2" @if ($lesson['status'] == 2) selected="selected" @endif>Private</option>
-                                                                <option value="3" @if ($lesson['status'] == 3) selected="selected" @endif>Deleted</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <div class="col-sm-6">Link Video</div>
-                                                            <div class="col-sm-6">File audio</div>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <input type="text" class="form-control" placeholder="#Link video" name="video" value="{{ $lesson['video'] }}">
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <input type="file" name="audio">
-                                                            @if(!empty($lesson['audio']))
-                                                                <div class="mediPlayer">
-                                                                    <audio class="listen" preload="none" data-size="60" src="{{ web_asset('public/'.$lesson['audio']) }}"></audio>
-                                                                </div>
-                                                                @push('js')
-                                                                    <script>
-                                                                        $(document).ready(function () {
-                                                                          $('.mediPlayer').mediaPlayer();
-                                                                      });
-                                                                    </script>
-                                                                @endpush
-                                                            @endif                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="row col-sm-12">Nội dung</div>
-                                                    <div class="col-sm-12 row">
-                                                        <textarea name="description" cols="80" rows="20" id="editor" class="ckeditor1">{{ $lesson['description'] or '' }}</textarea>
-                                                    </div>
-                                                </form>
-                                                @endif
-                                            </div>
-
+                                        <div class="tab-pane active" id="tab-add-question">
+                                            @include('backend.exam.add_question')
                                             @if ($lesson['description'])
                                                 <div class="pdes">
                                                     {!! $lesson['description'] !!}
@@ -132,12 +71,6 @@
                                                 @include('backend.lesson.detail_ex')
                                             @endif
 
-                                            @if ($lesson['is_exercise'])
-                                                @include('backend.lesson.information')
-                                            @endif
-                                        </div>
-                                        <div class="tab-pane" id="tab-add-question">
-                                            @include('backend.exam.add_question')
                                             @if ($lesson['is_exercise'])
                                                 @include('backend.lesson.information')
                                             @endif
