@@ -25,10 +25,7 @@ class QuestionImport implements ToCollection
     public function __construct($data)
     {
         $this->data = $data;
-        $this->is_exam = Lesson::where([
-            'id' => $data['lesson_id'],
-            'type' => Lesson::EXAM
-        ])->exists();
+
     }
 
     /**
@@ -645,7 +642,7 @@ class QuestionImport implements ToCollection
     }
 
     protected function insertExamQuestion($lesson_id, $question_id){
-        if ($this->is_exam && $this->data['part']){
+        if ($this->data['is_exam'] && $this->data['part']){
             ExamQuestion::create([
              'lesson_id' => $lesson_id,
              'question_id' => $question_id,

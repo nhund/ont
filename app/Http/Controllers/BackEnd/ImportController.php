@@ -291,6 +291,20 @@ class ImportController extends AdminBaseController
                 'data'  => []
             ]);
         }
+
+        $data['is_exam'] = Lesson::where([
+               'id' => $input['lesson_id'],
+               'type' => Lesson::EXAM
+           ])->exists();
+
+        if ($data['is_exam'] && !$input['part']){
+            return response()->json([
+                'error' => true,
+                'msg'   => 'Chưa chọn phần của bài kiểm tra',
+                'data'  => []
+            ]);
+        }
+
         $data['lesson_id'] = $input['lesson_id'];
         $data['part']      = $input['part'];
         $data['course_id'] = 0;
