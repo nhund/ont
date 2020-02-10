@@ -292,6 +292,7 @@ class ImportController extends AdminBaseController
             ]);
         }
         $data['lesson_id'] = $input['lesson_id'];
+        $data['part']      = $input['part'];
         $data['course_id'] = 0;
         $data['user_id']   = $user->id;
         $lesson            = Lesson::find($data['lesson_id']);
@@ -301,7 +302,7 @@ class ImportController extends AdminBaseController
 
         $data_excel = Excel::import(new QuestionImport($data), $file);
 
-        return response()->json(array('error' => true, 'msg' => 'Thêm dữ liệu không thành công'));
+        return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
     }
 
 
