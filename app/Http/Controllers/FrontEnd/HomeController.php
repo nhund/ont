@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
@@ -89,7 +90,16 @@ class HomeController extends Controller
         $var['courses'] = Course::where('status','!=',Course::TYPE_PRIVATE)->where('sticky',Course::STICKY)->take(8)->get();        
         $var['about'] = About::first();  
         $var['user_feels'] = UserFeel::where('status',UserFeel::STATUS_ON)->get();
-        $var['founders'] = Founder::where('status',Founder::STATUS_ON)->get();        
+        $var['founders'] = Founder::where('status',Founder::STATUS_ON)->get();
+
+        $newsFeature =  Post::where('type', Post::NEWS)
+            ->where('status', Post::STATUS_ON)->take(3)
+            ->orderBy('feature', 'DESC')
+            ->orderBy('id','DESC')->get();
+
+        $var['news'] = $newsFeature;
+
+
         return view('home.index',compact('var'));
     }
     public function contact()

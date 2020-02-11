@@ -3,9 +3,11 @@
 @section('content')
 	{{--@include('home.slider')--}}
 	@include('home.about')                   
-	@include('home.course')   
+	@include('home.course')
+	@include('home.news')
+
 	{{-- @include('home.download_app')      --}}
-	@include('home.service')    
+	@include('home.service')
 	@include('home.teacher')                           
 	<div class="clearbox"></div> 
 	
