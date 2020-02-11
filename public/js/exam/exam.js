@@ -398,16 +398,16 @@ function showAnswers(results){
                                 if (subAnswers[1]) {
                                     Object.keys(subAnswers).forEach(function (id, indexs) {
                                         if(Object.keys(subAnswers).length === 1){
-                                            element += `<div class="answer-question answer-false">${subAnswers[id].input ? subAnswers[id].input : '------' }</div>`
+                                            element += `<div class="answer-question answer-false">${subAnswers[id].input_text ? subAnswers[id].input_text : '------' }</div>`
                                         }else {
-                                            element += `<div class="answer-question answer-false">${indexs + 1} - ${subAnswers[id].input ? subAnswers[id].input : '------' }</div>`
+                                            element += `<div class="answer-question answer-false">${indexs + 1} - ${subAnswers[id].input_text ? subAnswers[id].input_text : '------' }</div>`
                                         }
                                     });
                                 }else {
                                     if(Object.keys(answers).length === 1){
-                                        element += `<div class="answer-question answer-false">${answers[key].input ? answers[key].input : '------' }</div>`
+                                        element += `<div class="answer-question answer-false">${answers[key].input_text ? answers[key].input_text : '------' }</div>`
                                     }else {
-                                        element += `<div class="answer-question answer-false">${index + 1} - ${answers[key].input ? answers[key].input : '------' }</div>`
+                                        element += `<div class="answer-question answer-false">${index + 1} - ${answers[key].input_text ? answers[key].input_text : '------' }</div>`
                                     }
                                 }
                             });

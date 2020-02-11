@@ -154,6 +154,7 @@ class SubmitQuestionExam
             $reply = QuestionAnswer::REPLY_ERROR;
             //lay dap an dung
             $answerCheck = QuestionAnswer::where('question_id', $key)->where('status', QuestionAnswer::REPLY_OK)->first();
+            $allAnswers = QuestionAnswer::where('question_id', $key)->orderBy('answer','ASC')->pluck('id')->toArray();
 
             $flag = $answerCheck && (int)$answer == (int)$answerCheck->id;
 
@@ -173,6 +174,7 @@ class SubmitQuestionExam
                 'question_id'   => $key,
                 'error'         => $reply,
                 'input'         => !empty($answer) ? (int)$answer : '',
+                'input_text'    => !empty($allAnswers) ? $this->getAnswerMultiChoice(array_search($answer, $allAnswers)) : '',
                 'answer'        => $answerCheck->id ?? '',
                 'interpret'     => $text ?: '',
                 'interpret_all' => $interpret_all ?: '',
@@ -202,6 +204,7 @@ class SubmitQuestionExam
             $result[$key] = array(
                 'error'  => $reply,
                 'input'  => !empty($answer) ? $answer : '',
+                'input_text'  => !empty($answer) ? $answer : '',
                 'answer' => $an->answer,
             );
         }
@@ -238,6 +241,7 @@ class SubmitQuestionExam
                         $result[$question_id][$incr_sb] = array(
                             'error'  => $reply_status,
                             'input'  => $value[$incr_sb],
+                            'input_text'  => $value[$incr_sb],
                             'answer' => $m[2],
                         );
                     } else {
@@ -246,6 +250,7 @@ class SubmitQuestionExam
                         $result[$question_id][$incr_sb] = array(
                             'error'  => QuestionAnswer::REPLY_ERROR,
                             'input'  => '',
+                            'input_text'  => '',
                             'answer' => $m[2],
                         );
                     }
@@ -284,5 +289,20 @@ class SubmitQuestionExam
 
 
         return round($parts->score/$totalQuestions, 1);
+    }
+
+    private function getAnswerMultiChoice($index){
+
+        $array = [
+            0 => "A",
+            1 => "B",
+            2 => "C",
+            3 => "D",
+            4 => "E",
+            5 => "F",
+            6 => "G",
+         ];
+
+        return $array[$index];
     }
 }
