@@ -63,7 +63,7 @@ $(document).ready(function() {
 					}else{
 						swal({
 							title: 'Thông báo',
-							text: data.msg,
+							text: data.msg ? data.msg : data.message,
 							timer: 3000,
 							type: 'error',
 						});
@@ -77,7 +77,7 @@ $(document).ready(function() {
 							type: 'error',
 						});
 			        setTimeout(function(){ 
-							// window.location.reload();
+							window.location.reload();
 						}, 2000);
 			      }
 			}).always(function () {

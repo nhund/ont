@@ -265,7 +265,7 @@ class SubmitQuestionExam
             'question_id' => $this->question->id,
             'lesson_id'   => $this->examId,
         ])->firstOrFail();
-
+//        dd($examQuestion);
         $condition = [
             'lesson_id' => $this->examId,
             'part'      => $examQuestion->part
@@ -281,6 +281,7 @@ class SubmitQuestionExam
 
         // tổng điểm của phần
         $parts = ExamPart::where($conditionPart)->first();
+
 
         return round($parts->score/$totalQuestions, 1);
     }

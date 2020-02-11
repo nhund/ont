@@ -38,150 +38,148 @@ class QuestionImport implements ToCollection
         DB::beginTransaction();
         try {
             foreach ($collection as $keys => $value) {
-            if ($keys >= 1) {
+                if ($keys >= 1) {
                 $items = array_filter($value->toArray());
 
-                if (isset($items[0])) {
 
-                    // Câu hỏi cho flashcard
-                    if (strpos($items[0], '#f.') !== false) {
-
-                        $this->insertQuestion();
-
-                        // cau hoi flash don
-                        $formatData = $this->_formatFlashCard($items);
-                        $item_flash = array(
-                            'content'        => $formatData['content'],
-                            'type'           => Question::TYPE_FLASH_SINGLE,
-                            'parent_id'      => 0,
-                            'lesson_id'      => $this->data['lesson_id'],
-                            'course_id'      => $this->data['course_id'],
-                            'user_id'        => $this->data['user_id'],
-                            'created_at'     => time(),
-                            'explain_before' => $formatData['explain_before'],
-                            'explain_after'  => $formatData['explain_after'],
-                            'question'       => $formatData['question_before'],
-                            'question_after' => $formatData['question_after'],
-                            'img_before'     => $formatData['img_before'],
-                            'img_after'      => $formatData['img_after']
-                        );
-                        Question::insert($item_flash);
-                    }
-
-                    // Câu hỏi cho multi flashcard
-                    if (strpos($items[0], '#mf.') !== false) {
-
-                        $this->insertQuestion();
-
-                        // cau hoi flash chuoi
-                        if (strpos($items[0], '#mf.') !== false) {
-                            $this->flash_chuoi['content']    = $this->_detectMathLatex(str_replace('#mf.', '', $items[0]));
-                            $this->flash_chuoi['user_id']    = $this->data['user_id'];
-                            $this->flash_chuoi['lesson_id']  = $this->data['lesson_id'];
-                            $this->flash_chuoi['course_id']  = $this->data['course_id'];
-                            $this->flash_chuoi['created_at'] = time();
-                        }
-                    }
+                // Câu hỏi cho flashcard
+//                    if (strpos($items[0], '#f.') !== false) {
 //
-                    // dien tu ngan
-                    if (strpos($items[0], '#q.') !== false) {
+//                        $this->insertQuestion();
+//
+//                        // cau hoi flash don
+//                        $formatData = $this->_formatFlashCard($items);
+//                        $item_flash = array(
+//                            'content'        => $formatData['content'],
+//                            'type'           => Question::TYPE_FLASH_SINGLE,
+//                            'parent_id'      => 0,
+//                            'lesson_id'      => $this->data['lesson_id'],
+//                            'course_id'      => $this->data['course_id'],
+//                            'user_id'        => $this->data['user_id'],
+//                            'created_at'     => time(),
+//                            'explain_before' => $formatData['explain_before'],
+//                            'explain_after'  => $formatData['explain_after'],
+//                            'question'       => $formatData['question_before'],
+//                            'question_after' => $formatData['question_after'],
+//                            'img_before'     => $formatData['img_before'],
+//                            'img_after'      => $formatData['img_after']
+//                        );
+//                        Question::insert($item_flash);
+//                    }
 
-                        $this->insertQuestion();
+                // Câu hỏi cho multi flashcard
+//                    if (strpos($items[0], '#mf.') !== false) {
+//
+//                        $this->insertQuestion();
+//
+//                        // cau hoi flash chuoi
+//                        if (strpos($items[0], '#mf.') !== false) {
+//                            $this->flash_chuoi['content']    = $this->_detectMathLatex(str_replace('#mf.', '', $items[0]));
+//                            $this->flash_chuoi['user_id']    = $this->data['user_id'];
+//                            $this->flash_chuoi['lesson_id']  = $this->data['lesson_id'];
+//                            $this->flash_chuoi['course_id']  = $this->data['course_id'];
+//                            $this->flash_chuoi['created_at'] = time();
+//                        }
+//                    }
+//
+                // dien tu ngan
+                if (strpos($items[0], '#q.') !== false) {
 
-                        // bat dau dien tu ngan
-                        // doan van dien tu ngan
-                        $formatData                = $this->_formatDienTu($items);
-                        $this->dien_tu_ngan['content']   = $this->_detectMathLatex(str_replace('#q.', '', $items[0]));
-                        $this->dien_tu_ngan['interpret'] = $this->_detectMathLatex($formatData['interpret']);
+                    $this->insertQuestion();
 
-                        $this->dien_tu_ngan['user_id']   = $this->data['user_id'];
-                        $this->dien_tu_ngan['lesson_id'] = $this->data['lesson_id'];
-                        $this->dien_tu_ngan['course_id'] = $this->data['course_id'];
-                        $this->dien_tu_ngan['image']     = $formatData['image'];
-                    }
+                    // bat dau dien tu ngan
+                    // doan van dien tu ngan
+                    $formatData                = $this->_formatDienTu($items);
+                    $this->dien_tu_ngan['content']   = $this->_detectMathLatex(str_replace('#q.', '', $items[0]));
+                    $this->dien_tu_ngan['interpret'] = $this->_detectMathLatex($formatData['interpret']);
+
+                    $this->dien_tu_ngan['user_id']   = $this->data['user_id'];
+                    $this->dien_tu_ngan['lesson_id'] = $this->data['lesson_id'];
+                    $this->dien_tu_ngan['course_id'] = $this->data['course_id'];
+                    $this->dien_tu_ngan['image']     = $formatData['image'];
+                }
 
 
-                    // trac nghiem
-                    if (strpos($items[0], '#tn.') !== false) {
-                        $this->insertQuestion();
+                // trac nghiem
+                elseif (strpos($items[0], '#tn.') !== false) {
+                    $this->insertQuestion();
 
-                        // bat dau trac nghiem
-                        // doan van trac nghiem
-                        $formatData = $this->_formatTracNghiem($items);
+                    // bat dau trac nghiem
+                    // doan van trac nghiem
+                    $formatData = $this->_formatTracNghiem($items);
 
-                        $this->trac_nghiem['content']        = $this->_detectMathLatex(str_replace('#tn.', '', $items[0]));
-                        $this->trac_nghiem['user_id']        = $this->data['user_id'];
-                        $this->trac_nghiem['explain_before'] = $formatData['explain_before'];
-                        $this->trac_nghiem['interpret']      = $formatData['interpret'];
-                        $this->trac_nghiem['lesson_id']      = $this->data['lesson_id'];
-                        $this->trac_nghiem['course_id']      = $this->data['course_id'];
-                        $this->trac_nghiem['image']          = $formatData['image'];
-                    }
+                    $this->trac_nghiem['content']        = $this->_detectMathLatex(str_replace('#tn.', '', $items[0]));
+                    $this->trac_nghiem['user_id']        = $this->data['user_id'];
+                    $this->trac_nghiem['explain_before'] = $formatData['explain_before'];
+                    $this->trac_nghiem['interpret']      = $formatData['interpret'];
+                    $this->trac_nghiem['lesson_id']      = $this->data['lesson_id'];
+                    $this->trac_nghiem['course_id']      = $this->data['course_id'];
+                    $this->trac_nghiem['image']          = $formatData['image'];
+                }
 
-                    if (strpos($items[0], '$f.') !== false) {
-                        $formatData = $this->_formatFlashCard($items);
-                        // cau hoi flash chuoi cha
-                        $this->flash_chuoi['childs'][] = array(
+                elseif (strpos($items[0], '$f.') !== false) {
+                    $formatData = $this->_formatFlashCard($items);
+                    // cau hoi flash chuoi cha
+                    $this->flash_chuoi['childs'][] = array(
+                        'explain_before' => $formatData['explain_before'],
+                        'explain_after'  => $formatData['explain_after'],
+                        'course_id'      => $this->data['course_id'],
+                        'question'       => $formatData['question_before'],
+                        'question_after' => $formatData['question_after'],
+                        'img_before'     => $formatData['img_before'],
+                        'img_after'      => $formatData['img_after']
+                    );
+                }
+
+                elseif (strpos($items[0], '$sf.') !== false) {
+                    // cau hoi flash chuoi con
+                    //get flash card cha cuoi cung
+                    $last_parent = count($this->flash_chuoi['childs']);
+                    if ($last_parent > 0) {
+                        $formatData                                          = $this->_formatFlashCard($items);
+                        $this->flash_chuoi['childs'][$last_parent - 1]['childs'][] = array(
                             'explain_before' => $formatData['explain_before'],
                             'explain_after'  => $formatData['explain_after'],
                             'course_id'      => $this->data['course_id'],
-                            'question'       => $formatData['question_before'],
+                            'question'       => $this->_detectMathLatex(str_replace('$sf.', '', $items[0])),
                             'question_after' => $formatData['question_after'],
                             'img_before'     => $formatData['img_before'],
                             'img_after'      => $formatData['img_after']
                         );
-                    }
 
-                    if (strpos($items[0], '$sf.') !== false) {
-                        // cau hoi flash chuoi con
-                        //get flash card cha cuoi cung
-                        $last_parent = count($this->flash_chuoi['childs']);
-                        if ($last_parent > 0) {
-                            $formatData                                          = $this->_formatFlashCard($items);
-                            $this->flash_chuoi['childs'][$last_parent - 1]['childs'][] = array(
-                                'explain_before' => $formatData['explain_before'],
-                                'explain_after'  => $formatData['explain_after'],
-                                'course_id'      => $this->data['course_id'],
-                                'question'       => $this->_detectMathLatex(str_replace('$sf.', '', $items[0])),
-                                'question_after' => $formatData['question_after'],
-                                'img_before'     => $formatData['img_before'],
-                                'img_after'      => $formatData['img_after']
-                            );
-
-                        }
-                    }
-
-                    if (strpos($items[0], '$d.') !== false) {
-                        //cau hoi dien tu ngan
-                        $formatData               = $this->_formatDienTu($items);
-                        $this->dien_tu_ngan['childs'][] = array(
-                            'question'       => $this->_detectMathLatex($formatData['question']),
-                            'explain_before' => $this->_detectMathLatex($formatData['explain_before']),
-                            'interpret'      => $this->_detectMathLatex($formatData['interpret']),
-                            'image'          => $formatData['image'],
-                            'answer'         => $formatData['answer'],
-                            'course_id'      => $this->data['course_id'],
-                        );
-                    }
-
-                    if (strpos($items[0], '$tn.') !== false) {
-                        //cau hoi trac nghiem
-                        $formatData = $this->_formatTracNghiem($items);
-
-                        $this->trac_nghiem['childs'][] = array(
-                            'question'       => $formatData['question'],
-                            'explain_before' => $formatData['explain_before'],
-                            'lesson_id'      => $this->data['lesson_id'],
-                            'answer'         => $formatData['answer'],
-                            'answer_error'   => $formatData['ansewr_error'],
-                            'course_id'      => $this->data['course_id'],
-                            'image'          => $formatData['image'],
-                            'interpret'      => $formatData['interpret'],
-                        );
                     }
                 }
+
+                elseif (strpos($items[0], '$d.') !== false) {
+                    //cau hoi dien tu ngan
+                    $formatData               = $this->_formatDienTu($items);
+                    $this->dien_tu_ngan['childs'][] = array(
+                        'question'       => $this->_detectMathLatex($formatData['question']),
+                        'explain_before' => $this->_detectMathLatex($formatData['explain_before']),
+                        'interpret'      => $this->_detectMathLatex($formatData['interpret']),
+                        'image'          => $formatData['image'],
+                        'answer'         => $formatData['answer'],
+                        'course_id'      => $this->data['course_id'],
+                    );
+                }
+
+                elseif (strpos($items[0], '$tn.') !== false) {
+                    //cau hoi trac nghiem
+                    $formatData = $this->_formatTracNghiem($items);
+
+                    $this->trac_nghiem['childs'][] = array(
+                        'question'       => $formatData['question'],
+                        'explain_before' => $formatData['explain_before'],
+                        'lesson_id'      => $this->data['lesson_id'],
+                        'answer'         => $formatData['answer'],
+                        'answer_error'   => $formatData['ansewr_error'],
+                        'course_id'      => $this->data['course_id'],
+                        'image'          => $formatData['image'],
+                        'interpret'      => $formatData['interpret'],
+                    );
+                }
                 //   dien tu doan van
-                if (strpos($items[0], '#dt.') !== false) {
+                elseif (strpos($items[0], '#dt.') !== false) {
                     $this->insertQuestion();
 
                     // bat dau dien tu doan van
@@ -196,7 +194,7 @@ class QuestionImport implements ToCollection
                     $this->dien_tu_doan_van['course_id']      = $this->data['course_id'];
                 }
 
-                if (strpos($items[0], '$dt.') !== false) {
+                elseif (strpos($items[0], '$dt.') !== false) {
                     //cau hoi dien tu doan van
                     $formatData                   = $this->_formatDienTuDoanVan($items);
                     $this->dien_tu_doan_van['childs'][] = array(
@@ -205,9 +203,11 @@ class QuestionImport implements ToCollection
                         'course_id'      => $this->data['course_id'],
                         'interpret'      => $this->_detectMathLatex($formatData['interpret']),
                     );
+                } else {
+                    throw new BadRequestException('File không đúng định dạng');
                 }
 
-                if ($keys == count($items) - 1) {
+                if ($keys == count($collection) - 1) {
                     // duyet het dong cuoi cung.
                     $this->insertQuestion();
                 }
@@ -219,7 +219,7 @@ class QuestionImport implements ToCollection
             //die("111");
             DB::rollBack();
 
-            throw new BadRequestException('Thêm câu hỏi không thành công!');
+            throw new BadRequestException($e->getMessage() ?: 'Thêm câu hỏi không thành công!');
         }
         return response()->json(array('error' => true, 'msg' => 'Thêm dữ liệu thành công!'));
     }
