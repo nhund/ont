@@ -394,7 +394,11 @@ function showAnswers(results){
                         if (answers) {
                             element += `<div><div class="number-question answer-true">Câu ${indexUserExamAnswer + 1}</div>`;
                             Object.keys(answers).forEach(function (key, index) {
+                                if(answers.length = 1){
+                                    element += `<div class="answer-question answer-false">${answers[key].input ? answers[key].input : '------' }</div>`
+                                }else {
                                     element += `<div class="answer-question answer-false">${index + 1} - ${answers[key].input ? answers[key].input : '------' }</div>`
+                                }
                             });
                             element += `</div><div class="clearfix"></div>`;
                         }

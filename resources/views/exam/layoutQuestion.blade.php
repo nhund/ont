@@ -16,6 +16,7 @@
         <input type="hidden" name="totalQuestion" value="{{$var['totalQuestion']}}">
         <input type="hidden" name="time_stop" value="{{$var['exam']->stop_time}}">
         <input type="hidden" name="time_stopped" value="{{$var['userExam']->turn_stop}}">
+        <input type="hidden" name="lesson_id" value="{{$var['lesson']->id}}">
 
         @if(!$var['finish'])
             <section id="hoclythuyet" class="clearfix flash_card">
@@ -249,13 +250,14 @@
             $('.question_type.question_stt_' + until_number).show();
             $('.hoclythuyet .course_process .count_question_done').text(until_number - 1);
 
+            const exam_id = $('input[name=lesson_id]').val();
             $.ajax({
                headers: {
                    'X-CSRF-Token' : $('meta[name=csrf-token]').attr("content"),
                    'Authorization': localStorage.getItem('access_token'),
                },
                type   : "GET",
-               url    : '/api/exam/1428/result',
+               url    : `/api/exam/${exam_id}/result`,
                data   : {},
                success: function (result) {
                    if (result.code === 200 && result.data) {

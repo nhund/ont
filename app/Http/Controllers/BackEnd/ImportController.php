@@ -297,7 +297,7 @@ class ImportController extends AdminBaseController
                'type' => Lesson::EXAM
            ])->exists();
 
-        if ($data['is_exam'] && !$input['part']){
+        if ($data['is_exam'] && empty($input['part'])){
             return response()->json([
                 'error' => true,
                 'msg'   => 'Chưa chọn phần của bài kiểm tra',

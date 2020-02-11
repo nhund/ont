@@ -9,6 +9,7 @@ $(document).ready(function() {
 
 		var box_action = $this.closest('#importQuestion').find('.box_action');
 		var loading = $this.closest('#importQuestion').find('.loader');
+		const part = $('#part') ? $('#part').val() : '';
 		if(type == '')
 		{
 			swal({
@@ -38,7 +39,8 @@ $(document).ready(function() {
 			formData.append('file', file[0].files[0]);
 			formData.append('lesson_id', lesson_id);
 			formData.append('type', type);
-			formData.append('_token', $('meta[name=csrf-token]').attr("content"));            
+			formData.append('part', part);
+			formData.append('_token', $('meta[name=csrf-token]').attr("content"));
 			$.ajax({
 				url : import_excel,
 				type : 'POST',
