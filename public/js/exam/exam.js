@@ -90,7 +90,9 @@ $(document).ready(function () {
                    upCountQuestion();
                    checkButton($this)
 
-                   $.each(data.data, function (key, val) {
+                   let answer = data.data.answer;
+
+                   $.each(answer, function (key, val) {
 
                        if (val.error == 2) {
                            $('.answer_' + val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
@@ -112,6 +114,7 @@ $(document).ready(function () {
                            box_interpret_child.show();
                        }
                    });
+                   showAnswers(resultExam = data.data.result);
 
                } else {
                    if (data.error) {
@@ -166,8 +169,10 @@ $(document).ready(function () {
 
                    upCountQuestion();
                    checkButton($this);
+                   let answer = data.data.answer;
 
-                   $.each(data.data, function (key, val) {
+                   $.each(answer, function (key, val) {
+
                        if (parseInt(val.error) === 2) {
                            $('.question_id_' + key).find('.result').addClass('true');
 
@@ -182,6 +187,8 @@ $(document).ready(function () {
                        box_interpret_child.show();
 
                    });
+
+                   showAnswers(resultExam = data.data.result);
                } else {
                    notify(data.message)
                }
@@ -272,7 +279,9 @@ $(document).ready(function () {
                            upCountQuestion();
                            checkButton($this)
 
-                           $.each(data.data, function (key, val) {
+                           let answer = data.data.answer
+
+                           $.each(answer, function (key, val) {
                                $.each(val, function (key2, val2) {
                                    var input_answer = $('.dien_tu_doan_van input[name="txtLearnWord[' + key + '][' + key2 + ']"]');
                                    if (parseInt(val2.error) === 2) {
@@ -290,6 +299,8 @@ $(document).ready(function () {
                                });
 
                            });
+
+                           showAnswers(resultExam = data.data.result);
                        }else {
                            notify(data.message)
                        }

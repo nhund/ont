@@ -60,7 +60,7 @@
                                                 </button>
                                                 <a href="{{route('exam.start', ['title' =>$var['lesson']->name, 'id' =>$var['lesson']->id ])}}" class="btn text-uppercase replay"><i class="fa fa-repeat"></i> làm lại</a>
                                             </div>
-                                            <div class="row result-exam"></div>
+                                            <div class="row result-exam" id="result-exam"></div>
                                         </div>
                                     </div>
                                 </div>

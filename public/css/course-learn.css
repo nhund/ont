@@ -703,7 +703,7 @@
     font-size: 21px;
 }
 .result-exam{
-    height: 550px;
+    max-height: 350px;
     margin-top: 20px;
     overflow-y: scroll;
 }

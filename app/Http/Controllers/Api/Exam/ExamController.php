@@ -55,7 +55,10 @@ class ExamController extends Controller
 
         $result = (new SubmitQuestionExam())->submit($request, $question);
 
-        return $this->respondOk($result);
+        $examService    = new ExamService();
+        $answerQuestions   = $examService->resultQuestion($request->exam_id, $request->user()->id);
+
+        return $this->respondOk(['result' =>$answerQuestions, 'answer' => $result]);
     }
 
     /**
