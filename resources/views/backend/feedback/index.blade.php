@@ -36,7 +36,8 @@
                                         <th width="50">STT</th>
                                         <th width="100">Thành viên</th>
                                         <th width="100">Email</th>
-                                        <th width="100">Tiêu đề</th>                                              <th width="100">Nội dung</th>                                      
+                                        <th width="100">Tiêu đề</th>
+                                        <th width="100">Nội dung</th>
                                         <th width="100">Câu hỏi</th>
                                         <th width="100">Khóa học</th>                                        
                                         <th width="100">Ngày tạo</th>                                        
@@ -47,7 +48,7 @@
                                     <tbody>
                                     @if($var['feedbacks'])
                                         @foreach($var['feedbacks'] as $key => $feedback)
-                                            <tr class="tr">  
+                                            <tr class="tr">
                                                 <td>{{ $key+1 }}</td> 
                                                 <td>
                                                     {{ $feedback->user->name_full }}
@@ -81,6 +82,7 @@
                                                 <td>
                                                     <a target="_blank" href="https://mail.google.com/mail/u/0/#inbox?compose=new" class="btn btn-default btn-xs btn-label"><i class="fa fa-envelope"></i>Trả lời email</a>
                                                     <a href="{{ route('admin.feedback.editQuestion',['id'=>$feedback->question_id,'feedback_id'=>$feedback->id]) }}" class="btn btn-default btn-xs btn-label"><i class="fa fa-pencil"></i>Sửa</a>
+                                                    <a onclick="bookmark(`{{$feedback->question_id}}`, this)" class="btn {{$feedback->bookmark ? 'btn-success bookmarked' : 'btn-default'}} btn-xs btn-label"><i class="fa fa-bookmark"></i>Bookmark</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -105,6 +107,8 @@
     <script src="{{ asset('public/plugin/form-daterangepicker/moment.min.js') }}"></script>
     <script src="{{ asset('public/plugin/form-daterangepicker/daterangepicker.js') }}"></script>
     <script type="text/javascript">
+        const book_mark_url     = '{{ route('user.question.bookMark') }}';
+
         $(document).ready(function() {
             $('#daterangepicker1').daterangepicker({ format: 'DD/MM/YYYY' });
             $('body').on('click','.daterangepicker .applyBtn',function(event) {
@@ -115,5 +119,35 @@
                 radioClass: 'iradio_minimal-blue'
             });            
         });
+
+        //bookmark
+        function bookmark(question_id, $this) {
+            var data = {question_id};
+
+            $.ajax({
+                   headers: {'X-CSRF-Token': $('meta[name=csrf-token]').attr("content")},
+                   type   : "POST",
+                   url    : book_mark_url,
+                   data   : data,
+                   success: function (data) {
+                       if (data.error == false) {
+                           toastr.success('Thông báo!', data.msg, {timeOut: 600, positionClass: "toast-top-modify"});
+                           if (!$($this).hasClass('bookmarked')){
+                               $($this).addClass('bookmarked');
+                               $($this).removeClass('btn-default').addClass('btn-success');
+                           } else {
+                               $($this).removeClass('bookmarked');
+                               $($this).removeClass('btn-success').addClass('btn-default');
+                           }
+                       } else {
+                           toastr.error('Thông báo!', data.msg, {timeOut: 600, positionClass: "toast-top-modify"})
+                       }
+                   },
+                   error  : function (e) {
+
+                   }
+               }).always(function () {
+            });
+        };
     </script>
 @endpush
