@@ -4,7 +4,7 @@
     <link href="{{asset('/public/admintrator/assets/css/animate.min.css')}}" type="text/css" rel="stylesheet">
 @endpush
 @push('js')
-    
+
 @endpush
 @section('content')
     @include('backend.include.breadcrumb',['var'=>$breadcrumb])
@@ -28,14 +28,7 @@
                         <div class="panel-footer detail-footer">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h2>
-                                        <ul class="nav">
-                                            <li class="add-question">
-                                                <a  class="a-add-part">
-                                                    <img src="{{ asset('/public/images/course/icon/icon-comment.png')}}" class="tab-des">Điểm từng phần</a>
-                                            </li>
-                                        </ul>
-                                    </h2>
+
                                     <div class="pull-right editBtn">
                                         <a class="btn btn-success left10" title="Xóa" data-toggle="modal" href="#update-part-exam">Cập nhật thông tin</a>
                                         <button class="btn btn-primary" title="Sửa" data-toggle="modal" href="#editCourse">Sửa</button>
@@ -44,8 +37,31 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="tab-content">
-                                        <div class="tab-pane active" id="tab-add-part">
-                                            @include('backend.exam.add_part')
+                                        <div class="active" id="tab-add-question">
+                                            @include('backend.exam.add_question')
+                                            @if ($lesson['description'])
+                                                <div class="pdes">
+                                                    {!! $lesson['description'] !!}
+                                                    <p>Audio :</p>
+                                                    @if(!empty($lesson['audio']))
+                                                        <div class="mediPlayer">
+                                                            <audio class="listen" preload="none" data-size="60" src="{{ web_asset('public/'.$lesson['audio']) }}"></audio>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                            @if(!$lesson['is_exercise'])
+                                                <div class="text-center form-group add-lesson-des">
+                                                    <button type="button" class="btn btn-primary" onclick="handleLessonForm()"><i class="fa fa-plus"></i> &nbsp;&nbsp;Thêm nội dung</button>
+                                                </div>
+                                                @include('backend.lesson.list')
+                                            @else
+                                                @include('backend.lesson.detail_ex')
+                                            @endif
+
+                                            @if ($lesson['is_exercise'])
+                                                @include('backend.lesson.information')
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -56,10 +72,10 @@
             </div>
         </div>
     </div>
-    
+
     @include('include.backend.detail_modal')
     @include('include.backend.lesson_modal')
-    
+
 @endsection
 @push('js')
 {{-- <script src="{{ asset('public/admintrator/assets/plugins/form-ckeditor/ckeditor.js') }}"></script> --}}
@@ -72,7 +88,7 @@
             } else {
                 $('.editBtn').hide();
             }
-        });    
+        });
     if($('#editor').length > 0)
     {
         if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
@@ -95,14 +111,14 @@
                 // :(((
                 if ( isBBCodeBuiltIn ) {
                     editorElement.setHtml(
-                        
+
                     );
                 }
 
                 // Depending on the wysiwygarea plugin availability initialize classic or inline editor.
                 if ( wysiwygareaAvailable ) {
                     CKEDITOR.replace( 'editor' ,{
-                        
+
                         filebrowserUploadUrl: '{{ route('admin.import.imageCkeditor') }}?_token={{ csrf_token() }}&course_id={{ $lesson['course_id'] }}',
                     });
                 } else {
@@ -126,11 +142,11 @@
         } )();
         initSample();
     }
-    
+
     @if(!$lesson['is_exercise'])
-        $(document).ready(function() {        
-            $('.supplier_select').select2();     
-                  
+        $(document).ready(function() {
+            $('.supplier_select').select2();
+
         });
     @endif
 

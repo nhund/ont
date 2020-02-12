@@ -1,7 +1,7 @@
 <div class="row top10">
     <div class="col-xs-12">
         <div class="panel panel-grape panel-bod">
-            <div class="panel-heading"><h2>Chọn cậu hỏi vào đề thi</h2></div>
+            <div class="panel-heading"><h2>Thêm câu hỏi vào phần {{$part->name ?? ''}}</h2></div>
             <div class="panel-body">
                 <div class="table-responsive SourceSansProSemibold">
                     <form method="get" action="" id="add_question">
@@ -13,22 +13,10 @@
                                     <td><input id="keySearch" value="{{request('key_search')}}" class="form-control" type="text" name="key_search"></td>
                                     <td> <button class="btn btn-primary" type="submit">tìm kiếm</button> </td>
                                 </tr>
-                                <tr>
-                                    <td class="text-bold"><label for="part">Câu hỏi thuộc phần</label></td>
-                                    <td>
-                                        <select class="form-control" id="part" name="part" data-input="part">
-                                                <option value="">--Chọn phần--</option>
-                                            @foreach($parts as $part)
-                                                <option {{request('part') == $part->id ?'selected' : ''}} value="{{$part->id}}">{{$part->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td></td>
-                                </tr>
                             </tbody>
                         </table>
                     </form>
-
+                    <input  value="{{$part->id ?? ''}}" class="form-control" type="hidden" name="part_id" >
                     @if($suggestQuestions)
                         <table class="table">
                             <thead>

@@ -222,6 +222,7 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
 
     Route::prefix('exam')->group(function () {
         Route::get('/{id}', 'BackEnd\ExamController@detail')->name('exam.detail');
+        Route::get('/{id}/part/{part_id}', 'BackEnd\ExamController@detailPartExam')->name('exam.detail.part');
         Route::post('/', 'BackEnd\ExamController@store')->name('exam.store');
 //        Route::post('/part', 'BackEnd\ExamController@partExam')->name('exam.partExam');
         Route::get('/{id}/part', 'BackEnd\ExamController@partExam')->name('exam.partExam');

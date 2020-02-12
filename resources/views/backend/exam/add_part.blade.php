@@ -20,7 +20,7 @@
                         <tbody>
                             @foreach($parts as $part)
                                 <tr>
-                                    <td><a href="?part={{$part->id}}">{!! $part->name !!}</a></td>
+                                    <td><a href="{{route('exam.detail.part', ['id' => $lesson->id, 'part_id' => $part->id])}}">{!! $part->name !!}</a></td>
                                     <td>{!! $part->number_question !!}</td>
                                     <td>{!! $part->score !!}</td>
                                     <td><button disabled type="button" class="btn btn-info">Sửa</button></td>

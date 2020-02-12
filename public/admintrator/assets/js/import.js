@@ -9,7 +9,10 @@ $(document).ready(function() {
 
 		var box_action = $this.closest('#importQuestion').find('.box_action');
 		var loading = $this.closest('#importQuestion').find('.loader');
-		const part = $('#part') ? $('#part').val() : '';
+		const part = $('input[name=part_id]').val() ;
+
+		console.log('ssssss', $('#part'))
+
 		if(type == '')
 		{
 			swal({
@@ -58,7 +61,7 @@ $(document).ready(function() {
 							type: 'success',
 						});
 						setTimeout(function(){ 
-							window.location.reload();
+							// window.location.reload();
 						}, 1000);
 					}else{
 						swal({
@@ -77,7 +80,7 @@ $(document).ready(function() {
 							type: 'error',
 						});
 			        setTimeout(function(){ 
-							window.location.reload();
+							// window.location.reload();
 						}, 2000);
 			      }
 			}).always(function () {

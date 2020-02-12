@@ -32,10 +32,38 @@ class ExamController
         $var['course']     = $lesson->course;
         $var['lesson']     = $lesson;
 
-        $questionIds = ExamQuestion::query()->where('lesson_id', $id);
-        if (!empty($request->get('part'))){
-            $questionIds->where('part', $request->get('part'));
+        $var['parts']           = ExamPart::where('lesson_id', $id)->get();
+        $var['user_course']     = $lesson->user_course->count();
+        $var['course_lesson']   = Lesson::getCourseLesson($lesson->course['id']);
+
+        $var['breadcrumb']['breadcrumb'] = array(
+            array(
+                'url'=> route('course.detail',['id'=>$lesson->course->id]),
+                'title' => $lesson->course->name,
+            ),
+            array(
+                'url'=>'#',
+                'title'=>$lesson->name
+            )
+        );
+        return view('backend.exam.detail', $var);
+    }
+
+    public function detailPartExam($id, $part_id,  Request $request) {
+
+        $lesson  = (new ExamService())->checkPermission($id);
+
+        if (!$lesson) {
+            return redirect()->route('dashboard');
         }
+
+        $var['page_title'] = 'Chi tiết khóa học '.$lesson->course['name'];
+        $var['course']     = $lesson->course;
+        $var['lesson']     = $lesson;
+
+        $questionIds = ExamQuestion::query()->where('lesson_id', $id)
+                        ->where('part', $part_id);
+
         $questionIds = $questionIds->get()->pluck('question_id');
 
         $question = Question::whereIn('id', $questionIds)
@@ -70,7 +98,7 @@ class ExamController
                 ->where('parent_id', '=', $q->id)->get();
         }
 
-        $var['parts']           = ExamPart::where('lesson_id', $id)->get();
+        $var['part']           = ExamPart::where('id', $part_id)->first();
         $var['questions']       = $question;
         $var['questionIds']     = $questionIds->toArray();
         $var['suggestQuestions']  = $suggestQuestions;
@@ -87,7 +115,7 @@ class ExamController
                 'title'=>$lesson->name
             )
         );
-        return view('backend.exam.detail', $var);
+        return view('backend.exam.detail_part', $var);
     }
 
     public function store(Request $request)
