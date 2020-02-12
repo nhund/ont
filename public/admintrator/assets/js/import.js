@@ -61,7 +61,7 @@ $(document).ready(function() {
 							type: 'success',
 						});
 						setTimeout(function(){ 
-							// window.location.reload();
+							window.location.reload();
 						}, 1000);
 					}else{
 						swal({
@@ -80,7 +80,7 @@ $(document).ready(function() {
 							type: 'error',
 						});
 			        setTimeout(function(){ 
-							// window.location.reload();
+							window.location.reload();
 						}, 2000);
 			      }
 			}).always(function () {

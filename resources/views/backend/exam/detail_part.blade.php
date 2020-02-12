@@ -28,7 +28,13 @@
                         <div class="panel-footer detail-footer">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-
+                                    <h2>
+                                        <ul class="nav ">
+                                            <li class="add-question">
+                                                <a href="{{route('exam.detail', ['id' => $lesson->id])}}"  class="btn btn-default"><< Quay lại</a>
+                                            </li>
+                                        </ul>
+                                    </h2>
                                     <div class="pull-right editBtn">
                                         <a class="btn btn-success left10" title="Xóa" data-toggle="modal" href="#update-part-exam">Cập nhật thông tin</a>
                                         <button class="btn btn-primary" title="Sửa" data-toggle="modal" href="#editCourse">Sửa</button>
