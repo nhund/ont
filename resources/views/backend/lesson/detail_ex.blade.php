@@ -18,7 +18,7 @@
 @endpush
 <button class="btn btn-primary btn_add_question">Tạo câu hỏi</button>
 <button class="btn btn-success" data-toggle="modal" data-target="#importQuestion"><i class="fa fa-file-excel-o"></i>Thêm câu hỏi từ excel</button>
-<a class="btn btn-orange" href="{{ route('admin.export.question',['id'=>$lesson['id']]) }}"><i class="fa fa-download"></i>Export excel</a>
+<a class="btn btn-orange" href="{{ route('admin.export.question',['id'=>$lesson['id'], 'part' => $part->id?? '']) }}"><i class="fa fa-download"></i>Export excel</a>
 <div class="editQuestion addQuestionModal">
     {{-- @include('backend.lesson.question.box_edit_question') --}}
 </div>

@@ -41,49 +41,46 @@ class QuestionImport implements ToCollection
                 if ($keys >= 1) {
                 $items = array_filter($value->toArray());
 
+//                 Câu hỏi cho flashcard
+                if (strpos($items[0], '#f.') !== false) {
 
-                // Câu hỏi cho flashcard
-//                    if (strpos($items[0], '#f.') !== false) {
-//
-//                        $this->insertQuestion();
-//
-//                        // cau hoi flash don
-//                        $formatData = $this->_formatFlashCard($items);
-//                        $item_flash = array(
-//                            'content'        => $formatData['content'],
-//                            'type'           => Question::TYPE_FLASH_SINGLE,
-//                            'parent_id'      => 0,
-//                            'lesson_id'      => $this->data['lesson_id'],
-//                            'course_id'      => $this->data['course_id'],
-//                            'user_id'        => $this->data['user_id'],
-//                            'created_at'     => time(),
-//                            'explain_before' => $formatData['explain_before'],
-//                            'explain_after'  => $formatData['explain_after'],
-//                            'question'       => $formatData['question_before'],
-//                            'question_after' => $formatData['question_after'],
-//                            'img_before'     => $formatData['img_before'],
-//                            'img_after'      => $formatData['img_after']
-//                        );
-//                        Question::insert($item_flash);
-//                    }
+                        $this->insertQuestion();
 
-                // Câu hỏi cho multi flashcard
-//                    if (strpos($items[0], '#mf.') !== false) {
-//
-//                        $this->insertQuestion();
-//
-//                        // cau hoi flash chuoi
-//                        if (strpos($items[0], '#mf.') !== false) {
-//                            $this->flash_chuoi['content']    = $this->_detectMathLatex(str_replace('#mf.', '', $items[0]));
-//                            $this->flash_chuoi['user_id']    = $this->data['user_id'];
-//                            $this->flash_chuoi['lesson_id']  = $this->data['lesson_id'];
-//                            $this->flash_chuoi['course_id']  = $this->data['course_id'];
-//                            $this->flash_chuoi['created_at'] = time();
-//                        }
-//                    }
-//
+                        // cau hoi flash don
+                        $formatData = $this->_formatFlashCard($items);
+                        $item_flash = array(
+                            'content'        => $formatData['content'],
+                            'type'           => Question::TYPE_FLASH_SINGLE,
+                            'parent_id'      => 0,
+                            'lesson_id'      => $this->data['lesson_id'],
+                            'course_id'      => $this->data['course_id'],
+                            'user_id'        => $this->data['user_id'],
+                            'created_at'     => time(),
+                            'explain_before' => $formatData['explain_before'],
+                            'explain_after'  => $formatData['explain_after'],
+                            'question'       => $formatData['question_before'],
+                            'question_after' => $formatData['question_after'],
+                            'img_before'     => $formatData['img_before'],
+                            'img_after'      => $formatData['img_after']
+                        );
+                        Question::insert($item_flash);
+                }
+                 //Câu hỏi cho multi flashcard
+                elseif (strpos($items[0], '#mf.') !== false) {
+
+                        $this->insertQuestion();
+
+                        // cau hoi flash chuoi
+                        if (strpos($items[0], '#mf.') !== false) {
+                            $this->flash_chuoi['content']    = $this->_detectMathLatex(str_replace('#mf.', '', $items[0]));
+                            $this->flash_chuoi['user_id']    = $this->data['user_id'];
+                            $this->flash_chuoi['lesson_id']  = $this->data['lesson_id'];
+                            $this->flash_chuoi['course_id']  = $this->data['course_id'];
+                            $this->flash_chuoi['created_at'] = time();
+                        }
+                }
                 // dien tu ngan
-                if (strpos($items[0], '#q.') !== false) {
+                elseif (strpos($items[0], '#q.') !== false) {
 
                     $this->insertQuestion();
 
@@ -203,8 +200,6 @@ class QuestionImport implements ToCollection
                         'course_id'      => $this->data['course_id'],
                         'interpret'      => $this->_detectMathLatex($formatData['interpret']),
                     );
-                } else {
-                    throw new BadRequestException('File không đúng định dạng');
                 }
 
                 if ($keys == count($collection) - 1) {
