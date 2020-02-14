@@ -403,22 +403,26 @@ function showAnswers(results){
                     userExamAnswers.forEach(function (userExamAnswer, indexUserExamAnswer) {
                         const answers = userExamAnswer.answer;
                         if (answers) {
-                            element += `<div><div class="number-question answer-true">Câu ${indexUserExamAnswer + 1}</div>`;
+                            element += `<div><div class="number-question ${parseInt(userExamAnswer.status) === 2 ? 'answer-true' : 'answer-false'}">Câu ${indexUserExamAnswer + 1}</div>`;
                             Object.keys(answers).forEach(function (key, index) {
                                 const subAnswers = answers[key];
                                 if (subAnswers[1]) {
                                     Object.keys(subAnswers).forEach(function (id, indexs) {
+
+                                        const trueOrFalse =  parseInt(subAnswers[id].error) === 2 ? 'answer-true' : 'answer-false';
+
                                         if(Object.keys(subAnswers).length === 1){
-                                            element += `<div class="answer-question answer-false">${subAnswers[id].input_text ? subAnswers[id].input_text : '------' }</div>`
+                                            element += `<div class="answer-question ${trueOrFalse}">${subAnswers[id].input_text ? subAnswers[id].input_text : '------' }</div>`
                                         }else {
-                                            element += `<div class="answer-question answer-false">${indexs + 1} - ${subAnswers[id].input_text ? subAnswers[id].input_text : '------' }</div>`
+                                            element += `<div class="answer-question ${trueOrFalse}">${indexs + 1} - ${subAnswers[id].input_text ? subAnswers[id].input_text : '------' }</div>`
                                         }
                                     });
                                 }else {
+                                    const trueOrFalse =  parseInt(answers[key].error) === 2 ? 'answer-true' : 'answer-false';
                                     if(Object.keys(answers).length === 1){
-                                        element += `<div class="answer-question answer-false">${answers[key].input_text ? answers[key].input_text : '------' }</div>`
+                                        element += `<div class="answer-question ${trueOrFalse}">${answers[key].input_text ? answers[key].input_text : '------' }</div>`
                                     }else {
-                                        element += `<div class="answer-question answer-false">${index + 1} - ${answers[key].input_text ? answers[key].input_text : '------' }</div>`
+                                        element += `<div class="answer-question ${trueOrFalse}">${index + 1} - ${answers[key].input_text ? answers[key].input_text : '------' }</div>`
                                     }
                                 }
                             });
