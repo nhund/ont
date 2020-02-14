@@ -27,7 +27,7 @@ class ExamUserTransformer extends TransformerAbstract
             'last_submit_at' => $examUser->last_submit_at,
             'status'         => $examUser->status,
             'unit'           => 'phút',
-            'stand_score'    => $examUser->exam->min_score
+            'standard_score'    => $examUser->exam->min_score
         ];
 
     }
