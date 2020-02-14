@@ -48,8 +48,8 @@ class QuestionController extends AdminBaseController
             $question->audio_content = $data['audio_content'];
             $question->save();
 
-            if ($typeLesson == Lesson::EXAM) {
-                (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+            if ($typeLesson == Lesson::EXAM && $request->get('part_id')) {
+                (new ExamService())->insertExamQuestion($question->id, $data['lesson_id'], $request->get('part_id'));
             }
 
             if (isset($data['question_tn']) && count($data['question_tn']) > 0) {
@@ -123,8 +123,9 @@ class QuestionController extends AdminBaseController
             //$question->question = $data['question'];
 
             if ($question->save()) {
-                if ($typeLesson == Lesson::EXAM) {
-                    (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+
+                if ($typeLesson == Lesson::EXAM && $request->get('part_id')) {
+                    (new ExamService())->insertExamQuestion($question->id, $data['lesson_id'], $request->get('part_id'));
                 }
 
                 foreach ($data['card_question'] as $key => $q_sub) {
@@ -202,10 +203,9 @@ class QuestionController extends AdminBaseController
             $question->audio_question_after = $data['audio_question_card_after'];
             //dd($question);
             if ($question->save()) {
-                if ($typeLesson == Lesson::EXAM) {
-                    (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+                if ($typeLesson == Lesson::EXAM && $request->get('part_id')) {
+                    (new ExamService())->insertExamQuestion($question->id, $data['lesson_id'], $request->get('part_id'));
                 }
-
                 return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
             }
             return response()->json(array('error' => true, 'msg' => 'Thêm dữ liệu không thành công'));
@@ -227,8 +227,8 @@ class QuestionController extends AdminBaseController
             $question->img_before = $data['image'];
             $question->audio_content = $data['audio_content'];
             $question->save();
-            if ($typeLesson == Lesson::EXAM) {
-                (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+            if ($typeLesson == Lesson::EXAM && $request->get('part_id')) {
+                (new ExamService())->insertExamQuestion($question->id, $data['lesson_id'], $request->get('part_id'));
             }
             foreach ($data['question'] as $key => $q) {
                 $que = new Question();
@@ -275,8 +275,8 @@ class QuestionController extends AdminBaseController
             $question->img_before = $data['image'];
             $question->save();
 
-            if ($typeLesson == Lesson::EXAM) {
-                (new ExamService())->insertExamQuestion($question->id, $data['lesson_id']);
+            if ($typeLesson == Lesson::EXAM && $request->get('part_id')) {
+                (new ExamService())->insertExamQuestion($question->id, $data['lesson_id'], $request->get('part_id'));
             }
 
             foreach ($data['question_dt'] as $key => $q) {

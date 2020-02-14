@@ -47,9 +47,9 @@ class ExerciseController extends AdminBaseController
                     }
                 }
 
-                if ($typeLesson == Lesson::EXAM){
-                    (new ExamService())->insertExamQuestion($qid, $lesson_id);
-                }
+//                if ($typeLesson == Lesson::EXAM){
+//                    (new ExamService())->insertExamQuestion($qid, $lesson_id);
+//                }
             }
         }
 

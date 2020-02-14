@@ -9,8 +9,9 @@
                 <div class="modal-body pad10">
                     <input type="hidden" name="lesson_id" id="lesson_id" value="{{ $lesson['id'] }}">
                     <input type="hidden" name="type_lesson" id="type_lesson" value="{{ $lesson['type'] }}">
+                    <input type="hidden" name="part_id" value="{{ $part->id ?? '' }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <div class="form-group row" style="margin: 5px;">                        
+                    <div class="form-group row" style="margin: 5px;">
                         <div class="col-sm-12 row form-group">
 
                             <div class="form-group row">

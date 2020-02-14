@@ -6,12 +6,6 @@ $(document).ready(function () {
 
     });
 
-    
-    $('.btn_add_question').on('click',function(e){
-        e.preventDefault();
-        $('#addQuestionModal').show();
-
-    });
     $('.btn_cancel_add_question').on('click',function(e){
         e.preventDefault();
         $('.addQuestion').trigger("reset");
