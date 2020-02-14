@@ -61,6 +61,9 @@ class ExamService
     public function resultQuestion($lessonId, $userId)
     {
         return ExamPart::where('lesson_id', $lessonId)
+            ->whereHas('userExamAnswer', function ($q) use ($userId){
+                $q->where('exam_user_answer.user_id',$userId);
+            })
             ->with(['userExamAnswer' => function ($q) use ($userId){
                 $q->where('exam_user_answer.user_id',$userId);
             }])->get()->toArray();
