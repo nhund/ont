@@ -14,16 +14,20 @@ class ExamUserTransformer extends TransformerAbstract
     public function transform(ExamUser $examUser)
     {
         return [
-            'id'          => $examUser->id,
-            'user_id'     => $examUser->user_id,
-            'score'       => $examUser->highest_score,
-            'turn'        => $examUser->turn,
-            'exam_id'     => $examUser->lesson_id,
-            'status_stop' => $examUser->status_stop,
-            'doing_time'  => $examUser->doing_time,
-            'still_time'  => $examUser->still_time,
-            'turn_stop'  => $examUser->turn_stop,
-            'unit'        => 'phút'
+            'id'             => $examUser->id,
+            'user_id'        => $examUser->user_id,
+            'score'          => $examUser->highest_score,
+            'turn'           => $examUser->turn,
+            'exam_id'        => $examUser->lesson_id,
+            'status_stop'    => $examUser->status_stop,
+            'doing_time'     => $examUser->doing_time,
+            'still_time'     => $examUser->still_time,
+            'turn_stop'      => $examUser->turn_stop,
+            'highest_score'  => $examUser->highest_score,
+            'last_submit_at' => $examUser->last_submit_at,
+            'status'         => $examUser->status,
+            'unit'           => 'phút',
+            'stand_score'    => $examUser->exam->min_score
         ];
 
     }

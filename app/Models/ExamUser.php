@@ -39,4 +39,9 @@ class ExamUser extends Model
         $seconds = ($this->time*60) + $this->second_stop;
         return date('Y-m-d H:i:s',strtotime($this->begin_at) + $seconds);
     }
+
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class, 'lesson_id', 'lesson_id');
+    }
 }

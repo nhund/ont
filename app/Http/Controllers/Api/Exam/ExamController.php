@@ -72,8 +72,7 @@ class ExamController extends Controller
             ->orderBy('highest_score', 'DESC')
             ->orderBy('created_at', 'DESC')
             ->orderBy('turn', 'ASC')
-            ->paginate(10);
-
+            ->paginate(15);
 
         return fractal()->collection($examUser, new ExamUserTransformer)
                 ->paginateWith(new IlluminatePaginatorAdapter($examUser))
@@ -86,7 +85,7 @@ class ExamController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function result(Lesson $lesson, Request $request)
+    public function resultExam(Lesson $lesson, Request $request)
     {
         $examService    = new ExamService();
         $answerQuestions   = $examService->resultQuestion($lesson->id, $request->user()->id);
@@ -168,5 +167,12 @@ class ExamController extends Controller
         $userExam->second_stop += $second;
         $userExam->save();
         return fractal()->item($userExam, new ExamUserTransformer)->respond();
+    }
+
+    public function detailResult(Lesson $lesson, Request $request)
+    {
+        $examUser = ExamUser::where(['user_id' => $request->user()->id, 'lesson_id' => $lesson->id])->first();
+
+        return fractal()->item($examUser, new ExamUserTransformer)->respond();
     }
 }
