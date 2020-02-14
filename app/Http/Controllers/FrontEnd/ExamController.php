@@ -64,6 +64,11 @@ class ExamController extends Controller
 
         $questions = (new ExamService())->getQuestionExam($lesson);
 
+        if (count($questions) == 0){
+            alert()->error('Bài kiểm tra chưa có câu hỏi.');
+            return redirect()->back();
+        }
+
         $var['exam']    = $exam;
         $var['questions'] = $questions;
         $var['course'] = Course::find($lesson->course_id);
@@ -73,7 +78,7 @@ class ExamController extends Controller
         $var['finish']        =
             ($var['totalQuestion'] && $var['userExam']->until_number > $var['totalQuestion'])
             || ($userExam && $exam && $userExam->turn > $exam->repeat_time)
-            || ($var['userExam']->still_time <=  date('Y-m-d H:i:s'));
+            || ( $var['userExam']->begin_at && $var['userExam']->still_time <=  date('Y-m-d H:i:s'));
 
         $var['overtime']      = $userExam && $exam && $userExam->turn > $exam->repeat_time;
 
