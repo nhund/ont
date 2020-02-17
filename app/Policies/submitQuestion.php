@@ -71,6 +71,10 @@ class submitQuestion
             throw new NotFoundException('Bài kiểm tra không tồn tại hoặc đã bị xóa.');
         }
 
+        if ($examUser->status == ExamUser::STOPPED ){
+            throw new BadRequestException('Bài kiểm tra đã kết thúc.');
+        }
+
         if ($examUser->status == ExamUser::INACTIVE || $examUser->status_stop == ExamUser::INACTIVE){
             throw new BadRequestException('Bài kiểm tra đang tạm dừng hoặc chưa được bắt đầu.');
         }
