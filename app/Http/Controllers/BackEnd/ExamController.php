@@ -181,7 +181,7 @@ class ExamController
             return response()->json(['status' => 201, 'message' => "Mức điểm tổng các phần vượt quá mức điểm tổng là {$exam->total_score} điểm"]);
         }
 
-        ExamPart::create($params);
+        ExamPart::updateOrCreate(['id' => $request->get('id')], $params);
 
         return response()->json(['status' => 200, 'data' => $request->all()]);
     }

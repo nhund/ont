@@ -20,10 +20,10 @@
                         <tbody>
                             @foreach($parts as $part)
                                 <tr>
-                                    <td><a href="{{route('exam.detail.part', ['id' => $lesson->id, 'part_id' => $part->id])}}">{!! $part->name !!}</a></td>
+                                    <td><a href="{{route('exam.detail.part', ['id' => $lesson->id, 'part_id' => $part->id])}}"> <span class="fa fa-plus"> {!! $part->name !!}</span> </a></td>
                                     <td>{!! $part->number_question !!}</td>
                                     <td>{!! $part->score !!}</td>
-                                    <td><button disabled type="button" class="btn btn-info">Sửa</button></td>
+                                    <td><button type="button" class="btn btn-info" onclick="editPart({{$part}})">Sửa</button></td>
                                     <td><button type="button" data-toggle="modal" onclick="modalConfirm({{$part->id}})" class="btn btn-warning">Xóa</button></td>
                                 </tr>
                             @endforeach
@@ -59,12 +59,13 @@
                     <div class="modal-body">
                         <input type="hidden" name="lesson_id" value="{{$lesson->id ?? ''}}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" data-input="id" name="id" value="">
                         <div class="row">
                             <div class="col-sm-3">
                                 <label for="name">Tên</label>
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control" data-input="Tên" id="name" type="text" name="name">
+                                <input class="form-control" data-title="Tên" data-input="name" id="name" type="text" name="name">
                             </div>
                         </div><br/>
                         <div class="row">
@@ -72,7 +73,7 @@
                                 <label for="score">Tổng điểm</label>
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control" data-input="Tổng điểm" id="score" type="number" name="score" min="0">
+                                <input class="form-control" data-title="Tổng điểm" data-input="score"  id="score" type="number" name="score" min="0">
                             </div>
                         </div><br/>
                         <div class="row">
@@ -80,7 +81,7 @@
                                 <label for="score">Tổng số câu hỏi</label>
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control" data-input="Tổng số câu hỏi" type="number" name="number_question" min="0">
+                                <input class="form-control" data-title="Tổng số câu hỏi" data-input="number_question"  type="number" name="number_question" min="0">
                             </div>
                         </div>
                     </div>
@@ -130,13 +131,13 @@
 
             CKEDITOR.instances.exDescription.updateElement();
 
-            const inputs = $('form#form-add-part-exam [data-input]');
+            const inputs = $('form#form-add-part-exam [data-title]');
             let valid =  true;
             inputs.each(function ( ele, input) {
                 const value = $(input).val();
                 if ( $.trim($(input).val()) === ''){
                     valid = false;
-                    showErrorMsg('Vui lòng nhập ' + $(input).data('input') );
+                    showErrorMsg('Vui lòng nhập ' + $(input).data('title') );
                 }
             });
 
@@ -156,8 +157,16 @@
                        }
                    }
                });
-            console.log('partId', part_id);
         });
 
+    };
+    
+    const editPart = function (part) {
+        const inputs = $('#form-add-part-exam [data-input]');
+        inputs.each(function ( ele, input) {
+            const name = $(input).data('input');
+            $(input).val(part[name])
+        });
+        addPartExam();
     }
 </script>
