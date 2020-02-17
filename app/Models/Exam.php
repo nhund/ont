@@ -24,7 +24,11 @@ class Exam extends Model
 
     public static function updateOrCreateExam($params)
     {
-        $exam = new Exam();
+        $exam = Exam::where('lesson_id', $params['lesson_id'])->first();
+
+        if (!$exam){
+            $exam = new Exam();
+        }
 
         $exam->lesson_id = $params['lesson_id'];
         $exam->minutes = $params['minutes'];

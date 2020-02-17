@@ -177,7 +177,7 @@
                     <input type="hidden" name="level" id="level" value="">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="row">
-                        <div class="col-sm-8">Tên bài tập</div>
+                        <div class="col-sm-8">Tên bài kiểm tra</div>
                         <div class="col-sm-4">Trạng thái</div>
                     </div>
                     <div class="form-group row">
@@ -278,61 +278,104 @@
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h1 class="modal-title"><strong>Cập nhật điểm của phần kiểm tra</strong></h1>
+                <h1 class="modal-title">Tạo bài kiểm tra</h1>
             </div>
-            <form id="form-update-part-exam" method="POST">
+            <form id="editCourseExam" method="POST" action="{{ route('lesson.handleEx') }}"
+                  enctype="multipart/form-data">
                 <div class="modal-body">
-                    <input type="hidden" name="exam_id" id="exam_id" value="{{$lesson->id ?? 0}}">
+                    <input type="hidden" name="cur_lesson_id" id="les_id" value="{{$lesson->id ?? ''}}">
+                    <input type="hidden" data-input="course_id" name="course_id" value="{{ $course['id'] }}">
+                    <input type="hidden" name="type" id="type" value="exam">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <div class="row">
+                        <div class="col-sm-8">Tên bài kiểm tra</div>
+                        <div class="col-sm-4">Trạng thái</div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-8">
+                            <input type="text" data-input="Tên bài kiểm tra" value="{{$lesson->name ?? ''}}" class="form-control" placeholder="#Tên bài tập" name="exName">
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="status">
+                                <option {{$lesson->status == 1 ? 'selected' : ''}} value="1">Public</option>
+                                <option {{$lesson->status == 2 ? 'selected' : ''}} value="2">Private</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm-12"><label>Bài thi có hiệu lực (*)</label></div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <input class="form-control date-today" data-input="từ ngày" value="{{date('d-m-Y h:i', strtotime($lesson->exam->start_time_at  ?? now()))}}" type="text"  name="start_time_at" placeholder="từ ngày">
+                        </div>
+                        <div class="col-sm-3 ">
+                            <input class="form-control date-fromday" value="{{date('d-m-Y h:i', strtotime($lesson->exam->end_time_at  ?? now()))}}" data-input="Đến ngày" type="text" name="end_time_at" placeholder="Đến ngày">
+                        </div>
+                        <div class="col-sm-3 ">
+                            <input class="form-control" data-input="Tông câu hỏi" value="{{$lesson->exam->total_question ?? ''}}" type="number" name="total_question" placeholder="Tông câu hỏi">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row ">
+                        <div class="col-sm-3">
+                            <label for="minutes" >Thời gian làm bài (phút)</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="total_score">Lựa chọn Barem điểm</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="min_score">Số điểm tối thiểu?</label>
+                        </div>
+                    </div>
 
-                    <div class="row" style="font-weight: bold">
-                        <div class="col-sm-offset-1 col-sm-2">Số lần làm bài</div>
-                        <div class="col-sm-2"><input type="number" value="{{$lesson->repeat_time??0}}" name="repeat_time"/></div>
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-3"></div>
+                    <div class="row  form-group">
+                        <div class="col-sm-3 ">
+                            <input class="form-control"  value="{{$lesson->exam->minutes ?? ''}}" data-input="Thời gian làm bài" id="minutes" type="number" min="1"  name="minutes">
+                        </div>
+                        <div class="col-sm-3 ">
+                            <input class="form-control"   value="{{$lesson->exam->total_score ?? ''}}" data-input="Chọn điểm" id="total_score" type="number" min="1" name="total_score">
+                        </div>
+                        <div class="col-sm-3 ">
+                            <input class="form-control"   value="{{$lesson->exam->min_score ?? ''}}" data-input="Chọn điểm" id="min_score" type="number" min="1" name="min_score">
+                        </div>
+
                     </div>
                     <hr/>
-                    <div class="row" style="font-weight: bold">
-                        <div class="col-sm-offset-1 col-sm-2">Phần</div>
-                        <div class="col-sm-3">Điểm</div>
-                        <div class="col-sm-2">Phần</div>
-                        <div class="col-sm-3">Điểm</div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Bài thi được dừng mấy lần?</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Bài thi được làm lại mấy lần?</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="total_score">Bài thi có mấy phần?</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 ">
+                            <input class="form-control" type="number"   value="{{$lesson->exam->stop_time ?? ''}}"  min="0" name="stop_time">
+                        </div>
+                        <div class="col-sm-3 ">
+                            <input class="form-control" type="number"   value="{{$lesson->exam->repeat_time ?? ''}}"  min="0" name="repeat_time">
+                        </div>
+                        <div class="col-sm-3">
+                            <input class="form-control"   value="{{$lesson->exam->parts ?? ''}}"   data-input="Bài thi có mấy phần?" type="number" min="1" name="parts">
+                        </div>
                     </div>
                     <hr/>
-                    {{--<div class="form-group row">--}}
-                        {{--<div class="col-sm-offset-1 col-sm-2">phần 1</div>--}}
-                        {{--<div class="col-sm-3"><input value="{{$parts->part_1 ?? 0}}" type="number" name="part_1"></div>--}}
-                        {{--<div class="col-sm-2">phần 2</div>--}}
-                        {{--<div class="col-sm-3"><input value="{{$parts->part_2 ?? 0}}" type="number" name="part_2"></div>--}}
-                    {{--</div>--}}
-                    {{--<div class="form-group row">--}}
-                        {{--<div class="col-sm-offset-1 col-sm-2">phần 3</div>--}}
-                        {{--<div class="col-sm-3"><input value="{{$parts->part_3 ?? 0}}" type="number" name="part_3"></div>--}}
-                        {{--<div class="col-sm-2">phần 4</div>--}}
-                        {{--<div class="col-sm-3"><input value="{{$parts->part_4 ?? 0}}" type="number" name="part_4"></div>--}}
-                    {{--</div>--}}
-                    {{--<div class="form-group row">--}}
-                        {{--<div class="col-sm-offset-1 col-sm-2">phần 5</div>--}}
-                        {{--<div class="col-sm-3"><input value="{{$parts->part_5 ?? 0}}" type="number" name="part_5"></div>--}}
-                        {{--<div class="col-sm-2">phần 6</div>--}}
-                        {{--<div class="col-sm-3"><input value="{{$parts->part_6 ?? 0}}" type="number" name="part_6"></div>--}}
-                    {{--</div>--}}
-                    {{--<div class="form-group row">--}}
-                        {{--<div class="col-sm-offset-1 col-sm-2">phần 7</div>--}}
-                        {{--<div class="col-sm-3"><input value="{{$parts->part_7 ?? 0}}" type="number" name="part_7"></div>--}}
-                        {{--<div class="col-sm-2">phần 8</div>--}}
-                        {{--<div class="col-sm-3"><input value="{{$parts->part_8 ?? 0}}" type="number" name="part_8"></div>--}}
-                    {{--</div>--}}
-                    {{--<div class="form-group row">--}}
-                        {{--<div class="col-sm-offset-1 col-sm-2">phần 9</div>--}}
-                        {{--<div class="col-sm-3"><input value="{{$parts->part_9 ?? 0}}" type="number" name="part_9"></div>--}}
-                        {{--<div class="col-sm-2">phần 10</div>--}}
-                        {{--<div class="col-sm-3"><input value="{{$parts->part_10 ?? 0}}" type="number" name="part_10"></div>--}}
-                    {{--</div>--}}
+                    <div class="row">
+                        <div class="col-sm-12">Mô tả</div>
+                    </div>
+                    <div class="row">
+                        <textarea class="ckeditor" name="exDescription">{!! $lesson->description ?? '' !!}</textarea>
+                    </div>
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="updatePartExam()">Lưu</button>
+                <button type="button" class="btn btn-primary" onclick="ValidFormCommon('editCourseExam')">Lưu</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
             </div>
         </div>
