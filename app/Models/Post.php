@@ -29,4 +29,9 @@ class Post extends Model
         $path = "/public/images/news/{$this->getOriginal('id')}/480_320/{$this->getOriginal('avatar')}";
         return asset($path);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(CategoryNews::class, 'category_id');
+    }
 }

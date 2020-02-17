@@ -9,9 +9,9 @@
                 <div class="col-sm-2 btn-create">
                     <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
                     <ul class="dropdown-menu pull-right">
-                        <li><a onclick="showModalAddLesson(0, '{{ $course['name'] }}', 'lesson')">Tạo bài giảng</a></li>
-                        <li><a onclick="showModalAddExam(0, 'exam', 1)">Tạo bài Kiểm tra</a></li>
-                        <li><a onclick="showModalAddLevel2('{{ $course['name'] }}', 'level2')">Tạo bài level 2</a></li>
+                        <li><a onclick="showModalAddLesson(0, '{{ $course['name'] }}', 'lesson')">Bài học 1 cấp độ</a></li>
+                        <li><a onclick="showModalAddLevel2('{{ $course['name'] }}', 'level2')">Bài học 2 cấp độ</a></li>
+                        <li><a onclick="showModalAddExam(0, 'exam', 1)">Bài kiểm tra</a></li>
                     </ul>
                 </div>
             </a>

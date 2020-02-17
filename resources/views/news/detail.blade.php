@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="posts-txt">
                                         <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{!! ucfirst(substr($data->name, 0, 120))!!}...</a>
-                                        <p>Ngày cập nhật: 14:06 22/10/2019</p>
+                                        {{--<p>Ngày cập nhật: 14:06 22/10/2019</p>--}}
                                     </div>
                                 </li>
                             @endforeach

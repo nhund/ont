@@ -27,7 +27,8 @@
                             @if(count($var['newsFeature']) > 0)
                                 <img src="{{ $var['newsFeature'][0]->thumbnail}}" title="{{$var['newsFeature'][0]->name}}"/>
                                 <h2 class="tlt"><a href="{{route('news.detail',[str_slug($var['newsFeature'][0]->name, '-'), $var['newsFeature'][0]->id])}}">{{$var['newsFeature'][0]->name}}</a></h2>
-                                <p class="update-news"><span>Tin tuyển dụng</span> - 9 giờ trước</p>
+                                <p class="update-news"><span><a href="{{route('news', ['cate-id' => $var['newsFeature'][0]->category_id])}}">{{$var['newsFeature'][0]->category->name}}</a></span></p>
+                                {{--<p class="update-news"><span>Tin tuyển dụng</span> - 9 giờ trước</p>--}}
                                 <p>{{$var['newsFeature'][0]->des}}</p>
                             @endif
                         </div>
