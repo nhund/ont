@@ -27,14 +27,14 @@
                     </div>
                 @endif 
          </div>
-         @if(!empty($question->explain_before))
-            <div class="box_suggest">
-                <p>Gợi ý</p>
-                <div class="suggest_content">
-                    {!! $question->explain_before !!}
-                </div>
-            </div> 
-        @endif
+         {{--@if(!empty($question->explain_before))--}}
+            {{--<div class="box_suggest">--}}
+                {{--<p>Gợi ý</p>--}}
+                {{--<div class="suggest_content">--}}
+                    {{--{!! $question->explain_before !!}--}}
+                {{--</div>--}}
+            {{--</div> --}}
+        {{--@endif--}}
         @if(!empty($question->interpret_all))
             <div class="box_interpret_all">
                 <p>Giải thích chung : <span id="box_interpret_all_{{ $question->id }}"></span></p>                
@@ -87,11 +87,11 @@
                     @endforeach
                     @endif                                    
                 </div>
-                @if(!empty($question_child->interpret))
-                    <div class="box_interpret_question box_interpret_{{ $question_child->id }}">
-                        <p>Giải thích : <span id="box_interpret_all_{{ $question_child->id }}"></span></p>
-                    </div>
-                @endif
+                {{--@if(!empty($question_child->interpret))--}}
+                    {{--<div class="box_interpret_question box_interpret_{{ $question_child->id }}">--}}
+                        {{--<p>Giải thích : <span id="box_interpret_all_{{ $question_child->id }}"></span></p>--}}
+                    {{--</div>--}}
+                {{--@endif--}}
             </div>    
             @endforeach              
         </div>

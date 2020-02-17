@@ -23,11 +23,11 @@
                   <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_content) }}"></audio>
                  </div>      
             @endif
-            @if(!empty($question->interpret_all))
-                <div class="box_interpret_all">
-                    <p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>                
-                </div> 
-            @endif
+            {{--@if(!empty($question->interpret_all))--}}
+                {{--<div class="box_interpret_all">--}}
+                    {{--<p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>                --}}
+                {{--</div> --}}
+            {{--@endif--}}
         </div>
         <div class="content_question">
             @if(isset($question))        
@@ -53,9 +53,9 @@
                                     <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}">
                                 </div>
                             </div>
-                            <div class="explain-text">
+                            {{--<div class="explain-text">--}}
 
-                            </div>
+                            {{--</div>--}}
                             <div class="result">
                                 <div class="user_input">
                                     Câu trả lời của bạn : <span></span>
@@ -64,11 +64,11 @@
                                     Câu trả lời chính xác : <span></span>
                                 </div>
                             </div>
-                            @if(!empty($question->interpret))
-                                <div class="box_interpret_question box_interpret_{{ $question->id }}">
-                                    <p>Giải thích : <span>{!! $question->interpret !!}</span></p>
-                                </div>
-                            @endif
+                            {{--@if(!empty($question->interpret))--}}
+                                {{--<div class="box_interpret_question box_interpret_{{ $question->id }}">--}}
+                                    {{--<p>Giải thích : <span>{!! $question->interpret !!}</span></p>--}}
+                                {{--</div>--}}
+                            {{--@endif--}}
                         </div>    
                     @endforeach              
                 </div>

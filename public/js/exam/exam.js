@@ -211,49 +211,33 @@ $(document).ready(function () {
     //xem goi y dien tu doan van cho tung dap an
     $('.dien_tu_doan_van .list_question .question_item .show_suggest').on('click', function (e) {
         e.preventDefault();
-        var $this       = $(this);
-        var question_id = $this.closest('form').find('input[name="id"]').val();
-        var suggest     = $this.attr('data-title');
-        if (suggest == '' || suggest == undefined) {
-            return;
-        }
-        var format_content_temp = document.getElementById("format_content_" + question_id);
-        var DynamicMJ           = {
-            formula: format_content_temp,
-            update : function () {
-                var tex                = suggest;
-                this.formula.innerHTML = tex;
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.formula]);
-            }
-        };
-        DynamicMJ.update();
+        var format_content_temp = 'Tính năng không hoạt động khi làm bài kiểm tra';
         swal({
-                 title: 'Gợi ý',
-                 text : $(format_content_temp).html(),
-                 html : true,
-             });
-        $(format_content_temp).html('');
+             title: 'Thông báo',
+             text : format_content_temp,
+             html : true,
+         });
     });
 
     //xem goi y cho toan cau
-    $('.dien_tu_doan_van .list_question .question_item .icon.suggest').on('click', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        $this.closest('.question_item').find('.box_suggest').slideToggle();
-    });
+    // $('.dien_tu_doan_van .list_question .question_item .icon.suggest').on('click', function (e) {
+    //     e.preventDefault();
+    //     var $this = $(this);
+    //     $this.closest('.question_item').find('.box_suggest').slideToggle();
+    // });
 
     //hien thi goi y dien tu van ban
-    $('.dientu_chuoi_box .form_dien_tu_dien_tu_doan_van .head_content .box_action .suggest').on('click', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        if (!$this.hasClass('open_suggest')) {
-            $this.addClass('open_suggest');
-            $this.closest('.form_dien_tu_dien_tu_doan_van').find('.head_content .box_suggest').show();
-        } else {
-            $this.removeClass('open_suggest');
-            $this.closest('.form_dien_tu_dien_tu_doan_van').find('.head_content .box_suggest').hide();
-        }
-    });
+    // $('.dientu_chuoi_box .form_dien_tu_dien_tu_doan_van .head_content .box_action .suggest').on('click', function (e) {
+    //     e.preventDefault();
+    //     var $this = $(this);
+    //     if (!$this.hasClass('open_suggest')) {
+    //         $this.addClass('open_suggest');
+    //         $this.closest('.form_dien_tu_dien_tu_doan_van').find('.head_content .box_suggest').show();
+    //     } else {
+    //         $this.removeClass('open_suggest');
+    //         $this.closest('.form_dien_tu_dien_tu_doan_van').find('.head_content .box_suggest').hide();
+    //     }
+    // });
 
     //submit dien tu doan van
     $('.dien_tu_doan_van .submit_question .btn_submit').on('click', function (e) {
