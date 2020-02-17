@@ -269,7 +269,7 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/save', 'BackEnd\CategoryNewsController@save')->name('admin.news.save');
         Route::get('/edit/{id}', 'BackEnd\CategoryNewsController@edit')->name('admin.news.edit')->where('id', '[0-9]+');
         Route::post('/update', 'BackEnd\CategoryNewsController@update')->name('admin.news.update');
-        Route::post('/delete', 'BackEnd\CategoryNewsController@delete')->name('admin.news.delete');
+        Route::post('/category/delete', 'BackEnd\CategoryNewsController@delete')->name('admin.news.delete');
     });
 
     Route::prefix('slider')->group(function () {

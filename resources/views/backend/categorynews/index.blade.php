@@ -83,7 +83,7 @@
                            $.ajax({
                             headers: { 'X-CSRF-Token' : $('meta[name=csrf-token]').attr("content") },
                             type: "POST",
-                            url: '{{ route('admin.category.delete') }}',
+                            url: '{{ route('admin.news.delete') }}',
                             data: {
                                 id: $this.attr('data-id')
                             },
