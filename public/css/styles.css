@@ -5315,7 +5315,7 @@ button.update-cart{
     	font-family: "Roboto-Bold";
     	font-size: 16px;
     	line-height: 24px;
-    	color: #717171;
+    	/*color: #717171;*/
     }
     #hoclythuyet .dientu_chuoi_box .content_question .list_question .question_item .question .input_answer{
     	margin: 5px 0px;
@@ -5441,7 +5441,7 @@ button.update-cart{
     	font-family: "Roboto-Bold";
     	font-size: 16px;
     	line-height: 24px;
-    	color: #717171;
+    	/*color: #717171;*/
     }
     #hoclythuyet .dientu_box .content_question .list_question .question_item .answer{
     	display: flex;

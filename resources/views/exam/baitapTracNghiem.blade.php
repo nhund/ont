@@ -1,4 +1,4 @@
-<div class="trac_nghiem_box">    
+<div class="trac_nghiem_box pause-exam">
     <form class="form_trac_nghiem">
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="exam_id" value="{{ $var['lesson']->id }}" >
@@ -26,14 +26,6 @@
                         <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
                     </div>
                 @endif 
-                @if(!empty($question->content))
-                     <div class="icon report send_report" title="Báo cáo" data-id="{{ $question->id }}">
-                         <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
-                     </div>
-                     <div class="icon bookmark {{ isset($var['userBookmark'][$question->id]) ? 'bookmarked' : '' }}" title="{{ isset($var['userBookmark'][$question->id]) ? 'Bỏ bookmark' : 'Thêm bookmark' }}" data-id="{{ $question->id }}">
-                         <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
-                     </div>
-                @endif     
          </div>
          @if(!empty($question->explain_before))
             <div class="box_suggest">
@@ -76,14 +68,6 @@
                              <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
                         </div>
                     </div>
-                    <div class="icon report send_report" title="Báo cáo" data-id="{{ $question_child->id }}" >
-                        <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
-                    </div>
-                    @if(count($question->child) == 1 && empty($question->content))
-                        <div class="icon bookmark {{ isset($var['userBookmark'][$question->id]) ? 'bookmarked' : '' }}" title="{{ isset($var['userBookmark'][$question->id]) ? 'Bỏ bookmark' : 'Thêm bookmark' }}" data-id="{{ $question->id }}">
-                            <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
-                        </div>
-                    @endif
                 </div>
                 <div class="list_answer">
                     @if(isset($question_child->answers))

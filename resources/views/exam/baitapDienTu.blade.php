@@ -1,4 +1,4 @@
-<div class="dientu_box">    
+<div class="dientu_box pause-exam">
     <form class="form_dien_tu">
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="exam_id" value="{{ $var['lesson']->id }}" >
@@ -52,9 +52,6 @@
                                 <div class="explain" title="Gợi ý" data-id="{{ $question->id }}">
                                     <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}">
                                 </div>
-                                <div class="icon report send_report" title="Báo cáo" data-id="{{ $question->id }}">
-                                   <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
-                             </div>
                             </div>
                             <div class="explain-text">
 

@@ -1,4 +1,4 @@
-<div class="dientu_chuoi_box dien_tu_doan_van">    
+<div class="dientu_chuoi_box dien_tu_doan_van pause-exam">
     <form class="form_dien_tu_dien_tu_doan_van">
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="exam_id" value="{{ $var['lesson']->id }}" >
@@ -20,22 +20,8 @@
             </div>
             @endif
             <div class="box_action">
-                {{-- <div class="icon suggest" title="Gợi ý">
-                   <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
-               </div> --}}
-               <div class="icon report send_report" title="Báo cáo" data-id="{{ $question->id }}">
-                   <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
-               </div>
-               <div class="icon bookmark {{ isset($var['userBookmark'][$question->id]) ? 'bookmarked' : '' }}" title="{{ isset($var['userBookmark'][$question->id]) ? 'Bỏ bookmark' : 'Thêm bookmark' }}" data-id="{{ $question->id }}">
-                   <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
-               </div>
+
            </div>
-           {{-- <div class="box_suggest">
-            <p>Gợi ý</p>
-            <div class="suggest_content">
-                {!! $question->explain_before !!}
-            </div>
-        </div>  --}}
         @if(!empty($question->interpret_all))
                 <div class="box_interpret_all">
                     <p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>                
@@ -55,12 +41,6 @@
                 <div class="explain-text box_action">
                     <div class="icon suggest" title="Gợi ý">
                        <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
-                   </div>
-                    <div class="icon report send_report" title="Báo cáo" data-id="{{ $question_child->id }}">
-                        <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
-                    </div>
-                    <div class="icon bookmark {{ isset($var['userBookmark'][$question_child->id]) ? 'bookmarked' : '' }}" title="{{ isset($var['userBookmark'][$question_child->id]) ? 'Bỏ bookmark' : 'Thêm bookmark' }}" data-id="{{ $question_child->id }}">
-                       <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
                    </div>
                 </div>
                 <div class="box_suggest">
