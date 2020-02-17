@@ -169,9 +169,28 @@ class ExamController extends Controller
         return fractal()->item($userExam, new ExamUserTransformer)->respond();
     }
 
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function detailResult(Lesson $lesson, Request $request)
     {
         $examUser = ExamUser::where(['user_id' => $request->user()->id, 'lesson_id' => $lesson->id])->first();
+
+        return fractal()->item($examUser, new ExamUserTransformer)->respond();
+    }
+
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function finish(Lesson $lesson, Request $request)
+    {
+        $examUser = ExamUser::where(['user_id' => $request->user()->id, 'lesson_id' => $lesson->id])->first();
+        $examUser->status = ExamUser::STOPPED ;
+        $examUser->save();
 
         return fractal()->item($examUser, new ExamUserTransformer)->respond();
     }

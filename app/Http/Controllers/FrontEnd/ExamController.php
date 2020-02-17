@@ -78,7 +78,8 @@ class ExamController extends Controller
         $var['finish']        =
             ($var['totalQuestion'] && $var['userExam']->until_number > $var['totalQuestion'])
             || ($userExam && $exam && $userExam->turn > $exam->repeat_time)
-            || ( $var['userExam']->begin_at && $var['userExam']->still_time <=  date('Y-m-d H:i:s'));
+            || ( $var['userExam']->begin_at && $var['userExam']->still_time <=  date('Y-m-d H:i:s'))
+            || ($var['userExam']->status == ExamUser::STOPPED) ;
 
         $var['overtime']      = $userExam && $exam && $userExam->turn > $exam->repeat_time;
 
@@ -119,6 +120,30 @@ class ExamController extends Controller
         if (!($userExam && $exam && $userExam->turn > $exam->repeat_time)){
             event(new BeginExamEvent($lesson, $request->user()));
         }
+
+        return redirect()->route('exam.question', ['title' =>str_slug($title), 'id' =>$id ]);
+    }
+
+    public function finishExam($title, $id , Request $request)
+    {
+
+        if(!Auth::check())
+        {
+            alert()->error('Bạn cần đăng nhập để thực hiện hành động này');
+            return redirect()->back();
+        }
+        $lesson = Lesson::find($id);
+        if(!$lesson)
+        {
+            alert()->error('Bài học không tồn tại');
+            return redirect()->route('home');
+        }
+
+        $userExam = ExamUser::where('user_id', $request->user()->id)
+            ->where('lesson_id', $id)
+            ->first();
+        $userExam->status = ExamUser::STOPPED;
+        $userExam->save();
 
         return redirect()->route('exam.question', ['title' =>str_slug($title), 'id' =>$id ]);
     }

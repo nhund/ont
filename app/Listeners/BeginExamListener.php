@@ -48,6 +48,7 @@ class BeginExamListener
                  'second_stop'    => 0,
                  'stopped_at'     => null,
                  'turn_stop'      => 0,
+                 'status'         => ExamUser::ACTIVE,
              ]);
 
         }else{
@@ -59,6 +60,7 @@ class BeginExamListener
             $userExam->second_stop = 0;
             $userExam->stopped_at  = null;
             $userExam->turn_stop   = 0;
+            $userExam->status      = ExamUser::ACTIVE;
             $userExam->save();
         }
     }

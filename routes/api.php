@@ -49,6 +49,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
         Route::get('/{lesson}/detail', 'ExamController@detail');
         Route::post('/{lesson}/submit', 'ExamController@submitExam');
         Route::post('/{lesson}/stop', 'ExamController@stopExam');
+        Route::post('/{lesson}/finish', 'ExamController@finish');
         Route::post('/{lesson}/restart', 'ExamController@restartExam');
     });
 

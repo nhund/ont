@@ -58,7 +58,7 @@
                                                         <i class="fa fa-pause"></i> Tạm dừng
                                                     @endif
                                                 </button>
-                                                <a href="{{route('exam.start', ['title' =>$var['lesson']->name, 'id' =>$var['lesson']->id ])}}" class="btn text-uppercase replay"><i class="fa fa-repeat"></i> làm lại</a>
+                                                <a href="{{route('exam.finish', ['title' =>$var['lesson']->name, 'id' =>$var['lesson']->id ])}}" class="btn text-uppercase replay"><i class="fa fa-repeat"></i> Nộp bài</a>
                                             </div>
                                             <div class="row result-exam" id="result-exam"></div>
                                         </div>

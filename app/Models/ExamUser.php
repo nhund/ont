@@ -17,6 +17,7 @@ class ExamUser extends Model
 
     const ACTIVE = 'Active';
     const INACTIVE = 'Inactive';
+    const STOPPED = 'Stopped';
 
     public $timestamps = false;
 
