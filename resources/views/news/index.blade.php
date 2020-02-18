@@ -63,6 +63,7 @@
                     @endif
 
                 @foreach($var['newsCategories'] as $newsCategory)
+                    @if(strtolower($newsCategory->name) != 'các tin khác')
                     <div class="group-news">
                            <h3 class="title-tlt">{!! $newsCategory->name !!}</h3>
                            <div class="group-news-fl">
@@ -91,23 +92,27 @@
                                </div>
                            </div>
                     </div>
-                    @endforeach
-                    <div class="group-news group-other-news">
-                        <h3 class="title-tlt">Các tin khác</h3>
-                        <div class="other-news-fl">
-                            <ul>
-
-                                @foreach($var['otherNews'] as $other)
-                                    <li>
-                                        <div class="other-box">
-                                            <a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}"><img src="{{$other->thumbnail}}"></a>
-                                            <h4 class="other-title"><a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}">{!! substr($other->name, 0, 120) !!}...</a></h4>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
+                    @else
+                        <div class="group-news group-other-news">
+                            <h3 class="title-tlt">Các tin khác</h3>
+                            <div class="other-news-fl">
+                                <ul>
+                                    @if(count($newsCategory->news))
+                                        @foreach($newsCategory->news as $other)
+                                            <li>
+                                                <div class="other-box">
+                                                    <a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}"><img src="{{$other->thumbnail}}"></a>
+                                                    <h4 class="other-title"><a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}">{!! substr($other->name, 0, 120) !!}...</a></h4>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    @endif
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    @endif
+                    @endforeach
+
                 </div>
             </div><!-- //col-right -->
             {{--<div class="col-right">
