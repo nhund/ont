@@ -93,9 +93,9 @@ class HomeController extends Controller
         $var['founders'] = Founder::where('status',Founder::STATUS_ON)->get();
 
         $newsFeature =  Post::where('type', Post::NEWS)
-            ->where('status', Post::STATUS_ON)->take(3)
+            ->where('status', Post::STATUS_ON)->take(4)
             ->orderBy('feature', 'DESC')
-            ->orderBy('id','DESC')->get();
+            ->orderByRaw('RAND()')->get();
 
         $var['news'] = $newsFeature;
 
