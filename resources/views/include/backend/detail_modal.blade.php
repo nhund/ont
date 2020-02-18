@@ -297,8 +297,8 @@
                         </div>
                         <div class="col-sm-4">
                             <select class="form-control" name="status">
-                                <option {{$lesson->status == 1 ? 'selected' : ''}} value="1">Public</option>
-                                <option {{$lesson->status == 2 ? 'selected' : ''}} value="2">Private</option>
+                                <option {{isset($lesson) && $lesson->status == 1 ? 'selected' : ''}} value="1">Public</option>
+                                <option {{isset($lesson) && $lesson->status == 2 ? 'selected' : ''}} value="2">Private</option>
                             </select>
                         </div>
                     </div>

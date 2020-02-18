@@ -341,7 +341,7 @@
     display: none;
 }
 
-#myNav .title{
+#myNav .title, #exam-modal .title{
     font-weight: 500;
     line-height: 34px;
     font-size: 35px;
@@ -378,7 +378,15 @@
     background-color: rgba(252, 198, 71, 0.36);
 }
 
-#myNav .sub-title{
+.min-score .title p{
+    color: #7BCDAB
+}
+
+.min-score{
+    background:#43546D
+}
+
+#myNav .sub-title, #exam-modal .sub-title{
     font-weight: 500;
     line-height: 22px;
     font-size: 22px;
@@ -422,9 +430,19 @@
     opacity: 0.95;
 }
 
-.overlay-content {
+#myNav .overlay-content {
     position: relative;
     top: 10%;
+    width: 100%;
+    text-align: center;
+    margin-top: 80px;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+}
+#exam-modal .overlay-content {
+    position: relative;
     width: 100%;
     text-align: center;
     margin-top: 80px;
@@ -487,7 +505,8 @@
     right: 45px;
     font-size: 45px;
 }
-#myNav .overlay-footer{
+#myNav .overlay-footer,
+#exam-modal .overlay-footer{
     position: relative;
     top: 15%;
     width: 100%;
@@ -507,7 +526,18 @@
     align-items: center;
     cursor: pointer;
 }
-#myNav .overlay-content .total{
+#exam-modal .overlay-footer .offer-course{
+    background: #18C305;
+    width: 215px !important;
+    height: 80px;
+    border-radius: 4px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+#myNav .overlay-content .total {
     width: 290px;
     height: 158px;
     border-radius: 4px;
@@ -518,30 +548,52 @@
     /*opacity: 0.4;*/
 }
 
+#exam-modal .overlay-content .total{
+    width: 280px;
+    border-radius: 4px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    /*opacity: 0.4;*/
+}
+
+#exam-modal .overlay-content .description{
+    color: white;
+    width: 70%;
+    text-align: justify;
+}
+
 .circle{
     font-size: 11px;
     padding: 11px;
 }
 
-#myNav .overlay-footer .offer-course .title{
+#myNav .overlay-footer .offer-course .title,
+#exam-modal .overlay-footer .offer-course .title{
     position: initial;
 }
-#myNav .overlay-footer .offer-course.do_false{
+#myNav .overlay-footer .offer-course.do_false,
+#exam-modal .overlay-footer .offer-course.do_false{
     background: #FF503B;
 }
-#myNav .overlay-footer .offer-course.do_old{
+#myNav .overlay-footer .offer-course.do_old,
+#exam-modal .overlay-footer .offer-course.do_old{
     background: #079BFE;
 }
-#myNav .overlay-footer .offer-course img{
+#myNav .overlay-footer .offer-course img,
+#exam-modal .overlay-footer .offer-course img{
     margin-right: 10px;
 }
-#myNav .overlay-footer .offer-course p{
+#myNav .overlay-footer .offer-course p,
+#exam-modal .overlay-footer .offer-course p{
     color: #fff;
     text-transform: uppercase;
     font-size: 11px;
     line-height: 13px;
 }
-#myNav .overlay-footer .offer-course p.content{
+#myNav .overlay-footer .offer-course p.content,
+#exam-modal .overlay-footer .offer-course p.content{
     font-size: 14px;
     line-height: 16px;
     font-family: 'Roboto-Bold';

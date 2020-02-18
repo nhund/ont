@@ -40,6 +40,28 @@ function reportLesson(lesson_id){
     })
 }
 
+function reportExam(strName,slugName,  strDes, exam){
+
+    exam   = JSON.parse(exam);
+    const name        = $('[data-exam=name]');
+    const des         = $('[data-exam=des]');
+    const number      = $('[data-exam=number_question]');
+    const time_repeat = $('[data-exam=time_repeat]');
+    const minutes     = $('[data-exam=minutes]');
+    const minScore    = $('[data-exam=min_score]');
+    const urlHTML    =  $('[data-exam=href]');
+
+    name.html(strName);
+    des.html(strDes);
+    number.html(exam.total_question);
+    time_repeat.html(exam.repeat_time);
+    minutes.html(exam.minutes);
+    minScore.html(exam.min_score);
+
+    urlHTML[0].setAttribute('href' , `/kiem-tra/bat-dau/${slugName}.${exam.lesson_id}`);
+    document.getElementById("exam-modal").style.height = "100%";
+}
+
 function recommendationLesson(name, courseId, type) {
     if (type === 'lam-bai-tap') {
         location.href = `/bai-tap/lesson/${name}.${lessonId}/${type}?lesson_id=${lessonId}`

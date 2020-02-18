@@ -77,7 +77,7 @@
                         @foreach($var['lessons'] as $lesson)
                                 <div class="title_body">
                                     @if($lesson->type == \App\Models\Lesson::EXAM)
-                                        <a href="{{route('exam.start', ['title' =>str_slug($lesson->name), 'id'=> $lesson->id ])}}"> {{ $lesson->name }} (Bài kiểm tra)</a>
+                                        <a onclick="reportExam(`{{$lesson->name}}`, `{{str_slug($lesson->name)}}`,`{{$lesson->description}}`, `{{$lesson->exam}}`)" > {{ $lesson->name }} (Bài kiểm tra)</a>
                                     @else
                                         @if($lesson->level == \App\Models\Lesson::LEVEL_1)
                                             <a href="{{route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
@@ -130,8 +130,8 @@
           </div>
        </div>
        <div id="myNav" class="overlay">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <p class="title" data-lesson="title">Bài học</p>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav('myNav')">&times;</a>
+            <p class="title" data-lesson="name">Bài học</p>
             <div class="overlay-content row">
                 <div class="total total-question">
 
@@ -189,18 +189,71 @@
                 </a>
             </div>
       </div>
-    </section>    
+
+      <div id="exam-modal" class="overlay">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav('exam-modal')">&times;</a>
+            <p class="title" data-exam="name">Kiểm tra: Kiểm tra cuối kì</p>
+            <div class="overlay-content row">
+                <div class="description ">
+                    <p>Mô tả:</p>
+                    <p data-exam="des"></p>
+                </div>
+            </div>
+          <div class="overlay-content row">
+              <div class="total total-question">
+                  <div class="title">
+                      <p>Số câu</p>
+                      <p data-exam="number_question"></p>
+                  </div>
+                  <i class="fa fa-circle circle" aria-hidden="true" style=" color: #2bd6fe;"></i>
+              </div>
+              <div class="total total-question-did">
+                  <div class="title">
+                      <p>Thời gian (Phút)</p>
+                      <p data-exam="minutes"></p>
+                  </div>
+                  <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fa7a1d;"></i>
+              </div>
+              <div class="total total-question-correct">
+                  <div class="title">
+                      <p>Số lần làm lại</p>
+                      <p data-exam="time_repeat"></p>
+                  </div>
+                  <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fce747;"></i>
+              </div>
+              <div class="total min-score">
+                  <div class="title">
+                      <p>Điểm tối thiểu</p>
+                      <p data-exam="min_score"></p>
+                  </div>
+                  <i class="fa fa-circle circle" aria-hidden="true" style=" color: #7BCDAB;"></i>
+              </div>
+          </div>
+
+            <div class="overlay-footer row footer-1">
+                <a class="offer-course did-1"  onclick="closeNav('exam-modal')">
+                    <div style="text-align: left">
+                        <p></p>
+                        <p class="content" >Để sau</p>
+                    </div>
+                </a>
+                <a class="offer-course do-false-1" title="Làm lại câu sai" id="data-exam-href" data-exam="href">
+                    <div style="text-align: left">
+                        <p></p>
+                        <p class="content" >Làm ngay</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
 @stop
 @push('js')
 <script src='{{ web_asset('public/js/detail/bootstrap-rating.min.js') }}' type='text/javascript'></script>
 <script src='{{ web_asset('public/js/learn/course_learn.js') }}' type='text/javascript'></script>
 
 <script>
-        function openNav() {
-        }
-        
-        function closeNav() {
-          document.getElementById("myNav").style.height = "0%";
+        function closeNav(id) {
+          document.getElementById(id).style.height = "0%";
         }
 </script>
              
