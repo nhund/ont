@@ -39,9 +39,9 @@
                                             <div class="col-sm-2 btn-create">
                                                 <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
                                                 <ul class="dropdown-menu pull-right">
-                                                    <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}', 1)">Tạo lý thuyết</a></li>
-                                                    <li><a onclick="showModalAddExercise('{{ $cl['id'] }}', 'lesson', 1)">Tạo bài tập</a></li>
-                                                    <li><a onclick="showModalAddExam('{{ $cl['id'] }}', 'exam', 1)">Tạo bài Kiểm tra</a></li>
+                                                    <li><a onclick="showModalAddLesson('{{ $cl['id'] }}', '{{ $cl['name'] }}', 1)">Lý thuyết</a></li>
+                                                    <li><a onclick="showModalAddExercise('{{ $cl['id'] }}', 'lesson', 1)">Bài tập</a></li>
+                                                    <li><a onclick="showModalAddExam('{{ $cl['id'] }}', 'exam', 1)">Bài Kiểm tra</a></li>
                                                 </ul>
                                             </div>
                                         @endif
@@ -105,8 +105,8 @@
                                                 <div class="col-sm-2 btn-create">
                                                     <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
                                                     <ul class="dropdown-menu pull-right">
-                                                        <li><a onclick="showModalAddLesson('{{ $lesson['id'] }}', '{{ $lesson['name'] }}', 2)">Tạo bài học</a></li>
-                                                        <li><a onclick="showModalAddExam('{{ $lesson['id'] }}', 'exam', 1)">Tạo bài Kiểm tra</a></li>
+                                                        <li><a onclick="showModalAddLesson('{{ $lesson['id'] }}', '{{ $lesson['name'] }}', 2)">Bài học</a></li>
+                                                        <li><a onclick="showModalAddExam('{{ $lesson['id'] }}', 'exam', 1)">Bài Kiểm tra</a></li>
                                                     </ul>
                                                 </div>
                                             @endif
@@ -130,9 +130,9 @@
                                                                 <div class="col-sm-2 btn-create">
                                                                     <a class="btn btn-primary btn-sm btn-circle" data-toggle="dropdown"><i class="fa fa-pencil"></i></a>
                                                                     <ul class="dropdown-menu pull-right">
-                                                                        <li><a onclick="showModalAddLesson('{{ $lesson['id'] }}', '{{ $cl['name'] }}', 2)">Tạo lý thuyết</a></li>
-                                                                        <li><a onclick="showModalAddExercise('{{ $lesson['id'] }}', 'lesson', 2)">Tạo bài tập</a></li>
-                                                                        <li><a onclick="showModalAddExam('{{ $lesson['id'] }}', 'exam', 2)">Tạo bài Kiểm tra</a></li>
+                                                                        <li><a onclick="showModalAddLesson('{{ $lesson['id'] }}', '{{ $cl['name'] }}', 2)">Lý thuyết</a></li>
+                                                                        <li><a onclick="showModalAddExercise('{{ $lesson['id'] }}', 'lesson', 2)">Bài tập</a></li>
+                                                                        <li><a onclick="showModalAddExam('{{ $lesson['id'] }}', 'exam', 2)">Bài Kiểm tra</a></li>
                                                                     </ul>
                                                                 </div>
                                                             @endif
