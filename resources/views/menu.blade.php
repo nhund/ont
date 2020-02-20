@@ -2,7 +2,7 @@
     <div class="flexbox-grid-default hidden-lg hidden-md hidden-sm">
        <div class="flexbox-content box-logo-mobile">
           <div class="logo-mobile">
-             <a href="{{ route('home') }}" title="Trang chủ">             
+             <a href="{{ route('home') }}" title="Trang chủ">
              <img src="{{ isset($data_all['about']->logo) ? web_asset($data_all['about']->logo) : '' }}" alt="{{ isset($data_all['about']->title) ? $data_all['about']->title : '' }}" />
              </a>
           </div>
@@ -66,7 +66,7 @@
           <ul class="icon-control-header text-right">
              <li class="search-header">
                <div class="dropdown-menu-search form-search">
-                  <form action="{{ route('search') }}" method="GET">                      
+                  <form action="{{ route('search') }}" method="GET">
                       <input type="text" class="form-control" name="q" placeholder="Tìm kiếm...">
                       <button type="submit"><i class="fa fa-search"></i></button>
                   </form>
@@ -79,7 +79,7 @@
                         <img src="{{ web_asset('public/images/groupwallet.png') }}" />
                       </div>
                       <span class="wallet">Nạp ví</span>
-                   </a>                                    
+                   </a>
                 </div>
              </li>
           </ul>

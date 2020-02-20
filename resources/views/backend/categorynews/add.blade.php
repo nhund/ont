@@ -22,6 +22,17 @@
                                         </div>
                                     </div>
                                     <div class="form-group pb0">
+                                        <label for="" class="control-label col-sm-2">Menu cha</label>
+                                        <div class="col-sm-8 tabular-border">
+                                            <select class="form-control" name="parent_id">
+                                                @foreach($var['menus'] as $menu)
+                                                    <option value="{{$menu->id}}">{{$menu->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group pb0">
                                         <label for="" class="control-label col-sm-2">Trạng thái</label>
                                         <div class="col-sm-2 tabular-border">
                                             <select class="form-control" name="status">

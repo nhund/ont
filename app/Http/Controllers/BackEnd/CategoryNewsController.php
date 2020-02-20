@@ -5,6 +5,7 @@ namespace App\Http\Controllers\BackEnd;
 
 
 use App\Models\CategoryNews;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 
 class CategoryNewsController extends AdminBaseController
@@ -48,6 +49,9 @@ class CategoryNewsController extends AdminBaseController
                 'title' => 'Thêm danh mục tin ',
             )
         );
+
+        $var['menus'] = Menu::where('parent_id', 0)->where('status', Menu::STATUS_ON)->get();
+
         return view('backend.categorynews.add',compact('var'));
     }
 
@@ -64,6 +68,13 @@ class CategoryNewsController extends AdminBaseController
         $category->created_at = time();
         if($category->save())
         {
+            $menu = new Menu();
+            $menu->name = $data['name'];
+            $menu->parent_id = empty($data['parent_id']) ? 0 : $data['parent_id'];
+            $menu->status = $data['status'];
+            $menu->url ="/tin-tuc?cate-id=".$category->id;
+            $menu->create_date = time();
+            $menu->save();
             alert()->success('Thông báo','Thêm dữ liệu thành công');
             return redirect()->route('admin.news.index');
         }else{
