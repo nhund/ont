@@ -456,8 +456,6 @@ class CourseLearnController extends Controller
         );
     }
 
-
-
     /**
      * @param $title
      * @param $id

@@ -260,7 +260,7 @@ class CourseController extends AdminBaseController
         $name           = $request->input('name');
         $status         = $request->input('status');
         $lesson_id      = $request->input('lesson_id');
-        $level      = $request->input('level');
+        $level      = $request->input('level', 1);
         $lesson         = Lesson::find($lesson_id);
         $firstId        = 0;
         if (is_array($name) && $name) {

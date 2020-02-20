@@ -199,8 +199,9 @@ function addLesson() {
         dataType: 'json',
         method: 'POST',
         success: function (response) {
+            console.log('response', response)
             if (response.status) {
-                window.location.href = '/admin/lesson/'+response.id;
+                // window.location.href = '/admin/lesson/'+response.id;
             }
         }
     });
@@ -215,7 +216,7 @@ function addLevel2() {
        method: 'POST',
        success: function (response) {
            if (response.status) {
-               window.location.href = '/admin/lesson/'+response.id;
+               // window.location.href = '/admin/lesson/'+response.id;
            }
        }
    });
