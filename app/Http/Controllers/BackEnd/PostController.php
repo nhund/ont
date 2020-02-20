@@ -64,6 +64,12 @@ class PostController extends AdminBaseController
         }
 
         $post->feature = isset($data['feature']) ? Post::FEATURE : Post::NORMAL;
+
+        if ( isset($data['feature_best'])){
+            $post->feature =  Post::BEST_FEATURE;
+            Post::where('feature', Post::BEST_FEATURE)->update(['feature' => Post::FEATURE]);
+        }
+
         $post->create_date = time();
         $hasError = false;
 
@@ -151,7 +157,11 @@ class PostController extends AdminBaseController
         }
 
         $post->feature = isset($data['feature']) ? Post::FEATURE : Post::NORMAL;
+        if ( isset($data['feature_best'])){
+            $post->feature =  Post::BEST_FEATURE;
 
+            Post::where('feature', Post::BEST_FEATURE)->update(['feature' => Post::FEATURE]);
+        }
         if ($request->hasFile('avatar')){
             $avatar = $request->file('avatar');
 

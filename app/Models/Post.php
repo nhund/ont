@@ -13,6 +13,7 @@ class Post extends Model
     const POSTING = 'posting';
 
     const FEATURE = 1;
+    const BEST_FEATURE = 2;
     const NORMAL = 0;
 
     protected $table = 'post';

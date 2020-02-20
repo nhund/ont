@@ -18,14 +18,14 @@
                                         <input type="hidden" name="id" value="{{ $var['post']->id }}">
 
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Loại bài viết</label>
+                                            <label class="col-sm-1 control-label">Loại bài viết</label>
                                             <div class="col-sm-2">
                                                 <select name="type" class="form-control" id="type">
                                                     <option value="news" {{request('type') == 'news' ? 'selected' :''}}>Tin tức</option>
                                                     <option value="posting"  {{request('type') == 'posting' ? 'selected' :''}} >Bài viết</option>
                                                 </select>
                                             </div>
-                                            <label for="" class="control-label col-sm-2">Trạng thái</label>
+                                            <label for="" class="control-label col-sm-1">Trạng thái</label>
                                             <div class="col-sm-2 tabular-border">
                                                 <select class="form-control" name="status">
                                                     <option @if(App\Models\Post::STATUS_ON == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_ON }}">Hiển thị</option>
@@ -34,7 +34,11 @@
                                             </div>
                                             <label class="col-sm-1 control-label" for="feature">Nổi bật</label>
                                             <div class="col-sm-1">
-                                                <input {{$var['post']->feature ?'checked' : ''}} class="checkbox form-control" name="feature" id="feature" type="checkbox"/>
+                                                <input {{$var['post']->feature == 1 ?'checked' : ''}} class="checkbox form-control" name="feature" id="feature" type="checkbox"/>
+                                            </div>
+                                            <label class="col-sm-1 control-label" for="feature_best">Nổi bật nhất</label>
+                                            <div class="col-sm-1">
+                                                <input {{$var['post']->feature == 2 ?'checked' : ''}} class="checkbox form-control" name="feature_best" id="feature_best" type="checkbox"/>
                                             </div>
                                         </div>
 

@@ -27,7 +27,7 @@
                                         {{ csrf_field() }}
 
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Loại bài viết</label>
+                                            <label class="col-sm-1 control-label">Loại bài viết</label>
                                             <div class="col-sm-2">
                                                 <select name="type" class="form-control" id="type">
                                                     <option value="news">Tin tức</option>
@@ -43,7 +43,11 @@
                                             </div>
                                             <label class="col-sm-1 control-label" for="feature">Nổi bật</label>
                                             <div class="col-sm-1">
-                                                <input class="checkbox form-control" name="feature" id="feature" type="checkbox"/>
+                                                <input class="checkbox form-control" value="1" name="feature" id="feature" type="checkbox"/>
+                                            </div>
+                                            <label class="col-sm-1 control-label" for="feature_best">Nổi bật nhất</label>
+                                            <div class="col-sm-1">
+                                                <input class="checkbox form-control" value="2" name="feature_best" id="feature_best" type="checkbox"/>
                                             </div>
                                         </div>
 
