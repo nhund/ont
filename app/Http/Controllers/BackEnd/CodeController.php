@@ -22,7 +22,7 @@ class CodeController extends AdminBaseController
         10  => '',
     ];
 
-    public function listCode() {
+    public function listCode(Request $request) {
         $var['page_title']      = 'Quản lý mã code';
         if (Auth::user()['level'] != 6) {
             return redirect()->route('dashboard');
@@ -32,11 +32,16 @@ class CodeController extends AdminBaseController
             $code = Code::where('code.code', 'LIKE', '%'.$search_code.'%');
             $var['search_code']     = $search_code;
         } else {
-            $code = new Code();
+            $code = Code::query();
         }
 
+        if($request->has('status')){
+            $code->where('code.status' , Code::STATUS_OFF);
+        }else{
+            $code->where('code.status' , Code::STATUS_ON);
+        }
 
-        $var['code']    = $code->select('*','code.code as cCode','user_code_log.create_at as dateActive')
+        $var['code']    = $code->select('*','code.status as status','code.code as cCode','user_code_log.create_at as dateActive')
             ->leftJoin('user_code_log','user_code_log.code_id', '=', 'code.id')
             ->leftJoin('users','users.id', '=', 'user_code_log.user_id')
             ->orderBy('code.created_at', 'DESC')->paginate(20);
