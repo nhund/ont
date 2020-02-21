@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
-
 use App\Components\Exam\ExamService;
 use App\Components\Recommendation\RecommendationService;
 use App\Events\BeginExamEvent;
@@ -53,8 +52,6 @@ class ExamController extends Controller
         if ($request->has('lesson_id')){
             $var['parentLesson'] =  Lesson::findOrFail($request->get('lesson_id'));
         }
-
-        $lesson = Lesson::findOrfail($id);
 
         $userExam = ExamUser::where('user_id', $request->user()->id)
             ->where('lesson_id', $id)
@@ -146,5 +143,43 @@ class ExamController extends Controller
         $userExam->save();
 
         return redirect()->route('exam.question', ['title' =>str_slug($title), 'id' =>$id ]);
+    }
+
+    public function result($title, $id , Request $request){
+
+        if(!Auth::check()) {
+            alert()->error('Bạn cần đăng nhập để thực hiện hành động này');
+            return redirect()->route('home');
+        }
+        $var = [];
+        $lesson = Lesson::find($id);
+
+        if(!$lesson) {
+            alert()->error('Bài học không tồn tại');
+            return redirect()->route('home');
+        }
+
+        if ($request->has('lesson_id')){
+            $var['parentLesson'] =  Lesson::findOrFail($request->get('lesson_id'));
+        }
+
+        $exam      = Exam::where('lesson_id', $id)->first();
+        $questions = (new ExamService())->getQuestionExam($lesson);
+
+        if (count($questions) == 0){
+            alert()->error('Bài kiểm tra chưa có câu hỏi.');
+            return redirect()->back();
+        }
+
+        $var['exam']    = $exam;
+        $var['questions'] = $questions;
+        $var['course'] = Course::find($lesson->course_id);
+        $var['lesson'] = $lesson;
+        $var['userExam'] = ExamUser::where(['user_id' => $request->user()->id, 'lesson_id' => $lesson->id])->first();
+        $var['totalQuestion'] = count($var['questions']);
+
+        $var['finish']  = false;
+
+        return view('exam.review.resultExam',compact('var'));
     }
 }

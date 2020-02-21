@@ -17,6 +17,7 @@ use App\Http\Requests\submitQuestionExamRequest;
 use App\Http\Requests\submitQuestionRequest;
 use App\Models\Exam;
 use App\Models\ExamUser;
+use App\Models\ExamUserAnswer;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Transformers\Exam\ExamUserTransformer;
@@ -193,5 +194,19 @@ class ExamController extends Controller
         $examUser->save();
 
         return fractal()->item($examUser, new ExamUserTransformer)->respond();
+    }
+
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resultBySortQuestion(Lesson $lesson, Request $request)
+    {
+        $result = ExamUserAnswer::where('lesson_id', $lesson->id)
+            ->where('user_id',$request->user()->id)
+            ->get()->toArray();
+
+        return $this->respondOk($result);
     }
 }
