@@ -103,7 +103,7 @@
                                                         {{$var['userExam']->highest_score}}
                                                     {{--@else {{$var['userExam']->score}}--}}
                                                     {{--@endif--}}
-                                                </strong></h1>
+                                            </strong></h1>
                                         </div>
                                         <div class="col-md-6 title-score">
                                             <h2><span class="score-text"><strong>Điểm</strong></span></h2>
@@ -114,6 +114,10 @@
                                 <div class="competition ">
                                     <table class="table">
                                         <tbody>
+                                        <tr>
+                                            <td colspan="4">
+                                                <a  href="{{route('exam.result', ['title' => str_slug($var['lesson']->name), 'id'=>$var['lesson']->id ])}}">Xem lại bài thi</a></td>
+                                        </tr>
                                         @foreach($var['ranks'] as $key => $rank)
                                             <tr>
                                                 <td>{{$key + 1}}</td>
