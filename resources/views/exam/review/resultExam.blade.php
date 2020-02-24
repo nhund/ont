@@ -49,12 +49,8 @@
                                             </div>
                                             <div class="action-exam row">
                                                 <span style="color: black">Còn <span class="time-stop"></span> lần dừng lại</span>
-                                                <button class="btn text-uppercase stop" onclick="pauseExam(`{{$var['lesson']->id}}`)">
-                                                    @if($var['userExam'] && $var['userExam']->status_stop === \App\Models\ExamUser::INACTIVE)
-                                                        <i class="fa fa-play" aria-hidden="true"></i> Tiếp tục
-                                                    @else
-                                                        <i class="fa fa-pause"></i> Tạm dừng
-                                                    @endif
+                                                <button disabled class="btn text-uppercase stop" onclick="pauseExam(`{{$var['lesson']->id}}`)">
+                                                    <i class="fa fa-play" aria-hidden="true"></i> Tiếp tục
                                                 </button>
                                             </div>
                                             <div class="row result-exam" id="result-exam"></div>
@@ -63,11 +59,7 @@
                                 </div>
                             @endforeach
                             <div class="question_type box_finish question_stt_{{ count($var['questions']) + 1 }}" data-key="{{ count($var['questions']) + 1 }}">
-                                @if(isset($var['parentLesson']))
-                                    <a href="{{ route('user.lambaitap.detailLesson',['title'=>str_slug($var['parentLesson']->name ?? ''),'id'=> $var['parentLesson']->id]) }}" class="btn btn_finish">Hoàn thành</a>
-                                @else
-                                    <a href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="btn btn_finish">Hoàn thành</a>
-                                @endif
+                                    <a style="display: none" href="" class="btn btn_finish">Hoàn thành</a>
                             </div>
                         </div>
                     </div>
@@ -176,8 +168,8 @@
                success: function (result) {
                    if (result.code === 200){
                        reviewResults = result.data;
-                       reviewResult(reviewResults[0], 1);
-                       checkButton($('[data-stt=0]'));
+                       reviewResult(0, {{$var['questions'][0]->type}});
+                       checkButton($('[data-stt=1]'));
                    }
                }
            })

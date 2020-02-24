@@ -37,7 +37,7 @@
         @if(isset($question) && isset($question->child))     
         <input type="hidden" name="count_question" value="{{ count($question->child) }}" >       
         <div class="list_question">
-            @foreach ($question->child as $key => $question_child)
+            @foreach ($question->child as $subKey => $question_child)
             <div class="question_item question_id_{{ $question_child->id }}">
                 <div class="question">
                     <p>{!! $question_child->question  !!}</p>     
@@ -80,10 +80,13 @@
             </div>
             @endforeach              
         </div>
-        <div class="submit_question">
-            <button class="btn btn_next" data-type="{{$question->type}}" data-stt="{{$key}}">Làm tiếp</button>
-            <a href="{{route('exam.question', ['title' =>str_slug($var['lesson']->name), 'id'=> $var['lesson']->id ])}}" class="btn btn_finish">Kết thúc</a>
-        </div>
+
+        @if(count($var['questions']) - 2 >= $key)
+                <div class="submit_question">
+                    <button class="btn btn_next" data-type="{{$var['questions'][$key + 1]->type}}" data-stt="{{$key + 1}}">Làm tiếp</button>
+                    <a style="display: none" href="{{route('exam.question', ['title' => str_slug($var['lesson']->name), 'id'=>$var['lesson']->id ])}}" class="btn btn_finish">Hoàn thành</a>
+                </div>
+            @endif
         @endif
     </div> 
 </form>   
