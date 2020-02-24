@@ -18,6 +18,18 @@ class ExamPart extends Model
     const ACTIVE = 'Active';
     const INACTIVE = 'Inactive';
 
+    public static function boot()
+    {
+        parent::boot();
+
+        self::deleted(function ($model){
+            ExamQuestion::where([
+                'lesson_id' => $model->lesson_id,
+                'part' => $model->id]
+            )->delete();
+        });
+    }
+
     public $timestamps = true;
 
     protected $fillable = ['lesson_id', 'name', 'score', 'created_at', 'updated_at', 'number_question'];

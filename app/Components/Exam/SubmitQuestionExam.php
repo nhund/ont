@@ -270,7 +270,6 @@ class SubmitQuestionExam
             'question_id' => $this->question->id,
             'lesson_id'   => $this->examId,
         ])->firstOrFail();
-//        dd($examQuestion);
         $condition = [
             'lesson_id' => $this->examId,
             'part'      => $examQuestion->part
