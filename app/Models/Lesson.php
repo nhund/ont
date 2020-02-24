@@ -48,7 +48,12 @@ class Lesson extends Model
     }
 
     public static  function getCourseLesson($couseId) {
-        $lesson = self::where('course_id', '=', $couseId)->orderBy('order_s','ASC')->orderBy('created_at','ASC')->get(['id', 'name', 'parent_id', 'is_exercise', 'status', 'type', 'level'])->keyBy('id');
+        $lesson = self::where('course_id', '=', $couseId)
+            ->where('level', '<>', 0)
+            ->orderBy('order_s','ASC')
+            ->orderBy('created_at','ASC')
+            ->get(['id', 'name', 'parent_id', 'is_exercise', 'status', 'type', 'level'])
+            ->keyBy('id');
         if ($lesson) {
             $lesson = $lesson->toArray();
             foreach ($lesson as $value) {
