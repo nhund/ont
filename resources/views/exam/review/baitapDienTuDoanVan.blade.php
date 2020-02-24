@@ -21,7 +21,7 @@
             @endif
     </div>
     <div class="content_question">
-        @if(isset($question))        
+        @if(isset($question))
         <div class="list_question">
             @foreach ($question->childs as $key => $question_child)
             <div class="question_item question_id_{{ $question_child->id }}">
@@ -29,13 +29,13 @@
                     {!! $question_child->question_display !!}
                 </div>
             </div>
-            @endforeach              
+            @endforeach
         </div>
         <div class="submit_question">
-            <button class="btn btn_next">Làm tiếp</button>
+            <button class="btn btn_next" data-type="{{$question->type}}" data-stt="{{$key}}">Làm tiếp</button>
             <a href="{{route('exam.question', ['title' =>str_slug($var['lesson']->name), 'id'=> $var['lesson']->id ])}}" class="btn btn_finish">Kết thúc</a>
         </div>
         @endif
-    </div> 
-</form>   
+    </div>
+</form>
 </div>

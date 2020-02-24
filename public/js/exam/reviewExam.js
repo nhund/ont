@@ -251,20 +251,7 @@ $(document).ready(function () {
 
     });
 
-    function checkButton($button){
-        let key   = parseInt($button.closest('.question_type').attr('data-key'));
-        let totalQuestion = $('input[name=totalQuestion]').val();
-        if (key == totalQuestion ){
-            $button.closest('.submit_question').find('.btn_finish').show();
-            $button.closest('.submit_question').find('.btn_next').remove();
-            $button.closest('.submit_question').find('.btn_submit').remove();
-        } else {
-            $button.closest('.submit_question').find('.btn_next').show();
-            $button.closest('.submit_question').find('.btn_submit').remove();
-            $button.closest('.submit_question').find('.btn_finish').remove();
-        }
 
-    }
 
     function notify(message= '', type = 'danger'){
         $.notify({
@@ -341,10 +328,11 @@ function showAnswers(results){
     }
 }
 
-function reviewResult() {
+function reviewResult(stt, type) {
 
+    console.log('stt', stt, type)
     // điền từ đoạn văn
-    let answer = data.data.answer;
+    let answer = stt.answer;
     $.each(answer, function (key, val) {
         $.each(val, function (key2, val2) {
             var input_answer = $('.dien_tu_doan_van input[name="txtLearnWord[' + key + '][' + key2 + ']"]');
@@ -363,47 +351,63 @@ function reviewResult() {
 
     });
 
-    // điền từ
-    answer = data.data.answer;
+    // // điền từ
+    // answer = data.data.answer;
+    //
+    // $.each(answer, function (key, val) {
+    //
+    //     if (parseInt(val.error) === 2) {
+    //         $('.question_id_' + key).find('.result').addClass('true');
+    //     } else {
+    //         $('.question_id_' + key).find('.result').addClass('error');
+    //     }
+    //     $('.question_id_' + key).find('.user_input span').text(val.input);
+    //     $('.question_id_' + key).find('.result_ok span').text(val.answer);
+    //     $('.question_id_' + key).find('.result').show();
+    //
+    //     var box_interpret_child = $('.box_interpret_' + key);
+    //     box_interpret_child.show();
+    // });
+    //
+    //
+    // // trắc nghiệm
+    // answer = data.data.answer;
+    // $.each(answer, function (key, val) {
+    //
+    //     if (val.error == 2) {
+    //         $('.answer_' + val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
+    //         $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#00C819');
+    //
+    //     } else {
+    //         $('.answer_' + val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
+    //         $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#00C819');
+    //
+    //         $('.answer_' + val.input).closest('.radio').append('<i class="fa fa-times"></i>');
+    //         $('.answer_' + val.input).closest('.radio').find('label').css('color', '#FF503B');
+    //     }
+    //     // hien thi giai thich chung
+    //     if (data.interpret !== '') {
+    //         var box_interpret_child = $('.box_interpret_' + val.question_id);
+    //         box_interpret_child.find('span').append(val.interpret);
+    //         var format_content_temp = document.getElementById('box_interpret_all_' + val.question_id);
+    //         MathJax.Hub.Queue(["Typeset", MathJax.Hub, format_content_temp]);
+    //         box_interpret_child.show();
+    //     }
+    // });
+}
 
-    $.each(answer, function (key, val) {
 
-        if (parseInt(val.error) === 2) {
-            $('.question_id_' + key).find('.result').addClass('true');
-        } else {
-            $('.question_id_' + key).find('.result').addClass('error');
-        }
-        $('.question_id_' + key).find('.user_input span').text(val.input);
-        $('.question_id_' + key).find('.result_ok span').text(val.answer);
-        $('.question_id_' + key).find('.result').show();
+function checkButton($button){
+    let key   = parseInt($button.closest('.question_type').attr('data-key'));
+    let totalQuestion = $('input[name=totalQuestion]').val();
+    if (key == totalQuestion ){
+        $button.closest('.submit_question').find('.btn_finish').show();
+        $button.closest('.submit_question').find('.btn_next').remove();
+        $button.closest('.submit_question').find('.btn_submit').remove();
+    } else {
+        $button.closest('.submit_question').find('.btn_next').show();
+        $button.closest('.submit_question').find('.btn_submit').remove();
+        $button.closest('.submit_question').find('.btn_finish').remove();
+    }
 
-        var box_interpret_child = $('.box_interpret_' + key);
-        box_interpret_child.show();
-    });
-
-
-    // trắc nghiệm
-    answer = data.data.answer;
-    $.each(answer, function (key, val) {
-
-        if (val.error == 2) {
-            $('.answer_' + val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
-            $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#00C819');
-
-        } else {
-            $('.answer_' + val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
-            $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#00C819');
-
-            $('.answer_' + val.input).closest('.radio').append('<i class="fa fa-times"></i>');
-            $('.answer_' + val.input).closest('.radio').find('label').css('color', '#FF503B');
-        }
-        // hien thi giai thich chung
-        if (data.interpret !== '') {
-            var box_interpret_child = $('.box_interpret_' + val.question_id);
-            box_interpret_child.find('span').append(val.interpret);
-            var format_content_temp = document.getElementById('box_interpret_all_' + val.question_id);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, format_content_temp]);
-            box_interpret_child.show();
-        }
-    });
 }

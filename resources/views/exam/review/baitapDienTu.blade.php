@@ -60,7 +60,7 @@
                     @endforeach              
                 </div>
                 <div class="submit_question">
-                    <button class="btn btn_next">Làm tiếp</button>
+                    <button class="btn btn_next" data-type="{{$question->type}}" data-stt="{{$key}}">Làm tiếp</button>
                     <a href="{{route('exam.question', ['title' =>str_slug($var['lesson']->name), 'id'=> $var['lesson']->id ])}}" class="btn btn_finish">Kết thúc</a>
                 </div>
             @endif

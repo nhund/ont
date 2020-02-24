@@ -80,7 +80,7 @@
         const urlSubmitQuestion = '/api/exam/question/{question}';
         const getExplain        = '{{ route('user.lambaitap.getExplain') }}';
         const book_mark_url     = '{{ route('user.question.bookMark') }}';
-        let   reviewResult      = [];
+        let   reviewResults      = [];
     </script>
     <script src="{{ asset('/public/admintrator/assets/js/bootstrap-notify.min.js?ver=1') }}"></script>
     <script src='{{ web_asset('public/js/exam/reviewExam.js') }}' type='text/javascript'></script>
@@ -129,53 +129,11 @@
                        $('.stop').html('<i class="fa fa-play" aria-hidden="true"></i> Tiếp tục')
                    } else {
                        clearInterval(countInterval);
-                       countDown(userExam.still_time)
                        $('.stop').html(' <i class="fa fa-pause"></i> Tạm dừng')
                        $('.pause-exam').removeAttr('style');
                    }
                }
            });
-        }
-
-        function countDown(timeLeft) {
-
-            const status = $('input[name=status_stop]').val();
-            if (status === 'Inactive') {
-                $('.pause-exam').css({'background-color': '#2d2e4d', 'opacity': 0.95, 'color':'#2d2e4d !important'});
-                $('.count-down').html('<span style="color: red">Đang tạm dừng</span>');
-                return false;
-            }
-            let countDownDate = new Date(timeLeft);
-
-            // Update the count down every 1 second
-            countInterval = setInterval(function () {
-                // Get today's date and time
-                let now      = new Date().getTime();
-                // Find the distance between now and the count down date
-                let distance = countDownDate - now;
-
-                // Time calculations for days, hours, minutes and seconds
-                let hours   = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // Display the result in the element with id="demo"
-                if (hours > 0) {
-                    $('.count-down').html(custom(hours) + ":" + custom(minutes) + ":" + custom(seconds))
-                } else {
-                    $('.count-down').html(custom(minutes) + ":" + custom(seconds));
-                }
-
-                function custom(number) {
-                    return number > 9 ? number : '0' + number;
-                }
-
-                // If the count down is finished, write some text
-                if (distance < 0) {
-                    clearInterval(countInterval);
-                    $('.count-down').html('<span style="color: red">Hết thời gian</span>');
-                }
-            }, 1000);
         }
 
         function stopTime(stoppedTime){
@@ -186,12 +144,6 @@
         }
 
         function intiExam(){
-            countDown($('input[name=still_time]').val());
-            stopTime(parseInt($('input[name=time_stopped]').val()));
-            $('.question_type').hide();
-            let until_number = parseInt($('input[name=until_number]').val());
-            $('.question_type.question_stt_' + until_number).show();
-            $('.hoclythuyet .course_process .count_question_done').text(until_number - 1);
 
             const exam_id = $('input[name=lesson_id]').val();
             $.ajax({
@@ -223,7 +175,9 @@
                data   : {},
                success: function (result) {
                    if (result.code === 200){
-                       reviewResult = result.data;
+                       reviewResults = result.data;
+                       reviewResult(reviewResults[0], 1);
+                       checkButton($('[data-stt=0]'));
                    }
                }
            })
