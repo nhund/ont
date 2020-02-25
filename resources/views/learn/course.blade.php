@@ -193,7 +193,7 @@
             </div>
       </div>
 
-      <div id="exam-modal" class="overlay">
+      <div id="exam-modal" class="overlay" style="overflow-y:scroll">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav('exam-modal')">&times;</a>
             <p class="title" data-exam="name">Kiểm tra: Kiểm tra cuối kì</p>
             <div class="overlay-content row">

@@ -505,10 +505,18 @@
     right: 45px;
     font-size: 45px;
 }
-#myNav .overlay-footer,
-#exam-modal .overlay-footer{
+#myNav .overlay-footer{
     position: relative;
     top: 15%;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#exam-modal .overlay-footer{
+    position: relative;
+    top: 5%;
     width: 100%;
     text-align: center;
     display: flex;
