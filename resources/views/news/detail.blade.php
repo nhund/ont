@@ -23,6 +23,7 @@
         <div class="wrap-detail">
             <div class="wrap-left">
                 <div class="title-label">{{$var['news']->name}}</div>
+                <p>Ngày cập nhật: {{$var['news']->created_at}}</p>
                 <div class="detail-news">
                     {!! $var['news']->content !!}
                 </div>
@@ -61,7 +62,7 @@
                                     </div>
                                     <div class="posts-txt">
                                         <a href="{{route('news.detail',[str_slug($data->name, '-'), $data->id])}}">{!! ucfirst(substr($data->name, 0, 120))!!}...</a>
-                                        {{--<p>Ngày cập nhật: 14:06 22/10/2019</p>--}}
+                                        <p>Ngày cập nhật: {{$data->created_at}}</p>
                                     </div>
                                 </li>
                             @endforeach
