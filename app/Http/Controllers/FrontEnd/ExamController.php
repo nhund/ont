@@ -70,13 +70,13 @@ class ExamController extends Controller
         $var['questions'] = $questions;
         $var['course'] = Course::find($lesson->course_id);
         $var['lesson'] = $lesson;
-        $var['userExam'] = ExamUser::where(['user_id' => $request->user()->id, 'lesson_id' => $lesson->id])->first();
+        $var['userExam'] = $userExam;
         $var['totalQuestion'] = count($var['questions']);
         $var['finish']        =
-            ($var['userExam'] && $var['totalQuestion'] && $var['userExam']->until_number > $var['totalQuestion'])
+            ($userExam && $var['totalQuestion'] && $var['userExam']->until_number > $var['totalQuestion'])
             || ($userExam && $exam && $userExam->turn > $exam->repeat_time)
-            || ( $var['userExam']->begin_at && $var['userExam']->still_time <=  date('Y-m-d H:i:s'))
-            || ($var['userExam']->status == ExamUser::STOPPED) ;
+            || ($userExam && $var['userExam']->begin_at && $var['userExam']->still_time <=  date('Y-m-d H:i:s'))
+            || ($userExam && $var['userExam']->status == ExamUser::STOPPED) ;
 
         $var['overtime']      = $userExam && $exam && $userExam->turn > $exam->repeat_time;
 
