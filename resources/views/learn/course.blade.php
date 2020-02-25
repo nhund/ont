@@ -78,7 +78,7 @@
                                 <div class="title_body">
                                     @if($lesson->type == \App\Models\Lesson::EXAM)
                                         <a onclick="reportExam(`{{$lesson->name}}`, `{{str_slug($lesson->name)}}`,`{{$lesson->description}}`,`{{$lesson->exam->total_question}}`,
-                                                `{{$lesson->exam->repeat_time}}`, `{{$lesson->exam->min_score}}`, `{{$lesson->exam->minutes}}`, `{{$lesson->userExam->lesson_id ?? ''}}`, `{{$lesson->userExam->turn}}`)" >
+                                                `{{$lesson->exam->repeat_time}}`, `{{$lesson->exam->min_score}}`, `{{$lesson->exam->minutes}}`, `{{$lesson->exam->lesson_id ?? ''}}`, `{{$lesson->userExam->turn ?? 0}}`)" >
                                             {{ $lesson->name }} (Bài kiểm tra)
                                         </a>
                                     @else
