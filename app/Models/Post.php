@@ -38,18 +38,18 @@ class Post extends Model
         $to_time = $this->getOriginal('create_date');
         $from_time = strtotime(now());
 
-        $minutes =  round(abs($to_time - $from_time) / 60,2);
+        $minutes =  ceil(abs($to_time - $from_time) / 60);
 
         if ($minutes < 60){
              return "{$minutes} phút trước";
         }
 
         if ($minutes > 60 && $minutes < 1440){
-            $hours = round($minutes/60);
+            $hours = ceil($minutes/60);
             return "{$hours} giờ trước";
         }
 
-        $days = round($minutes/1440);
+        $days = ceil($minutes/1440);
         return "{$days} ngày trước";
     }
 

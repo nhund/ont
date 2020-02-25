@@ -67,7 +67,7 @@
                            <h3 class="title-tlt">{!! $newsCategory->name !!}</h3>
                            <div class="group-news-fl">
                                <div class="group-left">
-                                   @if($newsCategory->news)
+                                   @if(count($newsCategory->news))
                                        <div class="group-news-main">
                                            <a href="#"><img src="{{$newsCategory->news[0]->thumbnail}}"></a>
                                            <h4 class="tlt"><a href="#">{!! $newsCategory->news[0]->name !!}</a></h4>
