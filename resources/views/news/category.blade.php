@@ -27,8 +27,7 @@
                                     <a href="{{route('news.detail',[str_slug($var['featureNewses'][0]->name, '-'), $var['featureNewses'][0]->id])}}">
                                         <img src="{{ $var['featureNewses'][0]->thumbnail}}"></a>
                                     <h2 class="tlt"><a href="{{route('news.detail',[str_slug($var['featureNewses'][0]->name, '-'), $var['featureNewses'][0]->id])}}">{{ucfirst($var['featureNewses'][0]->name)}}</a></h2>
-                                    <p class="update-news"><span><a href="{{route('news', ['cate-id' => $var['featureNewses'][0]->category_id])}}">{{$var['featureNewses'][0]->category->name}}</a></span></p>
-                                    {{--<p class="update-news"><span>Tin tuyển dụng</span> - 9 giờ trước</p>--}}
+                                    <p class="update-news"><span><a href="{{route('news', ['cate-id' => $var['featureNewses'][0]->category_id])}}">{{$var['featureNewses'][0]->category->name}}</a></span> - {{$var['featureNewses'][0]->created_at}}</p>
                                     <p>{!! substr($var['featureNewses'][0]->content, 0, 200) !!}</p>
                                 </div>
                                     @if(count($var['featureNewses']) > 1)
