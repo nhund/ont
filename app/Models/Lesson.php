@@ -168,4 +168,9 @@ class Lesson extends Model
         return $this->hasOne(Exam::class);
     }
 
+
+    public function examUser()
+    {
+        return $this->hasMany(ExamUser::class);
+    }
 }

@@ -77,7 +77,10 @@
                         @foreach($var['lessons'] as $lesson)
                                 <div class="title_body">
                                     @if($lesson->type == \App\Models\Lesson::EXAM)
-                                        <a onclick="reportExam(`{{$lesson->name}}`, `{{str_slug($lesson->name)}}`,`{{$lesson->description}}`, `{{$lesson->exam}}`)" > {{ $lesson->name }} (Bài kiểm tra)</a>
+                                        <a onclick="reportExam(`{{$lesson->name}}`, `{{str_slug($lesson->name)}}`,`{{$lesson->description}}`,`{{$lesson->exam->total_question}}`,
+                                                `{{$lesson->exam->repeat_time}}`, `{{$lesson->exam->min_score}}`, `{{$lesson->exam->minutes}}`, `{{$lesson->userExam}}`)" >
+                                            {{ $lesson->name }} (Bài kiểm tra)
+                                        </a>
                                     @else
                                         @if($lesson->level == \App\Models\Lesson::LEVEL_1)
                                             <a href="{{route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id])}}"> {{ $lesson->name }} </a>

@@ -40,25 +40,25 @@ function reportLesson(lesson_id){
     })
 }
 
-function reportExam(strName,slugName,  strDes, exam){
+function reportExam(strName, slugName,  strDes, total_question, repeat_time, min_score, minutes,  examUser){
 
-    exam   = JSON.parse(exam);
+    examUser   = JSON.parse(examUser);
     const name        = $('[data-exam=name]');
     const des         = $('[data-exam=des]');
     const number      = $('[data-exam=number_question]');
     const time_repeat = $('[data-exam=time_repeat]');
-    const minutes     = $('[data-exam=minutes]');
+    const $minutes     = $('[data-exam=minutes]');
     const minScore    = $('[data-exam=min_score]');
     const urlHTML    =  $('[data-exam=href]');
 
     name.html(strName);
     des.html(strDes);
-    number.html(exam.total_question);
-    time_repeat.html(exam.repeat_time);
-    minutes.html(exam.minutes);
-    minScore.html(exam.min_score);
+    number.html(total_question);
+    time_repeat.html(parseInt(repeat_time) - parseInt(examUser.turn));
+    $minutes.html(minutes);
+    minScore.html(min_score);
 
-    urlHTML[0].setAttribute('href' , `/kiem-tra/bat-dau/${slugName}.${exam.lesson_id}`);
+    urlHTML[0].setAttribute('href' , `/kiem-tra/bat-dau/${slugName}.${examUser.lesson_id}`);
     document.getElementById("exam-modal").style.height = "100%";
 }
 

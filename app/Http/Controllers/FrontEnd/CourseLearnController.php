@@ -155,7 +155,9 @@ class CourseLearnController extends Controller
             }            
             $lesson->childs = $lesson_childs;
             
-            
+            if ($lesson->type == Lesson::EXAM){
+                $lesson->userExam = $lesson->examUser()->where('user_id', $user->id)->first();
+            }
         }
         $var['lessons'] = $lessons;        
         $var['course_same'] = Course::where('status','!=',Course::TYPE_PRIVATE)->orderBy('id','DESC')->take(5)->get();
