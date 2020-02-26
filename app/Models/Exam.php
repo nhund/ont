@@ -13,6 +13,22 @@ use Illuminate\Database\Eloquent\Model;
 class Exam extends Model
 {
 
+    protected static function boot(){
+        parent::boot();
+
+        self::created(function ($model){
+            $part = 1;
+            while ($model->parts >= $part){
+                ExamPart::insert([
+                    'lesson_id' => $model->lesson_id,
+                    'name'  => "Phần {$part}",
+                    'score' => 0,
+                    'number_question' => 0
+                ]);
+                $part ++;
+            }
+        });
+    }
     protected $table = 'exam';
 
     const ACTIVE = 'Active';
