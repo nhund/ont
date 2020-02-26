@@ -108,12 +108,11 @@ class submitQuestion
                     ->first();
 
         $checkExist = UserCourse::where('user_id', $user->id)->where('course_id', $course->id)->first();
-        if ( !($support || $checkExist || $user->id == $course->user_id || $user->level == User::USER_ADMIN)
-            || $checkExist->status == UserCourse::STATUS_APPROVAL) {
+        if ( !($support || $checkExist || $user->id == $course->user_id || $user->level == User::USER_ADMIN || $checkExist->status == UserCourse::STATUS_APPROVAL)) {
             return false;
         }
 
-        if ($checkExist->and_date > 0 && $checkExist->and_date < time()) {
+        if ($checkExist && $checkExist->and_date > 0 && $checkExist->and_date < time()) {
             return false;
         }
 
