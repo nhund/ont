@@ -35,7 +35,11 @@ class AppController extends Controller {
         }
 		//dd($questions);
 		$var = [];
+        $limit = isset($input['limit']) ? $input['limit'] : 10;
+        $learn_loop = isset($input['learn_loop']) ? $input['learn_loop'] : 0;
+
 		$var['questions'] = $questions;
+		$var['key_plus'] = (int)$limit * (int)$learn_loop;
 		//$var['answers'] =  $answers;
 		return view('app.question', $var);
 	}

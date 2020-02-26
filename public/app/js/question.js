@@ -19,7 +19,7 @@ $(document).ready(function() {
       }
       if (params.action == "next_question") {
         let param = {};
-        if (parseInt(count_question) == parseInt(params.stt)) {
+        if (parseInt(count_question) < parseInt(params.stt)) {
           param = {
             action: "question_end"
           };
