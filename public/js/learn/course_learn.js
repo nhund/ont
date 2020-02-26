@@ -55,7 +55,7 @@ function reportExam(strName, slugName,  strDes, total_question, repeat_time, min
     name.html(strName);
     des.html(strDes);
     number.html(total_question);
-    time_repeat.html(turn > 0 ? turn : 0);
+    time_repeat.html(turn > 0 ? turn : '(Hết lượt)');
     $minutes.html(minutes);
     minScore.html(min_score);
 
