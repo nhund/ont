@@ -112,7 +112,7 @@ class submitQuestion
             return false;
         }
 
-        if ($checkExist->and_date > 0 && $checkExist->and_date < time()) {
+        if ($checkExist && $checkExist->and_date > 0 && $checkExist->and_date < time()) {
             return false;
         }
 
