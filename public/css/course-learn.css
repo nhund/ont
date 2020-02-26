@@ -140,6 +140,16 @@
     margin-right: 4px;
     margin-top: 2px;
 }
+.exam-front:before{
+    content: "";
+    background: url('/public/images/course/icon/exam.png') no-repeat;
+    width: 14px;
+    height: 14px;
+    float: left;
+    margin-right: 4px;
+    margin-top: 2px;
+}
+
 #course_learn .box_content .body .item-exercise .bai_tap:before{
     content: "";
     background: url('/public/images/course/icon/icon_bai_tap.png') no-repeat;
