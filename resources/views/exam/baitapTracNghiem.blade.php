@@ -1,4 +1,4 @@
-<div class="trac_nghiem_box pause-exam">
+<div class="trac_nghiem_box">
     <form class="form_trac_nghiem">
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="exam_id" value="{{ $var['lesson']->id }}" >

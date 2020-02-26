@@ -5,6 +5,29 @@
         #box-wrapper {
             background: #f2f3f5;
         }
+        .box_do_learn{
+            position: relative;
+        }
+        .overlay{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            opacity: 1;
+            background-color: #fcfaf2; /*dim the background*/
+            display: none;
+        }
+        .overlay-show{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pause-exam :hover{
+            color: #35c818 !important;
+            cursor: pointer;
+        }
     </style>
 @endpush
 @section('content')
@@ -73,7 +96,9 @@
                                     <a href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="btn btn_finish">Hoàn thành</a>
                                 @endif
                             </div>
+                            <div class="overlay pause-exam"> <a onclick="pauseExam(`{{$var['lesson']->id}}`)"><i class="fa fa-play fa-4x"></i></a></div>
                         </div>
+
                     </div>
                 </div>
             </section>
@@ -189,13 +214,13 @@
                    stopTime(userExam.turn_stop)
                    if (userExam.status_stop === 'Inactive') {
                        clearInterval(countInterval);
-                       $('.pause-exam').css({'background-color': '#2d2e4d', 'opacity': 0.95, 'color':'#2d2e4d !important'});
+                       $('.pause-exam').addClass('overlay-show');
                        $('.stop').html('<i class="fa fa-play" aria-hidden="true"></i> Tiếp tục')
                    } else {
                        clearInterval(countInterval);
                        countDown(userExam.still_time)
                        $('.stop').html(' <i class="fa fa-pause"></i> Tạm dừng')
-                       $('.pause-exam').removeAttr('style');
+                       $('.pause-exam').removeClass('overlay-show');
                    }
                }
            });
@@ -205,7 +230,7 @@
 
             const status = $('input[name=status_stop]').val();
             if (status === 'Inactive') {
-                $('.pause-exam').css({'background-color': '#2d2e4d', 'opacity': 0.95, 'color':'#2d2e4d !important'});
+                $('.pause-exam').addClass('overlay-show');
                 $('.count-down').html('<span style="color: red">Đang tạm dừng</span>');
                 return false;
             }

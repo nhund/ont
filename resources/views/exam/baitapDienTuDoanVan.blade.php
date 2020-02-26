@@ -1,4 +1,4 @@
-<div class="dientu_chuoi_box dien_tu_doan_van pause-exam">
+<div class="dientu_chuoi_box dien_tu_doan_van">
     <form class="form_dien_tu_dien_tu_doan_van">
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="exam_id" value="{{ $var['lesson']->id }}" >
