@@ -3,7 +3,7 @@
     <input type="hidden" name="type" value="lam-bai-tap" >
     <input type="hidden" name="question_type" value="{{ $question->type }}" >
     <div class="stt">
-        Câu {{ $key + 1 }}.
+        Câu {{ $key_plus + $key + 1 }}.
     </div>
     <div class="list-action">
         <div class="icon icon-comment">
