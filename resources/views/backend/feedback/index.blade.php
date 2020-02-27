@@ -131,7 +131,6 @@
                    data   : data,
                    success: function (data) {
                        if (data.error == false) {
-                           toastr.success('Thông báo!', data.msg, {timeOut: 600, positionClass: "toast-top-modify"});
                            if (!$($this).hasClass('bookmarked')){
                                $($this).addClass('bookmarked');
                                $($this).removeClass('btn-default').addClass('btn-success');
@@ -139,8 +138,6 @@
                                $($this).removeClass('bookmarked');
                                $($this).removeClass('btn-success').addClass('btn-default');
                            }
-                       } else {
-                           toastr.error('Thông báo!', data.msg, {timeOut: 600, positionClass: "toast-top-modify"})
                        }
                    },
                    error  : function (e) {
