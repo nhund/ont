@@ -211,7 +211,7 @@
 
                    let userExam = result.data;
                    $('input[name=status_stop]').val(userExam.status_stop);
-                   stopTime(userExam.turn_stop)
+                   stopTime(userExam.turn_stop);
                    if (userExam.status_stop === 'Inactive') {
                        clearInterval(countInterval);
                        $('.pause-exam').addClass('overlay-show');
@@ -219,7 +219,7 @@
                    } else {
                        clearInterval(countInterval);
                        countDown(userExam.still_time)
-                       $('.stop').html(' <i class="fa fa-pause"></i> Tạm dừng')
+                       $('.stop').html(' <i class="fa fa-pause"></i> Tạm dừng');
                        $('.pause-exam').removeClass('overlay-show');
                    }
                }

@@ -17,7 +17,7 @@ class PostController extends Controller
      */
     public function news(Request $request){
         $data = $request->all();
-        $limit = 10;
+        $limit = 5;
         $var['params'] = [];
         if(isset($data['cate-id']) && $data['cate-id'] !== '')
         {
