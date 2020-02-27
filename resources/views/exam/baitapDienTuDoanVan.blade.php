@@ -20,13 +20,10 @@
             </div>
             @endif
             <div class="box_action">
-
+               <div class="icon report send_report" title="Báo cáo" data-id="{{ $question->id }}">
+                   <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
+               </div>
            </div>
-        {{--@if(!empty($question->interpret_all))--}}
-                {{--<div class="box_interpret_all">--}}
-                    {{--<p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>                --}}
-                {{--</div> --}}
-            {{--@endif--}}
     </div>
     <div class="content_question">
         @if(isset($question))        
@@ -38,23 +35,12 @@
                     {!! $question_child->question_display !!}
                     {{-- <p>{{ $question->question  }}</p> --}}
                 </div>                            
-                {{--<div class="explain-text box_action">--}}
-                    {{--<div class="icon suggest" title="Gợi ý">--}}
-                       {{--<img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >--}}
-                   {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="box_suggest">--}}
-                    {{--<p class="title">Gợi ý</p>--}}
-                    {{--<div class="suggest_content">--}}
-                        {{--{!! $question_child->explain_before !!}--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--@if(!empty($question_child->interpret))--}}
-                                {{--<div class="box_interpret_question box_interpret_{{ $question_child->id }}">--}}
-                                    {{--<p>Giải thích : <span>{!! $question_child->interpret !!}</span></p>--}}
-                                {{--</div>--}}
-                            {{--@endif --}}
-            </div>    
+                <div class="explain-text box_action">
+                    <div class="icon report send_report" title="Báo cáo" data-id="{{ $question_child->id }}">
+                        <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
+                    </div>
+                </div>
+            </div>
             @endforeach              
         </div>
         <div class="submit_question">
