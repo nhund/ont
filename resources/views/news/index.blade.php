@@ -64,7 +64,7 @@
                 @foreach($var['newsCategories'] as $newsCategory)
                     @if(strtolower($newsCategory->name) != 'các tin khác')
                     <div class="group-news">
-                           <h3 class="title-tlt">{!! $newsCategory->name !!}</h3>
+                           <h3 class="title-tlt"><a href="{{route('news', ['cate-id' => $newsCategory->id])}}">{!! $newsCategory->name !!}</a></h3>
                            <div class="group-news-fl">
                                <div class="group-left">
                                    @if(count($newsCategory->news))
