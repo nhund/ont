@@ -37,7 +37,10 @@
     var base_url = '{{ URL::to('/') }}';
 </script>
 <script src='{{ asset('public/js/jquery-1.12.4.min.js'). '?v='.time() }}' type='text/javascript'></script>
-<script src='{{ asset('public/app/js/question.js'). '?v='.time() }}' type='text/javascript'></script>
-
+@if($type == 'exercise')
+    <script src='{{ asset('public/app/js/question.js'). '?v='.time() }}' type='text/javascript'></script>
+@else
+    <script src='{{ asset('public/app/js/exam.js'). '?v='.time() }}' type='text/javascript'></script>
+@endif
 </body>
 </html>
