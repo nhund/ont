@@ -20,18 +20,6 @@
                   <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_content) }}"></audio>
                  </div>      
             @endif               
-            <div class="box_action">
-                @if(!empty($question->explain_before))
-                    <div class="icon suggest" title="Gợi ý">
-                        <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
-                    </div>
-                @endif 
-         </div>
-        @if(!empty($question->interpret_all))
-            <div class="box_interpret_all">
-                <p>Giải thích chung : <span id="box_interpret_all_{{ $question->id }}"></span></p>                
-            </div> 
-        @endif
     </div>
     <div class="content_question">
         @if(isset($question) && isset($question->child))     
@@ -50,17 +38,6 @@
                       <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
                     </div>      
                 @endif
-                <div class="box_suggest_answer">
-                    <div class="suggest_answer_content">
-                        {{-- {{ $question_child-> }}  --}}   
-                        <p>{!! $question_child->explain_before !!}</p>
-                    </div>
-                    <div class="suggest_answer_icon">
-                        <div class="icon suggest" title="Gợi ý">
-                             <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
-                        </div>
-                    </div>
-                </div>
                 <div class="list_answer">
                     @if(isset($question_child->answers))
                     @foreach ($question_child->answers as $key_chhild => $question_answe)

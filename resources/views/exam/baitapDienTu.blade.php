@@ -52,10 +52,10 @@
                                 <div class="explain" title="Gợi ý" data-id="{{ $question->id }}">
                                     <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}">
                                 </div>
+                                <div class="icon report send_report" title="Báo cáo" data-id="{{ $question->id }}">
+                                   <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
+                             </div>
                             </div>
-                            {{--<div class="explain-text">--}}
-
-                            {{--</div>--}}
                             <div class="result">
                                 <div class="user_input">
                                     Câu trả lời của bạn : <span></span>

@@ -26,6 +26,11 @@
                         <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
                     </div>
                 @endif 
+                @if(!empty($question->content))
+                     <div class="icon report send_report" title="Báo cáo" data-id="{{ $question->id }}">
+                         <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
+                     </div>
+                @endif
          </div>
          {{--@if(!empty($question->explain_before))--}}
             {{--<div class="box_suggest">--}}
@@ -60,13 +65,9 @@
                 @endif
                 <div class="box_suggest_answer">
                     <div class="suggest_answer_content">
-                        {{-- {{ $question_child-> }}  --}}   
-                        <p>{!! $question_child->explain_before !!}</p>
                     </div>
-                    <div class="suggest_answer_icon">
-                        <div class="icon suggest" title="Gợi ý">
-                             <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
-                        </div>
+                    <div class="icon report send_report" title="Báo cáo" data-id="{{ $question_child->id }}" >
+                        <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
                     </div>
                 </div>
                 <div class="list_answer">
