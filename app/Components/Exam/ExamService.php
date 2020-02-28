@@ -67,7 +67,7 @@ class ExamService
             }
 
             if (count($arrayQuestions) > $part->number_question){
-                $partQuestion = array_rand($arrayQuestions, $part->number_question);
+                $partQuestion = array_intersect_key( $arrayQuestions, array_flip( array_rand( $arrayQuestions, $part->number_question ) ) );
                 $questionIds = array_merge($questionIds, $partQuestion);
             }
             if (count($arrayQuestions) == $part->number_question){
