@@ -475,7 +475,7 @@
     border:2px solid#fff;
 }
 .overlay-content .method.do_new a{
-    background: #00C819;
+    background: #7BCDC7;
 }
 .overlay-content .method.do_old a{
     background: #079BFE;
@@ -716,6 +716,8 @@
     color: white;
 }
 .congratulation {
+    font-family: Montserrat;
+    font-style: normal;
     padding-top: 30px;
     background: white;
     margin-top: 10px;
@@ -731,8 +733,21 @@
 
 .ket-qua {
     text-align: center;
+    background: #7bcdc71f;
+    border-radius: 10px;
+}
+.review-result{
+    padding-bottom: 20px
+}
+.review-result a{
+    padding: 10px;
 }
 
+.btn-orange{
+    color: rgb(255, 255, 255);
+    background-color: rgb(230, 126, 34);
+    border-color: rgb(211, 84, 0);
+}
 .congratulation .title {
     font-size: 26px;
 }
@@ -748,7 +763,8 @@
 
 .score {
     text-align: center;
-    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    font-family: Montserrat;
+    font-style: normal;
     font-size: 80px;
     height: 100px;
     padding-top: 40px;
@@ -758,6 +774,8 @@
 }
 
 .score-text {
+    font-family: Montserrat;
+    font-style: normal;
     color: #f87b54;
 }
 

@@ -109,10 +109,10 @@ function reviewResult(stt, type) {
 
                 if (val.error == 2) {
                     $('.answer_' + val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
-                    $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#00C819');
+                    $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#7BCDC7');
                 } else {
                     $('.answer_' + val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
-                    $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#00C819');
+                    $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#7BCDC7');
 
                     $('.answer_' + val.input).closest('.radio').append('<i class="fa fa-times"></i>');
                     $('.answer_' + val.input).closest('.radio').find('label').css('color', '#FF503B');

@@ -139,10 +139,6 @@
                                 <div class="competition ">
                                     <table class="table">
                                         <tbody>
-                                        <tr>
-                                            <td colspan="4">
-                                                <a  href="{{route('exam.result', ['title' => str_slug($var['lesson']->name), 'id'=>$var['lesson']->id ])}}">Xem lại bài thi</a></td>
-                                        </tr>
                                         @foreach($var['ranks'] as $key => $rank)
                                             <tr>
                                                 <td>{{$key + 1}}</td>
@@ -155,6 +151,9 @@
                                         @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="review-result">
+                                    <a  href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="btn-default btn" >Thoát</a> <a href="{{route('exam.result', ['title' => str_slug($var['lesson']->name), 'id'=>$var['lesson']->id ])}}" class="btn btn-orange">Xem lại bài thi</a>
                                 </div>
                             </div>
                         </div>

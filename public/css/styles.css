@@ -4978,7 +4978,7 @@ button.update-cart{
 	margin-left: 15px;
 }
 .hoclythuyet.type_flash_card .header-navigate{
-	background: #00C819;
+	background: #7BCDC7;
 	position: fixed;
 	top:0px;
 	width: 100%;
@@ -5026,7 +5026,7 @@ button.update-cart{
 	margin: 0px;
 	height: 8px;
 	margin-top: 10px;
-	background-color:#00AF16;
+	background-color:#47B2AB;
 }
 .hoclythuyet.type_flash_card.lam-bookmark .head_course .lesson_name .name .progress{
 	background-color:#E37C00;
@@ -5053,7 +5053,7 @@ button.update-cart{
 	width: 100px;
 }
 .hoclythuyet.type_flash_card .head_course .close_course a{
-	background:#00AF16;
+	background:#47B2AB;
 }
 .hoclythuyet.type_flash_card.lam-bookmark .head_course .close_course a{
 	background:#E37C00;
@@ -5551,7 +5551,7 @@ button.update-cart{
     	max-width: 300px;
     }
     #hoclythuyet .trac_nghiem_box .content_question .question_item .list_answer .radio .fa-check-circle-o{
-    	color: #00C819;
+    	color: #7BCDC7;
     	font-size: 20px;
     	padding-left:10px; 
     }
