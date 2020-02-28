@@ -57,7 +57,7 @@ a {
 	color : #333333;
 }
 a:hover,a:focus {
-	color: #FF8515;
+	color: #FFC646;
 }
 input,input:focus {
 	outline: none !important;
@@ -338,14 +338,14 @@ input[type='radio']:before {
 	z-index: 1;
 	width: 10px;
 	height: 5px;
-	border: 2px solid #FF8515;
+	border: 2px solid #FFC646;
 	border-top-style: none;
 	border-right-style: none;
 }
 input[type='radio']:before {
 	width: 10px;
 	height: 10px;
-	border: 5px solid #FF8515;
+	border: 5px solid #FFC646;
 	border-radius: 50%;
 	top: 2px;
 }
@@ -386,7 +386,7 @@ input[type='radio']:checked:before {
 	border-radius: 10px;
 }
 #loginModal .modal-content #btnLogin{
-	background: #FF8515;
+	background: #FFC646;
 	color: #fff;
 	font-size: 14px;
 	line-height: 16px;
@@ -401,7 +401,7 @@ input[type='radio']:checked:before {
 #loginModal .modal-header .close{
 	width: 35px;
 	height: 35px;
-	background: #FF8515;
+	background: #FFC646;
 	opacity: 1;
 	border-top-right-radius: 10px;
 	margin-top: 0px;
@@ -468,7 +468,7 @@ input[type='radio']:checked:before {
 	border-radius: 10px;
 }
 #registerModal .modal-content #btnRegister{
-	background: #FF8515;
+	background: #FFC646;
 	color: #fff;
 	font-size: 14px;
 	line-height: 16px;
@@ -484,7 +484,7 @@ input[type='radio']:checked:before {
 #registerModal .modal-header .close{
 	width: 35px;
 	height: 35px;
-	background: #FF8515;
+	background: #FFC646;
 	opacity: 1;
 	border-top-right-radius: 10px;
 	margin-top: 0px;
@@ -596,7 +596,7 @@ input[type='radio']:checked:before {
 	align-items: center;
 }
 .header .header-right .box-create-course{
-	/* background: #FF8515; */
+	/* background: #FFC646; */
 	padding: 0px;
 	display: flex;
 	align-items: center;
@@ -605,8 +605,8 @@ input[type='radio']:checked:before {
 .header .header-right .box-create-course .create-course{
 	width: 115px;
 	height: 40px;
-	border: 1px solid#FF8515;
-	background: #FF8515;
+	border: 1px solid#FFC646;
+	background: #FFC646;
 	border-radius: 4px;
 	margin: 5px 0px;
 	display: flex;
@@ -696,7 +696,7 @@ input[type='radio']:checked:before {
 	padding: 0px;
 }
 .header .header-right .box-user .dropdown .dropdown-menu li a:hover{
-	color: #FF8515;
+	color: #FFC646;
 }
 .header .login{
 	width: 100px;
@@ -716,8 +716,8 @@ input[type='radio']:checked:before {
 .header .register{
 	width: 100px;
 	height: 40px;
-	border: 1px solid#FF8515;
-	background: #FF8515;
+	border: 1px solid#FFC646;
+	background: #FFC646;
 	border-radius: 4px;
 	font-size: 14px;
 	margin: 5px 0px;
@@ -1241,7 +1241,7 @@ body.overlay-layer:after {
 	color: #fff;
 }
 #navbar .dropdown-menu a:hover{
-	color: #FF8515;
+	color: #FFC646;
 }
 #navbar .dropdown-link-breadcrumb {
 	background: #c9141b;
@@ -1663,7 +1663,7 @@ header > .flefxbox-grid {
 	align-items: center;
 }
 .header-contact-info i {
-	color: #FF8515;
+	color: #FFC646;
 	margin-right: 5px;
 }
 .header-contact-info span {
@@ -1766,7 +1766,7 @@ header > .flefxbox-grid {
 .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus,
 .nav .open>a, .nav .open>a:hover, .nav .open>a:focus,
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
-	/* color: #FF8515; */
+	/* color: #FFC646; */
 	background: transparent; 
 }
 .navbar-main .navbar-nav {
@@ -1780,7 +1780,7 @@ header > .flefxbox-grid {
 	background-color : #333;
 }
 nav.navbar-main.navbar {
-	background: #FF8515;
+	background: #FFC646;
 	margin-bottom:0px;
 	-webkit-transition: all 0.2s ease;
 	-ms-transition: all 0.2s ease;
@@ -2124,7 +2124,7 @@ footer {
 	content: "";
 	height: 2px;
 	width: 40px;
-	background: #FF8515;
+	background: #FFC646;
 	position: absolute;
 	left: 0;
 	bottom: 0;
@@ -2210,7 +2210,7 @@ footer {
 	justify-content: center;
 }
 .cart-info .wallet{
-	color: #FF8515;
+	color: #FFC646;
 	font-size: 14px;
 	line-height: 16px;
 }
@@ -2405,7 +2405,7 @@ footer {
 	position: absolute;
 	left: 0px;
 	top: 10px;
-	background: #FF8515;
+	background: #FFC646;
 	border-radius: 0px;
 	height: 24px;
 	width: 50px;
@@ -2788,7 +2788,7 @@ footer {
 	font-size: 14px;
 	width: 20px;
 	text-align: center;
-	color: #FF8515;
+	color: #FFC646;
 }
 .layout-page .page-right-contact b {
 	margin-right: 10px;
@@ -2820,8 +2820,8 @@ footer {
 }
 .page-form-contact button {
 	color: #fff;
-	background: #FF8515;
-	border: 1px solid #FF8515;
+	background: #FFC646;
+	border: 1px solid #FFC646;
 	font-size: 12px;
 	text-align: left;
 	text-transform: uppercase;
@@ -2850,14 +2850,14 @@ footer {
 	margin-bottom: 10px;
 }
 .group-index .title-block .border-bottom{
-	background: #FF8515;
+	background: #FFC646;
 	width: 45px;
 	height: 2px;
 	text-align: center;
 	margin: 0 auto;
 }
 .btn-view-more {
-	background: #FF8515;
+	background: #FFC646;
 	color: #fff;
 	/* border-bottom: 2px solid #50ad4e; */
 	border-top: none;
@@ -2894,7 +2894,7 @@ footer {
 	z-index: 1;
 }
 #about-us .box-aboutus .border-bottom{
-	background: #FF8515;
+	background: #FFC646;
 	width: 72px;
 	height: 2px;
 	text-align: center;
@@ -2975,7 +2975,7 @@ footer {
 .box-services .box-icon{
 	width: 65px;
 	height: 65px;
-	border: 1px solid#FF8515;
+	border: 1px solid#FFC646;
 	border-radius:4px;
 	text-align: center; 
 }
@@ -2994,7 +2994,7 @@ footer {
 	line-height: 24px;
 }
 .box-services .border-bottom{
-	background: #FF8515;
+	background: #FFC646;
 	width: 45px;
 	height: 2px;
 }
@@ -3019,7 +3019,7 @@ footer {
 	text-transform: uppercase;
 }
 .about-us-slide .border-bottom{
-	background: #FF8515;
+	background: #FFC646;
 	width: 45px;
 	height: 2px;
 }
@@ -3080,7 +3080,7 @@ footer {
 	text-transform: uppercase;
 }
 #teacher .border-bottom{
-	background: #FF8515;
+	background: #FFC646;
 	width: 45px;
 	height: 2px;
 	margin: 0 auto;
@@ -3226,8 +3226,8 @@ footer {
 	border-radius:4px; 
 }
 #collection .paginations .pagination>.active>span{
-	background-color: #FF8515;
-	border-color: #FF8515;
+	background-color: #FFC646;
+	border-color: #FFC646;
 }
 #collection .group-collection {
 	background: #f9f9f9;
@@ -3551,7 +3551,7 @@ footer {
 .information-product .learn_now{
 	width: 220px;
 	height: 50px;
-	background: #FF8515;
+	background: #FFC646;
 	color: #fff;
 	text-transform: uppercase;
 	padding: 16px 53px;
@@ -3881,7 +3881,7 @@ footer {
 	position: relative;
 }
 .product-tablist.nav-tabs > li.active a {
-	border-top: 3px solid #FF8515;
+	border-top: 3px solid #FFC646;
 	border-left: 1px solid #E5E5E5;
 	border-right: 1px solid #E5E5E5;
 	border-bottom: 1px solid #fff;
@@ -4909,7 +4909,7 @@ button.update-cart{
 	border-radius: 4px;
 }
 .hoclythuyet .header-navigate{
-	background: #FF8515;
+	background: #FFC646;
 }
 .hoclythuyet .header-navigate li{
 	color: #fff;
@@ -4950,7 +4950,7 @@ button.update-cart{
 	width: 245px;
 	height: 55px;
 	border-radius:4px;
-	background: #FF8515;
+	background: #FFC646;
 	color: #fff;
 	text-transform: uppercase; 
 }
@@ -5215,7 +5215,7 @@ button.update-cart{
     	font-size: 31px;
     	float: right;
     	margin-right: 8px;
-    	color: #FF8515;
+    	color: #FFC646;
     	cursor: pointer;
     }
     #hoclythuyet .flash_content .box_action{
@@ -5234,10 +5234,10 @@ button.update-cart{
     	text-align: center; 
     }
     #hoclythuyet .flash_content .box_action .icon.bookmarked{
-    	border: 2px solid #FF8515;
+    	border: 2px solid #FFC646;
     }
     #hoclythuyet .trac_nghiem_box .icon.bookmarked{
-    	border: 2px solid #FF8515 !important;
+    	border: 2px solid #FFC646 !important;
     }
     #hoclythuyet .dientu_chuoi_box{
     	max-width: 960px;
@@ -5339,7 +5339,7 @@ button.update-cart{
     	text-align: center;
     }
     #hoclythuyet .dientu_chuoi_box .content_question .submit_question .btn_submit{
-    	background: #FF8515;
+    	background: #FFC646;
     	border-radius: 4px;
     	width: 170px;
     	height: 50px;
@@ -5351,7 +5351,7 @@ button.update-cart{
     }
 
     .btn_finish{
-        background: #FF8515;
+        background: #FFC646;
         border-radius: 4px;
         width: 170px;
         height: 50px;
@@ -5363,7 +5363,7 @@ button.update-cart{
 		display: none;
     }
     #hoclythuyet .dientu_chuoi_box .content_question .submit_question .btn_next{
-    	background: #FF8515;
+    	background: #FFC646;
     	border-radius: 4px;
     	width: 170px;
     	height: 50px;
@@ -5472,7 +5472,7 @@ button.update-cart{
     	text-align: center;
     }
     #hoclythuyet .dientu_box .content_question .submit_question .btn_submit{
-    	background: #FF8515;
+    	background: #FFC646;
     	border-radius: 4px;
     	width: 170px;
     	height: 50px;
@@ -5483,7 +5483,7 @@ button.update-cart{
     	text-transform: uppercase;
     }
     #hoclythuyet .dientu_box .content_question .submit_question .btn_next{
-    	background: #FF8515;
+    	background: #FFC646;
     	border-radius: 4px;
     	width: 170px;
     	height: 50px;
@@ -5512,7 +5512,7 @@ button.update-cart{
     	display: none;
     }
     #hoclythuyet .trac_nghiem_box .head_content .box_suggest p{
-    	color: #FF8515;
+    	color: #FFC646;
     	line-height: 24px;
     	font-size: 16px;
     	font-family: "Roboto-Bold";
@@ -5533,7 +5533,7 @@ button.update-cart{
 	    	font-weight: normal;
 	    	line-height: 24px;
 	    	font-size: 14px;
-	    	color: #FF8515;
+	    	color: #FFC646;
 		}
     #hoclythuyet .trac_nghiem_box .content_question{
     	margin-top:30px; 
@@ -5585,7 +5585,7 @@ button.update-cart{
 			font-weight: normal;
 			line-height: 24px;
 			font-size: 14px;
-			color: #FF8515;
+			color: #FFC646;
 		}
     #hoclythuyet .trac_nghiem_box .content_question .box_suggest_answer .suggest_answer_icon{
     	width: 50px;
@@ -5630,7 +5630,7 @@ button.update-cart{
     	outline: none;
     }
     #hoclythuyet .trac_nghiem_box .content_question .submit_question .btn_submit{
-    	background: #FF8515;
+    	background: #FFC646;
     	border-radius: 4px;
     	width: 170px;
     	height: 50px;
@@ -5641,7 +5641,7 @@ button.update-cart{
     	text-transform: uppercase;
     }
     #hoclythuyet .trac_nghiem_box .content_question .submit_question .btn_next{
-    	background: #FF8515;
+    	background: #FFC646;
     	border-radius: 4px;
     	width: 170px;
     	height: 50px;
@@ -5663,7 +5663,7 @@ button.update-cart{
     	text-align: center;
     }
     #hoclythuyet .dien_tu_doan_van .box_action .icon.bookmarked{
-    	border: 2px solid #FF8515 !important;
+    	border: 2px solid #FFC646 !important;
     }
     #hoclythuyet .dien_tu_doan_van .head_content .box_action{
     	display: flex;
@@ -5691,7 +5691,7 @@ button.update-cart{
     	display: none;
     }    
     #hoclythuyet .dien_tu_doan_van .content_question .list_question .question_item .box_suggest .title{
-    	color: #FF8515;
+    	color: #FFC646;
     	line-height: 24px;
     	font-size: 16px;
     	font-family: "Roboto-Bold";
@@ -5730,7 +5730,7 @@ button.update-cart{
     	display: none;
     }
     #hoclythuyet .dien_tu_doan_van .head_content .box_suggest p{
-    	color: #FF8515;
+    	color: #FFC646;
     	line-height: 24px;
     	font-size: 16px;
     	font-family: "Roboto-Bold";
@@ -5749,7 +5749,7 @@ button.update-cart{
     	/*display: none;*/
     }
     #hoclythuyet .btn_finish{
-    	background: #FF8515;
+    	background: #FFC646;
     	border-radius: 4px;
     	width: 170px;
     	height: 50px;
@@ -5777,7 +5777,7 @@ button.update-cart{
     }
     .wallet .box_user .history{
     	font-size: 12px;
-    	color: #FF8515;
+    	color: #FFC646;
     }
     .wallet .box_wallet{
     	padding: 20px 20px;
@@ -5788,8 +5788,8 @@ button.update-cart{
     .wallet .box_wallet button{
     	width: 115px;
     	height: 35px;
-    	border: 1px solid#FF8515;
-    	background: #FF8515;
+    	border: 1px solid#FFC646;
+    	background: #FFC646;
     	border-radius: 4px;
     	color: #fff;    
     }
@@ -5826,7 +5826,7 @@ button.update-cart{
     	align-items: center;
     }
     .my_course .box_process .process_title .learn_percent{
-    	color: #FF8515;
+    	color: #FFC646;
     }
     .my_course .box_process .sugges_learn{
     	/*background: #18C305;

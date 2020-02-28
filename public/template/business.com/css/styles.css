@@ -565,8 +565,8 @@ input[type='radio']:checked:before {
 .header .register{
 	width: 100px;
 	height: 40px;
-	border: 1px solid#FF8515;
-	background: #FF8515;
+	border: 1px solid#FFC646;
+	background: #FFC646;
 	border-radius: 4px;
 	font-size: 14px;
 	margin: 5px 0px;
@@ -1503,7 +1503,7 @@ header > .flefxbox-grid {
     align-items: center;
 }
 .header-contact-info i {
-	color: #FF8515;
+	color: #FFC646;
 	margin-right: 5px;
 }
 .header-contact-info span {
@@ -1615,7 +1615,7 @@ header > .flefxbox-grid {
 	background-color : #333;
 }
 nav.navbar-main.navbar {
-	background: #FF8515;
+	background: #FFC646;
 	margin-bottom:0px;
 	-webkit-transition: all 0.2s ease;
 	-ms-transition: all 0.2s ease;
@@ -1945,7 +1945,7 @@ footer {
 	content: "";
 	height: 2px;
 	width: 40px;
-	background: #FF8515;
+	background: #FFC646;
 	position: absolute;
 	left: 0;
 	bottom: 0;
@@ -2031,7 +2031,7 @@ footer {
     justify-content: center;
 }
 .cart-info .wallet{
-	color: #FF8515;
+	color: #FFC646;
 	font-size: 14px;
 	line-height: 16px;
 }
@@ -2646,14 +2646,14 @@ footer {
 	margin-bottom: 10px;
 }
 .group-index .title-block .border-bottom{
-	background: #FF8515;
+	background: #FFC646;
     width: 45px;
     height: 2px;
     text-align: center;
     margin: 0 auto;
 }
 .btn-view-more {
-	background: #FF8515;
+	background: #FFC646;
 	color: #fff;
 	/* border-bottom: 2px solid #50ad4e; */
 	border-top: none;
@@ -2690,7 +2690,7 @@ footer {
 	z-index: 1;
 }
 #about-us .box-aboutus .border-bottom{
-	background: #FF8515;
+	background: #FFC646;
     width: 72px;
     height: 2px;
     text-align: center;
@@ -2738,7 +2738,7 @@ footer {
 .box-services .box-icon{
 	width: 65px;
 	height: 65px;
-	border: 1px solid#FF8515;
+	border: 1px solid#FFC646;
 	border-radius:4px;
 	text-align: center; 
 }
@@ -2757,7 +2757,7 @@ footer {
 	line-height: 24px;
 }
 .box-services .border-bottom{
-	background: #FF8515;
+	background: #FFC646;
     width: 45px;
     height: 2px;
 }
@@ -2782,7 +2782,7 @@ footer {
 	text-transform: uppercase;
 }
 .about-us-slide .border-bottom{
-	background: #FF8515;
+	background: #FFC646;
     width: 45px;
     height: 2px;
 }
@@ -2843,7 +2843,7 @@ footer {
 	text-transform: uppercase;
 }
 #teacher .border-bottom{
-	background: #FF8515;
+	background: #FFC646;
     width: 45px;
 	height: 2px;
 	margin: 0 auto;

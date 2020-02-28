@@ -32,7 +32,7 @@
     height: 8px;
 }
 #course_learn .box_head .progress .progress-bar{
-    background-color: #FF8515;
+    background-color: #FFC646;
 }
 #course_learn .box_head .btn-offer{
     display: flex;
@@ -40,13 +40,13 @@
     justify-content: center;
 }
 #course_learn .box_head .btn-offer .offer-course.do_false{
-    background: #FF503B;    
+    background: #F87B54;
 }
 #course_learn .box_head .btn-offer .offer-course.do_old{
-    background: #079BFE;
+    background: #32A8F7;
 }
 #course_learn .box_head .btn-offer .offer-course{
-    background: #18C305;
+    background: #7BCDC7;
     width: 215px;
     height: 55px;
     border-radius:4px; 
@@ -487,7 +487,7 @@
     background: #FF8B00;
 }
 .do_bookmark{
-    background: #FF8B00 !important;
+    background: #FFC646 !important;
 }
 .overlay-content .method p{
     line-height: 16px;
