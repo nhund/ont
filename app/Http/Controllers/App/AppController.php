@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class AppController extends Controller {
 
+    /**
+     * Danh sach cau hoi
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function getQuestion(Request $request) {
 
 		$input = $request->all();
@@ -40,6 +45,7 @@ class AppController extends Controller {
 
 		$var['questions'] = $questions;
 		$var['key_plus'] = (int)$limit * (int)$learn_loop;
+		$var['type'] = isset($input['type']) ? $input['type'] : 'exercise';
 		//$var['answers'] =  $answers;
 		return view('app.question', $var);
 	}
