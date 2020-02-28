@@ -225,7 +225,6 @@
             }
             let countDownDate = new Date(timeLeft);
 
-            console.log(timeLeft, countDownDate, 99999999999999)
             // Update the count down every 1 second
             countInterval = setInterval(function () {
                 // Get today's date and time
@@ -252,7 +251,7 @@
                 // If the count down is finished, write some text
                 if (distance < 0) {
                     clearInterval(countInterval);
-                    $('.count-down').html('<span style="color: red">Hết fff thời gian</span>');
+                    $('.count-down').html('<span style="color: red">Hết thời gian</span>');
                 }
             }, 1000);
         }
@@ -260,7 +259,6 @@
         function stopTime(stoppedTime){
             const stopTime = parseInt($('input[name=time_stop]').val());
             const $stopTime  = $('.time-stop');
-            console.log(stopTime, stoppedTime)
             $stopTime.html(stopTime- stoppedTime)
         }
 
