@@ -61,6 +61,7 @@ class BeginExamListener
             $userExam->stopped_at  = null;
             $userExam->turn_stop   = 0;
             $userExam->status      = ExamUser::ACTIVE;
+            $userExam->questions   = null;
             $userExam->save();
         }
     }

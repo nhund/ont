@@ -43,7 +43,7 @@ class ExamController extends Controller
             throw new BadRequestException('Bạn đã hết lượt làm bài kiểm tra, vui lòng mua thêm');
         }
 
-        $questions = (new ExamService())->getQuestionExam($lesson);
+        $questions = (new ExamService())->getQuestionExam($lesson, $userExam);
 
         event(new BeginExamEvent($lesson, $request->user()));
 

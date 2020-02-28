@@ -14,6 +14,7 @@ use App\Events\BeginExamEvent;
 use App\Exceptions\BadRequestException;
 use App\Models\ExamPart;
 use App\Models\ExamQuestion;
+use App\Models\ExamUser;
 use App\Models\ExamUserAnswer;
 use App\Models\Lesson;
 use App\Models\Question;
@@ -46,43 +47,64 @@ class ExamService
 
     /**
      * @param Lesson $lesson
+     * @param $userExam
      * @return mixed
      * @throws BadRequestException
      */
-    public function getQuestionExam(Lesson $lesson)
+    public function getQuestionExam(Lesson $lesson, $userExam)
     {
-        $examParts = ExamPart::where(['lesson_id' => $lesson->id])->get();
+        $questions = collect();
 
-        $questionIds = [];
-        foreach ($examParts as $part){
-
-            $arrayQuestions = ExamQuestion::where([
-                'lesson_id'=> $lesson->id,
-                'part' => $part->id,
-                'status'=> ExamQuestion::ACTIVE])
-                ->pluck('question_id')->toArray();
-
-            if (count($arrayQuestions) < $part->number_question){
-                throw new BadRequestException("Chưa đủ câu hỏi cho {$part->name}");
+        if ($userExam->questions){
+            $userExamQuestions = \json_decode($userExam->questions);
+            foreach ($userExamQuestions as $partId => $partQuestion){
+                $questionsArray = Question::whereIn('id', $partQuestion)
+                    ->typeAllow()
+                    ->where('parent_id',0)->orderBy('order_s','ASC')
+                    ->orderBy('id','ASC')->get();
+                $questions = $questions->merge($questionsArray);
             }
 
-            if (count($arrayQuestions) > $part->number_question){
-                $partQuestion = array_intersect_key( $arrayQuestions, array_flip( array_rand( $arrayQuestions, $part->number_question ) ) );
-                $questionIds = array_merge($questionIds, $partQuestion);
+        }else{
+            $examParts = ExamPart::where(['lesson_id' => $lesson->id])->get();
+
+            $questionPart = [];
+            foreach ($examParts as $part){
+
+                $arrayQuestions = ExamQuestion::where([
+                  'lesson_id'=> $lesson->id,
+                  'part' => $part->id,
+                  'status'=> ExamQuestion::ACTIVE])
+                    ->orderBy('part')
+                    ->pluck('question_id')->toArray();
+                $questionsArray = collect();
+                if (count($arrayQuestions) < $part->number_question){
+                    throw new BadRequestException("Chưa đủ câu hỏi cho {$part->name}");
+                }
+
+                if (count($arrayQuestions) > $part->number_question){
+                    $arrayQuestions = array_values(array_intersect_key( $arrayQuestions, array_flip( array_rand( $arrayQuestions, $part->number_question ) ) ));
+                    $questionsArray = Question::whereIn('id', $arrayQuestions)
+                        ->typeAllow()
+                        ->where('parent_id',0)->orderBy('order_s','ASC')
+                        ->orderBy('id','ASC')->get();
+                }
+                if (count($arrayQuestions) == $part->number_question){
+                    $questionsArray = Question::whereIn('id', $arrayQuestions)
+                        ->typeAllow()
+                        ->where('parent_id',0)->orderBy('order_s','ASC')
+                        ->orderBy('id','ASC')->get();
+                }
+
+                $questions = $questions->merge($questionsArray);
+                $questionPart[$part->id] = $arrayQuestions;
             }
-            if (count($arrayQuestions) == $part->number_question){
-                $questionIds = array_merge($questionIds, $arrayQuestions);
-            }
+
+            $userExam->questions = \json_encode($questionPart);
+            $userExam->save();
         }
 
-        $questions = Question::whereIn('id', $questionIds)
-            ->typeAllow()
-            ->where('parent_id',0)->orderBy('order_s','ASC')
-            ->orderBy('id','ASC')->get();
-
-        $questions = (new QuestionService())->getQuestions($questions, $lesson);
-
-        return $questions;
+        return (new QuestionService())->getQuestions($questions, $lesson);
     }
 
     public function resultQuestion($lessonId, $userId)

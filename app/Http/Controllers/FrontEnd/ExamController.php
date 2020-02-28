@@ -59,7 +59,7 @@ class ExamController extends Controller
 
         $exam = Exam::where('lesson_id', $id)->first();
 
-        $questions = (new ExamService())->getQuestionExam($lesson);
+        $questions = (new ExamService())->getQuestionExam($lesson, $userExam);
 
         if (count($questions) == 0){
             alert()->error('Bài kiểm tra chưa có câu hỏi.');
@@ -164,7 +164,12 @@ class ExamController extends Controller
         }
 
         $exam      = Exam::where('lesson_id', $id)->first();
-        $questions = (new ExamService())->getQuestionExam($lesson);
+
+        $userExam = ExamUser::where('user_id', $request->user()->id)
+            ->where('lesson_id', $id)
+            ->first();
+
+        $questions = (new ExamService())->getQuestionExam($lesson, $userExam);
 
         if (count($questions) == 0){
             alert()->error('Bài kiểm tra chưa có câu hỏi.');
