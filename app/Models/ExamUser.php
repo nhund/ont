@@ -21,7 +21,7 @@ class ExamUser extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['lesson_id', 'user_id', 'turn', 'score', 'time', 'status_stop', 'second_stop'];
+    protected $fillable = ['lesson_id', 'user_id', 'turn', 'score', 'time', 'status_stop', 'second_stop', 'begin_at', 'stopped_at', 'until_number', 'turn_stop'];
 
     protected $appends = ['doing_time', 'still_time'];
 
@@ -40,7 +40,7 @@ class ExamUser extends Model
     public function getStillTimeAttribute()
     {
         $seconds = ($this->time*60) + $this->second_stop;
-        return date('Y-m-d H:i:s',strtotime($this->begin_at) + $seconds);
+        return date('Y-m-d H:i:s',$this->begin_at ? strtotime($this->begin_at) + $seconds : $seconds);
     }
 
     public function exam()

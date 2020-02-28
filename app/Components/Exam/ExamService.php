@@ -78,8 +78,8 @@ class ExamService
                     ->orderBy('part')
                     ->pluck('question_id')->toArray();
                 $questionsArray = collect();
-                if (count($arrayQuestions) < $part->number_question){
-                    throw new BadRequestException("Chưa đủ câu hỏi cho {$part->name}");
+                if (count($arrayQuestions) < $part->number_question ||  $part->number_question == 0){
+                    throw new BadRequestException("Phần thi {$part->name} chưa hoàn thiện");
                 }
 
                 if (count($arrayQuestions) > $part->number_question){

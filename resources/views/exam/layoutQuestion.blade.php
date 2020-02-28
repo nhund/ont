@@ -116,19 +116,9 @@
                                     @else
                                         <P class="title"><strong>Bạn <span class="score-text">không</span> vượt qua bài kiểm tra</strong></P>
                                     @endif
-                                    {{--@if($var['overtime'])--}}
-
-                                    {{--@else--}}
-                                        {{--<P class="title"><strong>VƯỢT QUA BÀI KIỂM TRA</strong></P>--}}
-                                    {{--@endif--}}
                                     <div class="row">
                                         <div class="col-md-6 score-1">
-                                            <h1><strong class="score">
-                                                    {{--@if($var['overtime'])--}}
-                                                        {{$var['userExam']->score}}
-                                                    {{--@else {{$var['userExam']->score}}--}}
-                                                    {{--@endif--}}
-                                            </strong></h1>
+                                            <h1><strong class="score">{{$var['userExam']->score}}</strong></h1>
                                         </div>
                                         <div class="col-md-6 title-score">
                                             <h2><span class="score-text"><strong>Điểm</strong></span></h2>
@@ -235,6 +225,7 @@
             }
             let countDownDate = new Date(timeLeft);
 
+            console.log(timeLeft, countDownDate, 99999999999999)
             // Update the count down every 1 second
             countInterval = setInterval(function () {
                 // Get today's date and time
@@ -261,7 +252,7 @@
                 // If the count down is finished, write some text
                 if (distance < 0) {
                     clearInterval(countInterval);
-                    $('.count-down').html('<span style="color: red">Hết thời gian</span>');
+                    $('.count-down').html('<span style="color: red">Hết fff thời gian</span>');
                 }
             }, 1000);
         }
