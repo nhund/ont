@@ -142,7 +142,7 @@
                                         @foreach($var['ranks'] as $key => $rank)
                                             <tr>
                                                 <td>{{$key + 1}}</td>
-                                                <td><img width="28" src="{{$rank->user->avatar_full ?? asset(env('APP_URL').'public/images/avatar-default.png')}}">&nbsp;
+                                                <td style="text-align: left"><img width="28" src="{{$rank->user->avatar_full ?? asset(env('APP_URL').'public/images/avatar-default.png')}}">&nbsp;
                                                     <span>{{$rank->user->name_full ?? 'Ẩn danh'}}</span>
                                                 </td>
                                                 <td>{{$rank->highest_score}} Điểm</td>
