@@ -11,6 +11,7 @@ namespace App\Components\Exam;
 
 use App\Components\Question\QuestionService;
 use App\Events\BeginExamEvent;
+use App\Exceptions\BadRequestException;
 use App\Models\ExamPart;
 use App\Models\ExamQuestion;
 use App\Models\ExamUserAnswer;
@@ -43,10 +44,36 @@ class ExamService
         ]);
     }
 
+    /**
+     * @param Lesson $lesson
+     * @return mixed
+     * @throws BadRequestException
+     */
     public function getQuestionExam(Lesson $lesson)
     {
-        $questionIds = ExamQuestion::where('lesson_id', $lesson->id)
-            ->where('status', ExamQuestion::ACTIVE)->pluck('question_id');
+        $examParts = ExamPart::where(['lesson_id' => $lesson->id])->get();
+
+        $questionIds = [];
+        foreach ($examParts as $part){
+
+            $arrayQuestions = ExamQuestion::where([
+                'lesson_id'=> $lesson->id,
+                'part' => $part->id,
+                'status'=> ExamQuestion::ACTIVE])
+                ->pluck('question_id')->toArray();
+
+            if (count($arrayQuestions) < $part->number_question){
+                throw new BadRequestException("Chưa đủ câu hỏi cho {$part->name}");
+            }
+
+            if (count($arrayQuestions) > $part->number_question){
+                $partQuestion = array_rand($arrayQuestions, $part->number_question);
+                $questionIds = array_merge($questionIds, $partQuestion);
+            }
+            if (count($arrayQuestions) == $part->number_question){
+                $questionIds = array_merge($questionIds, $arrayQuestions);
+            }
+        }
 
         $questions = Question::whereIn('id', $questionIds)
             ->typeAllow()
