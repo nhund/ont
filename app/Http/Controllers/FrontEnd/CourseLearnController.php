@@ -126,7 +126,7 @@ class CourseLearnController extends Controller
         foreach($lessons as $lesson)
         {
             $lesson_childs = Lesson::where('course_id',$id)->where('parent_id',$lesson->id)
-            ->where('type', Lesson::LESSON)
+//            ->where('type', Lesson::LESSON)
             ->orderBy('order_s','ASC')
             ->orderBy('created_at','ASC')->get();
             foreach ($lesson_childs as $key => $lesson_child) {

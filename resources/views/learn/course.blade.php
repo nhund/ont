@@ -75,11 +75,11 @@
                     </div>
                     <div class="body">
                         @foreach($var['lessons'] as $lesson)
-                                <div class="title_body">
+                                <div class="title_body"><strong>
                                     @if($lesson->type == \App\Models\Lesson::EXAM)
                                         <a class="exam-front" onclick="reportExam(`{{$lesson->name}}`, `{{str_slug($lesson->name)}}`,`{{$lesson->description}}`,`{{$lesson->exam->total_question}}`,
                                                 `{{$lesson->exam->repeat_time}}`, `{{$lesson->exam->min_score}}`, `{{$lesson->exam->minutes}}`, `{{$lesson->exam->lesson_id ?? ''}}`, `{{$lesson->userExam->turn ?? 0}}`)" >
-                                            {{ $lesson->name }} (Bài kiểm tra)
+                                            {{ $lesson->name }}
                                         </a>
                                     @else
                                         @if($lesson->level == \App\Models\Lesson::LEVEL_1)
@@ -88,25 +88,33 @@
                                             <a href="{{route('course.learn.level2',['title'=>str_slug($lesson->name),'course_id' =>$lesson->course_id, 'lesson_id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
                                         @endif
                                     @endif
+                                    </strong>
                                 </div>
                                 @if(isset($lesson->childs))
                                     @foreach($lesson->childs as $lesson_child)
                                         @if($lesson_child->level == \App\Models\Lesson::LEVEL_1)
                                             @if($lesson_child->is_exercise == \App\Models\Lesson::IS_EXERCISE)
                                                 <div class="item-exercise">
-                                                <a href="#" onclick="reportLesson(`{{ $lesson_child->id }}`)" class="name ly_thuyet">{{ $lesson_child->name }}</a>
-                                                    <div class="count_learn">
-                                                        <p>
-                                                            @if(isset($lesson_child->userLearn->count))
-                                                                {{ number_format($lesson_child->userLearn->count) }}
-                                                            @else
-                                                                0
-                                                            @endif
-                                                        </p>
-                                                    </div>
-                                                    <div class="topic_progress">
-                                                        @if(isset($lesson_child->userLearnPass)) {{ number_format($lesson_child->userLearnPass) }} @else 0 @endif/{{ number_format($lesson_child->countQuestion) }}
-                                                    </div>
+                                                    @if($lesson_child->type == \App\Models\Lesson::LESSON)
+                                                        <a href="#" onclick="reportLesson(`{{ $lesson_child->id }}`)" class="name ly_thuyet">{{ $lesson_child->name }}</a>
+                                                        <div class="count_learn">
+                                                            <p>
+                                                                @if(isset($lesson_child->userLearn->count))
+                                                                    {{ number_format($lesson_child->userLearn->count) }}
+                                                                @else
+                                                                    0
+                                                                @endif
+                                                            </p>
+                                                        </div>
+                                                        <div class="topic_progress">
+                                                            @if(isset($lesson_child->userLearnPass)) {{ number_format($lesson_child->userLearnPass) }} @else 0 @endif/{{ number_format($lesson_child->countQuestion) }}
+                                                        </div>
+                                                    @else
+                                                        <a class="exam-front" onclick="reportExam(`{{$lesson_child->name}}`, `{{str_slug($lesson_child->name)}}`,`{{$lesson_child->description}}`,`{{$lesson_child->exam->total_question}}`,
+                                                                `{{$lesson_child->exam->repeat_time}}`, `{{$lesson_child->exam->min_score}}`, `{{$lesson_child->exam->minutes}}`, `{{$lesson_child->exam->lesson_id ?? ''}}`, `{{$lesson_child->userExam->turn ?? 0}}`)" >
+                                                            {{ $lesson_child->name }}
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             @else
                                                 <div class="item-exercise">
