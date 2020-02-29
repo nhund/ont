@@ -109,8 +109,10 @@
                         <div class="col-lg-offset-2 col-lg-8 col-md-8 col-sm-8 col-xs-8 pd5 box_do_learn"
                              style="background: #35365e">
                             <div class="ket-qua">
-                                <div class="congratulation {{$var['userExam']->score >= $var['exam']->min_score ? 'passed' : 'failed'}}">
-                                    @if($var['userExam']->score >= $var['exam']->min_score)
+                                <?php $score = $var['overtime'] ? $var['userExam']->highest_score : $var['userExam']->score?>
+
+                                <div class="congratulation {{$score >= $var['exam']->min_score ? 'passed' : 'failed'}}">
+                                    @if($score >= $var['exam']->min_score)
                                         <P class="title"><strong>Chúc mừng bạn</strong></P>
                                         <P class="title"><strong>ĐÃ VƯỢT QUA BÀI KIỂM TRA</strong></P>
                                     @else
