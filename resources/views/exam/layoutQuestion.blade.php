@@ -109,12 +109,12 @@
                         <div class="col-lg-offset-2 col-lg-8 col-md-8 col-sm-8 col-xs-8 pd5 box_do_learn"
                              style="background: #35365e">
                             <div class="ket-qua">
-                                <div class="congratulation {{$var['userExam']->score >= $var['exam']->min_score ? 'passed' : ''}}">
+                                <div class="congratulation {{$var['userExam']->score >= $var['exam']->min_score ? 'passed' : 'failed'}}">
                                     @if($var['userExam']->score >= $var['exam']->min_score)
                                         <P class="title"><strong>Chúc mừng bạn</strong></P>
                                         <P class="title"><strong>ĐÃ VƯỢT QUA BÀI KIỂM TRA</strong></P>
                                     @else
-                                        <P class="title"><strong>Bạn <span class="score-text">không</span> vượt qua bài kiểm tra</strong></P>
+                                        <P class="title"><strong>Bạn <span class="score-text">không</span> vượt qua</strong></P>
                                     @endif
                                     <div class="row">
                                         <div class="col-md-6 score-1">
