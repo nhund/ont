@@ -270,13 +270,6 @@ class SubmitQuestionExam
             'question_id' => $this->question->id,
             'lesson_id'   => $this->examId,
         ])->firstOrFail();
-        $condition = [
-            'lesson_id' => $this->examId,
-            'part'      => $examQuestion->part
-        ];
-
-        // tổng câu hỏi của từng phần
-        $totalQuestions = ExamQuestion::where($condition)->count();
 
         $conditionPart = [
             'lesson_id' => $this->examId,
@@ -287,7 +280,7 @@ class SubmitQuestionExam
         $parts = ExamPart::where($conditionPart)->first();
 
 
-        return round($parts->score/$totalQuestions, 1);
+        return round($parts->score/$parts->number_question, 1);
     }
 
     private function getAnswerMultiChoice($index){
