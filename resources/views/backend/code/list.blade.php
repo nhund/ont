@@ -49,11 +49,11 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <form action="" method="GET">
+                        <form id="form-code" action="" method="GET">
                             <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2">
                                 <label for="status" ><strong>Đã sử dụng</strong></label>
-                                &nbsp; <input type="checkbox" id="status" name="status" {{request()->has('status') ? 'checked' : ''}}/>
+                                &nbsp; <input type="checkbox" id="status" name="status" {{request()->has('status') ? 'checked' : ''}} onclick="searchCode()"/>
                             </div>
                             <div class="input-group col-sm-4">
                                 <input type="text" autocomplete="off" name="search_code" placeholder="Nhập mã code" class="form-control" value="{{ $search_code ?? '' }}">
@@ -178,3 +178,11 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+    <script type="text/javascript">
+        function searchCode() {
+           $('#form-code').submit()
+        }
+    </script>
+@endpush
