@@ -50,6 +50,7 @@
                     </div>
                     <div class="panel-body">
                         <form id="form-code" action="" method="GET">
+                            <div class="col-sm-6"></div>
                             <div class="col-sm-2">
                                 <label for="status" ><strong>Đã sử dụng</strong></label>
                                 &nbsp; <input type="checkbox" id="status" name="status" {{request()->has('status') ? 'checked' : ''}} onclick="searchCode()"/>
