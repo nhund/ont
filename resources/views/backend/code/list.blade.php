@@ -50,28 +50,30 @@
                     </div>
                     <div class="panel-body">
                         <form id="form-code" action="" method="GET">
-                            <div class="col-sm-6">&nbsp;</div>
                             <div class="col-sm-2">
                                 <label for="status" ><strong>Đã sử dụng</strong></label>
                                 &nbsp; <input type="checkbox" id="status" name="status" {{request()->has('status') ? 'checked' : ''}} onclick="searchCode()"/>
                             </div>
+                            {{--<div class="col-sm-4">--}}
+                                {{--<input type="text"  name="email" placeholder="người dùng" class="form-control" value="{{ request('email') }}">--}}
+                            {{--</div>--}}
                             <div class="input-group col-sm-4">
-                                <input type="text" autocomplete="off" name="search_code" placeholder="Nhập mã code" class="form-control" value="{{ $search_code ?? '' }}">
+                                <input type="text" autocomplete="off" name="search_code" placeholder="Nhập mã code" class="form-control" value="{{ request('search_code') }}">
                                 <span class="input-group-btn">
                                   <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                               </span>
                             </div>
                         </form>
+                        <hr/>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                 <tr>
                                     <th width="3%">STT</th>
-                                    <th width="10%">Ngày tạo</th>
                                     <th width="10%">Code</th>
+                                    <th width="10%">Ngày tạo</th>
                                     <th>Giá</th>
                                     <th>Nguồn</th>
-                                    <th>Email</th>
                                     <th>Người dùng</th>
                                     <th>Trạng thái</th>
                                     <th>Thời gian kích hoạt</th>
@@ -84,11 +86,11 @@
                                             @if (file_exists(public_path().'/document/file/'.$co->document))
                                                 <tr class="row-doc">
                                                     <td>{{ $loop->iteration  }}</td>
-                                                    <td align="left">
-                                                        {{ date('d/m/Y', $co->created_at) }}
-                                                    </td>
                                                     <td>
                                                         {{ $co->cCode }}
+                                                    </td>
+                                                    <td align="left">
+                                                        {{ date('d/m/Y', $co->created_at) }}
                                                     </td>
                                                     <td>{{  number_format($co->price,0,',','.') }}</td>
 
@@ -103,8 +105,7 @@
                                                             @endif
                                                         @endif
                                                     </td>
-                                                    <td>{{$co->email}}</td>
-                                                    <td>{{$co->full_name}}</td>
+                                                    <td><strong>{{$co->full_name}}</strong> -- {{$co->email}}</td>
                                                     <td>
                                                         @if ($co->status)
                                                             <span class="color-red">Đã sử dụng</span>
