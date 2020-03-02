@@ -366,3 +366,29 @@ function updatePartExam() {
            }
        });
 }
+
+//bookmark
+function bookmark(question_id, $this) {
+    var data = {question_id};
+
+    $.ajax({
+       headers: {'X-CSRF-Token': $('meta[name=csrf-token]').attr("content")},
+       type   : "POST",
+       url    : '/bai-tap/bookmark',
+       data   : data,
+       success: function (data) {
+           if (data.error == false) {
+               if (!$($this).hasClass('bookmarked')){
+                   $($this).addClass('bookmarked');
+                   $($this).removeClass('btn-default').addClass('btn-success');
+               } else {
+                   $($this).removeClass('bookmarked');
+                   $($this).removeClass('btn-success').addClass('btn-default');
+               }
+           }
+       },
+       error  : function (e) {
+
+       }
+    })
+};
