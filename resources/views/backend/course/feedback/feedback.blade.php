@@ -25,7 +25,7 @@
                 {{ $feedback->email }}                                                  
             </td>                     
             <td>
-                {{ $feedback->title }}                                                  
+                <a target="{{ $feedback->content }}">{{ $feedback->title }} </a>
             </td>
             {{-- <td>
                 {{ $feedback->content }}

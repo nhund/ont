@@ -35,12 +35,10 @@
                                     <tr>
                                         <th width="50">STT</th>
                                         <th width="100">Thành viên</th>
-                                        <th width="100">Email</th>
                                         <th width="100">Tiêu đề</th>
                                         <th width="100">Nội dung</th>
                                         <th width="100">Câu hỏi</th>
                                         <th width="100">Khóa học</th>                                        
-                                        <th width="100">Ngày tạo</th>                                        
                                         <th width="100">Trạng thái</th>
                                         <th width="150">Hành động</th>
                                     </tr>
@@ -51,11 +49,9 @@
                                             <tr class="tr">
                                                 <td>{{ $key+1 }}</td> 
                                                 <td>
-                                                    {{ $feedback->user->name_full }}
+                                                    <p><strong>Tên:</strong> {{ $feedback->user->name_full }}</p>
+                                                    <p><strong>Email:</strong> {{ $feedback->email }}</p>
                                                 </td> 
-                                                <td>
-                                                    {{ $feedback->email }}                                                  
-                                                </td>                                            
                                                 <td>
                                                     {{ $feedback->title }}                                                  
                                                 </td>
@@ -67,10 +63,9 @@
                                                 </td>
                                                 <td>
                                                     <a target="_blank" href="{{ route('course.detail',['id'=>$feedback->course_id]) }}">{{ $feedback->course->name }}</a>
+                                                    <p>({{ date('d-m-Y H:i',$feedback->create_date ) }})</p>
                                                 </td>
-                                                
-                                                <td>{{ date('d-m-Y H:i',$feedback->create_date ) }}</td>
-                                                <td>                                                    
+                                                <td>
                                                     @if($feedback->status == \App\Models\Feedback::STATUS_EDIT)
                                                         <span style="color: #5cb85c;font-weight: bold;">Đã sửa</span>
                                                         <p>{{ date('d-m-Y H:i',$feedback->update_date ) }}</p>
