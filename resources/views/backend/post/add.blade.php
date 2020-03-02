@@ -30,7 +30,7 @@
                                             <label class="col-sm-1 control-label">Loại bài viết</label>
                                             <div class="col-sm-2">
                                                 <select name="type" class="form-control" id="type">
-                                                    <option value="news">Tin tức</option>
+                                                    <option value="news">Blog TMU</option>
                                                     <option value="posting">Bài viết</option>
                                                 </select>
                                             </div>

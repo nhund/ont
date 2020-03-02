@@ -12,7 +12,7 @@
                     <ol class="breadcrumb breadcrumb-arrow">
                         <li><a href="#" target="_self">Trang chủ</a></li>
                         <li><i class="fa fa-angle-right"></i></li>
-                        <li><a href="#" target="_self">Tin tức</a></li>
+                        <li><a href="#" target="_self">Blog TMU</a></li>
                     </ol>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     </div>
                     @if(count($var['otherNewsFeature']))
                         <div class="other-news">
-                            <h3 class="tlt">Tin nổi bật khác</h3>
+                            <h3 class="tlt">Bài viết nổi bật khác</h3>
                             <div class="slider responsive slider-news-fl">
                                     @foreach($var['otherNewsFeature'] as $data)
                                         <div>
@@ -93,7 +93,7 @@
                     </div>
                     @else
                         <div class="group-news group-other-news">
-                            <h3 class="title-tlt">Các tin khác</h3>
+                            <h3 class="title-tlt">Các bài viết khác</h3>
                             <div class="other-news-fl">
                                 <ul>
                                     @if(count($newsCategory->news))
