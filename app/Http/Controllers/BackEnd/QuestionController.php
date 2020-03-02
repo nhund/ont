@@ -321,8 +321,6 @@ class QuestionController extends AdminBaseController
                 'data' => $count
             ]);
         }
-
-
     }
 
     public function getTemplateDienTuDoanvan(Request $request)
@@ -380,8 +378,6 @@ class QuestionController extends AdminBaseController
                 'data' => $count
             ]);
         }
-
-
     }
 
     public function edit(Request $request)

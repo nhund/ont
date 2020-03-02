@@ -55,7 +55,7 @@ class ExamService
     {
         $questions = collect();
 
-        if ($userExam->questions){
+        if ($userExam && $userExam->questions){
             $userExamQuestions = \json_decode($userExam->questions);
             foreach ($userExamQuestions as $partId => $partQuestion){
                 $questionsArray = Question::whereIn('id', $partQuestion)
