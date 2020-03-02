@@ -31,13 +31,13 @@ class SchoolCourseController extends Controller
     public function delete(){}
 
     /**
-     * @param Category $school
+     * @param $schoolId
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function freeCourses(Category $school, Request $request){
+    public function freeCourses($schoolId, Request $request){
 
-        $freeCourse = (new CourseService())->getCoursesOfByStatus([Course::TYPE_FREE_TIME], $school->id);
+        $freeCourse = (new CourseService())->getCoursesOfByStatus([Course::TYPE_FREE_TIME], $schoolId);
 
         return fractal()
             ->collection($freeCourse, new ShortCourseTransformer)
@@ -45,14 +45,14 @@ class SchoolCourseController extends Controller
     }
 
     /**
-     * @param Category $school
+     * @param $schoolId
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function StickyCourses(Category $school, Request $request)
+    public function StickyCourses($schoolId, Request $request)
     {
 
-        $specialCourse = (new CourseService())->getStickyCourses($school->id);
+        $specialCourse = (new CourseService())->getStickyCourses($schoolId);
 
         return fractal()
             ->collection($specialCourse, new ShortCourseTransformer)
@@ -60,13 +60,13 @@ class SchoolCourseController extends Controller
     }
 
     /**
-     * @param Category $school
+     * @param $schoolId
      * @param Request $request
      * @return mixed
      */
-    public function otherCourses(Category $school, Request $request)
+    public function otherCourses($schoolId, Request $request)
     {
-        $otherCourse = (new CourseService())->getOtherCourseSchoolHome( $school->id);
+        $otherCourse = (new CourseService())->getOtherCourseSchoolHome( $schoolId);
 
         return fractal()
             ->collection($otherCourse, new ShortCourseTransformer)
