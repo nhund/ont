@@ -33,6 +33,8 @@ class ExamController extends Controller
     {
         $lesson = Lesson::findOrfail($lessonId);
 
+        event(new BeginExamEvent($lesson, $request->user()));
+
         $userExam = ExamUser::where('user_id', $request->user()->id)
             ->where('lesson_id', $lessonId)
             ->first();
@@ -43,7 +45,6 @@ class ExamController extends Controller
             throw new BadRequestException('Bạn đã hết lượt làm bài kiểm tra, vui lòng mua thêm');
         }
 
-        event(new BeginExamEvent($lesson, $request->user()));
 
         $questions = (new ExamService())->getQuestionExam($lesson, $userExam);
 
