@@ -100,6 +100,7 @@ class ExamService
                 $questionPart[$part->id] = $arrayQuestions;
             }
 
+            dd($questionPart);
             $userExam->questions = count($questionPart) ?  \json_encode($questionPart) : NULL;
             $userExam->save();
         }
