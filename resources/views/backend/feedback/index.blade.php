@@ -38,7 +38,7 @@
                                         <th width="100">Tiêu đề</th>
                                         <th width="100">Nội dung</th>
                                         <th width="100">Câu hỏi</th>
-                                        <th width="100">Khóa học</th>                                        
+                                        <th width="160">Khóa học</th>
                                         <th width="100">Trạng thái</th>
                                         <th width="150">Hành động</th>
                                     </tr>
@@ -63,6 +63,7 @@
                                                 </td>
                                                 <td>
                                                     <a target="_blank" href="{{ route('course.detail',['id'=>$feedback->course_id]) }}">{{ $feedback->course->name }}</a>
+                                                   <p> Bài học<a>{{ $feedback->lesson->name ?? '' }}</a></p>
                                                     <p>({{ date('d-m-Y H:i',$feedback->create_date ) }})</p>
                                                 </td>
                                                 <td>
