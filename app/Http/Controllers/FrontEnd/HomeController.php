@@ -167,6 +167,7 @@ class HomeController extends Controller
         $feedback->email = $data['email'];
         $feedback->content = $data['content'];
         $feedback->course_id = $lesson->course_id;
+        $feedback->lesson_id = $lesson->id;
         $feedback->teacher_id = $question->user_id;
         $feedback->question_id = $data['question_id'];
         $feedback->question_type = isset($data['type']) ? $data['type'] : 0;
