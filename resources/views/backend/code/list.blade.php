@@ -76,8 +76,8 @@
                                     <th>Giá</th>
                                     <th>Nguồn</th>
                                     <th>Người dùng</th>
-                                    <th>Trạng thái</th>
                                     <th>Thời gian kích hoạt</th>
+                                    <th>Trạng thái</th>
                                     <th>Ngày hết hạn</th>
                                 </tr>
                                 </thead>
@@ -107,6 +107,7 @@
                                                         @endif
                                                     </td>
                                                     <td><strong>{{$co->full_name}}</strong> -- {{$co->email}}</td>
+                                                    <td>{{ (empty($co->dateActive)) ? '' : date('d/m/Y H:i:s', $co->dateActive) }}</td>
                                                     <td>
                                                         @if ($co->status)
                                                             <span class="color-red">Đã sử dụng</span>
@@ -114,7 +115,6 @@
                                                             <span class="color-green">Chưa sử dụng</span>
                                                         @endif
                                                     </td>
-                                                    <td>{{ (empty($co->dateActive)) ? '' : date('d/m/Y H:i:s', $co->dateActive) }}</td>
                                                     <td>@if($co->end_date) {{ date('d/m/Y', $co->end_date) }} @else Không thời hạn @endif</td>
                                                 </tr>
                                             @endif
