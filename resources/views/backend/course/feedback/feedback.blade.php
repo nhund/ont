@@ -20,15 +20,9 @@
                 {{ $feedback->user->name_full }}
                 <p>{{ $feedback->email }} </p>
             </td>                         
-            <td>
-               {{ $feedback->title }}
-            </td>
-            <td>
-                {{ $feedback->content }}
-            </td>
-            <td>
-                {{ $feedback->question->question }}
-            </td>
+            <td>{{ $feedback->title }}</td>
+            <td>{{ $feedback->content }}</td>
+            <td>{{ $feedback->question->question }}</td>
             <td>
                 @if($feedback->status == \App\Models\Feedback::STATUS_EDIT)
                 <p><span style="color: #5cb85c;font-weight: bold;">Đã sửa: </span>{{ date('d-m-Y H:i',$feedback->update_date ) }}</p>
