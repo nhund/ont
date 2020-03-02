@@ -829,11 +829,7 @@ class QuestionController extends AdminBaseController
         }
         if (isset($data['feedback_id'])) {
             Feedback::where('id', $data['feedback_id'])->update(['status' => Feedback::STATUS_EDIT, 'update_date' => time()]);
-
-            if ($request->session()->has('REQUEST_URI')) {
-                return redirect($request->session()->get('REQUEST_URI'));
-            }
-            return redirect()->route('admin.feedback.index');
+            return redirect()->route('course.detail', ['id' => $question->course_id, 'type' => 'feedback']);
         }
         return redirect()->route('lesson.detail', ['id' => $question->lesson_id]);
 
