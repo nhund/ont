@@ -106,7 +106,8 @@
                                                 <td>{{ $loop->iteration  }}</td>
                                                 <td align="left">
                                                     <img class="user_img" src="{{ !empty($this->avatar) ? web_asset($this->avatar) : web_asset('public/images/avatar-default.png')  }}"     >
-                                                    {{ $user->full_name }} -- {{ $user->email }}
+                                                    {{ $user->full_name }}
+                                                    <p>{{ $user->email }}</p>
                                                 </td>                                                
                                                 <td>
                                                     @if ($user->id != Auth::user()['id'])
@@ -120,7 +121,7 @@
                                                 <td>{{ date('d/m/y', $user->created_at) }}</td>
                                                 <td>
                                                     @if(isset($user->learn_last_time->update_time))
-                                                        {{ date('d/m/y', $user->learn_last_time->update_time) }}</td>
+                                                        {{ date('d/m/y', $user->learn_last_time->update_time) }}
                                                     @endif
                                                 </td>
                                                 <td>
