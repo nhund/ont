@@ -80,9 +80,9 @@ class User extends Authenticatable
     {
         if(empty($this->avatar))
         {
-            return asset(env('APP_URL').'public/images/avatar-default.png');
+            return asset(config('app.url').'public/images/avatar-default.png');
         }
-        return asset(env('APP_URL').$this->avatar);
+        return asset(config('app.url').$this->avatar);
         
     }   
 
