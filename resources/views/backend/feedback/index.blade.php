@@ -62,8 +62,8 @@
                                                     {{ $feedback->question->question }}
                                                 </td>
                                                 <td>
-                                                    <a target="_blank" href="{{ route('course.detail',['id'=>$feedback->course_id]) }}">{{ $feedback->course->name }}</a>
-                                                   <p> Bài học<a>{{ $feedback->lesson->name ?? '' }}</a></p>
+                                                    <p><a target="_blank" href="{{ route('course.detail',['id'=>$feedback->course_id]) }}">{{ $feedback->course->name }}</a></p>
+                                                    <p><strong>Bài học: </strong><a href="{{route('lesson.detail', ['id' =>  $feedback->lesson->id ?? '' ])}}">{{ $feedback->lesson->name ?? '' }}</a></p>
                                                     <p>({{ date('d-m-Y H:i',$feedback->create_date ) }})</p>
                                                 </td>
                                                 <td>

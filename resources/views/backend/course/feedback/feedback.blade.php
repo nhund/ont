@@ -7,6 +7,7 @@
             <th width="100">Tiêu đề</th>
            <th width="100">Nội dung</th>
             <th width="100">Câu hỏi</th>                                            
+            <th width="100">Bài tập</th>
             <th width="180">Trạng thái</th>
             <th width="150">Hành động</th>
         </tr>
@@ -23,6 +24,7 @@
             <td>{{ $feedback->title }}</td>
             <td>{{ $feedback->content }}</td>
             <td>{{ $feedback->question->question }}</td>
+            <td><a href="{{route('lesson.detail', ['id' =>  $feedback->lesson->id ?? '' ])}}">{{ $feedback->lesson->name ?? '' }}</a></td>
             <td>
                 @if($feedback->status == \App\Models\Feedback::STATUS_EDIT)
                 <p><span style="color: #5cb85c;font-weight: bold;">Đã sửa: </span>{{ date('d-m-Y H:i',$feedback->update_date ) }}</p>
