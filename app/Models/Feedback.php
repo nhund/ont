@@ -53,6 +53,11 @@ class Feedback extends Model
         return $this->hasOne('App\Models\Course', 'id', 'course_id')->withDefault(['id'=>'']);
     }
 
+    public function lesson()
+    {
+        return $this->hasOne(Lesson::class, 'id', 'lesson_id')->withDefault(['id'=>'']);
+    }
+
     public function bookmark()
     {
         return $this->belongsTo(UserQuestionBookmark::class, 'question_id', 'question_id');
