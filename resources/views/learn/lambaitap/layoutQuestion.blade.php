@@ -19,7 +19,7 @@
   @endif
   @if(isset($var['type']) && $var['type'] == \App\Models\Question::LEARN_LAM_BAI_TAP)
       @include('learn.lambaitap.question_header.lam_bai_moi')
-  @endif 
+  @endif
 
 <section id="hoclythuyet" class="clearfix flash_card">
   <div class="container">
@@ -42,7 +42,10 @@
       @endif
       @if($question->type == \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN)
         @include('learn.lambaitap.baitapDienTuDoanVan')  
-      @endif      
+      @endif
+      @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
+        @include('learn.lambaitap.baitapTracNghiemDon')
+      @endif
     </div>                            
     @endforeach        
     @include('learn.feedback.popup_feedback')
