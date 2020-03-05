@@ -18,6 +18,7 @@ class Question extends Model
     const TYPE_DIEN_TU = 3;
     const TYPE_TRAC_NGHIEM = 4;
     const TYPE_DIEN_TU_DOAN_VAN = 5;
+    const TYPE_TRAC_NGHIEM_DON = 6;
 
     const TYPE  = [
         self::TYPE_FLASH_SINGLE => 'FlashCard đơn',

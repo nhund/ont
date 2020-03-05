@@ -84,7 +84,6 @@
                                         @endforeach
                                     @endif
                                     </tbody>
-
                                 </table>
                                 <div class="pagination">
                                     {{ $var['feedbacks']->links('vendor.pagination.default') }}
@@ -93,9 +92,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 @stop

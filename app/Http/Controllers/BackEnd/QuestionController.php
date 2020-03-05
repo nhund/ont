@@ -19,6 +19,7 @@ class QuestionController extends AdminBaseController
     public function add(Request $request)
     {
         $data = $request->all();
+
         if (!isset($data['type'])) {
             return response()->json([
                 'error' => true,
@@ -26,12 +27,15 @@ class QuestionController extends AdminBaseController
                 'data' => []
             ]);
         }
+
         if (!Auth::check()) {
             return response()->json(array('error' => true, 'type' => 'login', 'msg' => 'Bạn cần đăng nhập để thực hiện hành động này'));
         }
+
         $user = Auth::user();
         $lesson = Lesson::find($data['lesson_id']);
         $typeLesson = $request->input('type_lesson');
+
         if ($data['type'] == Question::TYPE_TRAC_NGHIEM) {
             // /dd($data);
             $question = new Question();
@@ -108,6 +112,56 @@ class QuestionController extends AdminBaseController
                 return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
             }
         }
+
+        if ($data['type'] == Question::TYPE_TRAC_NGHIEM_DON) {
+
+            $question                 = new Question();
+            $question->type           = $data['type'];
+            $question->parent_id      = 0;
+            $question->lesson_id      = $data['lesson_id'];
+            $question->course_id      = $lesson->course_id;
+            $question->user_id        = $user->id;
+            $question->created_at     = time();
+            $question->question       = $data['question_tn'];
+            $question->explain_before = Helper::detectMathLatex($data['explain_tn_global']);
+            $question->interpret_all  = Helper::detectMathLatex($data['interpret_tn_global']);
+            $question->img_before     = $data['question_img'][1];
+            $question->audio_content  = $data['audio_content'];
+            $question->save();
+
+            if ($typeLesson == Lesson::EXAM && $request->get('part_id')) {
+                (new ExamService())->insertExamQuestion($question->id, $data['lesson_id'], $request->get('part_id'));
+            }
+
+            // cau tra lơi dung
+            $as_right              = new QuestionAnswer();
+            $as_right->user_id     = $user->id;
+            $as_right->question_id = $question->id;
+            $as_right->answer      = Helper::detectMathLatex($data['answer_tn']);
+            $as_right->status      = QuestionAnswer::REPLY_OK;
+            $as_right->image       = $data['answer_img'][1];
+            //$as_right->audio_answer = $data['audio_answer_tn'][$key];
+            $as_right->create_at = time();
+            $as_right->save();
+
+            if (isset($data['answer_error_tn']) && count($data['answer_error_tn']) > 0) {
+                foreach ($data['answer_error_tn'] as $key_item => $ans_er_value_item) {
+                    if (!empty($ans_er_value_item)) {
+                        $as_err              = new QuestionAnswer();
+                        $as_err->user_id     = $user->id;
+                        $as_err->question_id = $question->id;
+                        $as_err->answer      = Helper::detectMathLatex($ans_er_value_item);
+                        $as_err->status      = QuestionAnswer::REPLY_ERROR;
+                        $as_err->image       = $data['answer_img_error'][$key_item];
+                        $as_err->create_at   = time();
+                        $as_err->save();
+                    }
+                }
+            }
+
+            return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
+        }
+
         if ($data['type'] == Question::TYPE_FLASH_MUTI) {
             //dd($data);
             $question = new Question();
@@ -210,6 +264,7 @@ class QuestionController extends AdminBaseController
             }
             return response()->json(array('error' => true, 'msg' => 'Thêm dữ liệu không thành công'));
         }
+
         if ($data['type'] == Question::TYPE_DIEN_TU) {
             //dd($data);
             if (count($data['question']) == 0) {
@@ -258,6 +313,7 @@ class QuestionController extends AdminBaseController
             }
             return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
         }
+
         if ($data['type'] == Question::TYPE_DIEN_TU_DOAN_VAN) {
             //dd($data['question']);
             if (count($data['question_dt']) == 0) {
@@ -294,6 +350,7 @@ class QuestionController extends AdminBaseController
             }
             return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
         }
+
     }
 
     public function getTemplateFlashCard(Request $request)
@@ -407,10 +464,7 @@ class QuestionController extends AdminBaseController
                 'title' => 'Sửa câu hỏi',
             )
         );
-        //$lesson = Lesson::find($question->lesson_id);
-        if ($question->type == Question::TYPE_FLASH_SINGLE) {
 
-        }
         if ($question->type == Question::TYPE_FLASH_MUTI) {
             $cardMutiles = QuestionCardMuti::where('parent_id', $data['id'])->where('lesson_id', $question->lesson_id)->orderBy('id', 'ASC')->get();
 
@@ -433,6 +487,10 @@ class QuestionController extends AdminBaseController
                 $question_child->answer_ok = QuestionAnswer::where('question_id', $question_child->id)->where('status', QuestionAnswer::REPLY_OK)->first();
             }
             $question->childs = $question_childs;
+        }
+        if ($question->type == Question::TYPE_TRAC_NGHIEM_DON) {
+            $question->answers_errors = QuestionAnswer::where('question_id', $question->id)->where('status', QuestionAnswer::REPLY_ERROR)->get();
+            $question->answer_ok = QuestionAnswer::where('question_id', $question->id)->where('status', QuestionAnswer::REPLY_OK)->first();
         }
         if ($question->type == Question::TYPE_DIEN_TU_DOAN_VAN) {
             $question->childs = Question::where('parent_id', $data['id'])->orderBy('id', 'ASC')->get();
@@ -644,7 +702,7 @@ class QuestionController extends AdminBaseController
             }
         }
         if ($question->type == Question::TYPE_TRAC_NGHIEM) {
-            //dd($data);
+            dd($data);
             $list_answer = [];
 
             $question->updated_at = time();
@@ -787,6 +845,64 @@ class QuestionController extends AdminBaseController
 
                     }
 
+                }
+            }
+            alert()->success('Cập nhật thành công');
+        }
+        if ($question->type == Question::TYPE_TRAC_NGHIEM_DON) {
+
+            $question->updated_at = time();
+            $question->question = $data['question_tn'];
+            $question->explain_before = Helper::detectMathLatex($data['explain_tn_global']);
+            $question->interpret_all = Helper::detectMathLatex($data['interpret_tn_global']);
+            $question->img_before = $data['question_img'];
+            $question->audio_content = $data['audio_question_tn'];
+            $question->save();
+
+            $as_right = QuestionAnswer::where('question_id', $question->id)->where('status', QuestionAnswer::REPLY_OK)->first();
+
+            if ($as_right) {
+                $as_right->answer = Helper::detectMathLatex($data['answer_tn']);
+                $as_right->image  = $data['answer_img'];
+                $as_right->save();
+                $list_answer[] = $as_right->id;
+            } else {
+                $as_right              = new QuestionAnswer();
+                $as_right->user_id     = $user->id;
+                $as_right->question_id = $question->id;
+                $as_right->answer      = Helper::detectMathLatex($data['answer_tn']);
+                $as_right->status      = QuestionAnswer::REPLY_OK;
+                $as_right->image       = $data['answer_img'];
+                $as_right->create_at   = time();
+                $as_right->save();
+                $list_answer[] = $as_right->id;
+            }
+            if (isset($data['answer_error_tn']) && count($data['answer_error_tn']) > 0) {
+                foreach ($data['answer_error_tn'] as $key_item => $ans_er_value_item) {
+                    if (!empty($ans_er_value_item)) {
+                        $as_err = QuestionAnswer::where('question_id', $question->id)->where('id', $key_item)->first();
+                        if ($as_err) {
+                            $as_err->answer    = Helper::detectMathLatex($ans_er_value_item);
+                            $as_err->status    = QuestionAnswer::REPLY_ERROR;
+                            $as_err->image     = $data['answer_img_error'][$key_item];
+                            $as_err->create_at = time();
+                            $as_err->save();
+                            //luu vao de sau xoa
+                            $list_answer[] = $as_err->id;
+                        } else {
+                            // them moi
+                            $as_err              = new QuestionAnswer();
+                            $as_err->user_id     = $user->id;
+                            $as_err->question_id = $question->id;
+                            $as_err->answer      = Helper::detectMathLatex($ans_er_value_item);
+                            $as_err->status      = QuestionAnswer::REPLY_ERROR;
+                            $as_err->image       = $data['answer_img_error'][$key_item];
+                            $as_err->create_at   = time();
+                            $as_err->save();
+                            //luu vao de sau xoa
+                            $list_answer[] = $as_err->id;
+                        }
+                    }
                 }
             }
             alert()->success('Cập nhật thành công');

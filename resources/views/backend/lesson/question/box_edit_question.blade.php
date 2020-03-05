@@ -27,9 +27,11 @@
 									<option disabled @if($question->type == \App\Models\Question::TYPE_DIEN_TU) selected @endif value="{{ \App\Models\Question::TYPE_DIEN_TU }}">Điền từ</option>
 									<option disabled @if($question->type == \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN) selected @endif value="{{ \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN }}">Điền từ đoạn văn</option>
 									<option disabled @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM) selected @endif value="{{ \App\Models\Question::TYPE_TRAC_NGHIEM }}">Trác nghiệm</option>
+									<option disabled @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON) selected @endif value="{{ \App\Models\Question::TYPE_TRAC_NGHIEM_DON }}">Trác nghiệm đơn</option>
 								</select>
 							</div>
 						</div>
+						@if($question->type !== \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
 						<div class="form-group row">
 							<div class="col-sm-12">Đoạn văn</div>
 							<div class="col-sm-12">
@@ -49,24 +51,25 @@
 										@if($question->type !== \App\Models\Question::TYPE_FLASH_SINGLE)
 											<div class="box_image @if(!empty($question->img_before)) show @endif">
 												<img  src="{{ web_asset($question->img_before) }}">
-												<input class="input_image" type="hidden" name="image" value="{{ $question->img_before }}">  
+												<input class="input_image" type="hidden" name="image" value="{{ $question->img_before }}">
 												<p class="delete" title="Xóa ảnh" onclick="deleteImage(this)">Xóa</p>
 											</div>
 											@include('backend.lesson.question.options.action',['show_format_content'=>true,'show_audio'=>true,'show_image'=>true])
-										@else 
+										@else
 											{{-- <div class="box_image @if(!empty($question->img_before)) show @endif">
 												<img  src="{{ web_asset($question->img_before) }}">
-												<input class="input_image" type="hidden" name="image" value="{{ $question->img_before }}">  
+												<input class="input_image" type="hidden" name="image" value="{{ $question->img_before }}">
 												<p class="delete" title="Xóa ảnh" onclick="deleteImage(this)">Xóa</p>
 											</div> --}}
 											@include('backend.lesson.question.options.action',['show_format_content'=>true,'show_audio'=>true])
 										@endif
-										
-									</div>                                            
+
+									</div>
 								</div>
 
 							</div>
 						</div>
+						@endif
                             <!-- <div class="form-group row">
                                 <div class="col-sm-12">Gợi ý</div>
                                 <div class="col-sm-12">
@@ -92,12 +95,17 @@
 	                            <div class="form_question form_trac_nghiem">
 	                            	@include('backend.lesson.question.form_question_trac_nghiem',['edit'=>true])
 	                            </div>                          
-	                            @endif
+							@endif
                             @if($question->type == \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN)
 	                            <div class="form_question form_dien_tu_doan_van">
 	                            	@include('backend.lesson.question.form_question_dien_tu_doan_van',['edit'=>true])
 	                            </div>                        
                             @endif
+							@if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
+								<div class="form_question form_trac_nghiem">
+									@include('backend.lesson.question.form_question_trac_nghiem_don',['edit'=>true])
+								</div>
+							@endif
 
                         </div>
                     </div>

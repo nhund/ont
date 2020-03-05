@@ -21,27 +21,32 @@ $(document).ready(function () {
     $('body').on('change', '.addQuestion select[name="type"]', function (e) { 
         e.preventDefault();
         var $this = $(this);
+        const type = parseInt($this.val());
         $this.closest('.addQuestion').find('.form_question').hide();
-        console.log($this.val());
-        if($this.val() == 1)
-        {
+        
+        if (type !== 6){
+            $('.doan-van').show()
+        }else{
+            $('.doan-van').hide()
+        }
+        
+        if(type === 1) {
             $this.closest('.addQuestion').find('.form_question.form_flash_card').show();
         }
-        if($this.val() == 2)
-        {
+        if(type === 2) {
             $this.closest('.addQuestion').find('.form_question.form_flash_card_chuoi').show();
         }
-        if($this.val() == 3)
-        {
+        if(type === 3) {
             $this.closest('.addQuestion').find('.form_question.form_dien_tu').show();
         }
-        if($this.val() == 4)
-        {
+        if(type === 4) {
             $this.closest('.addQuestion').find('.form_question.form_trac_nghiem').show();
         }
-        if($this.val() == 5)
-        {
+        if(type === 5) {
             $this.closest('.addQuestion').find('.form_question.form_dien_tu_doan_van').show();
+        }
+        if(type === 6) {
+            $this.closest('.addQuestion').find('.form_question.form_trac_nghiem_don').show();
         }
     });
     // $('body').on('click', '.addQuestion .popup_upload', function (e) {     

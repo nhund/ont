@@ -23,10 +23,11 @@
                                         <option value="{{ \App\Models\Question::TYPE_DIEN_TU }}">Điền từ</option>
                                         <option value="{{ \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN }}">Điền từ đoạn văn</option>
                                         <option value="{{ \App\Models\Question::TYPE_TRAC_NGHIEM }}">Trác nghiệm</option>
+                                        <option value="{{ \App\Models\Question::TYPE_TRAC_NGHIEM_DON }}">Trác nghiệm đơn</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <div class="form-group row doan-van">
                                 <div class="col-sm-12">Đoạn văn</div>
                                 <div class="col-sm-12">
                                     <div class="box_content box_content_t">
@@ -44,21 +45,11 @@
                                             </div>
                                             <div class="box_image">
                                                 <img  src="" name="" >
-                                                <input class="input_image" type="hidden" name="image" value="">  
+                                                <input class="input_image" type="hidden" name="image" value="">
                                                 <p class="delete" title="Xóa ảnh" onclick="deleteImage(this)">Xóa</p>
                                             </div>
                                             @include('backend.lesson.question.options.action',['show_format_content'=>true,'show_audio'=>true,'show_image'=>true])
-                                            {{-- <div class="phd">
-                                                <div class="dropdown">
-                                                    <img class="dropdown-toggle" data-toggle="dropdown" src="{{ asset('public/images/course/icon/option-create-question-01.png') }}" style="" type="button" aria-expanded="false">                
-                                                    <ul class="dropdown-menu">
-                                                        <li class="popup_upload" data-type="content">Thêm ảnh</li>
-                                                        <li class="popup_upload_audio" onclick="showAudioUpload(this)">Thêm audio</li>
-                                                        <li class="format_content" onclick="ShowFormatContent(this)" data-type="content">Định dạng nội dung</li>
-                                                    </ul>
-                                                </div>
-                                            </div> --}}
-                                        </div>                                            
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -79,6 +70,9 @@
                             </div>   
                             <div class="form_question form_trac_nghiem">
                                 @include('backend.lesson.question.form_question_trac_nghiem')
+                            </div>
+                            <div class="form_question form_trac_nghiem_don">
+                                @include('backend.lesson.question.form_question_trac_nghiem_don')
                             </div>
                             <div class="form_question form_dien_tu_doan_van">
                                 @include('backend.lesson.question.form_question_dien_tu_doan_van')

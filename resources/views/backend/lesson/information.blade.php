@@ -61,31 +61,43 @@
             <tbody>
                 @foreach($questions as $quest)
                 <tr class="row-doc">
-                    <td width="50%">{{ $loop->iteration }}. {!! $quest->content !!}</td>
+                    @if($quest->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
+                        <td width="50%">{{ $loop->iteration }}. {!! $quest->question !!}</td>
+                    @else
+                        <td width="50%">{{ $loop->iteration }}. {!! $quest->content !!}</td>
+                    @endif
                     <td>
                         @if ($quest->type == \App\Models\Question::TYPE_DIEN_TU)
-                        @if ($quest->subs)
-                        @foreach($quest->subs as $sub)
-                        <p>{{ $loop->iteration }}. {!! $sub->question !!}: {!! $sub->answer[0]->answer !!}</p>
-                        @endforeach
-                        @else
-                        <p>{!! $quest->content !!}</p>
-                        @endif
+                            @if ($quest->subs)
+                                @foreach($quest->subs as $sub)
+                                    <p>{{ $loop->iteration }}. {!! $sub->question !!}: {!! $sub->answer[0]->answer !!}</p>
+                                @endforeach
+                            @else
+                                <p>{!! $quest->content !!}</p>
+                            @endif
                         @elseif ($quest->type == \App\Models\Question::TYPE_TRAC_NGHIEM)
-                        @if ($quest->subs)
-                        @foreach($quest->subs as $sub)
-                        <div class="row col-sm-12">{{ $loop->iteration }}. {!! $sub->question !!}</div>
-                        @foreach($sub->answer as $ans)
-                        <div class="col-sm-6">
-                            @if($ans->status == 2) <span class="color-red">*</span> @endif {!! $ans->answer !!}
-                        </div>
-                        @endforeach
-                        @endforeach
+                            @if ($quest->subs)
+                                @foreach($quest->subs as $sub)
+                                    <div class="row col-sm-12">{{ $loop->iteration }}. {!! $sub->question !!}</div>
+                                    @foreach($sub->answer as $ans)
+                                        <div class="col-sm-6">
+                                            @if($ans->status == 2)
+                                                <span class="color-red">*</span> @endif {!! $ans->answer !!}
+                                        </div>
+                                    @endforeach
+                                @endforeach
+                            @else
+                                <p>{!! $quest->content !!}</p>
+                            @endif
+                        @elseif ($quest->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
+                            @foreach($quest->answer as $ans)
+                                <div class="col-sm-6">
+                                    @if($ans->status == 2)
+                                        <span class="color-red">*</span> @endif {!! $ans->answer !!}
+                                </div>
+                            @endforeach
                         @else
-                        <p>{!! $quest->content !!}</p>
-                        @endif
-                        @else
-                        <p>{!! $quest->question !!}</p>
+                            <p>{!! $quest->question !!}</p>
                         @endif
                     </td>
                     <td>
