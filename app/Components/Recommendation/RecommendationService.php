@@ -395,6 +395,16 @@ class RecommendationService
                 }
                 $question->child = $questionChilds;
             }
+            if($question->type  == Question::TYPE_TRAC_NGHIEM_DON)
+            {
+                $lesson = $question->lesson;
+                if($lesson->random_question == Lesson::TRAC_NGHIEM_ANSWER_RANDOM)
+                {
+                    $question->answers = QuestionAnswer::where('question_id',$question->id)->orderByRaw('RAND()')->get();
+                }else{
+                    $question->answers = QuestionAnswer::where('question_id',$question->id)->orderBy('answer','ASC')->get();
+                }
+            }
             if($question->type  == Question::TYPE_DIEN_TU_DOAN_VAN)
             {
                 if($question->parent_id == Question::PARENT_ID)
