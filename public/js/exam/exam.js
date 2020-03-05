@@ -64,8 +64,8 @@ $(document).ready(function () {
         var $this = $(this);
         var data  = $this.closest('.form_trac_nghiem').serializeArray();
         //console.log(form); return;
-
-        data.push({name : 'question_type', value : 4 });
+        const questionType = $this.data('type')
+        data.push({name : 'question_type', value : questionType });
         $.ajax({
            headers: {
                'X-CSRF-Token': $('meta[name=csrf-token]').attr("content"),
@@ -218,26 +218,6 @@ $(document).ready(function () {
              html : true,
          });
     });
-
-    //xem goi y cho toan cau
-    // $('.dien_tu_doan_van .list_question .question_item .icon.suggest').on('click', function (e) {
-    //     e.preventDefault();
-    //     var $this = $(this);
-    //     $this.closest('.question_item').find('.box_suggest').slideToggle();
-    // });
-
-    //hien thi goi y dien tu van ban
-    // $('.dientu_chuoi_box .form_dien_tu_dien_tu_doan_van .head_content .box_action .suggest').on('click', function (e) {
-    //     e.preventDefault();
-    //     var $this = $(this);
-    //     if (!$this.hasClass('open_suggest')) {
-    //         $this.addClass('open_suggest');
-    //         $this.closest('.form_dien_tu_dien_tu_doan_van').find('.head_content .box_suggest').show();
-    //     } else {
-    //         $this.removeClass('open_suggest');
-    //         $this.closest('.form_dien_tu_dien_tu_doan_van').find('.head_content .box_suggest').hide();
-    //     }
-    // });
 
     //submit dien tu doan van
     $('.dien_tu_doan_van .submit_question .btn_submit').on('click', function (e) {

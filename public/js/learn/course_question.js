@@ -193,6 +193,7 @@ $(document).ready(function(){
         }
         
     });
+
     // trac nghiem
     $('.trac_nghiem_box .submit_question .btn_next').on('click',function(e){
         e.preventDefault();
@@ -203,6 +204,7 @@ $(document).ready(function(){
                             $('.question_type.question_stt_'+parseInt(key+1)).show();   
                             
                         });
+
     //hien thi goi y trac nghiem
     $('.trac_nghiem_box .form_trac_nghiem .head_content .box_action .suggest').on('click',function(e){
         e.preventDefault();
@@ -216,6 +218,7 @@ $(document).ready(function(){
             $this.closest('.form_trac_nghiem').find('.head_content .box_suggest').hide();
         }    
     });
+
     //hien thi goi y trac nghiem cau hoi
     $('.trac_nghiem_box .form_trac_nghiem .list_question .box_suggest_answer .suggest').on('click',function(e){
         e.preventDefault();
@@ -229,15 +232,16 @@ $(document).ready(function(){
             $this.closest('.box_suggest_answer').find('.suggest_answer_content p').hide();
         }    
     });
+
     //kiem tra neu co 1 cau trac nghiem thi submit luon
     $('.trac_nghiem_box .list_answer input[type="radio"]').on('change', function() {
        var $this = $(this);
        var count_question = $this.closest('.content_question').find('input[name="count_question"]').val();
-       if(parseInt(count_question) == 1)
-       {
+       if(parseInt(count_question) == 1) {
             $this.closest('.content_question').find('.submit_question .btn_submit').click();
        }
     });
+
     //submit bai tap trac nghiem
     $('.trac_nghiem_box .submit_question .btn_submit').on('click',function(e){
         e.preventDefault();
@@ -307,6 +311,7 @@ $(document).ready(function(){
 
         });
     });
+
     //next dien tu
     $('.dientu_box .submit_question .btn_next').on('click',function(e){
         e.preventDefault();
@@ -589,6 +594,4 @@ $(document).ready(function(){
             });
         });
     });
-    
-
 });

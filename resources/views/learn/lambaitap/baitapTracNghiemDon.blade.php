@@ -8,9 +8,9 @@
                 <img src="{{ web_asset('public/'.$question->img_before) }}">
             </div>
             @endif
-            @if(!empty($question->content))
+            @if(!empty($question->question))
             <div class="box_des">
-                {!! $question->content !!}
+                {!! $question->question !!}
             </div>
             @endif
             @if(!empty($question->audio_content))
@@ -24,7 +24,7 @@
                         <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
                     </div>
                 @endif
-                @if(!empty($question->content))
+                @if(!empty($question->question))
                      <div class="icon report send_report" title="Báo cáo" data-id="{{ $question->id }}">
                          <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
                      </div>
@@ -50,7 +50,8 @@
     <div class="content_question">
 
     @if(isset($question) && isset($question->answers))
-        <div class="list_question">
+            <input type="hidden" name="count_question" value="1" >
+            <div class="list_question">
             <div class="question_item question_id_{{ $question->id }}">
                 <div class="list_answer">
                     @if(isset($question->answers))

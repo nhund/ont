@@ -1,14 +1,5 @@
 $(document).ready(function () {
-    function upCountQuestion() {
-        var count_question_current = $('.hoclythuyet .course_process .count_question_done');
-        var total_question         = $('.hoclythuyet .course_process .total_question');
-        var process_bar            = $('.hoclythuyet .lesson_name .progress-bar');
-        var coutn_question_new     = parseInt(count_question_current.text()) + 1;
-        count_question_current.text(coutn_question_new);
-        var percent = (coutn_question_new / parseInt(total_question.text())) * 100;
-        process_bar.css('width', percent + '%');
-        $(window).scrollTop(0);
-    }
+
 
 
     //kiem tra neu co 1 cau trac nghiem thi submit luon
@@ -31,12 +22,21 @@ $(document).ready(function () {
 
         const type = $this.data('type');
         const stt = $this.data('stt');
-
+        upCountQuestion()
         checkButton($(`[data-stt=${stt + 1}]`));
         reviewResult(stt, type);
     });
 });
-
+function upCountQuestion() {
+    var count_question_current = $('.hoclythuyet .course_process .count_question_done');
+    var total_question         = $('.hoclythuyet .course_process .total_question');
+    var process_bar            = $('.hoclythuyet .lesson_name .progress-bar');
+    var coutn_question_new     = parseInt(count_question_current.text()) + 1;
+    count_question_current.text(coutn_question_new);
+    var percent = (coutn_question_new / parseInt(total_question.text())) * 100;
+    process_bar.css('width', percent + '%');
+    $(window).scrollTop(0);
+}
 function showAnswers(results){
     let resultHtml ='';
     if (results){
@@ -86,6 +86,7 @@ function reviewResult(stt, type) {
 
     const TYPE_DIEN_TU = 3;
     const TYPE_TRAC_NGHIEM = 4;
+    const TYPE_TRAC_NGHIEM_DON = 6;
     const TYPE_DIEN_TU_DOAN_VAN = 5;
 
     let answer = reviewResults[stt].answer;
@@ -119,6 +120,20 @@ function reviewResult(stt, type) {
                 }
             });
             break;
+        case TYPE_TRAC_NGHIEM_DON:
+            $.each(answer, function (key, val) {
+                if (val.error == 2) {
+                    $('.answer_' + val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
+                    $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#7BCDC7');
+                } else {
+                    $('.answer_' + val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
+                    $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#7BCDC7');
+
+                    $('.answer_' + val.input).closest('.radio').append('<i class="fa fa-times"></i>');
+                    $('.answer_' + val.input).closest('.radio').find('label').css('color', '#FF503B');
+                }
+            });
+            break;
         case TYPE_DIEN_TU_DOAN_VAN:
             $.each(answer, function (key, val) {
                 $.each(val, function (key2, val2) {
@@ -138,16 +153,15 @@ function reviewResult(stt, type) {
     }
 }
 
-
 function checkButton($button){
     let key   = parseInt($button.closest('.question_type').attr('data-key'));
     let totalQuestion = reviewResults.length;
-    if (key == totalQuestion ){
-        $button.closest('.submit_question').find('.btn_finish').show();
-        $button.closest('.submit_question').find('.btn_next').remove();
+    if (isNaN(key)){
+        $('.btn_finish').css('display','inline');
+        $button.closest('.submit_question').find('.btn_next').hide();
     } else {
         $button.closest('.submit_question').find('.btn_next').show();
-        $button.closest('.submit_question').find('.btn_finish').remove();
+        $button.closest('.submit_question').find('.btn_finish').hide();
     }
 
 }

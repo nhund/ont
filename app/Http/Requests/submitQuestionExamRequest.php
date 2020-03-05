@@ -38,7 +38,7 @@ class submitQuestionExamRequest extends AuthorizedFormRequest
                 'txtLearnWord' =>'required|array'
             ]);
         }
-        if ( in_array($questionType, [Question::TYPE_TRAC_NGHIEM, Question::TYPE_DIEN_TU])){
+        if ( in_array($questionType, [Question::TYPE_TRAC_NGHIEM, Question::TYPE_TRAC_NGHIEM_DON, Question::TYPE_DIEN_TU])){
             return array_merge($rules, [
                 'answers' =>'required|array'
             ]);

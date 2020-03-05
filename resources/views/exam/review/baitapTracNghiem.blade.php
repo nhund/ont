@@ -57,13 +57,12 @@
             </div>
             @endforeach              
         </div>
-
-        @if(count($var['questions']) - 2 >= $key)
-                <div class="submit_question">
-                    <button class="btn btn_next" data-type="{{$var['questions'][$key + 1]->type}}" data-stt="{{$key + 1}}">Câu tiếp</button>
-                    <a style="display: none" href="{{route('exam.question', ['title' => str_slug($var['lesson']->name), 'id'=>$var['lesson']->id ])}}" class="btn btn_finish">Kết thúc</a>
-                </div>
+        <div class="submit_question">
+            @if(count($var['questions']) - 2 >= $key)
+                <button class="btn btn_next" data-type="{{$var['questions'][$key + 1]->type}}" data-stt="{{$key + 1}}">Câu tiếp</button>
             @endif
+            <a style="display: none" href="{{route('exam.question', ['title' => str_slug($var['lesson']->name), 'id'=>$var['lesson']->id ])}}" class="btn btn_finish">Kết thúc</a>
+        </div>
         @endif
     </div> 
 </form>   

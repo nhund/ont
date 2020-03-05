@@ -46,6 +46,9 @@ class QuestionService
             if ($question->type === Question::TYPE_TRAC_NGHIEM){
                 $this->getMultipleChoiceQuestions($question);
             }
+            if ($question->type === Question::TYPE_TRAC_NGHIEM_DON){
+                $this->getSingleMultipleChoiceQuestion($question);
+            }
             if ($question->type === Question::TYPE_FLASH_MUTI){
                 $this->getMultiFlashQuestions($question);
             }
@@ -75,6 +78,16 @@ class QuestionService
             }
         }
         $question->child = $questionChildren;
+    }
+
+    private function getSingleMultipleChoiceQuestion(Question $question, array $notIn = [])
+    {
+        if($this->lesson->random_question == Lesson::TRAC_NGHIEM_ANSWER_RANDOM)
+        {
+            $question->answers = QuestionAnswer::where('question_id',$question->id)->orderByRaw('RAND()')->get();
+        }else{
+            $question->answers = QuestionAnswer::where('question_id',$question->id)->orderBy('answer','ASC')->get();
+        }
     }
     
     private function getFillWordIntoSentenceQuestions(Question $question, array $notIn = [])

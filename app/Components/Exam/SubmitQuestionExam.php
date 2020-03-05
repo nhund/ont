@@ -50,7 +50,7 @@ class SubmitQuestionExam
                 return $this->fillWordIntoSentence();
             }
 
-            if ($this->question->type == Question::TYPE_TRAC_NGHIEM) {
+            if ($this->question->type == Question::TYPE_TRAC_NGHIEM || $this->question->type == Question::TYPE_TRAC_NGHIEM_DON) {
                 return $this->multipleChoice();
             }
 

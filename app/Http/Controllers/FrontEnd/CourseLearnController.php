@@ -338,7 +338,7 @@ class CourseLearnController extends Controller
             }
             
             $getQuestionDetail = $this->_getQuestion($user, $questions);
-        }                 
+        }
 
         $var['userBookmark'] = $getQuestionDetail['userBookmark'];
 
@@ -409,6 +409,16 @@ class CourseLearnController extends Controller
                     
                 }
                 $question->child = $questionChilds;
+            }
+            if($question->type  == Question::TYPE_TRAC_NGHIEM_DON)
+            {
+                $lesson = $question->lesson;
+                if($lesson->random_question == Lesson::TRAC_NGHIEM_ANSWER_RANDOM)
+                {
+                    $question->answers = QuestionAnswer::where('question_id',$question->id)->orderByRaw('RAND()')->get();
+                }else{
+                    $question->answers = QuestionAnswer::where('question_id',$question->id)->orderBy('answer','ASC')->get();
+                }
             }
             if($question->type  == Question::TYPE_DIEN_TU_DOAN_VAN)
             {
@@ -674,7 +684,7 @@ class CourseLearnController extends Controller
                 ));
             }
         }
-        if($question->type == Question::TYPE_TRAC_NGHIEM)
+        if($question->type == Question::TYPE_TRAC_NGHIEM || $question->type == Question::TYPE_TRAC_NGHIEM_DON)
         {
             if(isset($data['answers']) && count($data['answers']) > 0)
             {
@@ -809,7 +819,6 @@ class CourseLearnController extends Controller
            // dd($data);
         }
         return response()->json(array('error' => false, 'msg' => 'succsess'));
-
     }
 
     protected function _saveLogQuestion($user, $data)

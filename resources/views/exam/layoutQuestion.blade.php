@@ -57,6 +57,9 @@
                                             @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM)
                                                 @include('exam.baitapTracNghiem')
                                             @endif
+                                            @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
+                                                @include('exam.baitapTracNghiemDon')
+                                            @endif
                                             @if($question->type == \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN)
                                                 @include('exam.baitapDienTuDoanVan')
                                             @endif

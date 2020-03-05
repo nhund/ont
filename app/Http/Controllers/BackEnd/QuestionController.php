@@ -153,7 +153,7 @@ class QuestionController extends AdminBaseController
                         $as_err->question_id = $question->id;
                         $as_err->answer      = Helper::detectMathLatex($ans_er_value_item);
                         $as_err->status      = QuestionAnswer::REPLY_ERROR;
-                        $as_err->image       = $data['answer_img_error'][1][$key_item];
+                        $as_err->image       = $data['answer_img_error'][1][$key_item] ?? '';
                         $as_err->create_at   = time();
                         $as_err->save();
                     }

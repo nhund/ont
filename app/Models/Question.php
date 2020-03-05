@@ -25,6 +25,7 @@ class Question extends Model
         self::TYPE_FLASH_MUTI => 'FlashCard chuỗi',
         self::TYPE_DIEN_TU => 'Điền từ',
         self::TYPE_TRAC_NGHIEM => 'Trắc nghiệm',
+        self::TYPE_TRAC_NGHIEM_DON => 'Trắc nghiệm đơn',
         self::TYPE_DIEN_TU_DOAN_VAN => 'Điền từ đoạn văn',
     ];
 

@@ -32,6 +32,9 @@
                                             @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM)
                                                 @include('exam.review.baitapTracNghiem')
                                             @endif
+                                            @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
+                                                @include('exam.review.baitapTracNghiemDon')
+                                            @endif
                                             @if($question->type == \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN)
                                                 @include('exam.review.baitapDienTuDoanVan')
                                             @endif
@@ -59,7 +62,7 @@
                                 </div>
                             @endforeach
                             <div class="question_type box_finish question_stt_{{ count($var['questions']) + 1 }}" data-key="{{ count($var['questions']) + 1 }}">
-                                    <a style="display: none" href="" class="btn btn_finish">Hoàn thành</a>
+                                    <a  href="" class="btn btn_finish">Hoàn thành</a>
                             </div>
                         </div>
                     </div>
@@ -168,6 +171,7 @@
                success: function (result) {
                    if (result.code === 200){
                        reviewResults = result.data;
+                       upCountQuestion()
                        reviewResult(0, {{$var['questions'][0]->type}});
                        checkButton($('[data-stt=1]'));
                    }

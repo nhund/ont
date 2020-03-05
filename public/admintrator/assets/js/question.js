@@ -287,10 +287,10 @@ $(document).ready(function () {
                 });
     });   
     
-    $('body').on('click', '.form_trac_nghiem .phd .add_answer_error', '.form_trac_nghiem_don .phd .add_answer_error', function (e) {
+    $('body').on('click', '.phd .add_answer_error', function (e) {
         e.preventDefault();
-        var $this = $(this);  
-        var count = $this.attr('data-count');              
+        var $this = $(this);
+        var count = $this.attr('data-count');
         var count_child = $this.closest('.box_answer').find('.box_text:last-child').attr('data-child');
         if(count_child === undefined)
         {
