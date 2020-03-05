@@ -3,7 +3,7 @@
 		<div class="col-sm-12">Gợi ý chung</div>
 		<div class="col-sm-12">
 			<div class="box_content_t">
-				<textarea name="explain_tn_global" class="col-sm-12">{{ $question->explain_before }}</textarea>
+				<textarea name="explain_tnd_global" class="col-sm-12">{{ $question->explain_before }}</textarea>
 				<div class="box_media">
 					@include('backend.lesson.question.options.action',['show_format_content'=>true])
 				</div>
@@ -14,7 +14,7 @@
 		<div class="col-sm-12">Giải thích chung</div>
 		<div class="col-sm-12">
 			<div class="box_content_t">
-				<textarea name="interpret_tn_global" class="col-sm-12">{{ $question->interpret_all }}</textarea>
+				<textarea name="interpret_tnd_global" class="col-sm-12">{{ $question->interpret_all }}</textarea>
 				<div class="box_media">
 					@include('backend.lesson.question.options.action',['show_format_content'=>true])
 				</div>
@@ -27,7 +27,7 @@
 		<div class="col-sm-12">Gợi ý chung</div>
 		<div class="col-sm-12">
 			<div class="box_content_t">
-				<textarea name="explain_tn_global" class="col-sm-12"></textarea>
+				<textarea name="explain_tnd_global" class="col-sm-12"></textarea>
 				<div class="box_media">
 					@include('backend.lesson.question.options.action',['show_format_content'=>true])
 				</div>
@@ -38,7 +38,7 @@
 		<div class="col-sm-12">Giải thích chung</div>
 		<div class="col-sm-12">
 			<div class="box_content_t">
-				<textarea name="interpret_tn_global" class="col-sm-12"></textarea>
+				<textarea name="interpret_tnd_global" class="col-sm-12"></textarea>
 				<div class="box_media">
 					@include('backend.lesson.question.options.action',['show_format_content'=>true])
 				</div>

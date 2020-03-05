@@ -5,7 +5,7 @@
     <div class="col-sm-6">
       <div class="box_question">
         <div class="box_content_t">
-          <textarea name="question_tn" class="col-sm-12 form-control" placeholder="Câu hỏi">{{ $question->question }}</textarea>
+          <textarea name="question_tnd" class="col-sm-12 form-control" placeholder="Câu hỏi">{{ $question->question }}</textarea>
           <div class="box_media">
             <div class="box_video">
             </div>
@@ -14,7 +14,7 @@
                 <audio class="listen" preload="none" data-size="50" src="{{ !empty($question->audio_question) ?web_asset($question->audio_question) : '' }}"></audio>
               </div>
               <p class="delete" title="Xóa audio" onclick="deleteAudio(this)">Xóa</p>
-              <input type="hidden" name="audio_question_tn" class="input_audio" value="{{ $question->audio_question }}">
+              <input type="hidden" name="audio_question_tnd" class="input_audio" value="{{ $question->audio_question }}">
             </div>
             <div class="box_image @if(!empty($question->img_before)) show @endif">
               <img  src="{{ asset($question->img_before) }}" name="" >
@@ -39,7 +39,7 @@
     <div class="col-sm-6">
       <div class="box_question">
         <div class="box_content_t">
-          <textarea name="question_tn" class="col-sm-12 form-control" placeholder="Câu hỏi"></textarea>
+          <textarea name="question_tnd" class="col-sm-12 form-control" placeholder="Câu hỏi"></textarea>
           <div class="box_media">
             <div class="box_video">
             </div>
@@ -48,7 +48,7 @@
                 <audio class="listen" preload="none" data-size="50" src=""></audio>
               </div>
               <p class="delete" title="Xóa audio" onclick="deleteAudio(this)">Xóa</p>
-              <input type="hidden" name="audio_question_tn" class="input_audio">
+              <input type="hidden" name="audio_question_tnd" class="input_audio">
             </div>            
             <div class="box_image">
               <img  src="" name="" >

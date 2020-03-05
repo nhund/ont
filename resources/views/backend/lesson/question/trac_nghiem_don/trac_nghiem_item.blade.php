@@ -2,7 +2,7 @@
   @if($templateType != 'error')
     <div class="box_text answer_box">
       <div class="box_content_t">
-        <textarea name="answer_tn" class="col-sm-12 form-control" placeholder="Câu trả lời đúng">{{ isset($question->answer_ok->answer) ? $question->answer_ok->answer : '' }}</textarea>
+        <textarea name="answer_tnd" class="col-sm-12 form-control" placeholder="Câu trả lời đúng">{{ isset($question->answer_ok->answer) ? $question->answer_ok->answer : '' }}</textarea>
         <div class="box_media">
           <div class="box_video">
 
@@ -19,7 +19,7 @@
   @else
     <div class="box_text answer_box_error" data-child="{{ $count_child }}">
       <div class="box_content_t">
-        <textarea name="answer_error_tn[{{ $count_child }}]" class="col-sm-12 form-control" placeholder="Câu trả lời sai">{{ $question_error->answer }}</textarea>
+        <textarea name="answer_error_tnd[{{ $count_child }}]" class="col-sm-12 form-control" placeholder="Câu trả lời sai">{{ $question_error->answer }}</textarea>
         <div class="box_media">
           <div class="box_video">
 
@@ -40,7 +40,7 @@
   @if($templateType != 'error')
     <div class="box_text answer_box">
       <div class="box_content_t">
-        <textarea name="answer_tn" class="col-sm-12 form-control" placeholder="Câu trả lời đúng"></textarea>
+        <textarea name="answer_tnd" class="col-sm-12 form-control" placeholder="Câu trả lời đúng"></textarea>
         <div class="box_media">
           <div class="box_video">
 
@@ -64,7 +64,7 @@
   @else
     <div class="box_text answer_box_error" data-child="{{ $count_child }}">
       <div class="box_content_t">
-        <textarea name="answer_error_tn[{{ $count_child }}]" class="col-sm-12 form-control" placeholder="Câu trả lời sai"></textarea>
+        <textarea name="answer_error_tnd[{{ $count_child }}]" class="col-sm-12 form-control" placeholder="Câu trả lời sai"></textarea>
         <div class="box_media">
           <div class="box_video">
 

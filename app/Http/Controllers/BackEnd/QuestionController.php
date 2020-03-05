@@ -5,6 +5,7 @@ namespace App\Http\Controllers\BackEnd;
 use App\Components\Exam\ExamService;
 use App\Models\Question;
 use App\Models\QuestionAnswer;
+use Doctrine\DBAL\Driver\AbstractDB2Driver;
 use Illuminate\Http\Request;
 use App\Models\QuestionCardMuti;
 use App\Models\Lesson;
@@ -37,7 +38,7 @@ class QuestionController extends AdminBaseController
         $typeLesson = $request->input('type_lesson');
 
         if ($data['type'] == Question::TYPE_TRAC_NGHIEM) {
-            // /dd($data);
+            // dd($data);
             $question = new Question();
             $question->type = $data['type'];
             $question->parent_id = 0;
@@ -122,9 +123,9 @@ class QuestionController extends AdminBaseController
             $question->course_id      = $lesson->course_id;
             $question->user_id        = $user->id;
             $question->created_at     = time();
-            $question->question       = $data['question_tn'];
-            $question->explain_before = Helper::detectMathLatex($data['explain_tn_global']);
-            $question->interpret_all  = Helper::detectMathLatex($data['interpret_tn_global']);
+            $question->question       = $data['question_tnd'];
+            $question->explain_before = Helper::detectMathLatex($data['explain_tnd_global']);
+            $question->interpret_all  = Helper::detectMathLatex($data['interpret_tnd_global']);
             $question->img_before     = $data['question_img'][1];
             $question->audio_content  = $data['audio_content'];
             $question->save();
@@ -137,22 +138,22 @@ class QuestionController extends AdminBaseController
             $as_right              = new QuestionAnswer();
             $as_right->user_id     = $user->id;
             $as_right->question_id = $question->id;
-            $as_right->answer      = Helper::detectMathLatex($data['answer_tn']);
+            $as_right->answer      = Helper::detectMathLatex($data['answer_tnd']);
             $as_right->status      = QuestionAnswer::REPLY_OK;
             $as_right->image       = $data['answer_img'][1];
             //$as_right->audio_answer = $data['audio_answer_tn'][$key];
             $as_right->create_at = time();
             $as_right->save();
 
-            if (isset($data['answer_error_tn']) && count($data['answer_error_tn']) > 0) {
-                foreach ($data['answer_error_tn'] as $key_item => $ans_er_value_item) {
+            if (isset($data['answer_error_tnd']) && count($data['answer_error_tnd']) > 0) {
+                foreach ($data['answer_error_tnd'] as $key_item => $ans_er_value_item) {
                     if (!empty($ans_er_value_item)) {
                         $as_err              = new QuestionAnswer();
                         $as_err->user_id     = $user->id;
                         $as_err->question_id = $question->id;
                         $as_err->answer      = Helper::detectMathLatex($ans_er_value_item);
                         $as_err->status      = QuestionAnswer::REPLY_ERROR;
-                        $as_err->image       = $data['answer_img_error'][$key_item];
+                        $as_err->image       = $data['answer_img_error'][1][$key_item];
                         $as_err->create_at   = time();
                         $as_err->save();
                     }
