@@ -12,17 +12,6 @@ $(document).ready(function () {
     var submit_question     = false;
     var submit_doc_loadding = false;
 
-    // trac nghiem
-    $('.trac_nghiem_box .submit_question .btn_next').on('click', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        var key   = parseInt($this.closest('.question_type').attr('data-key'));
-        $('.question_type').hide();
-        //console.log(parseInt(key+1));
-        $('.question_type.question_stt_' + parseInt(key + 1)).show();
-
-    });
-
     //hien thi goi y trac nghiem
     $('.trac_nghiem_box .form_trac_nghiem .head_content .box_action .suggest').on('click', function (e) {
         e.preventDefault();
@@ -132,17 +121,6 @@ $(document).ready(function () {
         });
     });
 
-    //next dien tu
-    $('.dientu_box .submit_question .btn_next').on('click', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        var key   = parseInt($this.closest('.question_type').attr('data-key'));
-        $('.question_type').hide();
-        //console.log(parseInt(key+1));
-        $('.question_type.question_stt_' + parseInt(key + 1)).show();
-
-    });
-
     //submit dien tu
     $('.dientu_box .submit_question .btn_submit').on('click', function (e) {
         e.preventDefault();
@@ -197,13 +175,12 @@ $(document).ready(function () {
             .always(function () {});
     });
 
-    //next dien tu doan van
-    $('.dien_tu_doan_van .submit_question .btn_next').on('click', function (e) {
+    //next question
+    $('.submit_question .btn_next').on('click', function (e) {
         e.preventDefault();
         var $this = $(this);
         var key   = parseInt($this.closest('.question_type').attr('data-key'));
         $('.question_type').hide();
-        //console.log(parseInt(key+1));
         $('.question_type.question_stt_' + parseInt(key + 1)).show();
 
     });
