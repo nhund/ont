@@ -9,6 +9,7 @@
 			<div class="modal-body pad10">
 				<input type="hidden" name="id" value="{{ $question->id }}">
 				<input type="hidden" name="lesson_id" id="lesson_id" value="{{ $question->lesson_id }}">
+				<input type="hidden" name="course_id" id="course_id" value="{{ $question->course_id }}">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				@if(isset($data['feedback_id']))
 					<input type="hidden" name="feedback_id" value="{{ $data['feedback_id'] }}">

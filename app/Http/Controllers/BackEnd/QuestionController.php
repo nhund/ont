@@ -127,7 +127,7 @@ class QuestionController extends AdminBaseController
             $question->explain_before = Helper::detectMathLatex($data['explain_tnd_global']);
             $question->interpret_all  = Helper::detectMathLatex($data['interpret_tnd_global']);
             $question->img_before     = $data['question_img'][1];
-            $question->audio_content  = $data['audio_content'];
+            $question->audio_question  = $data['audio_question_tnd'];
             $question->save();
 
             if ($typeLesson == Lesson::EXAM && $request->get('part_id')) {
@@ -856,7 +856,7 @@ class QuestionController extends AdminBaseController
             $question->explain_before = Helper::detectMathLatex($data['explain_tnd_global']);
             $question->interpret_all = Helper::detectMathLatex($data['interpret_tnd_global']);
             $question->img_before = $data['question_img'];
-            $question->audio_content = $data['audio_question_tnd'];
+            $question->audio_question = $data['audio_question_tnd'];
             $question->save();
 
             $as_right = QuestionAnswer::where('question_id', $question->id)->where('status', QuestionAnswer::REPLY_OK)->first();

@@ -32,7 +32,6 @@ class ImportController extends AdminBaseController
             return response()->json(array('error' => true, 'type' => 'login', 'msg' => 'Bạn cần đăng nhập để thực hiện hành động này'));
         }
         $user = Auth::user();
-        //dd($file->getClientSize());
         $check_file = $file->getClientOriginalExtension();
         $size       = $file->getClientSize();
         if ($size > 5242880) {
@@ -42,23 +41,15 @@ class ImportController extends AdminBaseController
                                         'data'  => []
                                     ]);
         }
-        //dd($file);
         if ($file) {
             $hasError = false;
             if (!in_array($file->clientExtension(), ['jpeg', 'png', 'jpg', 'gif', 'svg', 'webp'])) {
                 $hasError = true;
             }
             if ($file->getClientSize() > 2048000) {
-                //$hasError   = true;
+                $hasError   = true;
             }
             if (!$hasError) {
-                // if ($course->avatar && file_exists('public/images/course/'.$course->avatar)) {
-                //     unlink('public/images/course/'.$course->avatar);
-                // }
-                // $destinationPath = public_path('/images/course');
-                // $imgName         = str_replace('.'.$avatar->getClientOriginalExtension(),'', $avatar->getClientOriginalName()).time().'.'.$avatar->getClientOriginalExtension();
-                // $avatar->move($destinationPath, $imgName);
-                // $course->avatar  = $imgName;
 
                 $name            = time() . '_' . str_slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
                 $path            = '/images/post';
@@ -214,41 +205,23 @@ class ImportController extends AdminBaseController
             return response()->json(array('error' => true, 'type' => 'login', 'msg' => 'Bạn cần đăng nhập để thực hiện hành động này'));
         }
         $user = Auth::user();
-        //dd($file->getClientSize());
-        $check_file = $file->getClientOriginalExtension();
-        $size       = $file->getClientSize();
-        // if($size > 5242880)
-        // {
-        //     return response()->json([
-        //         'error'=>true,
-        //         'msg'   => 'File không được quá 5mb',
-        //         'data'      =>  []
-        //     ]);
-        // }
-        //dd($file);
         if ($file) {
             $hasError = false;
             if (!in_array($file->clientExtension(), ['mp3'])) {
                 //$hasError   = true;
             }
-            if ($file->getClientSize() > 2048000) {
-                //$hasError   = true;
+            if (!$file->getClientSize() || $file->getClientSize() > 2048000) {
+                return response()->json(array('error' => true, 'type' => 'login', 'msg' => 'kích thước file hoặc định dạng ko hợp l'));
             }
             if (!$hasError) {
-                // if ($course->avatar && file_exists('public/images/course/'.$course->avatar)) {
-                //     unlink('public/images/course/'.$course->avatar);
-                // }
-                // $destinationPath = public_path('/images/course');
-                // $imgName         = str_replace('.'.$avatar->getClientOriginalExtension(),'', $avatar->getClientOriginalName()).time().'.'.$avatar->getClientOriginalExtension();
-                // $avatar->move($destinationPath, $imgName);
-                // $course->avatar  = $imgName;
 
-                $name            = time() . '_' . str_slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+                $name            = $input['course_id'].'_'.$user->id.'_audio_'.time() . '.' . $file->getClientOriginalExtension();
                 $path            = '/file/audio/' . $input['course_id'];
                 $destinationPath = public_path($path);
                 if (!file_exists($destinationPath)) {
                     mkdir($destinationPath, 0777);
                 }
+
                 $file->move($destinationPath, $name);
                 $audio = '/public/file/audio/' . $input['course_id'] . '/' . $name;
                 return response()->json(array('error' => false, 'msg' => 'tải file thành công', 'file' => $audio));

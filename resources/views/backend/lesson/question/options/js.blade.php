@@ -30,7 +30,8 @@
      //audio
      var current_audio = '';
      function showAudioUpload(e)
-     { 
+     {
+         console.log(2323232323);
         current_audio = e;
         $('#UploadAudioQuestion').modal({
             show: 'false',

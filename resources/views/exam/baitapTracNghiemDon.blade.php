@@ -16,9 +16,9 @@
                 {!! $question->question !!}
             </div>
             @endif
-            @if(!empty($question->audio_content))
+            @if(!empty($question->audio_question))
                  <div class="mediPlayer">
-                  <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_content) }}"></audio>
+                  <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
                  </div>      
             @endif               
             <div class="box_action">

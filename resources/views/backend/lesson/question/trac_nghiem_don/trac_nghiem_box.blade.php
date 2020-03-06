@@ -55,7 +55,7 @@
               <input class="input_image" type="hidden" name="question_img[{{ $count }}]" value="">
               <p class="delete" title="Xóa ảnh" onclick="deleteImage(this)">Xóa</p>
             </div>
-            @include('backend.lesson.question.options.action',['show_format_content'=>true,'show_audio'=>true,'show_image'=>true])            
+            @include('backend.lesson.question.options.action',['show_format_content'=>true,'show_audio'=>true,'show_image'=>true])
           </div>   
         </div>
       </div>
