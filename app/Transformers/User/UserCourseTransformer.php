@@ -35,7 +35,6 @@ class UserCourseTransformer extends TransformerAbstract
             'description' => $course->description,
             'description_format' => strip_tags($course->description),
             'avatar_paht' => $course->avatar_paht,
-            'status'      => $course->status,
             'sticky'      => $course->sticky,
             'expired'     => $expired,
             'percent'     => UserCourseService::getPercentCourse($userCourse),
