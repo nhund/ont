@@ -17,6 +17,11 @@
                 {!! $question->content !!}
             </div>
             @endif
+            @if(!empty($question->audio_content))
+                <div class="mediPlayer">
+                    <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_content) }}"></audio>
+                </div>
+            @endif
             <div class="box_action">
                 {{-- <div class="icon suggest" title="Gợi ý">
                    <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >

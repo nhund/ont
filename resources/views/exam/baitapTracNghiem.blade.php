@@ -58,9 +58,9 @@
                         <img class="img_question" src="{{ web_asset($question_child->img_before) }}" >
                     @endif                           
                 </div>
-                @if(!empty($question->audio_question))
+                @if(!empty($question_child->audio_question))
                     <div class="mediPlayer">
-                      <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
+                      <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question_child->audio_question) }}"></audio>
                     </div>      
                 @endif
                 <div class="box_suggest_answer">
