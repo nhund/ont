@@ -231,8 +231,8 @@ class UserCourseService
     public static function checkExpiredCourse(UserCourse $userCourse)
     {
 
-        $remainDay  = ceil((time() - $userCourse->created_at)/(60*60*24));
+        $remainDay  = ceil((($userCourse->created_at + ($userCourse->learn_day*60*60*24))- time())/(60*60*24));
 
-        return $remainDay > $userCourse->learn_day ? 0 : $remainDay;
+        return $remainDay < $userCourse->learn_day ? 0 : $remainDay;
     }
 }

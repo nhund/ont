@@ -38,7 +38,9 @@ class UserCourseTransformer extends TransformerAbstract
             'status'      => $course->status,
             'sticky'      => $course->sticky,
             'expired'     => $expired,
-            'percent'    => UserCourseService::getPercentCourse($userCourse)
+            'percent'     => UserCourseService::getPercentCourse($userCourse),
+            'date_by'     => date('d-m-Y', $userCourse->created_at) ?? '',
+            'learn_day'     => $userCourse->learn_day ?? 0
         ];
     }
 
