@@ -233,6 +233,6 @@ class UserCourseService
 
         $remainDay  = ceil((($userCourse->created_at + ($userCourse->learn_day*60*60*24))- time())/(60*60*24));
 
-        return $remainDay < $userCourse->learn_day ? 0 : $remainDay;
+        return $remainDay ?: $remainDay;
     }
 }
