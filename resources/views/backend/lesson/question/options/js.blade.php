@@ -29,16 +29,14 @@
      }
      //audio
      var current_audio = '';
-     function showAudioUpload(e)
-     {
-         console.log(2323232323);
+     function showAudioUpload(e) {
         current_audio = e;
         $('#UploadAudioQuestion').modal({
             show: 'false',
         });
      }
-     function uploadAudio(e)
-     {
+
+     function uploadAudio(e) {
         var $this = $(e);   
         var formData = new FormData();
         formData.append('file', $this[0].files[0]);
@@ -57,8 +55,8 @@
        });
 
      }
-     function appendAudioContent(e)
-     {
+
+     function appendAudioContent(e) {
         var $this = $(e);
         var audio = $this.closest('#UploadAudioQuestion').find('input[name="audio_url"]').val();
         if(audio == '')
@@ -77,8 +75,8 @@
         parent_audio.show();
         $("#UploadAudioQuestion .close").click();
      }
-     function deleteAudio(e)
-     {
+
+     function deleteAudio(e) {
         var $this = $(e);
         $this.closest('.box_audio').find('.input_audio').val('');
         $this.closest('.box_audio').hide();

@@ -194,17 +194,6 @@ $(document).ready(function(){
         
     });
 
-    // trac nghiem
-    $('.trac_nghiem_box .submit_question .btn_next').on('click',function(e){
-        e.preventDefault();
-        var $this = $(this);
-        var key = parseInt($this.closest('.question_type').attr('data-key'));
-        $('.question_type').hide();
-                            //console.log(parseInt(key+1));
-                            $('.question_type.question_stt_'+parseInt(key+1)).show();   
-                            
-                        });
-
     //hien thi goi y trac nghiem
     $('.trac_nghiem_box .form_trac_nghiem .head_content .box_action .suggest').on('click',function(e){
         e.preventDefault();
@@ -312,16 +301,15 @@ $(document).ready(function(){
         });
     });
 
-    //next dien tu
-    $('.dientu_box .submit_question .btn_next').on('click',function(e){
+    //next cau hoi
+    $('.submit_question .btn_next').on('click',function(e){
         e.preventDefault();
         var $this = $(this);
         var key = parseInt($this.closest('.question_type').attr('data-key'));
+        $.each($('audio'), function (i ,au) {au.pause();});
         $('.question_type').hide();
-                            //console.log(parseInt(key+1));
-                            $('.question_type.question_stt_'+parseInt(key+1)).show(); 
-
-                        });
+        $('.question_type.question_stt_'+parseInt(key+1)).show();
+    });
 
     //submit dien tu
     $('.dientu_box .submit_question .btn_submit').on('click',function(e){
@@ -379,16 +367,7 @@ $(document).ready(function(){
 
                     });
                 });
-    //next dien tu doan van
-    $('.dien_tu_doan_van .submit_question .btn_next').on('click',function(e){
-        e.preventDefault();
-        var $this = $(this);
-        var key = parseInt($this.closest('.question_type').attr('data-key'));
-        $('.question_type').hide();
-                            //console.log(parseInt(key+1));
-                            $('.question_type.question_stt_'+parseInt(key+1)).show(); 
 
-                        });
     //xem goi y dien tu doan van cho tung dap an
     $('.dien_tu_doan_van .list_question .question_item .show_suggest').on('click',function(e){
         e.preventDefault();

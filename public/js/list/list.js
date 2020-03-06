@@ -183,7 +183,6 @@ $(document).ready(function () {
             }                        
         });        
         var url = window.location.href;
-        console.log(checkbox_val.length);
         if(checkbox_val.length === 0)
         {
             var new_url = removeParams('category_id');
