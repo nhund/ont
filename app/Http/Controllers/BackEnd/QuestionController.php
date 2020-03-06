@@ -703,7 +703,6 @@ class QuestionController extends AdminBaseController
             }
         }
         if ($question->type == Question::TYPE_TRAC_NGHIEM) {
-            dd($data);
             $list_answer = [];
 
             $question->updated_at = time();
@@ -853,17 +852,17 @@ class QuestionController extends AdminBaseController
         if ($question->type == Question::TYPE_TRAC_NGHIEM_DON) {
 
             $question->updated_at = time();
-            $question->question = $data['question_tn'];
-            $question->explain_before = Helper::detectMathLatex($data['explain_tn_global']);
-            $question->interpret_all = Helper::detectMathLatex($data['interpret_tn_global']);
+            $question->question = $data['question_tnd'];
+            $question->explain_before = Helper::detectMathLatex($data['explain_tnd_global']);
+            $question->interpret_all = Helper::detectMathLatex($data['interpret_tnd_global']);
             $question->img_before = $data['question_img'];
-            $question->audio_content = $data['audio_question_tn'];
+            $question->audio_content = $data['audio_question_tnd'];
             $question->save();
 
             $as_right = QuestionAnswer::where('question_id', $question->id)->where('status', QuestionAnswer::REPLY_OK)->first();
 
             if ($as_right) {
-                $as_right->answer = Helper::detectMathLatex($data['answer_tn']);
+                $as_right->answer = Helper::detectMathLatex($data['answer_tnd']);
                 $as_right->image  = $data['answer_img'];
                 $as_right->save();
                 $list_answer[] = $as_right->id;
@@ -871,15 +870,15 @@ class QuestionController extends AdminBaseController
                 $as_right              = new QuestionAnswer();
                 $as_right->user_id     = $user->id;
                 $as_right->question_id = $question->id;
-                $as_right->answer      = Helper::detectMathLatex($data['answer_tn']);
+                $as_right->answer      = Helper::detectMathLatex($data['answer_tnd']);
                 $as_right->status      = QuestionAnswer::REPLY_OK;
                 $as_right->image       = $data['answer_img'];
                 $as_right->create_at   = time();
                 $as_right->save();
                 $list_answer[] = $as_right->id;
             }
-            if (isset($data['answer_error_tn']) && count($data['answer_error_tn']) > 0) {
-                foreach ($data['answer_error_tn'] as $key_item => $ans_er_value_item) {
+            if (isset($data['answer_error_tnd']) && count($data['answer_error_tnd']) > 0) {
+                foreach ($data['answer_error_tnd'] as $key_item => $ans_er_value_item) {
                     if (!empty($ans_er_value_item)) {
                         $as_err = QuestionAnswer::where('question_id', $question->id)->where('id', $key_item)->first();
                         if ($as_err) {
