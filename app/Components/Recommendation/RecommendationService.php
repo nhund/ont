@@ -489,6 +489,10 @@ class RecommendationService
             $getQuestionDetail['type'] = Question::LEARN_LAM_CAU_SAI;
             return $getQuestionDetail;
         }
-        return [];
+
+        $getQuestionDetail['type'] = Question::LEARN_LAM_CAU_SAI;
+        $getQuestionDetail['questions'] = null;
+
+        return $getQuestionDetail;
     }
 }
