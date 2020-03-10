@@ -43,7 +43,7 @@ class RecommendationService
     {
         if (request()->has('lesson_id')){
             $this->lesson = Lesson::findOrFail(request('lesson_id'));
-            if (request()->route()->parameter('id') != $this->lesson->course_id){
+            if (request()->route()->parameter('course') != $this->lesson->course_id){
                 throw new BadRequestException('mã bài học không hợp lệ');
             }
         }
@@ -72,6 +72,7 @@ class RecommendationService
 
         $questionLearnedLogs = UserQuestionLog::where('course_id',$course->id)
             ->where('user_id',$user->id)
+            ->where('lesson_id', $lesson->id)
             ->groupBy('question_parent')->get()
             ->pluck('question_parent')->toArray();
 

@@ -148,18 +148,8 @@ $(document).ready(function(){
                             upCountQuestion();
                         },
                         error: function (e) {
-
-
-                            // swal({
-                            //     title: 'Thông báo',
-                            //     text: 'Có lỗi xẩy ra',
-                            //     timer: 3000,
-                            //     type: 'error',
-                            // })
                         }
                     }).always(function () {
-                        //loadding.hide();
-                        //$this.show();
                     });
                 });
     var submit_doc_loadding = false;
@@ -246,7 +236,7 @@ $(document).ready(function(){
             data: data,
             success: function (data) {
 
-                if(data.error == false)
+                if(data.code === 200)
                 {
                     // hien thi giai thich chung
                     if(data.interpret_all !== '')
@@ -326,7 +316,7 @@ $(document).ready(function(){
             data: data,
             success: function (data) {
 
-                if(data.error == false)
+                if(data.code === 200)
                 {
                     // hien thi giai thich chung
                     var box_interpret_all = $this.closest('form').find('.head_content .box_interpret_all');                                                
@@ -430,7 +420,7 @@ $(document).ready(function(){
             data: data,
             success: function (data) {
 
-                if(data.error == false)
+                if(data.code === 200)
                 {
                     // hien thi giai thich chung
                     var box_interpret_all = $this.closest('form').find('.head_content .box_interpret_all');                                                

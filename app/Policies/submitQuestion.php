@@ -37,7 +37,7 @@ class submitQuestion
                     ->where('status', TeacherSupport::STATUS_ON)
                     ->first();
 
-        if ($support){
+        if ($support || $user->level == User::USER_ADMIN){
             return true;
         }
 

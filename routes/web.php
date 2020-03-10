@@ -103,7 +103,7 @@ Route::get('/khoa-hoc/{title}.{id}/tong-quan', 'FrontEnd\CourseLearnController@c
 Route::get('/khoa-hoc/cap-2/{title}.{course_id}/tong-quan', 'FrontEnd\CourseLearnController@lessonLevel2')
                 ->name('course.learn.level2');
 
-Route::get('/khoa-hoc/{title}.{id}/tong-quan/{type}', 'FrontEnd\CourseLearnController@courseTypeLearn')
+Route::get('/khoa-hoc/{title}.{course}/tong-quan/{type}', 'FrontEnd\CourseLearnController@courseTypeLearn')
         ->name('course.courseTypeLearn');
 Route::get('/search', 'FrontEnd\SearchController@search')
             ->name('search');
