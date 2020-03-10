@@ -491,7 +491,7 @@ class RecommendationService
         }
 
         $getQuestionDetail['type'] = Question::LEARN_LAM_CAU_SAI;
-        $getQuestionDetail['questions'] = null;
+        $getQuestionDetail['questions'] = [];
 
         return $getQuestionDetail;
     }
