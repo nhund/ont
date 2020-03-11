@@ -8,8 +8,6 @@
     </style>
     <link href="{{ asset('public/plugin/form-daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet" type="text/css">
 
-
-
 @endpush
 @section('content')
     @include('backend.include.breadcrumb')
