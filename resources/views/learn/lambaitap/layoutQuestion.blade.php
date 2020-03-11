@@ -71,22 +71,22 @@
  const type = $('input[name=type]').val();
  const lessonId =`{{$var['lesson']->id ??''}}`;
  const nameCourse =`{{str_slug($var['course']->name ??'')}}`;
-    let  url = '';
+    let  urlRecommendation = '';
  if (type === 'lam-bai-tap') {
-     url  = `/bai-tap/lesson/${nameCourse}.${lessonId}/${type}?lesson_id=${lessonId}`
+     urlRecommendation  = `/bai-tap/lesson/${nameCourse}.${lessonId}/${type}?lesson_id=${lessonId}`
  }else {
      const courseId =`{{str_slug($var['course']->id ??'')}}`;
-      url =  `/khoa-hoc/${nameCourse}.${courseId}/tong-quan/${type}?lesson_id=${lessonId}`
+     urlRecommendation =  `/khoa-hoc/${nameCourse}.${courseId}/tong-quan/${type}?lesson_id=${lessonId}`
  }
-
-
-</script> 
+</script>
 <script src='{{ web_asset('public/js/learn/course_question.js') }}' type='text/javascript'></script>
 {{-- <script src="{{ web_asset('/public/admintrator/assets/js/player.js') }}"></script>     --}} 
 <script>
     $(document).ready(function () {
       // $('.mediPlayer').mediaPlayer();
-        $('.btn_continue').setAttribute('href', url)
+        $('.btn_continue').on('click',function () {
+            location.href = urlRecommendation;
+        })
     });
 </script>        
 @endpush
