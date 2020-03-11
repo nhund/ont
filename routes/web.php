@@ -328,7 +328,7 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
         Route::post('/update', 'BackEnd\UserController@update')->name('admin.user.update');
         Route::post('/delete', 'BackEnd\UserController@delete')->name('admin.user.delete');
     });
-     Route::prefix('contact')->group(function () {
+    Route::prefix('contact')->group(function () {
         Route::get('/', 'BackEnd\DashBoardController@indexContact')->name('admin.contact.index');
         Route::post('/delete', 'BackEnd\DashBoardController@deleteContact')->name('admin.contact.delete');
     });
@@ -359,6 +359,10 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
 
     Route::prefix('report')->group(function () {
         Route::get('/detail/{id}', 'BackEnd\UserController@detailReport')->name('admin.report.detail')->where('id', '[0-9]+');
+    });
+
+    Route::prefix('user-lesson')->group(function () {
+        Route::get('/detail/{lesson}', 'BackEnd\UserLessonController@detailReport')->name('admin.userLesson.report.detail');
     });
 
 });

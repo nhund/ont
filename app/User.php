@@ -2,6 +2,8 @@
 
 namespace App;
  
+use App\Models\Course;
+use App\Models\UserCourse;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Wallet;
@@ -161,5 +163,9 @@ class User extends Authenticatable
         }
         $users = $users->orderBy('id','DESC')->paginate($limit);
         return $users;
+    }
+
+    public function courses(){
+       return $this->belongsToMany(Course::class, UserCourse::class,  'user_id', 'course_id');
     }
 }

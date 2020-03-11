@@ -15,7 +15,7 @@ class UserLessonLog extends Model
     protected $fillable = [
         'user_id', 'course_id', 'lesson_id','count','create_at','count_question_true','count_all','pass_ly_thuyet'
     ];
-    public $timestamps = false;
+    public $timestamps = true;
     
     public function user()
 	{

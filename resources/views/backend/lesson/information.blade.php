@@ -35,6 +35,7 @@
             <div class="panel-heading"><h2>Tiến độ khóa học</h2></div>
             <div class="panel-body">
                 <a href="{{ route('admin.course.listUser', ['id' => $lesson->course_id]) }}">Xem tiến độ</a>
+                <a href="{{ route('admin.userLesson.report.detail', ['lesson' => $lesson->id]) }}"> | Xem tiến độ bài học</a>
             </div>
         </div>
     </div>

@@ -448,6 +448,11 @@ class RecommendationService
 
         $userBookmark = UserQuestionBookmark::where('user_id',$user->id)->where('lesson_id',$lesson_id)->get()->keyBy('question_id')->toArray();
 
+        UserLessonLog::where([
+             'course_id' => $this->lesson->course_id,
+             'user_id'   => $user->id,
+             'lesson_id' => $this->lesson->id
+         ])->update(['updated_at' => now()]);
         return array(
             'questions'=>$questions,
             'userBookmark'=>$userBookmark

@@ -38,6 +38,8 @@ class RecommendationController extends Controller
     public function __construct(RecommendationService $recommendationService)
     {
         $this->recommendationService = $recommendationService;
+
+        dd(\request()->user());
     }
 
     /**
