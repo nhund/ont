@@ -37,6 +37,8 @@
                                             </li>
                                         </ul>
                                     </h2>
+                                    @if (!$lesson['is_exercise'])  <h2><a href="{{ route('admin.userLesson.report.detail', ['lesson' => $lesson->id]) }}">&nbsp; Tiến độ bài học</a></h2>@endif
+
                                     <div class="pull-right editBtn">
                                         @if (!$lesson['is_exercise'])
                                                 <button class="btn btn-primary" title="Sửa" @if (!$lesson['is_exercise'])
