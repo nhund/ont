@@ -133,22 +133,18 @@ class CourseLearnController extends Controller
             foreach ($lesson_childs as $key => $lesson_child) {
                 $question_child = Question::where('lesson_id',$lesson_child->id)->where('parent_id',0)->get();
                 $countQuestion = $question_child->count(); 
-                //dd($question_child->pluck('id')->toArray());
-                $userLearn = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->groupBy('question_parent')->get();
                 //lay log lesson
                 $userLessonLog = UserLessonLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->first();
-                if($userLessonLog)
-                {
-                    if($userLessonLog->count > 1)
-                    {
+                if($userLessonLog) {
+                    if($userLessonLog->turn_right > 1) {
                         $show_on_tap = true;
                     }
                 }
-                $countLearnError = $userLearn->where('status',Question::REPLY_ERROR)->count();  
-                $countLearnTrue = count($userLearn) - $countLearnError;              
+                $userLearn = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->groupBy('question_parent')->get();
+                $countLearnTrue =  $userLearn->where('status',Question::REPLY_OK)->count();
                 $lesson_child->countQuestion = $countQuestion;
                 $lesson_child->userLearn = $userLessonLog;
-                $lesson_child->userLearnPass = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->where('status',QuestionAnswer::REPLY_OK)->count();               
+                $lesson_child->userLearnPass = $countLearnTrue;
                 $total_question += $countQuestion;
                 $total_user_learn += $countLearnTrue;   
                 //kiem tra xem da hoc ly thuyet chua

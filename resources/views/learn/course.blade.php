@@ -70,7 +70,6 @@
                 <div class="box_content">
                     <div class="head">
                             <div class="topic">Giáo trình</div>
-                            <div class="count_learn">Lượt học</div>
                             <div class="topic_progress">Tiến độ</div>
                     </div>
                     <div class="body">
@@ -97,17 +96,12 @@
                                                 <div class="item-exercise">
                                                     @if($lesson_child->type == \App\Models\Lesson::LESSON)
                                                         <a href="#" onclick="reportLesson(`{{ $lesson_child->id }}`)" class="name ly_thuyet">{{ $lesson_child->name }}</a>
-                                                        <div class="count_learn">
-                                                            <p>
-                                                                @if(isset($lesson_child->userLearn->count))
-                                                                    {{ number_format($lesson_child->userLearn->count) }}
-                                                                @else
-                                                                    0
-                                                                @endif
-                                                            </p>
-                                                        </div>
                                                         <div class="topic_progress">
-                                                            @if(isset($lesson_child->userLearnPass)) {{ number_format($lesson_child->userLearnPass) }} @else 0 @endif/{{ number_format($lesson_child->countQuestion) }}
+                                                            @if($lesson_child->turn_right > 1){
+                                                                <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
+                                                            @else
+                                                                @if(isset($lesson_child->userLearnPass)) {{ number_format($lesson_child->userLearnPass) }} @else 0 @endif/{{ number_format($lesson_child->countQuestion) }}
+                                                            @endif
                                                         </div>
                                                     @else
                                                         <a class="exam-front" onclick="reportExam(`{{$lesson_child->name}}`, `{{str_slug($lesson_child->name)}}`,`{{$lesson_child->description}}`,`{{$lesson_child->exam->total_question}}`,
@@ -129,10 +123,8 @@
                                         @endif
                                     @endforeach
                                 @endif
-                                                            
                         @endforeach
-                        
-                    </div>    
+                    </div>
                 </div>
              </div>
              <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 pd5 pr-none-destop box-filter">
