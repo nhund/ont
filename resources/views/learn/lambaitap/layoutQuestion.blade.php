@@ -67,12 +67,26 @@
  var submit_flashcard = '{{ route('user.lambaitap.questionSubmit') }}';
  var getExplain = '{{ route('user.lambaitap.getExplain') }}';
  var book_mark_url = '{{ route('user.question.bookMark') }}';
+
+ const type = $('input[name=type]').val();
+ const lessonId =`{{$var['lesson']->id ??''}}`;
+ const nameCourse =`{{str_slug($var['course']->name ??'')}}`;
+    let  url = '';
+ if (type === 'lam-bai-tap') {
+     url  = `/bai-tap/lesson/${nameCourse}.${lessonId}/${type}?lesson_id=${lessonId}`
+ }else {
+     const courseId =`{{str_slug($var['course']->id ??'')}}`;
+      url =  `/khoa-hoc/${nameCourse}.${courseId}/tong-quan/${type}?lesson_id=${lessonId}`
+ }
+
+
 </script> 
 <script src='{{ web_asset('public/js/learn/course_question.js') }}' type='text/javascript'></script>
 {{-- <script src="{{ web_asset('/public/admintrator/assets/js/player.js') }}"></script>     --}} 
 <script>
     $(document).ready(function () {
       // $('.mediPlayer').mediaPlayer();
-  });
+        $('.btn_continue').setAttribute('href', url)
+    });
 </script>        
 @endpush

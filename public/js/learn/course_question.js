@@ -1,7 +1,6 @@
 $(document).ready(function(){
     function upCountQuestion($this)
     {
-
         var count_question_current = $('.hoclythuyet .course_process .count_question_done');
         var total_question = parseInt($('.hoclythuyet .course_process .total_question').text());
         var process_bar = $('.hoclythuyet .lesson_name .progress-bar');
@@ -10,7 +9,6 @@ $(document).ready(function(){
         var percent = (coutn_question_new / total_question) * 100;
         process_bar.css('width',percent+'%');
         $(window).scrollTop(0);
-        console.log('coutn_question_new', coutn_question_new, total_question)
         if (coutn_question_new === total_question) {
             if($this){
                 $this.closest('.submit_question').find('.btn_continue').show();

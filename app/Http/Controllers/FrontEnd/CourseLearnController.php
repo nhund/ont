@@ -287,6 +287,7 @@ class CourseLearnController extends Controller
         $var = [];
         $limit = 10;
         $lesson = Lesson::find($id);
+        $var['lesson'] = $lesson;
         if(!$lesson)
         {
             alert()->error('Bài học không tồn tại');
@@ -310,6 +311,7 @@ class CourseLearnController extends Controller
             $recommendation = new RecommendationService();
 
             $getQuestionDetail = $recommendation->doingNewQuestions($course, $user);
+            $var['lesson'] = $recommendation->lesson;
 
         }else{
             if($type == Question::LEARN_LAM_BAI_TAP)
@@ -345,7 +347,6 @@ class CourseLearnController extends Controller
 
         $var['questions'] = $getQuestionDetail['questions'];
         $var['course'] = Course::find($lesson->course_id);   
-        $var['lesson'] = $lesson;  
         $var['type'] = $type;
         if(count($var['questions']) == 0)
         {
@@ -507,18 +508,20 @@ class CourseLearnController extends Controller
         {
             $bookmarkQuestions = $recommendation->doingBookmarkQuestions($course, $user);
             $var = array_merge($var, $bookmarkQuestions);
+            $var['lesson'] = $recommendation->lesson;
         }
         if($type == Question::LEARN_LAM_CAU_SAI)
         {
             $wrongQuestions = $recommendation->doingWrongQuestions($course, $user);
 
             $var = array_merge($var, $wrongQuestions);
+            $var['lesson'] = $recommendation->lesson;
 
         }
         if($type == Question::LEARN_LAM_BAI_MOI)
         {
             $lesson = $recommendation->_getLessonLogUser($course, $user);
-
+            $var['lesson'] = $lesson;
             if ($lesson->is_exercise == Lesson::IS_DOC){
                 $checkTheory = UserLessonLog::where('user_id',$user->id)
                     ->where('course_id',$course->id)
@@ -561,6 +564,7 @@ class CourseLearnController extends Controller
         {
             $replyQuestions = $recommendation->doingReplayQuestions($course, $user);
             $var = array_merge($var, $replyQuestions);
+            $var['lesson'] = $recommendation->lesson;
 
         }
         if(count($var['questions']) == 0)

@@ -37,7 +37,7 @@ use App\User;
 class RecommendationService
 {
 
-    protected $lesson;
+    public $lesson;
 
     public function __construct()
     {
