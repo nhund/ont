@@ -64,21 +64,19 @@ class RecommendationService
         $limit = request('limit', 10);
         //lay lesson da hoc
 
-        if ($this->lesson){
-            $lesson = $this->lesson;
-        }else {
-            $lesson = $this->_getLessonLogUser($course, $user);
+        if (!$this->lesson){
+            $this->lesson = $this->_getLessonLogUser($course, $user);
         }
 
         $questionLearnedLogs = UserQuestionLog::where('course_id',$course->id)
             ->where('user_id',$user->id)
-            ->where('lesson_id', $lesson->id)
+            ->where('lesson_id', $this->lesson->id)
             ->groupBy('question_parent')->get()
             ->pluck('question_parent')->toArray();
 
             // kiem tra xem co ly thuyet trong bai hoc ko
             $theories = Lesson::where('course_id',$course->id)
-                ->where('parent_id',$lesson->id)
+                ->where('parent_id',$this->lesson->id)
                 ->where('is_exercise',Lesson::IS_DOC)
                 ->orderBy('order_s','ASC')
                 ->orderBy('created_at','ASC')
@@ -95,7 +93,7 @@ class RecommendationService
                         ->where('lesson_id',$theory->id)
                         ->first();
 
-                    if(!$checkTheory && !empty($lesson->description))
+                    if(!$checkTheory && !empty($this->lesson->description))
                     {
                         $var['course'] = $course;
                         $var['lesson'] = $theory;
@@ -104,13 +102,13 @@ class RecommendationService
                 }
             }
 
-            if($lesson->is_exercise == Lesson::IS_EXERCISE)
+            if($this->lesson->is_exercise == Lesson::IS_EXERCISE)
             {
                 //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
                 $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
                     ->typeAllow()
                     ->where('parent_id', Question::PARENT_ID)
-                    ->where('lesson_id',$lesson->id)
+                    ->where('lesson_id',$this->lesson->id)
                     ->orderBy('order_s','ASC')
                     ->orderBy('id','ASC')->count();
 
@@ -119,10 +117,10 @@ class RecommendationService
 
                     //lay cac cau hoi da lam
                     $question_log = UserQuestionLog::where('user_id',$user->id)
-                        ->where('lesson_id',$lesson->id)->get()
+                        ->where('lesson_id',$this->lesson->id)->get()
                         ->pluck('question_parent')->toArray();
 
-                    $questions = Question::where('lesson_id', $lesson->id)
+                    $questions = Question::where('lesson_id', $this->lesson->id)
                         ->typeAllow()
                         ->where('parent_id', Question::PARENT_ID)
                         ->whereNotIn('id',$question_log)->orderBy('order_s','ASC')
@@ -151,10 +149,8 @@ class RecommendationService
     {
         $limit = request('limit', 10);
 
-        if ($this->lesson){
-            $lesson = $this->lesson;
-        }else {
-            $lesson = Lesson::select('lesson.*')
+        if (!$this->lesson){
+            $this->lesson = Lesson::select('lesson.*')
                 ->leftJoin('user_lesson_log', function ($q) use ($user){
                     $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
                         ->where('user_lesson_log.user_id', $user->id);
@@ -167,7 +163,7 @@ class RecommendationService
         }
 
         //loai bo cac cau da luu de phan trang
-        $questions = Question::where('lesson_id',$lesson->id)
+        $questions = Question::where('lesson_id',$this->lesson->id)
             ->typeAllow()
             ->where('parent_id',Question::PARENT_ID)
             ->orderByRaw('RAND()')->take($limit)
@@ -297,6 +293,7 @@ class RecommendationService
 
     public function clickLesson(Lesson $lesson, User $user)
     {
+        $this->lesson = $lesson;
         $limit = request('limit', 10);
 
         $listQuestionLearned = [];
@@ -448,11 +445,13 @@ class RecommendationService
 
         $userBookmark = UserQuestionBookmark::where('user_id',$user->id)->where('lesson_id',$lesson_id)->get()->keyBy('question_id')->toArray();
 
-        UserLessonLog::where([
-             'course_id' => $this->lesson->course_id,
-             'user_id'   => $user->id,
-             'lesson_id' => $this->lesson->id
-         ])->update(['updated_at' => now()]);
+        if ($this->lesson){
+            UserLessonLog::where([
+                 'course_id' => $this->lesson->course_id,
+                 'user_id'   => $user->id,
+                 'lesson_id' => $this->lesson->id
+             ])->update(['updated_at' => now()]);
+        }
         return array(
             'questions'=>$questions,
             'userBookmark'=>$userBookmark
@@ -489,7 +488,7 @@ class RecommendationService
                 ->typeAllow()
                 ->where('parent_id', Question::PARENT_ID)->orderBy('order_s','ASC')
                 ->orderBy('id','ASC')->take($limit)->get();
-
+            $this->lesson = $lesson;
             $getQuestionDetail = $this->_getQuestion($user, $questions);
             $getQuestionDetail['type'] = Question::LEARN_LAM_CAU_SAI;
             return $getQuestionDetail;

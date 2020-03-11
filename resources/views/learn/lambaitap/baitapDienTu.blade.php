@@ -75,7 +75,8 @@
                 </div>
                 <div class="submit_question">
                     <button class="btn btn_submit">Nộp bài</button>
-                    <button class="btn btn_next">Làm tiếp</button>
+                    <button class="btn btn_next">Câu tiếp</button>
+                    <a href="" class="btn btn_continue btn-primary">Làm tiếp</a>
                 </div>
             @endif
         </div> 

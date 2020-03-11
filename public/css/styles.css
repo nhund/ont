@@ -5652,6 +5652,20 @@ button.update-cart{
     	text-transform: uppercase;
     	display: none;
     }
+
+	.btn_continue{
+    	border-radius: 4px;
+    	width: 170px;
+    	height: 50px;
+    	color: #fff;
+    	font-size: 16px;
+    	line-height: 24px;
+    	text-align: center;
+    	text-transform: uppercase;
+		padding: 13px;
+		display: none;
+    }
+
     #hoclythuyet .trac_nghiem_box .head_content .box_action .icon{
     	cursor: pointer;
     	padding: 3px 3px;

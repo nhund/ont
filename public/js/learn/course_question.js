@@ -1,14 +1,28 @@
 $(document).ready(function(){
-    function upCountQuestion()
+    function upCountQuestion($this)
     {
+
         var count_question_current = $('.hoclythuyet .course_process .count_question_done');
-        var total_question = $('.hoclythuyet .course_process .total_question');
+        var total_question = parseInt($('.hoclythuyet .course_process .total_question').text());
         var process_bar = $('.hoclythuyet .lesson_name .progress-bar');
         var coutn_question_new = parseInt(count_question_current.text()) + 1;
         count_question_current.text(coutn_question_new);
-        var percent = (coutn_question_new / parseInt(total_question.text())) * 100;
+        var percent = (coutn_question_new / total_question) * 100;
         process_bar.css('width',percent+'%');
         $(window).scrollTop(0);
+        console.log('coutn_question_new', coutn_question_new, total_question)
+        if (coutn_question_new === total_question) {
+            if($this){
+                $this.closest('.submit_question').find('.btn_continue').show();
+                $this.closest('.submit_question').find('.btn_next').remove();
+                $this.closest('.submit_question').find('.btn_submit').remove();
+            }
+        }else {
+            if($this){
+                $this.closest('.submit_question').find('.btn_next').show();
+                $this.closest('.submit_question').find('.btn_submit').remove();
+            }
+        }
     }
     $('.flash_card .flash_content .face .fa-history').on('click',function(){
         var $this = $(this); 
@@ -249,9 +263,7 @@ $(document).ready(function(){
                         box_interpret_all.show();
                     }
 
-                    upCountQuestion();
-                    $this.closest('.submit_question').find('.btn_next').show();
-                    $this.closest('.submit_question').find('.btn_submit').remove();
+                    upCountQuestion($this);
                                         
                     $.each(data.data, function (key, val) {
                         
@@ -323,10 +335,7 @@ $(document).ready(function(){
                         //box_interpret_all.find('span').append(data.interpret_all);                        
                     box_interpret_all.show();
 
-                    upCountQuestion();
-                    $this.closest('.submit_question').find('.btn_next').show();
-                    $this.closest('.submit_question').find('.btn_submit').remove();
-                    
+                    upCountQuestion($this);
 
                     $.each(data.data, function (key, val) {
                         if(val.error == 2)
@@ -427,9 +436,7 @@ $(document).ready(function(){
                         //box_interpret_all.find('span').append(data.interpret_all);                        
                     box_interpret_all.show();
 
-                    upCountQuestion();
-                    $this.closest('.submit_question').find('.btn_next').show();
-                    $this.closest('.submit_question').find('.btn_submit').remove();
+                    upCountQuestion($this);
 
                     $.each(data.data, function (key, val) {
                         $.each(val, function (key2, val2) {
