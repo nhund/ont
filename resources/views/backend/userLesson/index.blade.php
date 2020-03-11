@@ -1,12 +1,7 @@
 @extends('backend.layout')
 @section('title', 'Dashboard')
 @push('css')
-    <style type="text/css">
-        td, th{
-            vertical-align: middle;
-        }
-    </style>
-    <link href="{{ asset('public/plugin/form-daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet" type="text/css">
+
 
 @endpush
 @section('content')
