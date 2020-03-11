@@ -48,6 +48,7 @@
                                         <tr style="text-align: center">
                                             <th>Tên</th>
                                             <th>Ngày học đầu tiên</th>
+                                            <th>Ngày học gần nhất</th>
                                             <th>Đã học</th>
                                         </tr>
                                     </thead>
@@ -64,12 +65,17 @@
                                                     <p>{{ $userCourse->user->email }}</p>
                                                     <p>{{ $userCourse->user->phone }}</p>
                                                 </td>
-                                                <td style="text-align: center; vertical-align: middle;">
+                                                <td style="text-align: center;">
                                                     @if($userCourse->lesson && $userCourse->lesson->create_at)
                                                         {{date('d-m-Y', $userCourse->lesson->create_at)}}
                                                     @endif
                                                 </td>
-                                                <td style="text-align: center; vertical-align: middle;">
+                                                <td  style="text-align: center;">
+                                                    @if($userCourse->lesson && $userCourse->lesson->updated_at)
+                                                        {{date('d-m-Y h:i:s', strtotime($userCourse->lesson->updated_at))}}
+                                                    @endif
+                                                </td>
+                                                <td style="text-align: center;">
                                                     @if($userCourse->lesson && $userCourse->lesson->pass_ly_thuyet)
                                                         <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
                                                     @endif
