@@ -551,4 +551,7 @@ $(document).ready(function(){
             });
         });
     });
+
+    $(document).ajaxComplete(function() {$('.btn_submit').prop('disabled', false)});
+    $(document).ajaxStart(function() {$('.btn_submit').prop('disabled', true)});
 });
