@@ -38,16 +38,16 @@
                             <div class="panel-body panel-no-padding">
                                 <table class="table table-striped table-bordered">
                                     <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Tên</th>
-                                        <th>Ngày học đầu tiên</th>
-                                        <th>Ngày học gần nhất</th>
-                                        <th>Số lần làm</th>
-                                        <th>Đã đủ điểu kiện</th>
-                                        <th>Đã điểm cao nhất</th>
-                                        <th>Điểm lần gần nhất</th>
-                                    </tr>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên</th>
+                                            <th>Ngày học đầu tiên</th>
+                                            <th>Ngày học gần nhất</th>
+                                            <th>Số lần làm</th>
+                                            <th>Đã điểm cao nhất</th>
+                                            <th>Điểm lần gần nhất</th>
+                                            <th>Đã đủ điểu kiện</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                     @if($var['examUsers'])
@@ -60,19 +60,22 @@
                                                             <img src="{{ asset($examUser->user->avatar) }}" class="" style="width: 40px; height: 40px;">
                                                         @endif <strong>{{ $examUser->user->full_name }}</strong>
                                                     </p>
-                                                    <p>Email: {{ $examUser->user->email }}</p>
-                                                    <p>Phone: {{ $examUser->user->phone }}</p>
+                                                    <p><strong>Email:</strong> {{ $examUser->user->email }}</p>
+                                                    <p><strong>Phone:</strong> {{ $examUser->user->phone }}</p>
                                                 </td>
-                                                <td  style="text-align: center;">{{date('d-m-Y h:i:s', strtotime($examUser->created_at))}}</td>
-                                                <td  style="text-align: center;">{{date('d-m-Y h:i:s', strtotime($examUser->last_at))}}</td>
+                                                <td  style="text-align: center;">{{date('d-m-Y h:i', strtotime($examUser->created_at))}}</td>
+                                                <td  style="text-align: center;">{{date('d-m-Y h:i', strtotime($examUser->last_at))}}</td>
                                                 <td  style="text-align: center;">{{ $examUser->turn}}</td>
+                                                <td>
+                                                    <p><strong>Điểm:</strong> {{$examUser->highest_score}}</p>
+                                                    <p><strong>Thời gian:</strong> {{$examUser->doing_time}}</p>
+                                                </td>
+                                                <td  style="text-align: center;">{{$examUser->score}}</td>
                                                 <td  style="text-align: center;">
                                                     @if($examUser->exam->min_score <= $examUser->highest_score)
                                                         <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
                                                     @endif
                                                 </td>
-                                                <td  style="text-align: center;">{{$examUser->highest_score}}</td>
-                                                <td  style="text-align: center;">{{$examUser->score}}</td>
                                             </tr>
                                         @endforeach
                                     @endif
