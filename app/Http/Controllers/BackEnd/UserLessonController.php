@@ -27,10 +27,22 @@ class UserLessonController extends AdminBaseController
             ),
         );
 
-        $userCourses = UserCourse::with('user')
+        $userCourses = UserCourse::query()->with('user')
                 ->where('course_id', $lesson->course_id)
-                ->orderBy('id', 'DESC')
-                ->paginate(20);
+        ;
+
+        if ($request->has('key_search')){
+            $keySearch = trim($request->get('key_search'));
+            $userCourses->whereHas('user' , function($q) use ($keySearch){
+                $q->where('name', 'LIKE', "%{$keySearch}%");
+                $q->orWhere('email', 'LIKE', "%{$keySearch}%");
+                $q->orWhere('full_name', 'LIKE', "%{$keySearch}%");
+                $q->orWhere('phone', 'LIKE', "%{$keySearch}%");
+            });
+        }
+
+        $userCourses = $userCourses->orderBy('id', 'DESC')
+                            ->paginate(20);
 
         foreach ($userCourses as $userCourse){
             $userLesson = UserLessonLog::where([

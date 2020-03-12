@@ -11,30 +11,29 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        {{--<div class="form-group">--}}
-                            {{--<form action="{{ route('admin.user.index') }}" id="form_search_user" class="form-inline mb10" method="GET">--}}
-                                {{--<div class="row">--}}
-                                    {{--<div class="col-md-12">--}}
-                                        {{--<div class="col-md-2">--}}
+                        <div class="form-group">
+                            <form action="" id="form_search_user" class="form-inline mb10" method="GET">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="text" value="{{ request('key_search') }}" name="key_search" autocomplete="off" placeholder="#Họ tên, mail, sđt..." class="form-control">
+                                            </div>
+                                        </div>
+                                        {{--<div class="col-md-3">--}}
                                             {{--<div class="form-group">--}}
-                                                {{--<input type="text" value="{{ isset($var['params']['full_name'])?$var['params']['full_name']:'' }}" name="full_name" autocomplete="off" placeholder="#Họ tên" class="form-control">--}}
+                                                {{--<select class="form-control" name="turn_right">--}}
+                                                    {{--<option value="">-- Sắp sếp số lượt đúng --</option>--}}
+                                                    {{--<option {{request('turn_right') === 'ASC' ? 'selected' : ''}} value="ASC">Tăng dần</option>--}}
+                                                    {{--<option {{request('turn_right') === 'DESC' ? 'selected' : ''}} value="DESC">Giảm dần</option>--}}
+                                                {{--</select>--}}
                                             {{--</div>--}}
                                         {{--</div>--}}
-                                        {{--<div class="col-md-2">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<input type="text" name="phone" value="{{ isset($var['params']['phone'])?$var['params']['phone']:'' }}" placeholder="#Số điện thoại" autocomplete="off" class="form-control">--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="col-md-2">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<input type="text" value="{{ isset($var['params']['email'])?$var['params']['email']:'' }}" name="email" placeholder="#email" autocomplete="off" class="form-control">--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                            {{--</form>--}}
-                        {{--</div>--}}
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                         <div class="panel">
                             {{--<h4>Tổng số thành viên : {{ number_format(count($var['users'])) }}</h4>--}}
                             <div class="panel-body panel-no-padding">
@@ -56,7 +55,7 @@
                                                     <p>
                                                         @if(!empty($userCourse->user->avatar))
                                                             <img src="{{ asset($userCourse->user->avatar) }}" class="" style="width: 40px; height: 40px;">
-                                                        @endif {{ $userCourse->user->school->name }}
+                                                        @endif <strong>{{ $userCourse->user->full_name }}</strong>
                                                     </p>
                                                     <p>Email: {{ $userCourse->user->email }}</p>
                                                     <p>Phone: {{ $userCourse->user->phone }}</p>
