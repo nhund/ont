@@ -18,7 +18,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-12">Loại câu hỏi</div>
                                 <div class="col-sm-3">
-                                    <select class="form-control" name="type">
+                                    <select class="form-control" name="type" id="type-question">
                                         <option value="{{ \App\Models\Question::TYPE_FLASH_SINGLE }}">FlashCard Đơn</option>
                                         <option value="{{ \App\Models\Question::TYPE_FLASH_MUTI }}">FlashCard chuỗi</option>
                                         <option value="{{ \App\Models\Question::TYPE_DIEN_TU }}">Điền từ</option>

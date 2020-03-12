@@ -291,13 +291,15 @@ $(document).ready(function () {
         e.preventDefault();
         var $this = $(this);
         var count = $this.attr('data-count');
+        const typeQuestion = $('#type-question').val();
+
         var count_child = $this.closest('.box_answer').find('.box_text:last-child').attr('data-child');
         if(count_child === undefined)
         {
             count_child = 1;
         }
         //console.log(count_child); return;
-        var data = { count :count, count_child:count_child  ,type:'answer',templateType:'error'};                                
+        var data = { count :count, count_child:count_child  ,type:'answer',templateType:'error', typeQuestion};
         $.ajax({
             headers: { 'X-CSRF-Token' : $('meta[name=csrf-token]').attr("content") },
             type: "GET",

@@ -22,13 +22,8 @@
 						<div class="form-group row">
 							<div class="col-sm-12">Loại câu hỏi</div>
 							<div class="col-sm-3">
-								<select class="form-control" name="type">
-									<option disabled @if($question->type == \App\Models\Question::TYPE_FLASH_SINGLE) selected @endif value="{{ \App\Models\Question::TYPE_FLASH_SINGLE }}">FlashCard Đơn</option>
-									<option disabled @if($question->type == \App\Models\Question::TYPE_FLASH_MUTI) selected @endif value="{{ \App\Models\Question::TYPE_FLASH_MUTI }}">FlashCard chuỗi</option>
-									<option disabled @if($question->type == \App\Models\Question::TYPE_DIEN_TU) selected @endif value="{{ \App\Models\Question::TYPE_DIEN_TU }}">Điền từ</option>
-									<option disabled @if($question->type == \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN) selected @endif value="{{ \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN }}">Điền từ đoạn văn</option>
-									<option disabled @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM) selected @endif value="{{ \App\Models\Question::TYPE_TRAC_NGHIEM }}">Trác nghiệm</option>
-									<option disabled @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON) selected @endif value="{{ \App\Models\Question::TYPE_TRAC_NGHIEM_DON }}">Trác nghiệm đơn</option>
+								<select class="form-control" name="type" id="type-question">
+									<option selected value="{{ $question->type }}">{{\App\Models\Question::TYPE[$question->type]}}</option>
 								</select>
 							</div>
 						</div>

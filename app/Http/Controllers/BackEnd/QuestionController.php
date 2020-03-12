@@ -420,12 +420,22 @@ class QuestionController extends AdminBaseController
             $type = $data['type'];
             $templateType = $data['templateType'];
             $count_child = (int)$data['count_child'] + 1;
-            return response()->json([
-                'error' => false,
-                'template' => view('backend.lesson.question.trac_nghiem.trac_nghiem_item', compact(['count', 'type', 'templateType', 'count_child']))->render(),
-                'message' => '',
-                'data' => []
-            ]);
+
+            if ($data['typeQuestion'] == Question::TYPE_TRAC_NGHIEM_DON){
+                return response()->json([
+                    'error' => false,
+                    'template' => view('backend.lesson.question.trac_nghiem_don.trac_nghiem_item', compact(['count', 'type', 'templateType', 'count_child']))->render(),
+                    'message' => '',
+                    'data' => []
+                ]);
+            }else{
+                return response()->json([
+                    'error' => false,
+                    'template' => view('backend.lesson.question.trac_nghiem.trac_nghiem_item', compact(['count', 'type', 'templateType', 'count_child']))->render(),
+                    'message' => '',
+                    'data' => []
+                ]);
+            }
         }
         if ($data['type'] == 'parent') {
             $count = (int)$data['count'] + 1;
