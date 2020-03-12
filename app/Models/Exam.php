@@ -56,6 +56,11 @@ class Exam extends Model
         $exam->total_question = $params['total_question'];
         $exam->start_time_at = date('Y-m-d h:i:s', strtotime($params['start_time_at']));
         $exam->end_time_at = date('Y-m-d h:i:s', strtotime($params['end_time_at']));
+
+        if ($exam->isDirty('minutes')){
+            ExamUser::where('lesson_id', $exam->lesson_id)->update(['time' => $exam->minutes]);
+        }
+
         $exam->save();
     }
 
