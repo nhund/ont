@@ -3,8 +3,13 @@
 <link href="{{ web_asset('public/css/course-learn.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
-<div class="hoclythuyet type_flash_card {{ isset($var['type']) ? $var['type'] : '' }} type_do_new">        
-  
+<div class="hoclythuyet type_flash_card {{ isset($var['type']) ? $var['type'] : '' }} type_do_new">
+    <audio preload="metadata" id="false-answer" style="display: none">
+        <source src="{{ web_asset('/public/file/audio/False_Answer.wav') }}" type="audio/wav">
+    </audio>
+    <audio preload="metadata" id="correct-answer" style="display: none">
+        <source src="{{ web_asset('/public/file/audio/Correct_Answer.wav') }}" type="audio/wav">
+    </audio>
   @if(isset($var['type']) && $var['type'] == \App\Models\Question::LEARN_LAM_BOOKMARK)
       @include('learn.lambaitap.question_header.lam_bookmark')
   @endif  

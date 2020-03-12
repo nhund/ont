@@ -22,6 +22,13 @@ $(document).ready(function(){
             }
         }
     }
+    function audioAnswer(flagAnswer) {
+        if (flagAnswer){
+            document.getElementById('correct-answer').play()
+        }else {
+            document.getElementById('false-answer').play()
+        }
+    }
     $('.flash_card .flash_content .face .fa-history').on('click',function(){
         var $this = $(this); 
         
@@ -156,7 +163,8 @@ $(document).ready(function(){
             success: function (data) {
                 $('.question_type').hide();
                             //console.log(parseInt(key+1));
-                            $('.question_type.question_stt_'+parseInt(key+1)).show();    
+                            $('.question_type.question_stt_'+parseInt(key+1)).show();
+                            document.getElementById('correct-answer').play()
                             upCountQuestion();
                         },
                         error: function (e) {
@@ -262,15 +270,14 @@ $(document).ready(function(){
                     }
 
                     upCountQuestion($this);
-                                        
+                    let flagAnswer = true;
                     $.each(data.data, function (key, val) {
-                        
                         if(val.error == 2)
                         {
                             $('.answer_'+val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
                             $('.answer_'+val.answer).closest('.radio').find('label').css('color','#7BCDC7');
-
                         }else{
+                            flagAnswer = false;
                            $('.answer_'+val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
                            $('.answer_'+val.answer).closest('.radio').find('label').css('color','#7BCDC7');
 
@@ -288,17 +295,13 @@ $(document).ready(function(){
                             
                         }                            
                    });
-
+                    audioAnswer(flagAnswer)
                 }else{
                     toastr.error('Thông báo!',data.msg ,{timeOut: 600, positionClass : "toast-top-modify"})  
                 }                         
             },
-            error: function (e) {
-
-            }
-        }).always(function () {
-
-        });
+            error: function (e) {}
+        }).always(function () {});
     });
 
     //next cau hoi
@@ -334,13 +337,14 @@ $(document).ready(function(){
                     box_interpret_all.show();
 
                     upCountQuestion($this);
-
+                    let flagAnswer = true;
                     $.each(data.data, function (key, val) {
                         if(val.error == 2)
                         {
                             $('.question_id_'+key).find('.result').addClass('true');
 
                         }else{
+                            flagAnswer = false;
                             $('.question_id_'+key).find('.result').addClass('error');
                         }     
                         $('.question_id_'+key).find('.user_input span').text(val.input);
@@ -352,17 +356,11 @@ $(document).ready(function(){
                             box_interpret_child.show();
 
                     });
+                    audioAnswer(flagAnswer)
                 }
-                            //$('.question_type').hide();
-                            //console.log(parseInt(key+1));
-                            //$('.question_type.question_stt_'+parseInt(key+1)).show();    
                         },
-                        error: function (e) {
-
-                        }
-                    }).always(function () {
-
-                    });
+                        error: function (e) {}
+                    }).always(function () {});
                 });
 
     //xem goi y dien tu doan van cho tung dap an
@@ -435,7 +433,7 @@ $(document).ready(function(){
                     box_interpret_all.show();
 
                     upCountQuestion($this);
-
+                    let flagAnswer = true;
                     $.each(data.data, function (key, val) {
                         $.each(val, function (key2, val2) {
                             var input_answer =  $('.dien_tu_doan_van input[name="txtLearnWord['+key+']['+key2+']"]');
@@ -447,6 +445,7 @@ $(document).ready(function(){
                                 input_answer.hide();
 
                             }else{
+                                flagAnswer = false;
                                 var tpl = '<span class="answer_error_box"><span class="answer_error">'+val2.input+'</span><span class="answer_true">'+val2.answer+'</span><span>';
                                 input_answer.before(tpl);
                                 //input_answer.val(val2.answer).addClass('error').prop('readonly', true);
@@ -456,28 +455,12 @@ $(document).ready(function(){
                             //box_interpret_child.find('span').append(val.interpret);
                             box_interpret_child.show();
                         });                        
-                        // if(val.error == 2)
-                        // {
-                        //     $('.question_id_'+key).find('.result').addClass('true');
-
-                        // }else{
-                        //     $('.question_id_'+key).find('.result').addClass('error');
-                        // }     
-                        // $('.question_id_'+key).find('.user_input span').text(val.input);
-                        // $('.question_id_'+key).find('.result_ok span').text(val.answer);
-                        // $('.question_id_'+key).find('.result').show();                               
                     });
+                    audioAnswer(flagAnswer)
                 }
-                            //$('.question_type').hide();
-                            //console.log(parseInt(key+1));
-                            //$('.question_type.question_stt_'+parseInt(key+1)).show();    
                         },
-                        error: function (e) {
-
-                        }
-                    }).always(function () {
-
-                    });
+                        error: function (e) {}
+                    }).always(function () {});
                 });
     //lay goi y
 
