@@ -12,35 +12,32 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form-group">
-                            <a href="{{ route('admin.user.add') }}" class="btn-primary btn">Thêm thành viên</a>
-                        </div>
-                        <div class="form-group">
-                            <form action="{{ route('admin.user.index') }}" id="form_search_user" class="form-inline mb10" method="GET">
-                                <div class="row">
-                                    <div class="col-md-12">
+                        {{--<div class="form-group">--}}
+                            {{--<form action="{{ route('admin.user.index') }}" id="form_search_user" class="form-inline mb10" method="GET">--}}
+                                {{--<div class="row">--}}
+                                    {{--<div class="col-md-12">--}}
 
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <input type="text" value="{{ isset($var['params']['full_name'])?$var['params']['full_name']:'' }}" name="full_name" autocomplete="off" placeholder="#Họ tên" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <input type="text" name="phone" value="{{ isset($var['params']['phone'])?$var['params']['phone']:'' }}" placeholder="#Số điện thoại" autocomplete="off" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <input type="text" value="{{ isset($var['params']['email'])?$var['params']['email']:'' }}" name="email" placeholder="#email" autocomplete="off" class="form-control">
-                                            </div>
-                                        </div>
+                                        {{--<div class="col-md-2">--}}
+                                            {{--<div class="form-group">--}}
+                                                {{--<input type="text" value="{{ isset($var['params']['full_name'])?$var['params']['full_name']:'' }}" name="full_name" autocomplete="off" placeholder="#Họ tên" class="form-control">--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="col-md-2">--}}
+                                            {{--<div class="form-group">--}}
+                                                {{--<input type="text" name="phone" value="{{ isset($var['params']['phone'])?$var['params']['phone']:'' }}" placeholder="#Số điện thoại" autocomplete="off" class="form-control">--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="col-md-2">--}}
+                                            {{--<div class="form-group">--}}
+                                                {{--<input type="text" value="{{ isset($var['params']['email'])?$var['params']['email']:'' }}" name="email" placeholder="#email" autocomplete="off" class="form-control">--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
 
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                                        {{--<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</form>--}}
+                        {{--</div>--}}
                         <div class="panel">
                             <div class="panel-body panel-no-padding">
                                 <table class="table table-striped table-bordered">
