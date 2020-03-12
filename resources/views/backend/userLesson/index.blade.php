@@ -42,8 +42,8 @@
                                     <tr>
                                         <th>STT</th>
                                         <th>Tên</th>
-                                        <th>Ngày học đầu tiên</th>
-                                        <th>Ngày học gần nhất</th>
+                                        <th>Ngày làm đầu tiên</th>
+                                        <th>Ngày làm gần nhất</th>
                                         <th>Số câu làm đúng gần nhất</th>
                                         <th>Số lượt làm đúng toàn bộ</th>
                                     </tr>
