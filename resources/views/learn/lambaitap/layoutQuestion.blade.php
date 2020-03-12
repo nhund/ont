@@ -68,16 +68,9 @@
  var getExplain = '{{ route('user.lambaitap.getExplain') }}';
  var book_mark_url = '{{ route('user.question.bookMark') }}';
 
- const type = $('input[name=type]').val();
  const lessonId =`{{$var['lesson']->id ??''}}`;
- const nameCourse =`{{str_slug($var['course']->name ??'')}}`;
-    let  urlRecommendation = '';
- if (type === 'lam-bai-tap') {
-     urlRecommendation  = `/bai-tap/lesson/${nameCourse}.${lessonId}/${type}?lesson_id=${lessonId}`
- }else {
-     const courseId =`{{str_slug($var['course']->id ??'')}}`;
-     urlRecommendation =  `/khoa-hoc/${nameCourse}.${courseId}/tong-quan/${type}?lesson_id=${lessonId}`
- }
+ let  urlRecommendation = window.location.pathname+'?lesson_id='+lessonId;
+
 </script>
 <script src='{{ web_asset('public/js/learn/course_question.js') }}' type='text/javascript'></script>
 {{-- <script src="{{ web_asset('/public/admintrator/assets/js/player.js') }}"></script>     --}} 

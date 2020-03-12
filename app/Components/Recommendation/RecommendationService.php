@@ -155,6 +155,7 @@ class RecommendationService
                     $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
                         ->where('user_lesson_log.user_id', $user->id);
                 })
+                ->where('is_exercise', Lesson::IS_EXERCISE)
                 ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
                 ->where('lesson.course_id', $course->id)
                 ->orderBy('turn_right')
