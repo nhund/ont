@@ -43,9 +43,10 @@ $(document).ready(function () {
                         });
                     }else{
                         swal({
-                            title:result.message,
-                            type : 'error',
-                        })
+                             title: result.error.email[0],
+                             timer: 1000,
+                             type : 'error',
+                         });
                     }
                 },
                 error: function (result) {

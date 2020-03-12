@@ -69,7 +69,7 @@
                 </div>
                 <div class="box_content">
                     <div class="head">
-                            <div class="topic">Giáo trình</div>
+                            <div class="topic">Chương trình</div>
                             <div class="topic_progress">Tiến độ</div>
                     </div>
                     <div class="body">
