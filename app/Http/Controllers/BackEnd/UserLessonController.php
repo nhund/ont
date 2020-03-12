@@ -93,8 +93,19 @@ class UserLessonController extends AdminBaseController
                 'title' => 'Xem tiến độ',
             ),
         );
+
         $examUsers = ExamUser::query()->where('lesson_id', $lesson->id)->with(['user', 'exam']);
         $totalUser = $examUsers->get()->count();
+
+        if ($request->has('key_search')){
+            $keySearch = trim($request->get('key_search'));
+            $examUsers->whereHas('user' , function($q) use ($keySearch){
+                $q->where('name', 'LIKE', "%{$keySearch}%");
+                $q->orWhere('email', 'LIKE', "%{$keySearch}%");
+                $q->orWhere('full_name', 'LIKE', "%{$keySearch}%");
+                $q->orWhere('phone', 'LIKE', "%{$keySearch}%");
+            });
+        }
         $examUsers = $examUsers->paginate(15);
 
         $var['totalUser'] = $totalUser;

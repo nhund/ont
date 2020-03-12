@@ -2,7 +2,6 @@
 @section('title', 'Dashboard')
 @push('css')
 
-
 @endpush
 @section('content')
     @include('backend.include.breadcrumb')
@@ -57,10 +56,9 @@
                                                     <p>
                                                         @if(!empty($userCourse->user->avatar))
                                                             <img src="{{ asset($userCourse->user->avatar) }}" class="" style="width: 40px; height: 40px;">
-                                                        @endif <strong>{{ $userCourse->user->full_name }}</strong>
-                                                    </p>
-                                                    <p>Email: {{ $userCourse->user->email }}</p>
-                                                    <p>Phone: {{ $userCourse->user->phone }}</p>
+                                                        @endif <strong>{{ $userCourse->user->full_name }}</strong><br/>
+                                                        Email: {{ $userCourse->user->email }}<br/>
+                                                        Phone: {{ $userCourse->user->phone }}</p>
                                                 </td>
                                                 <td  style="text-align: center;">
                                                     @if($userCourse->lesson && $userCourse->lesson->create_at)

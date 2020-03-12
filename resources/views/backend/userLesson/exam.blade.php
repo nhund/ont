@@ -44,8 +44,8 @@
                                             <th>Ngày học đầu tiên</th>
                                             <th>Ngày học gần nhất</th>
                                             <th>Số lần làm</th>
-                                            <th>Đã điểm cao nhất</th>
                                             <th>Điểm lần gần nhất</th>
+                                            <th>Đã điểm cao nhất</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -53,7 +53,7 @@
                                         @foreach($var['examUsers'] as $key => $examUser)
                                             <tr class="tr">
                                                 <td>
-                                                    <p>{{(request('page')*15) + $key + 1}}</p>
+                                                    <p>{{(request('page')*15) + $key + 1}} {{$examUser->id}}</p>
                                                     @if($examUser->exam->min_score <= $examUser->highest_score)
                                                         <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
                                                     @endif
@@ -62,19 +62,21 @@
                                                     <p>
                                                         @if(!empty($examUser->user->avatar))
                                                             <img src="{{ asset($examUser->user->avatar) }}" class="" style="width: 40px; height: 40px;">
-                                                        @endif <strong>{{ $examUser->user->full_name }}</strong>
-                                                    </p>
-                                                    <p><strong>Email:</strong> {{ $examUser->user->email }}</p>
-                                                    <p><strong>Phone:</strong> {{ $examUser->user->phone }}</p>
+                                                        @endif <strong>{{ $examUser->user->full_name }}</strong><br/>
+                                                    <strong>Email:</strong> {{ $examUser->user->email }}<br/>
+                                                    <strong>Phone:</strong> {{ $examUser->user->phone }}</p>
                                                 </td>
                                                 <td  style="text-align: center;">{{date('d-m-Y h:i', strtotime($examUser->created_at))}}</td>
                                                 <td  style="text-align: center;">{{date('d-m-Y h:i', strtotime($examUser->last_at))}}</td>
                                                 <td  style="text-align: center;">{{ $examUser->turn}}</td>
                                                 <td>
-                                                    <p><strong>Điểm:</strong> {{$examUser->highest_score}}</p>
-                                                    <p><strong>Thời gian:</strong> {{$examUser->doing_time}}</p>
+                                                    <p><strong>Điểm: </strong>{{$examUser->score}}</p>
+                                                    <p><strong>Thời gian: </strong> {{$examUser->doing_time}}</p>
                                                 </td>
-                                                <td  style="text-align: center;">{{$examUser->score}}</td>
+                                                <td>
+                                                    <p><strong>Điểm: </strong> {{$examUser->highest_score}}</p>
+                                                    <p><strong>Thời gian: </strong> {{$examUser->doing_time_highest}}</p>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     @endif

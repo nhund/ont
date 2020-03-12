@@ -32,7 +32,14 @@ class ExamUser extends Model
 
     public function getDoingTimeAttribute()
     {
-        $doingTime  = (strtotime($this->last_submit_at) - strtotime($this->begin_highest_at) - $this->second_stop)/60;
+        $doingTime  = (strtotime($this->last_at) - strtotime($this->begin_at) - $this->second_stop)/60;
+
+        return number_format($doingTime , 1, ',','');
+    }
+
+    public function getDoingTimeHighestAttribute()
+    {
+        $doingTime  = (strtotime($this->last_submit_at) - strtotime($this->begin_highest_at) - $this->second_stop_highest)/60;
 
         return number_format($doingTime , 1, ',','');
     }
