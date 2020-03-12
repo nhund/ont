@@ -4,10 +4,10 @@
          {!! $question->content !!}
       </div>
       @if(!empty($question->audio_content))
-         <div class="mediPlayer">
-          <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_content) }}"></audio>
-         </div>      
-      @endif   
+           <audio controls preload="metadata" style="width: 100%;">
+               <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
+           </audio>
+      @endif
       <div class="action">
 
       </div>
@@ -55,9 +55,9 @@
             <p>{!! $question_child->question !!}</p>
          </div>
          @if(!empty($question_child->audio_question))
-            <div class="mediPlayer">
-              <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question_child->audio_question) }}"></audio>
-            </div>      
+              <audio controls preload="metadata" style="width: 100%;">
+                  <source data-size="60" src="{{ web_asset($question_child->audio_question) }}" type="audio/mpeg">
+              </audio>
          @endif
          <div class="suggest suggest_before">{!! $question_child->explain_before !!}</div>
       </div>
@@ -117,9 +117,9 @@
          <p>{!! $question_child_child->question !!}</p>
       </div>
       @if(!empty($question_child_child->audio_question))
-            <div class="mediPlayer">
-              <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question_child_child->audio_question) }}"></audio>
-            </div>      
+           <audio controls preload="metadata" style="width: 100%;">
+               <source data-size="60" src="{{ web_asset($question_child_child->audio_question) }}" type="audio/mpeg">
+           </audio>
       @endif
       <div class="suggest suggest_before">{!! $question_child_child->explain_before !!}</div>
    </div>

@@ -17,9 +17,9 @@
                 </div>
             @endif
             @if(!empty($question->audio_content))
-                 <div class="mediPlayer">
-                  <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_content) }}"></audio>
-                 </div>      
+                <audio controls preload="metadata" style="width: 100%;">
+                    <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
+                </audio>
             @endif
             @if(!empty($question->interpret_all))
                 <div class="box_interpret_all">
@@ -41,9 +41,9 @@
                                 @endif                                    
                             </div>
                             @if(!empty($question->audio_question))
-                                <div class="mediPlayer">
-                                  <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
-                              </div>      
+                                <audio controls preload="metadata" style="width: 100%;">
+                                    <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
+                                </audio>
                             @endif
                             <div class="answer">
                                 <input type="text" class="form-control answer_value" name="answers[{{ $question->id }}]" value="">

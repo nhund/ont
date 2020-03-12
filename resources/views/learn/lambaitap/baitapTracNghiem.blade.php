@@ -14,10 +14,10 @@
             </div>
             @endif
             @if(!empty($question->audio_content))
-                 <div class="mediPlayer">
-                  <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_content) }}"></audio>
-                 </div>      
-            @endif               
+                    <audio controls preload="metadata" style="width: 100%;">
+                        <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
+                    </audio>
+            @endif
             <div class="box_action">
                 @if(!empty($question->explain_before))
                     <div class="icon suggest" title="Gợi ý">
@@ -48,7 +48,7 @@
         @endif
     </div>
     <div class="content_question">
-        @if(isset($question) && isset($question->child))     
+        @if(isset($question) && isset($question->child))
         <input type="hidden" name="count_question" value="{{ count($question->child) }}" >       
         <div class="list_question">
             @foreach ($question->child as $key => $question_child)
@@ -60,9 +60,9 @@
                     @endif                           
                 </div>
                 @if(!empty($question_child->audio_question))
-                    <div class="mediPlayer">
-                      <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question_child->audio_question) }}"></audio>
-                    </div>      
+                    <audio controls preload="metadata" style="width: 100%;">
+                        <source data-size="60" src="{{ web_asset($question_child->audio_question) }}" type="audio/mpeg">
+                    </audio>
                 @endif
                 <div class="box_suggest_answer">
                     <div class="suggest_answer_content">
