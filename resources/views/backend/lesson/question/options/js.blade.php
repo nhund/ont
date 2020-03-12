@@ -78,8 +78,8 @@
 
      function deleteAudio(e) {
         var $this = $(e);
-        $this.closest('.box_audio').find('.input_audio').val('');
-        $this.closest('.box_audio').hide();
+         $this.closest('.box_audio').find('.input_audio').val('');
+        $this.closest('.box_audio').attr('style','display:none !important');
      }
      $("#UploadAudioQuestion").on('hide.bs.modal', function(){
         $("#UploadAudioQuestion").find('input[name="audio_url"]').val("");        
