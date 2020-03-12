@@ -5,9 +5,11 @@
         <input type="hidden" name="until_number" value="{{ $key + 2 }}">
 
         <div class="head_content">
-            <div class="audio_box">
-
-            </div>
+            @if(!empty($question->audio_content))
+                <audio controls preload="metadata" style="width: 100%;">
+                    <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
+                </audio>
+            @endif
             @if(!empty($question->img_before))
                 <div class="box_image">
                     <img src="{{ web_asset('public/'.$question->img_before) }}">
@@ -18,11 +20,7 @@
                     {!! $question->content !!}
                 </div>
             @endif
-            @if(!empty($question->audio_content))
-                <audio controls preload="metadata" style="width: 100%;">
-                    <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
-                </audio>
-            @endif
+
             {{--@if(!empty($question->interpret_all))--}}
                 {{--<div class="box_interpret_all">--}}
                     {{--<p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>                --}}

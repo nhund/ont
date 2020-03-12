@@ -4,9 +4,11 @@
         <input type="hidden" name="type" value="{{ $var['type'] }}" >
         <div id="format_content_{{ $question->id }}" style="display: none"></div>
         <div class="head_content">
-            <div class="audio_box">
-
-            </div>
+            @if(!empty($question->audio_content))
+                <audio controls preload="metadata" style="width: 100%;">
+                    <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
+                </audio>
+            @endif
             @if(!empty($question->img_before))
             <div class="box_image">
                 <img src="{{ web_asset('public/'.$question->img_before) }}">
@@ -17,11 +19,7 @@
                 {!! $question->content !!}
             </div>
             @endif
-            @if(!empty($question->audio_content))
-                <audio controls preload="metadata" style="width: 100%;">
-                    <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
-                </audio>
-            @endif
+
             <div class="box_action">
                 {{-- <div class="icon suggest" title="Gợi ý">
                    <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >

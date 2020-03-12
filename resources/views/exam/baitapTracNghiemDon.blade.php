@@ -6,6 +6,11 @@
         <input type="hidden" name="until_number" value="{{ $key + 2 }}">
 
         <div class="head_content">
+            @if(!empty($question->audio_question))
+                <audio controls preload="metadata" style="width: 100%;">
+                    <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
+                </audio>
+            @endif
             @if(!empty($question->img_before))
             <div class="box_image">
                 <img src="{{ web_asset('public/'.$question->img_before) }}">
@@ -16,11 +21,7 @@
                 {!! $question->question !!}
             </div>
             @endif
-            @if(!empty($question->audio_question))
-                <audio controls preload="metadata" style="width: 100%;">
-                    <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
-                </audio>
-            @endif
+
             <div class="box_action">
                 @if(!empty($question->explain_before))
                     <div class="icon suggest" title="Gợi ý">

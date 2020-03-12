@@ -2,7 +2,12 @@
     <form class="form_trac_nghiem">
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="type" value="{{ $var['type'] }}" >        
-        <div class="head_content">            
+        <div class="head_content">
+            @if(!empty($question->audio_content))
+                <audio controls preload="metadata" style="width: 100%;">
+                    <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
+                </audio>
+            @endif
             @if(!empty($question->img_before))
             <div class="box_image">
                 <img src="{{ web_asset('public/'.$question->img_before) }}">
@@ -13,11 +18,7 @@
                 {!! $question->content !!}
             </div>
             @endif
-            @if(!empty($question->audio_content))
-                    <audio controls preload="metadata" style="width: 100%;">
-                        <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
-                    </audio>
-            @endif
+
             <div class="box_action">
                 @if(!empty($question->explain_before))
                     <div class="icon suggest" title="Gợi ý">
@@ -53,17 +54,18 @@
         <div class="list_question">
             @foreach ($question->child as $key => $question_child)
             <div class="question_item question_id_{{ $question_child->id }}">
+                @if(!empty($question_child->audio_question))
+                    <audio controls preload="metadata" style="width: 100%;">
+                        <source data-size="60" src="{{ web_asset($question_child->audio_question) }}" type="audio/mpeg">
+                    </audio>
+                @endif
                 <div class="question">
                     <p>{!! $question_child->question  !!}</p>     
                     @if(!empty($question_child->img_before))
                         <img class="img_question" src="{{ web_asset($question_child->img_before) }}" >
                     @endif                           
                 </div>
-                @if(!empty($question_child->audio_question))
-                    <audio controls preload="metadata" style="width: 100%;">
-                        <source data-size="60" src="{{ web_asset($question_child->audio_question) }}" type="audio/mpeg">
-                    </audio>
-                @endif
+
                 <div class="box_suggest_answer">
                     <div class="suggest_answer_content">
                         {{-- {{ $question_child-> }}  --}}   

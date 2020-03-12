@@ -5,9 +5,11 @@
         <input type="hidden" name="until_number" value="{{ $key + 2 }}">
 
         <div class="head_content">
-            <div class="audio_box">
-
-            </div>
+            @if(!empty($question->audio_content))
+                <audio controls preload="metadata" style="width: 100%;">
+                    <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
+                </audio>
+            @endif
             @if(!empty($question->img_before))
                 <div class="box_image">
                     <img src="{{ web_asset('public/'.$question->img_before) }}">
@@ -18,17 +20,18 @@
                     {!! $question->content !!}
                 </div>
             @endif
-            @if(!empty($question->audio_content))
-                <audio controls preload="metadata" style="width: 100%;">
-                    <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
-                </audio>
-            @endif
+
         </div>
         <div class="content_question">
             @if(isset($question))        
                 <div class="list_question">
                     @foreach ($question->child as $question)
                         <div class="question_item question_id_{{ $question->id }}">
+                            @if(!empty($question->audio_question))
+                                <div class="mediPlayer">
+                                    <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
+                                </div>
+                            @endif
                             <div class="question">
                                 <p>{!! $question->question  !!}</p>
                                 @if(!empty($question->img_before))
@@ -37,11 +40,7 @@
                                     </div>
                                 @endif                                    
                             </div>
-                            @if(!empty($question->audio_question))
-                                <div class="mediPlayer">
-                                  <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
-                              </div>      
-                            @endif
+
                             <div class="answer">
                                 <input type="text" class="form-control answer_value" name="answers[{{ $question->id }}]" value="">
                                 <div class="explain" title="Gợi ý" data-id="{{ $question->id }}">
