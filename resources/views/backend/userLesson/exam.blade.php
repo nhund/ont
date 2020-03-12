@@ -46,14 +46,18 @@
                                             <th>Số lần làm</th>
                                             <th>Đã điểm cao nhất</th>
                                             <th>Điểm lần gần nhất</th>
-                                            <th>Đã đủ điểu kiện</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     @if($var['examUsers'])
                                         @foreach($var['examUsers'] as $key => $examUser)
                                             <tr class="tr">
-                                                <td>{{(request('page')*15) + $key + 1}}</td>
+                                                <td>
+                                                    <p>{{(request('page')*15) + $key + 1}}</p>
+                                                    @if($examUser->exam->min_score <= $examUser->highest_score)
+                                                        <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <p>
                                                         @if(!empty($examUser->user->avatar))
@@ -71,11 +75,6 @@
                                                     <p><strong>Thời gian:</strong> {{$examUser->doing_time}}</p>
                                                 </td>
                                                 <td  style="text-align: center;">{{$examUser->score}}</td>
-                                                <td  style="text-align: center;">
-                                                    @if($examUser->exam->min_score <= $examUser->highest_score)
-                                                        <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
-                                                    @endif
-                                                </td>
                                             </tr>
                                         @endforeach
                                     @endif
