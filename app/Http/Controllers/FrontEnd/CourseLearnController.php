@@ -95,8 +95,7 @@ class CourseLearnController extends Controller
     }
     public function course($title,$id,Request $request)
     {
-        $data = $request->all();
-        $course = Course::find($id);   
+        $course = Course::find($id);
         if(!$course)
         {
             return redirect()->route('home');
@@ -127,7 +126,6 @@ class CourseLearnController extends Controller
         foreach($lessons as $lesson)
         {
             $lesson_childs = Lesson::where('course_id',$id)->where('parent_id',$lesson->id)
-//            ->where('type', Lesson::LESSON)
             ->orderBy('order_s','ASC')
             ->orderBy('created_at','ASC')->get();
             foreach ($lesson_childs as $key => $lesson_child) {
@@ -547,13 +545,14 @@ class CourseLearnController extends Controller
                 }
             }
 
-            alert()->success('Bạn đã học hết các bài mới');
-            if ($request->has('lesson_id')){
-                $lesson            = Lesson::findOrFail($request->get('lesson_id'));
-                redirect()->route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id]);
-            }else{
-                return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
-            }
+                alert()->success('Bạn đã học hết các bài mới');
+                return redirect()->back();
+//            if ($request->has('lesson_id')){
+//                $lesson            = Lesson::findOrFail($request->get('lesson_id'));
+//                redirect()->route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id]);
+//            }else{
+//                return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
+//            }
 
         }
         if($type == Question::LEARN_LAM_CAU_CU)
@@ -566,12 +565,13 @@ class CourseLearnController extends Controller
         if(count($var['questions']) == 0)
         {
             alert()->error('Bài tập chưa có câu hỏi.');
-            if ($request->has('lesson_id')){
-                $lesson            = Lesson::findOrFail($request->get('lesson_id'));
-                redirect()->route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id]);
-            }else{
-                return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
-            }
+            return redirect()->back();
+//            if ($request->has('lesson_id')){
+//                $lesson            = Lesson::findOrFail($request->get('lesson_id'));
+//                redirect()->route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id]);
+//            }else{
+//                return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
+//            }
         }
 
         return view('learn.lambaitap.layoutQuestion',compact('var'));
