@@ -363,6 +363,7 @@ Route::group(['middleware' => 'admin','prefix' => 'admin'],function () {
 
     Route::prefix('user-lesson')->group(function () {
         Route::get('/detail/{lesson}', 'BackEnd\UserLessonController@detailReport')->name('admin.userLesson.report.detail');
+        Route::get('/detail/exam/{lesson}', 'BackEnd\UserLessonController@detailReportExam')->name('admin.userLesson.exam.detail');
     });
 
 });

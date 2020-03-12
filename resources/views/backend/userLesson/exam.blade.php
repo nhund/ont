@@ -2,7 +2,6 @@
 @section('title', 'Dashboard')
 @push('css')
 
-
 @endpush
 @section('content')
     @include('backend.include.breadcrumb')
@@ -44,36 +43,36 @@
                                         <th>Tên</th>
                                         <th>Ngày học đầu tiên</th>
                                         <th>Ngày học gần nhất</th>
-                                        <th>Số câu làm đúng gần nhất</th>
-                                        <th>Số lượt làm đúng toàn bộ</th>
+                                        <th>Số lần làm</th>
+                                        <th>Đã đủ điểu kiện</th>
+                                        <th>Đã điểm cao nhất</th>
+                                        <th>Điểm lần gần nhất</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if($var['users'])
-                                        @foreach($var['users'] as $key => $userCourse)
+                                    @if($var['examUsers'])
+                                        @foreach($var['examUsers'] as $key => $examUser)
                                             <tr class="tr">
                                                 <td>{{(request('page')*15) + $key + 1}}</td>
                                                 <td>
                                                     <p>
-                                                        @if(!empty($userCourse->user->avatar))
-                                                            <img src="{{ asset($userCourse->user->avatar) }}" class="" style="width: 40px; height: 40px;">
-                                                        @endif <strong>{{ $userCourse->user->full_name }}</strong>
+                                                        @if(!empty($examUser->user->avatar))
+                                                            <img src="{{ asset($examUser->user->avatar) }}" class="" style="width: 40px; height: 40px;">
+                                                        @endif <strong>{{ $examUser->user->full_name }}</strong>
                                                     </p>
-                                                    <p>Email: {{ $userCourse->user->email }}</p>
-                                                    <p>Phone: {{ $userCourse->user->phone }}</p>
+                                                    <p>Email: {{ $examUser->user->email }}</p>
+                                                    <p>Phone: {{ $examUser->user->phone }}</p>
                                                 </td>
+                                                <td  style="text-align: center;">{{date('d-m-Y h:i:s', strtotime($examUser->created_at))}}</td>
+                                                <td  style="text-align: center;">{{date('d-m-Y h:i:s', strtotime($examUser->last_at))}}</td>
+                                                <td  style="text-align: center;">{{ $examUser->turn}}</td>
                                                 <td  style="text-align: center;">
-                                                    @if($userCourse->lesson && $userCourse->lesson->create_at)
-                                                        {{date('d-m-Y', $userCourse->lesson->create_at)}}
+                                                    @if($examUser->exam->min_score <= $examUser->highest_score)
+                                                        <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
                                                     @endif
                                                 </td>
-                                                <td  style="text-align: center;">
-                                                    @if($userCourse->lesson && $userCourse->lesson->updated_at)
-                                                        {{date('d-m-Y h:i:s', strtotime($userCourse->lesson->updated_at))}}
-                                                    @endif
-                                                </td>
-                                                <td  style="text-align: center;">{{ $userCourse->correctQuestion}} / {{ $userCourse->didQuestion}}</td>
-                                                <td  style="text-align: center;">{{ $userCourse->lesson ? $userCourse->lesson->turn_right : 0}}</td>
+                                                <td  style="text-align: center;">{{$examUser->highest_score}}</td>
+                                                <td  style="text-align: center;">{{$examUser->score}}</td>
                                             </tr>
                                         @endforeach
                                     @endif
@@ -81,7 +80,7 @@
 
                                 </table>
                                 <div class="pagination">
-                                    {{ $var['users']->links('vendor.pagination.default') }}
+                                    {{ $var['examUsers']->links('vendor.pagination.default') }}
                                 </div>
                             </div>
                         </div>

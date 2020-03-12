@@ -19,7 +19,7 @@ class ExamUser extends Model
     const INACTIVE = 'Inactive';
     const STOPPED = 'Stopped';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = ['lesson_id', 'user_id', 'turn', 'score', 'time', 'status_stop', 'second_stop', 'begin_at', 'stopped_at', 'until_number', 'turn_stop'];
 

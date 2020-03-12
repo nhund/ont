@@ -31,11 +31,11 @@
                                     <h2>
                                         <ul class="nav">
                                             <li class="add-question">
-                                                <a  class="a-add-part">
-                                                    <img src="{{ asset('/public/images/course/icon/icon-comment.png')}}" class="tab-des">Điểm từng phần</a>
+                                                <strong><a class="a-add-part"><img src="{{ asset('/public/images/course/icon/icon-comment.png')}}" class="tab-des">Điểm từng phần</a></strong>
                                             </li>
                                         </ul>
                                     </h2>
+                                    <h2><strong>&nbsp;|&nbsp;<a href="{{route('admin.userLesson.exam.detail', ['lesson' => $lesson->id])}}">Xem kết quả bài thi</a></strong></h2>
                                     <div class="pull-right editBtn">
                                         <a class="btn btn-success left10" title="Xóa" data-toggle="modal" href="#update-part-exam">Cập nhật thông tin</a>
                                         <button class="btn btn-primary" title="Sửa" data-toggle="modal" href="#editCourse">Sửa</button>

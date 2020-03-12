@@ -32,6 +32,7 @@
                                 <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr style="text-align: center">
+                                            <th>STT</th>
                                             <th>Tên</th>
                                             <th>Ngày học đầu tiên</th>
                                             <th>Ngày học gần nhất</th>
@@ -41,7 +42,8 @@
                                     <tbody>
                                     @if($var['users'])
                                         @foreach($var['users'] as $key => $userCourse)
-                                            <tr class="tr">                                                
+                                            <tr class="tr">
+                                                <td>{{(request('page')*15) + $key + 1}}</td>
                                                 <td>
                                                     <p>
                                                         @if(!empty($userCourse->user->avatar))

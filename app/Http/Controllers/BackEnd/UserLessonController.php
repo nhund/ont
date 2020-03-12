@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Models\ExamUser;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\UserCourse;
@@ -18,6 +19,11 @@ use Illuminate\Http\Request;
 
 class UserLessonController extends AdminBaseController
 {
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function detailReport(Lesson $lesson, Request $request){
         $var = [];
         $var['breadcrumb'] = array(
@@ -70,5 +76,29 @@ class UserLessonController extends AdminBaseController
         }else {
             return view('backend.userLesson.theory', ['var' => $var]);
         }
+    }
+
+    /**
+     * @param Lesson $lesson
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function detailReportExam(Lesson $lesson, Request $request)
+    {
+        $var = [];
+        $var['breadcrumb'] = array(
+            array(
+                'url'=> route('admin.userLesson.report.detail', ['lesson' => $lesson->id]),
+                'title' => 'Xem tiến độ',
+            ),
+        );
+        $examUsers = ExamUser::query()->where('lesson_id', $lesson->id)->with(['user', 'exam']);
+        $totalUser = $examUsers->get()->count();
+        $examUsers = $examUsers->paginate(15);
+
+        $var['totalUser'] = $totalUser;
+        $var['examUsers'] = $examUsers;
+
+        return view('backend.userLesson.exam', ['var' => $var]);
     }
 }
