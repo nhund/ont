@@ -34,7 +34,7 @@
                             </form>
                         </div>
                         <div class="panel">
-                            {{--<h4>Tổng số thành viên : {{ number_format(count($var['users'])) }}</h4>--}}
+                            <h4>Tổng số thành viên : {{ number_format($var['totalUser']) }}</h4>
                             <div class="panel-body panel-no-padding">
                                 <table class="table table-striped table-bordered">
                                     <thead>

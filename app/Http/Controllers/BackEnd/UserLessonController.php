@@ -46,6 +46,7 @@ class UserLessonController extends AdminBaseController
                 $q->orWhere('phone', 'LIKE', "%{$keySearch}%");
             });
         }
+        $var['totalUser'] = $userCourses->get()->count();;
 
         $userCourses = $userCourses->orderBy('id', 'DESC')
                             ->paginate(20);
