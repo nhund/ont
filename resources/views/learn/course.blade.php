@@ -97,10 +97,10 @@
                                                     @if($lesson_child->type == \App\Models\Lesson::LESSON)
                                                         <a href="#" onclick="reportLesson(`{{ $lesson_child->id }}`)" class="name ly_thuyet">{{ $lesson_child->name }}</a>
                                                         <div class="topic_progress">
-                                                            @if($lesson_child->turn_right > 1){
+                                                            @if($lesson_child->userLearn->turn_right > 0)
                                                                 <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
                                                             @else
-                                                                @if(isset($lesson_child->userLearnPass)) {{ number_format($lesson_child->userLearnPass) }} @else 0 @endif/{{ number_format($lesson_child->countQuestion) }}
+                                                               {{$lesson_child->turn_right}} @if(isset($lesson_child->userLearnPass)) {{ number_format($lesson_child->userLearnPass) }} @else 0 @endif/{{ number_format($lesson_child->countQuestion) }}
                                                             @endif
                                                         </div>
                                                     @else
