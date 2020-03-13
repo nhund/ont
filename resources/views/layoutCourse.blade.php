@@ -25,6 +25,7 @@
       <link href='{{ web_asset('public/css/styles.css') }}' rel='stylesheet' type='text/css'  media='all'  />      
       <link href="{{ web_asset('public/css/sweetalert.css') }}" rel="stylesheet" type="text/css">
       <link href="{{ web_asset('public/css/toastr.min.css') }}" rel="stylesheet" type="text/css">
+      <link href="{{ web_asset('public/css/font-google.css') }}" rel="stylesheet">
       @stack('css')
    </head>
    <body class="hideresponsive">

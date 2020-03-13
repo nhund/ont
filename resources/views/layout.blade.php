@@ -27,7 +27,7 @@
       <link href='{{ web_asset('public/css/font-awesome.min.css') }}' rel='stylesheet' type='text/css'  media='all'  />
       <link href='{{ web_asset('public/css/styles.css') }}' rel='stylesheet' type='text/css'  media='all'  />
       <link href="{{ web_asset('public/css/sweetalert.css') }}" rel="stylesheet" type="text/css">
-      
+      <link href="{{ web_asset('public/css/font-google.css') }}" rel="stylesheet">
       <!-- Global site tag (gtag.js) - Google Analytics -->
       <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131344708-1"></script>
       <script>

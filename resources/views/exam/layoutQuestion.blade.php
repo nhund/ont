@@ -131,6 +131,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if($var['userExam']->turn >= $var['exam']->repeat_time)
+                                    <div class="score-text ">
+                                        <h4>Bạn đã hết lượt làm bài, vui lòng liên hệ fanpage Ôn thi Ez để được trợ giúp</h4>
+                                    </div>
+                                @endif
                                 <div class="competition ">
                                     <table class="table">
                                         <tbody>
