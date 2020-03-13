@@ -233,27 +233,19 @@
     padding-top: 5px;
 } 
 .box_edit_course{
-    background: #FFFFFF;
-    padding: 20px;
-    display: flex;
-    text-align: center;
-}
-.box_edit_course a{
     width: 330px;
-    height: 55px;   
-    background: #E8EDF2;
-    border: 1px solid #DADDE0;
+    height: 55px;
     box-sizing: border-box;
     border-radius: 4px;
-    padding: 17px 92px;
-    font-family: 'Roboto-Bold';    
+    font-family: 'Roboto-Bold';
     font-weight: 500;
     line-height: normal;
     font-size: 16px;
     text-align: center;
     text-transform: uppercase;
-
+    padding: 10px;
 }
+
 #course_learn .box_teacher{
     background: #FFFFFF;
     padding: 20px;        
@@ -347,8 +339,8 @@
 }
 #course_learn .box_rating .rating .star-rating .send_rating{
     cursor: pointer;
-    width: 100%;
-    display: none;
+    /*width: 100%;*/
+    /*display: none;*/
 }
 
 #myNav .title, #exam-modal .title{

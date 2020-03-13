@@ -1,10 +1,10 @@
 @if($var['support'] || Auth::user()->level == \App\User::USER_ADMIN || $var['course']->user_id == Auth::user()->id)
-<div class="box_edit_course">
-    <a href="{{ route('course.detail',['id'=>$var['course']->id]) }}">
-        <img src="{{ web_asset('public/images/course/icon/icon-edit_course.png') }}">
-        Sửa khóa học
-    </a>
-</div>    
+   <div style="text-align: center; background: #E8EDF2;padding: 10px;">
+       <a class="box_edit_course" href="{{ route('course.detail',['id'=>$var['course']->id]) }}">
+           <img src="{{ web_asset('public/images/course/icon/icon-edit_course.png') }}">
+           Sửa khóa học
+       </a>
+   </div>
 @endif
 
 <div id="rating" class="box_rating">
@@ -15,12 +15,11 @@
     <div class="rating">
         <div class="star-rating">
             <input type="hidden" name="rating_value" class="rating-value" value="">
-            <span class="fa fa-star" data-rating="1"></span>
-            <span class="fa fa-star" data-rating="2"></span>
-            <span class="fa fa-star" data-rating="3"></span>
-            <span class="fa fa-star" data-rating="4"></span> 
-            <span class="fa fa-star" data-rating="5"></span>
-            <div class="fa send_rating" title="Gửi đánh giá">Gửi</div> 
+            <span class="send_rating fa fa-star {{$var['my_rating'] >= 1 ? 'checked':''}}"  data-rating="1"></span>
+            <span class="send_rating fa fa-star {{$var['my_rating'] >= 2 ? 'checked':''}}" data-rating="2"></span>
+            <span class="send_rating fa fa-star {{$var['my_rating'] >= 3 ? 'checked':''}}" data-rating="3"></span>
+            <span class="send_rating fa fa-star {{$var['my_rating'] >= 4 ? 'checked':''}}" data-rating="4"></span>
+            <span class="send_rating fa fa-star {{$var['my_rating'] >= 5 ? 'checked':''}}" data-rating="5"></span>
         </div>
         <p>Hãy đánh giá</p>
     </div>
