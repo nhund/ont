@@ -102,9 +102,9 @@ $(document).ready(function () {
                         });
                     }else{
                         swal({
-                            title:result.message,
-                            timer: 5000,
-                            type : 'error',
+                                 title: result.error.email[0],
+                                 timer: 3000,
+                                 type : 'error',
                         })
                     }
                 },

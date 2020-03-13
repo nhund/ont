@@ -63,9 +63,9 @@
                 @foreach($questions as $quest)
                 <tr class="row-doc">
                     @if($quest->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
-                        <td width="50%">{{ $loop->iteration }}. {!! $quest->question !!}</td>
+                        <td width="30%">{{ $loop->iteration }}. {!! $quest->question !!}</td>
                     @else
-                        <td width="50%">{{ $loop->iteration }}. {!! $quest->content !!}</td>
+                        <td width="30%">{{ $loop->iteration }}. {!! $quest->content !!}</td>
                     @endif
                     <td>
                         @if ($quest->type == \App\Models\Question::TYPE_DIEN_TU)
@@ -101,13 +101,16 @@
                             <p>{!! $quest->question !!}</p>
                         @endif
                     </td>
-                    <td>
+                    <td width="100">
                         <div class="question_edit" data-id="{{ $quest->id }}">
                             <a href="{{ route('admin.question.edit',['id'=>$quest->id]) }}">
                                 <i class="fa fa-edit"></i>
                                 Sửa
                             </a>
                         </div>
+                        @if($quest->questionLog)
+                            <p>Đúng : {{$quest->questionLog->correct_number}}/{{$quest->questionLog->total_turn}}</p>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

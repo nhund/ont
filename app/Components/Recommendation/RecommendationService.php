@@ -68,71 +68,73 @@ class RecommendationService
             $this->lesson = $this->_getLessonLogUser($course, $user);
         }
 
+        // kiem tra xem co ly thuyet trong bai hoc ko
+        $theories = Lesson::where('course_id',$course->id)
+            ->where('parent_id',$this->lesson->id)
+            ->where('is_exercise',Lesson::IS_DOC)
+            ->orderBy('order_s','ASC')
+            ->orderBy('created_at','ASC')
+            ->get();
+
+        if(count($theories) > self::TURN)
+        {
+            foreach ($theories as $theory) {
+                //kiem tra xem bai nay da hoc ly thuyet chua
+                //$check_lesson_log = in_array($lesson->id, $lesson_log);
+                $checkTheory = UserLessonLog::where('user_id',$user->id)
+                    ->where('course_id',$course->id)
+                    ->where('pass_ly_thuyet',UserLessonLog::PASS_LY_THUYET)
+                    ->where('lesson_id',$theory->id)
+                    ->first();
+
+                if(!$checkTheory && !empty($this->lesson->description))
+                {
+                    $var['course'] = $course;
+                    $var['lesson'] = $theory;
+                    return $var;
+                }
+            }
+        }
+
         $questionLearnedLogs = UserQuestionLog::where('course_id',$course->id)
+            ->active()
             ->where('user_id',$user->id)
             ->where('lesson_id', $this->lesson->id)
             ->groupBy('question_parent')->get()
             ->pluck('question_parent')->toArray();
 
-            // kiem tra xem co ly thuyet trong bai hoc ko
-            $theories = Lesson::where('course_id',$course->id)
-                ->where('parent_id',$this->lesson->id)
-                ->where('is_exercise',Lesson::IS_DOC)
+        if($this->lesson->is_exercise == Lesson::IS_EXERCISE)
+        {
+            //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
+            $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
+                ->typeAllow()
+                ->where('parent_id', Question::PARENT_ID)
+                ->where('lesson_id',$this->lesson->id)
                 ->orderBy('order_s','ASC')
-                ->orderBy('created_at','ASC')
-                ->get();
+                ->orderBy('id','ASC')->count();
 
-            if(count($theories) > self::TURN)
+            if($check_has_question > self::TURN)
             {
-                foreach ($theories as $theory) {
-                    //kiem tra xem bai nay da hoc ly thuyet chua
-                    //$check_lesson_log = in_array($lesson->id, $lesson_log);
-                    $checkTheory = UserLessonLog::where('user_id',$user->id)
-                        ->where('course_id',$course->id)
-                        ->where('pass_ly_thuyet',UserLessonLog::PASS_LY_THUYET)
-                        ->where('lesson_id',$theory->id)
-                        ->first();
 
-                    if(!$checkTheory && !empty($this->lesson->description))
-                    {
-                        $var['course'] = $course;
-                        $var['lesson'] = $theory;
-                        return $var;
-                    }
-                }
-            }
+//                //lay cac cau hoi da lam
+//                $question_log = UserQuestionLog::where('user_id',$user->id)
+//                    ->active()
+//                    ->where('lesson_id',$this->lesson->id)->get()
+//                    ->pluck('question_parent')->toArray();
 
-            if($this->lesson->is_exercise == Lesson::IS_EXERCISE)
-            {
-                //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
-                $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
+                $questions = Question::where('lesson_id', $this->lesson->id)
                     ->typeAllow()
                     ->where('parent_id', Question::PARENT_ID)
-                    ->where('lesson_id',$this->lesson->id)
-                    ->orderBy('order_s','ASC')
-                    ->orderBy('id','ASC')->count();
+                    ->whereNotIn('id',$questionLearnedLogs)->orderBy('order_s','ASC')
+                    ->orderBy('id','ASC')->take($limit)->get();
 
-                if($check_has_question > self::TURN)
-                {
+                $getQuestionDetail = $this->_getQuestion($user, $questions, $questionLearnedLogs);
 
-                    //lay cac cau hoi da lam
-                    $question_log = UserQuestionLog::where('user_id',$user->id)
-                        ->where('lesson_id',$this->lesson->id)->get()
-                        ->pluck('question_parent')->toArray();
-
-                    $questions = Question::where('lesson_id', $this->lesson->id)
-                        ->typeAllow()
-                        ->where('parent_id', Question::PARENT_ID)
-                        ->whereNotIn('id',$question_log)->orderBy('order_s','ASC')
-                        ->orderBy('id','ASC')->take($limit)->get();
-
-                    $getQuestionDetail = $this->_getQuestion($user, $questions, $question_log);
-
-                    $getQuestionDetail['type'] = Question::LEARN_LAM_BAI_MOI;
-                    return $getQuestionDetail;
-                }
+                $getQuestionDetail['type'] = Question::LEARN_LAM_BAI_MOI;
+                return $getQuestionDetail;
             }
-            return null;
+        }
+        return null;
 
     }
 
@@ -477,6 +479,7 @@ class RecommendationService
     public function __getWrongQuestions($course, $lesson, $user, $limit = 10)
     {
         $question = UserQuestionLog::where('course_id',$course->id)
+            ->active()
             ->where('user_id',$user->id)
             ->where('lesson_id',$lesson->id)
             ->where('status',Question::REPLY_ERROR)

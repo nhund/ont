@@ -9,12 +9,14 @@ use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\UserCourse;
 use App\Models\Course;
+use App\Models\UserQuestionLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TeacherSupport;
 use App\User;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\DB;
 
 class LessonController extends AdminBaseController
 {
@@ -36,19 +38,24 @@ class LessonController extends AdminBaseController
         if (!$lesson) {
             return redirect()->route('dashboard');
         }
-        $var['page_title']          = 'Chi tiết khóa học '.$lesson->course['name'];
-        $var['course']              = $lesson->course;
-        $var['lesson']              = $lesson;
-        $question                   = Question::where('lesson_id', '=', $lesson->id)
+        $var['page_title'] = 'Chi tiết khóa học ' . $lesson->course['name'];
+        $var['course']     = $lesson->course;
+        $var['lesson']     = $lesson;
+        $question          = Question::where('lesson_id', '=', $lesson->id)
         ->typeAllow()
-        ->where('parent_id',0)->orderBy('order_s','ASC')
+        ->where('parent_id',Question::PARENT_ID)->orderBy('order_s','ASC')
         ->orderBy('id','ASC')->paginate(30);
+
         foreach($question as $q) {
             $q->subs = Question::where('lesson_id', '=', $lesson->id)
                 ->typeAllow()
                 ->where('parent_id', '=', $q->id)->get();
+
+            $q->questionLog = UserQuestionLog::select(DB::raw('sum(correct_number) as correct_number, sum(total_turn) as total_turn'))
+                ->where('lesson_id', $lesson->id)
+                ->where('question_parent',  $q->id)->first();
         }
-        //$userCourse = UserCourse::where('course_id',$lesson->course_id)->count();
+
         $var['questions']           = $question;
         $var['user_course']         = $lesson->user_course->count();
         $var['course_lesson']       = Lesson::getCourseLesson($lesson->course['id']);

@@ -100,7 +100,7 @@ class QuestionAnswerService
             //tong so cau hoi user da lam
             $userQuestionLog = UserQuestionLog::where('lesson_id', $lessonId)->active()->where('user_id', $user->id)->count();
             if ($lesson_questions == $userQuestionLog) {
-                UserQuestionLog::where('lesson_id', $lessonId)->where('user_id', $user->id)->update('status_delete', UserQuestionLog::INACTIVE);
+                UserQuestionLog::where('lesson_id', $lessonId)->where('user_id', $user->id)->update(['status_delete' => UserQuestionLog::INACTIVE]);
             }
 
             $bookmarkQuestion = UserQuestionBookmark::where('user_id', $user->id)
@@ -334,7 +334,7 @@ class QuestionAnswerService
     {
         $userId      = $this->request->user()->id;
         $type        = $this->request->get('type');
-        $questionLog = UserQuestionLog::where('user_id', $userId)->active()->where('question_id', $data['question_id'])->first();
+        $questionLog = UserQuestionLog::where('user_id', $userId)->where('question_id', $data['question_id'])->first();
         if ($questionLog) {
             $questionLog->status      = $data['status'];
             $questionLog->update_time = time();
