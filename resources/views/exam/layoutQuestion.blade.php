@@ -109,27 +109,34 @@
             <section id="hoclythuyet" style="background: #35365e; min-height: 100vh;" class="clearfix flash_card">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-offset-2 col-lg-8 col-md-8 col-sm-8 col-xs-8 pd5 box_do_learn"
+                        <div class="col-sm-offset-2 col-lg-8 col-md-8 col-sm-8 col-xs-12 pd5 box_do_learn"
                              style="background: #35365e">
                             <div class="ket-qua">
                                 <?php $score = $var['overtime'] ? $var['userExam']->highest_score : $var['userExam']->score?>
 
                                 <div class="congratulation {{$score >= $var['exam']->min_score ? 'passed' : 'failed'}}">
-                                    @if($score >= $var['exam']->min_score)
-                                        <P class="title"><strong>Chúc mừng bạn</strong></P>
-                                        <P class="title"><strong>ĐÃ VƯỢT QUA BÀI KIỂM TRA</strong></P>
-                                    @else
-                                        <P class="title"><strong>Bạn <span class="score-text">không</span> vượt qua</strong></P>
-                                    @endif
-                                    <div class="row">
-                                        <div class="col-md-6 score-1">
-                                            <h1><strong class="score">{{$score}}</strong></h1>
-                                        </div>
-                                        <div class="col-md-6 title-score">
-                                            <h2><span class="score-text"><strong>Điểm</strong></span></h2>
-                                            <span><strong class="minute-1">{{ $var['userExam']->doing_time}}  Phút</strong></span>
-                                        </div>
+                                    <div class="col-xs-12" style="z-index: 10000;">
+                                        @if($score >= $var['exam']->min_score)
+                                            <P class="title"><strong>Chúc mừng bạn</strong></P>
+                                            <P class="title"><strong>ĐÃ VƯỢT QUA BÀI KIỂM TRA</strong></P>
+                                        @else
+                                            <P class="title"><strong>Bạn <span class="score-text">không</span> vượt qua</strong></P>
+                                        @endif
                                     </div>
+
+                                   <div class="row">
+                                       <div class="col-xs-6 " >
+                                           <div class="score-1">
+                                               <h1><strong class="score">{{$score}}</strong></h1>
+                                           </div>
+                                       </div>
+                                       <div class="col-xs-6" style="z-index: 10000; padding-left: 0;">
+                                           <div class=" title-score">
+                                               <h2><span class="score-text"><strong>Điểm</strong></span></h2>
+                                               <span><strong class="minute-1">{{ $var['userExam']->doing_time}}  Phút</strong></span>
+                                           </div>
+                                       </div>
+                                   </div>
                                 </div>
                                 @if($var['userExam']->turn >= $var['exam']->repeat_time)
                                     <div class="score-text ">
