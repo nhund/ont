@@ -216,7 +216,7 @@ function addLevel2() {
        method: 'POST',
        success: function (response) {
            if (response.status) {
-               // window.location.href = '/admin/lesson/'+response.id;
+               window.location.href = '/admin/lesson/'+response.id;
            }
        }
    });

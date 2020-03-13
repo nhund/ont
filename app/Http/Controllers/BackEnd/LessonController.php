@@ -179,9 +179,11 @@ class LessonController extends AdminBaseController
             $params = $request->only(['minutes', 'parts', 'repeat_time', 'stop_time', 'total_score', 'start_time_at', 'end_time_at', 'min_score', 'total_question']);
             $params['lesson_id'] = $lesson->id;
             Exam::updateOrCreateExam($params);
+
+            return redirect()->route('exam.detail', ['id' => $lesson->id]);
         }
 
-        return redirect()->back();
+         return redirect()->route('lesson.detail', ['id' => $lesson->id]);
     }
 
     public function deleteLesson($id) {
