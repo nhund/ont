@@ -114,7 +114,8 @@ class ExamController extends Controller
      */
     public function submitExam(Lesson $lesson, Request $request)
     {
-        $userExam = ExamUser::where('lesson_id', $lesson->id)->first();
+        $userExam = ExamUser::where('lesson_id', $lesson->id)
+            ->where('user_id', $request->user()->id)->first();
 
         $userExam->last_at = now();
         $userExam->status = ExamUser::INACTIVE;
@@ -134,7 +135,8 @@ class ExamController extends Controller
      */
     public function stopExam(Lesson $lesson, Request $request)
     {
-        $userExam = ExamUser::where('lesson_id', $lesson->id)->first();
+        $userExam = ExamUser::where('lesson_id', $lesson->id)
+            ->where('user_id', $request->user()->id)->first();
 
         $exam  = Exam::where('lesson_id', $lesson->id)->first();
 
@@ -158,7 +160,8 @@ class ExamController extends Controller
      */
     public function restartExam(Lesson $lesson, Request $request)
     {
-        $userExam = ExamUser::where('lesson_id', $lesson->id)->first();
+        $userExam = ExamUser::where('lesson_id', $lesson->id)
+            ->where('user_id', $request->user()->id)->first();
 
         if ($userExam->status_stop === ExamUser::ACTIVE){
             throw new BadRequestException('Bài kiểm tra vẫn đang chạy.');
