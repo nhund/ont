@@ -130,16 +130,15 @@ $(document).ready(function(){
             data: data,
             success: function (data) {
                 $('.question_type').hide();
-                            //console.log(parseInt(key+1));
-                            $('.question_type.question_stt_'+parseInt(key+1)).show();
-                            document.getElementById('correct-answer').play()
-                            upCountQuestion();
-                        },
-                        error: function (e) {
-                        }
-                    }).always(function () {
-                    });
-                });
+                //console.log(parseInt(key+1));
+                $('.question_type.question_stt_'+parseInt(key+1)).show();
+                document.getElementById('correct-answer').play()
+                upCountQuestion();
+            },
+            error: function (e) {}
+        }).always(function () {});
+    });
+
     var submit_doc_loadding = false;
     //submit doc
     $('#hoclythuyet .btn_submit_doc').on('click',function(e){
@@ -163,13 +162,11 @@ $(document).ready(function(){
                         $this.parent('form').submit();
                     }
                 },
-                error: function (e) {
-                }
+                error: function (e) {}
             }).always(function () {
                 submit_doc_loadding = false;
             });
         }
-        
     });
 
     //hien thi goi y trac nghiem
