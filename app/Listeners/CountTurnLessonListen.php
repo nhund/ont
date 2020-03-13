@@ -25,11 +25,13 @@ class CountTurnLessonListen
             'user_id' => $user->id,
             'lesson_id' => $question->lesson_id
         ])
+        ->active()
         ->orderBy('total_turn', 'ASC')
         ->orderBy('correct_number', 'ASC')
         ->first();
 
         $correctQuestions = UserQuestionLog::where('user_id', $user->id)
+            ->active()
             ->where('lesson_id',$question->lesson_id)
             ->where('status',Question::REPLY_OK)
             ->groupBy('question_parent')->get();
@@ -46,9 +48,7 @@ class CountTurnLessonListen
             $userLesson->turn_right += 1;
             UserQuestionLog::where('user_id', $user->id)
                 ->where('lesson_id',$question->lesson_id)
-                ->where('status',Question::REPLY_OK)
-                ->groupBy('question_parent')->delete();
-
+                ->update('status_delete', UserQuestionLog::INACTIVE);
             $update = true;
         }
 

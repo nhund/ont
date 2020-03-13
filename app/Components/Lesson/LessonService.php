@@ -100,6 +100,7 @@ class LessonService
     {
         $correct = $wrong = 0;
         $userQuestions =  UserQuestionLog::select('status', \DB::raw('count(status) as total'))
+            ->active()
             ->where('lesson_id', $this->lesson->id)
             ->where('user_id', $this->user->id)
             ->groupBy('status')

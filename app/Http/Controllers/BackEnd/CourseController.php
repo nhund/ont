@@ -411,11 +411,11 @@ class CourseController extends AdminBaseController
         foreach($users as $user)
         {
             //kiem tra ngay hoc gan nhat\
-            $user->learn_last_time = UserQuestionLog::where('user_id',$user->id)->where('course_id',$id)->orderBy('update_time','DESC')->first();
+            $user->learn_last_time = UserQuestionLog::where('user_id',$user->id)->active()->where('course_id',$id)->orderBy('update_time','DESC')->first();
             //kiem tra xem user lam tat ca bao nhieu cau
-            $user->userLearn = UserQuestionLog::where('user_id',$user->id)->where('course_id',$id)->groupBy('question_parent')->get()->count();            
+            $user->userLearn = UserQuestionLog::where('user_id',$user->id)->active()->where('course_id',$id)->groupBy('question_parent')->get()->count();
             //kiem tra xem user lam dung bao nhieu cau
-            $user->userLearn_true = UserQuestionLog::where('user_id',$user->id)->where('course_id',$id)->where('status',Question::REPLY_OK)->groupBy('question_parent')->get()->count();
+            $user->userLearn_true = UserQuestionLog::where('user_id',$user->id)->active()->where('course_id',$id)->where('status',Question::REPLY_OK)->groupBy('question_parent')->get()->count();
             //kiem tra luot lam cua user
             $user_lesson = UserLessonLog::where('user_id',$user->id)->where('course_id',$id)->get();
             //kiem tra luot lam cao nhat

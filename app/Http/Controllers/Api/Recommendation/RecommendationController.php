@@ -121,6 +121,7 @@ class RecommendationController extends Controller
         $this->authorize('permission', $course);
 
         $questionDid = UserQuestionLog::where('course_id', $course->id)
+            ->active()
             ->where('user_id', $request->user()->id);
 
         $questionsIds = $questionDid->get()->pluck('question_parent')->toArray();
@@ -131,6 +132,7 @@ class RecommendationController extends Controller
             ->count();
 
         $wrongQuestions = UserQuestionLog::where('course_id', $course->id)
+            ->active()
             ->where('user_id', $request->user()->id)
             ->where('status', Question::REPLY_ERROR)
             ->count();
@@ -141,6 +143,7 @@ class RecommendationController extends Controller
             ->count();
 
         UserQuestionLog::where('course_id', $course->id)
+            ->active()
             ->where('status', Question::REPLY_OK)
             ->count();
 

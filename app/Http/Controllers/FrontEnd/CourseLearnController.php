@@ -138,7 +138,7 @@ class CourseLearnController extends Controller
                         $show_on_tap = true;
                     }
                 }
-                $userLearn = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->groupBy('question_parent')->get();
+                $userLearn = UserQuestionLog::where('user_id',$user->id)->active()->where('lesson_id',$lesson_child->id)->groupBy('question_parent')->get();
                 $countLearnTrue =  $userLearn->where('status',Question::REPLY_OK)->count();
                 $lesson_child->countQuestion = $countQuestion;
                 $lesson_child->userLearn = $userLessonLog;
@@ -161,7 +161,7 @@ class CourseLearnController extends Controller
         //count so cau bookmark
         $var['user_learn_bookmark'] = UserQuestionBookmark::where('user_id',$user->id)->where('course_id',$id)->count();
         //lay tat ca cau sau cua user
-        $questionErrors = UserQuestionLog::where('course_id',$id)
+        $questionErrors = UserQuestionLog::where('course_id',$id)->active()
                         ->where('user_id',$user->id)                                                
                         ->where('status',Question::REPLY_ERROR)                        
                         ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
@@ -532,6 +532,7 @@ class CourseLearnController extends Controller
             {
                 $questionLearnedLogs = UserQuestionLog::where('course_id',$id)
                     ->where('user_id',$user->id)
+                    ->active()
                     ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
                 //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
                 $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
@@ -884,7 +885,7 @@ class CourseLearnController extends Controller
 
         }
 
-        $questionLog = UserQuestionLog::where('user_id',$user->id)->where('question_id',$data['question_id'])->first();
+        $questionLog = UserQuestionLog::where('user_id',$user->id)->active()->where('question_id',$data['question_id'])->first();
         if($questionLog)
         {
             $questionLog->status = $data['status'];
@@ -931,6 +932,7 @@ class CourseLearnController extends Controller
                     array_push($questionlearnedIds, $data['question_parent']);
                     //lay tat ca cac cau hoi da lam 
                     $questionLogs = UserQuestionLog::where('course_id',$data['course_id'])
+                        ->active()
                         ->where('user_id',$user->id)                        
                         ->groupBy('question_parent')->get()->count();
                     if($questionLogs == count($questionlearnedIds))
@@ -987,7 +989,7 @@ class CourseLearnController extends Controller
             $lesson_log->count_question_true += 1;
             $lesson_log->save();
             //dem so cau tra loi dung cua user trong lesson
-            $countUserLearnPass = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$data['lesson_id'])->where('status',QuestionAnswer::REPLY_OK)->count();
+            $countUserLearnPass = UserQuestionLog::where('user_id',$user->id)->active()->where('lesson_id',$data['lesson_id'])->where('status',QuestionAnswer::REPLY_OK)->count();
             if($countUserLearnPass >= $lesson_questions)
             {
                 // lam dung het tat ca cau hoi. reset tong so cau tra loi dung
@@ -998,7 +1000,7 @@ class CourseLearnController extends Controller
             }
         }
         // xem user lam het luot chua
-        $userQuestionLog = UserQuestionLog::where('lesson_id',$data['lesson_id'])->where('user_id',$user->id)->count();
+        $userQuestionLog = UserQuestionLog::where('lesson_id',$data['lesson_id'])->active()->where('user_id',$user->id)->count();
         if($userQuestionLog >= $lesson_questions)
         {
             //$lesson_log->count_all += 1;
@@ -1076,7 +1078,7 @@ class CourseLearnController extends Controller
                 $question_child = Question::where('lesson_id',$lesson_child->id)->where('parent_id',0)->get();
                 $countQuestion = $question_child->count();
                 //dd($question_child->pluck('id')->toArray());
-                $userLearn = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->groupBy('question_parent')->get();
+                $userLearn = UserQuestionLog::where('user_id',$user->id)->active()->where('lesson_id',$lesson_child->id)->groupBy('question_parent')->get();
                 //lay log lesson
                 $userLessonLog = UserLessonLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->first();
                 if($userLessonLog)
@@ -1090,7 +1092,7 @@ class CourseLearnController extends Controller
                 $countLearnTrue = count($userLearn) - $countLearnError;
                 $lesson_child->countQuestion = $countQuestion;
                 $lesson_child->userLearn = $userLessonLog;
-                $lesson_child->userLearnPass = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->where('status',QuestionAnswer::REPLY_OK)->count();
+                $lesson_child->userLearnPass = UserQuestionLog::where('user_id',$user->id)->active()->where('lesson_id',$lesson_child->id)->where('status',QuestionAnswer::REPLY_OK)->count();
                 $total_question += $countQuestion;
                 $total_user_learn += $countLearnTrue;
                 //kiem tra xem da hoc ly thuyet chua
@@ -1110,6 +1112,7 @@ class CourseLearnController extends Controller
 
         //lay tat ca cau sau cua user
         $questionErrors = UserQuestionLog::where('course_id',$courseId)
+            ->active()
             ->where('user_id',$user->id)
             ->where('status',Question::REPLY_ERROR)
             ->groupBy('question_parent')->get()
@@ -1200,6 +1203,7 @@ class CourseLearnController extends Controller
             $countQuestion  = $question_child->count();
 
             $userLearn = UserQuestionLog::where('user_id', $user->id)->where('lesson_id', $lesson_child->id)
+                ->active()
                 ->groupBy('question_parent')->get();
 
             //lay log lesson
@@ -1211,6 +1215,7 @@ class CourseLearnController extends Controller
             $lesson_child->countQuestion = $countQuestion;
             $lesson_child->userLearn     = $userLessonLog;
             $lesson_child->userLearnPass = UserQuestionLog::where('user_id', $user->id)->where('lesson_id', $lesson_child->id)
+                ->active()
                 ->where('status', QuestionAnswer::REPLY_OK)->count();
 
             $total_question   += $countQuestion;
