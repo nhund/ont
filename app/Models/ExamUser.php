@@ -47,7 +47,6 @@ class ExamUser extends Model
     public function getStillTimeAttribute()
     {
         $seconds = ($this->time*60) + $this->getOriginal('second_stop');
-        dd($seconds, $this->getOriginal('begin_at'), request()->user());
         return date('Y-m-d H:i:s',$this->getOriginal('begin_at') ? strtotime($this->getOriginal('begin_at')) + $seconds : $seconds);
     }
 
