@@ -9,9 +9,6 @@
                         <div class="name">
                             <div class="box_head">
                                 <div title="{{ $var['lesson']->name }}" class="title">{{ $var['lesson']->name }}</div>
-                                <div class="course_process">Đã làm
-                                    <span class="count_question_done">0</span>/<span class="total_question">{{ count($var['questions']) }}</span>
-                                </div>
                             </div>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="70"
