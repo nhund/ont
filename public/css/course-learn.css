@@ -535,8 +535,8 @@
 }
 #myNav .overlay-footer .offer-course{
     background: #18C305;
-    width: 215px !important;
-    height: 55px;
+    /*width: 215px !important;*/
+    /*height: 55px;*/
     border-radius: 4px;
     margin-right: 10px;
     display: flex;
@@ -556,8 +556,8 @@
     cursor: pointer;
 }
 #myNav .overlay-content .total {
-    width: 290px;
-    height: 158px;
+    /*width: 290px;*/
+    /*height: 158px;*/
     border-radius: 4px;
     margin-right: 10px;
     display: flex;
