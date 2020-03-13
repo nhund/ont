@@ -4,7 +4,7 @@
          {!! $question->content !!}
       </div>
       @if(!empty($question->audio_content))
-           <audio controls preload="metadata" style="width: 100%;">
+           <audio data-audio controls preload="metadata" style="width: 100%;">
                <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
            </audio>
       @endif
@@ -55,7 +55,7 @@
             <p>{!! $question_child->question !!}</p>
          </div>
          @if(!empty($question_child->audio_question))
-              <audio controls preload="metadata" style="width: 100%;">
+              <audio data-audio controls preload="metadata" style="width: 100%;">
                   <source data-size="60" src="{{ web_asset($question_child->audio_question) }}" type="audio/mpeg">
               </audio>
          @endif
@@ -117,7 +117,7 @@
          <p>{!! $question_child_child->question !!}</p>
       </div>
       @if(!empty($question_child_child->audio_question))
-           <audio controls preload="metadata" style="width: 100%;">
+           <audio data-audio controls preload="metadata" style="width: 100%;">
                <source data-size="60" src="{{ web_asset($question_child_child->audio_question) }}" type="audio/mpeg">
            </audio>
       @endif

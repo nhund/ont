@@ -4,7 +4,7 @@
          {!! $question->content !!}
       </div>
       @if(!empty($question->audio_content))
-           <audio controls preload="metadata" style="width: 100%;">
+           <audio data-audio controls preload="metadata" style="width: 100%;">
                <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
            </audio>
       @endif

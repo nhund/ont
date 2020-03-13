@@ -34,7 +34,7 @@
                     {!! $var['lesson']->description !!}                    
                     @if(!empty($var['lesson']->audio))
                     <p>Audio :</p>
-                        <audio controls preload="metadata" style="width: 100%;">
+                        <audio data-audio controls preload="metadata" style="width: 100%;">
                             <source data-size="60" src="{{ web_asset('public/'.$var['lesson']->audio) }}" type="audio/mpeg">
                         </audio>
                     @endif
