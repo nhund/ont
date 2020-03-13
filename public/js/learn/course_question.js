@@ -76,37 +76,7 @@ $(document).ready(function(){
                 $this.addClass('before');
                 $this.closest('.flash_content').find('.box_flash .box_suggest .suggest_before').show();                                
             }
-            
-            
         }
-        // if($this.closest('.flash_content').find('.box_flash .image .box_before').is(':visible'))
-        // {            
-        //     if($this.hasClass('before'))
-        //     {
-        //         $this.removeClass('before');
-        //         $this.closest('.flash_content').find('.box_flash .image .suggest_before').hide();                
-
-        //     }else{
-        //         $this.addClass('before');
-        //         $this.closest('.flash_content').find('.box_flash .image .suggest_before').show();
-
-        //     }
-        // }
-        // if($this.closest('.flash_content').find('.box_flash .image .box_after').is(':visible'))
-        // {
-
-        //     if($this.hasClass('after'))
-        //     {
-        //         $this.removeClass('after');
-
-        //         $this.closest('.flash_content').find('.box_flash .image .suggest_after').hide();
-
-        //     }else{
-        //         $this.addClass('after');
-
-        //         $this.closest('.box_flash').find('.box_flash .image .suggest_after').show();
-        //     }
-        // }        
     });
     //suggest flash card muti
     //goi y cho noi dung
@@ -138,10 +108,8 @@ $(document).ready(function(){
             }else{ 
                 $this.addClass('before');
                 $this.closest('.box_flash').find('.box_suggest .suggest_before').show();
-                
             }
         }
-            
     });
 
     var submit_question = false;
@@ -263,8 +231,7 @@ $(document).ready(function(){
                     {                        
                         var box_interpret_all = $this.closest('.form_trac_nghiem').find('.head_content .box_interpret_all');                                                
                         box_interpret_all.find('span').append(data.interpret_all);                        
-                        //console.log($('#box_interpret_all_'+data.question_id).html());
-                        var format_content_temp = document.getElementById('box_interpret_all_'+data.question_id); 
+                        var format_content_temp = document.getElementById('box_interpret_all_'+data.question_id);
                         MathJax.Hub.Queue(["Typeset",MathJax.Hub,format_content_temp]);
                         box_interpret_all.show();
                     }
@@ -319,7 +286,6 @@ $(document).ready(function(){
         e.preventDefault();
         var $this = $(this);                
         var form = $this.closest('.form_dien_tu').serializeArray();  
-        //console.log(form); return;
         var key = parseInt($this.closest('.question_type').attr('data-key'));
         var data = form;
         $.ajax({
@@ -333,7 +299,6 @@ $(document).ready(function(){
                 {
                     // hien thi giai thich chung
                     var box_interpret_all = $this.closest('form').find('.head_content .box_interpret_all');                                                
-                        //box_interpret_all.find('span').append(data.interpret_all);                        
                     box_interpret_all.show();
 
                     upCountQuestion($this);
@@ -429,7 +394,6 @@ $(document).ready(function(){
                 {
                     // hien thi giai thich chung
                     var box_interpret_all = $this.closest('form').find('.head_content .box_interpret_all');                                                
-                        //box_interpret_all.find('span').append(data.interpret_all);                        
                     box_interpret_all.show();
 
                     upCountQuestion($this);
@@ -441,18 +405,15 @@ $(document).ready(function(){
                             {
                                 var tpl = '<span class="answer_error_box sucess"><span class="answer_true">'+val2.answer+'</span><span>';
                                 input_answer.before(tpl);
-                                //input_answer.addClass('true').prop('readonly', true);
                                 input_answer.hide();
 
                             }else{
                                 flagAnswer = false;
                                 var tpl = '<span class="answer_error_box"><span class="answer_error">'+val2.input+'</span><span class="answer_true">'+val2.answer+'</span><span>';
                                 input_answer.before(tpl);
-                                //input_answer.val(val2.answer).addClass('error').prop('readonly', true);
                                 input_answer.hide();
                             }
                             var box_interpret_child = $('.box_interpret_'+key);
-                            //box_interpret_child.find('span').append(val.interpret);
                             box_interpret_child.show();
                         });                        
                     });
