@@ -162,7 +162,10 @@ class ExamController
 
         $exam = Exam::where('lesson_id', $params['lesson_id'])->first();
 
-        $examPart = ExamPart::select(DB::raw('sum(score) as total_score'))->where('lesson_id', $params['lesson_id'])->groupBy('lesson_id')->first();
+        $examPart = ExamPart::select(DB::raw('sum(score) as total_score'))
+                    ->where('lesson_id', $params['lesson_id'])
+                    ->whereNotIn('id', [$request->get('id')])
+                    ->groupBy('lesson_id')->first();
 
         $totalScore = $examPart ? $examPart->total_score + (int) $params['score'] : (int) $params['score'];
 
