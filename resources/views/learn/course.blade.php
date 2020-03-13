@@ -201,29 +201,29 @@
                     <p data-exam="des"></p>
                 </div>
             </div>
-          <div class="overlay-content row">
-              <div class="total total-question">
+          <div class="overlay-content">
+              <div class="total total-question col-xs-3 col-lg-2 col-md-2 col-sm-3">
                   <div class="title">
                       <p>Số câu</p>
                       <p data-exam="number_question"></p>
                   </div>
                   <i class="fa fa-circle circle" aria-hidden="true" style=" color: #2bd6fe;"></i>
               </div>
-              <div class="total total-question-did">
+              <div class="total total-question-did col-xs-3 col-lg-2 col-md-2 col-sm-3">
                   <div class="title">
-                      <p>Thời gian (Phút)</p>
+                      <p>Thời gian</p>
                       <p data-exam="minutes"></p>
                   </div>
                   <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fa7a1d;"></i>
               </div>
-              <div class="total total-question-correct">
+              <div class="total total-question-correct col-xs-3 col-lg-2 col-md-2 col-sm-3">
                   <div class="title">
                       <p>Số lần làm lại</p>
                       <p data-exam="time_repeat"></p>
                   </div>
                   <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fce747;"></i>
               </div>
-              <div class="total min-score">
+              <div class="total min-score col-xs-3 col-lg-2 col-md-2 col-sm-3">
                   <div class="title">
                       <p>Điểm tối thiểu</p>
                       <p data-exam="min_score"></p>
@@ -232,14 +232,14 @@
               </div>
           </div>
 
-            <div class="overlay-footer row footer-1">
-                <a class="offer-course did-1"  onclick="closeNav('exam-modal')">
+            <div class="overlay-footer footer-1">
+                <a class="offer-course did-1 col-xs-4 col-lg-2 col-md-2 col-sm-2"  onclick="closeNav('exam-modal')">
                     <div style="text-align: left">
                         <p></p>
                         <p class="content" >Để sau</p>
                     </div>
                 </a>
-                <a class="offer-course do-false-1" title="Làm lại câu sai" id="data-exam-href" data-exam="href">
+                <a class="offer-course do-false-1 col-xs-4 col-lg-2 col-md-2 col-sm-2" title="Làm lại câu sai" id="data-exam-href" data-exam="href">
                     <div style="text-align: left">
                         <p></p>
                         <p class="content" >Làm ngay</p>

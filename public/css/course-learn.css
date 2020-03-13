@@ -546,7 +546,7 @@
 }
 #exam-modal .overlay-footer .offer-course{
     background: #18C305;
-    width: 215px !important;
+    /*width: 215px !important;*/
     height: 55px;
     border-radius: 4px;
     margin-right: 10px;
@@ -567,12 +567,13 @@
 }
 
 #exam-modal .overlay-content .total{
-    width: 280px;
+    /*width: 280px;*/
     border-radius: 4px;
     margin-right: 10px;
     display: flex;
     justify-content: center;
     cursor: pointer;
+    min-height: 150px;
     /*opacity: 0.4;*/
 }
 

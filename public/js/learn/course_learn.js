@@ -56,7 +56,7 @@ function reportExam(strName, slugName,  strDes, total_question, repeat_time, min
     des.html(strDes);
     number.html(total_question);
     time_repeat.html(turn > 0 ? turn : '(Hết lượt)');
-    $minutes.html(minutes);
+    $minutes.html(`${minutes} phút`);
     minScore.html(min_score);
 
     urlHTML[0].setAttribute('href' , `/kiem-tra/bat-dau/${slugName}.${lesson_id}`);

@@ -86,7 +86,7 @@
                                                 </button>
                                                 <a href="{{route('exam.finish', ['title' =>str_slug($var['lesson']->name), 'id' =>$var['lesson']->id ])}}" class="btn text-uppercase replay"><i class="fa fa-arrows"></i> Nộp bài</a>
                                             </div>
-                                            <div class="row result-exam" id="result-exam"></div>
+                                            <div class="result-exam" id="result-exam"></div>
                                         </div>
                                     </div>
                                 </div>
