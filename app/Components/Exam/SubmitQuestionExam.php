@@ -107,6 +107,7 @@ class SubmitQuestionExam
             }
         }
         $examUser->until_number = $this->request->get('until_number');
+        $examUser->last_at = now();
         $examUser->save();
 
         return $userQuestion->save();
