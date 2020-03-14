@@ -979,6 +979,9 @@ class QuestionController extends AdminBaseController
         $lesson_id = $question->lesson_id;
 
         if ($question->delete()) {
+
+            event(new DeleteQuestionEvent($question, $request->user()));
+
             if ($parent_id == 0) {
                 return response()->json([
                     'error' => false,

@@ -26,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
         ,
         Events\RefundCourseEvent::class => [
             Listeners\RefundCourseListener::class
+        ],
+        Events\DeleteQuestionEvent::class => [
+            Listeners\DeleteQuestionListener::class
         ]
     ];
 
