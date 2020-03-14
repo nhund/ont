@@ -205,7 +205,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-8">
-                            <textarea class="form-control" name="sapo">{!! $lesson->sapo ?? '' !!}</textarea>
+                            <textarea class="form-control" name="sapo"></textarea>
                         </div>
                         <div class="col-sm-4">
                             <div class="fileinput fileinput-new" style="width: 100%;" data-provides="fileinput">
