@@ -140,6 +140,7 @@ class ExamController extends Controller
             ->where('lesson_id', $id)
             ->first();
         $userExam->status = ExamUser::STOPPED;
+        $userExam->last_at = now();
         $userExam->save();
 
         return redirect()->route('exam.question', ['title' =>str_slug($title), 'id' =>$id ]);
