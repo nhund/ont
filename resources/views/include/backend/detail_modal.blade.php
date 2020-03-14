@@ -177,14 +177,21 @@
                     <input type="hidden" name="level" id="level" value="">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="row">
-                        <div class="col-sm-8">Tên bài kiểm tra</div>
-                        <div class="col-sm-4">Trạng thái</div>
+                        <div class="col-sm-6">Tên bài kiểm tra</div>
+                        <div class="col-sm-3">Đáp án trác nghiệm</div>
+                        <div class="col-sm-3">Trạng thái</div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-sm-8">
+                        <div class="col-sm-6">
                             <input type="text" data-input="Tên bài kiểm tra" class="form-control" placeholder="#Tên bài tập" name="exName">
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
+                            <select class="form-control" name="random_question">
+                                <option value="{{ \App\Models\Lesson::TRAC_NGHIEM_ANSWER_NOT_RANDOM }}">Theo thứ tự</option>
+                                <option value="{{ \App\Models\Lesson::TRAC_NGHIEM_ANSWER_RANDOM }}">Đảo ngẫu nhiên</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
                             <select class="form-control" name="status">
                                 <option value="1">Public</option>
                                 <option value="2">Private</option>
@@ -192,76 +199,88 @@
                             </select>
                         </div>
                     </div>
-                    <hr/>
                     <div class="row">
-                        <div class="col-sm-12"><label>Bài thi có hiệu lực (*)</label></div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-sm-3">
-                            <input class="form-control date-today" data-input="từ ngày" type="text"  name="start_time_at" placeholder="từ ngày">
-                        </div>
-                        <div class="col-sm-3 ">
-                            <input class="form-control date-fromday" data-input="Đến ngày" type="text" name="end_time_at" placeholder="Đến ngày">
-                        </div>
-                        <div class="col-sm-3 ">
-                            <input class="form-control" data-input="Tông câu hỏi" type="number" name="total_question" placeholder="Tông câu hỏi">
-                        </div>
-                    </div>
-                    <hr/>
-                    <div class="row ">
-                        <div class="col-sm-3">
-                            <label for="minutes" >Thời gian làm bài (phút)</label>
-                        </div>
-                        <div class="col-sm-3">
-                            <label for="total_score">Lựa chọn Barem điểm</label>
-                        </div>
-                        <div class="col-sm-3">
-                            <label for="min_score">Số điểm tối thiểu?</label>
-                        </div>
-                    </div>
-
-                    <div class="row  form-group">
-                        <div class="col-sm-3 ">
-                            <input class="form-control"  data-input="Thời gian làm bài" id="minutes" type="number" min="1"  name="minutes">
-                        </div>
-                        <div class="col-sm-3 ">
-                            <input class="form-control"  data-input="Chọn điểm" id="total_score" type="number" min="1" name="total_score">
-                        </div>
-                        <div class="col-sm-3 ">
-                            <input class="form-control"  data-input="Chọn điểm" id="min_score" type="number" min="1" name="min_score">
-                        </div>
-
-                    </div>
-                    <hr/>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <label>Bài thi được dừng mấy lần?</label>
-                        </div>
-                        <div class="col-sm-3">
-                            <label>Bài thi được làm lại mấy lần?</label>
-                        </div>
-                        <div class="col-sm-3">
-                            <label for="total_score">Bài thi có mấy phần?</label>
-                        </div>
+                        <div class="col-sm-8">Mô tả ngắn</div>
+                        <div class="col-sm-4">Avatar</div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-3 ">
-                            <input class="form-control" type="number" value="0" min="0" name="stop_time">
+                        <div class="col-sm-8">
+                            <textarea class="form-control" name="sapo">{!! $lesson->sapo ?? '' !!}</textarea>
                         </div>
-                        <div class="col-sm-3 ">
-                            <input class="form-control" type="number" value="0" min="0" name="repeat_time">
-                        </div>
-                        <div class="col-sm-3">
-                            <input class="form-control"  data-input="Bài thi có mấy phần?" type="number" min="1" name="parts">
+                        <div class="col-sm-4">
+                            <div class="fileinput fileinput-new" style="width: 100%;" data-provides="fileinput">
+                                <div class="fileinput-preview thumbnail mb20" data-trigger="fileinput" style="width: 50%; height: 55px;"></div>
+                                <div class="pull-right">
+                                    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Xoá</a>
+                                    <span class="btn btn-default btn-file">
+                                            <span class="fileinput-new">Chọn ảnh</span>
+                                            <span class="fileinput-exists">Đổi</span>
+                                            <input type="file" name="avatar" id="avatar">
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <hr/>
                     <div class="row">
                         <div class="col-sm-12">Mô tả</div>
                     </div>
                     <div class="row">
                         <textarea class="ckeditor" name="exDescription"></textarea>
                     </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm-4"><label>Bài thi có hiệu từ ngày (*)</label></div>
+                        <div class="col-sm-4"><label>Đến ngày</label></div>
+                        <div class="col-sm-4"><label>Tổng câu hỏi</label></div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-4">
+                            <input class="form-control date-today" data-input="từ ngày" type="text"  name="start_time_at" placeholder="từ ngày">
+                        </div>
+                        <div class="col-sm-4 ">
+                            <input class="form-control date-fromday" data-input="Đến ngày" type="text" name="end_time_at" placeholder="Đến ngày">
+                        </div>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" data-input="Tông câu hỏi" type="number" name="total_question" placeholder="Tông câu hỏi">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row ">
+                        <div class="col-sm-4"><label for="minutes" >Thời gian (phút)</label></div>
+                        <div class="col-sm-4"><label for="total_score">Chọn Barem điểm</label></div>
+                        <div class="col-sm-4"><label for="min_score">Điểm tối thiểu?</label></div>
+                    </div>
+
+                    <div class="row  form-group">
+                        <div class="col-sm-4 ">
+                            <input class="form-control"  data-input="Thời gian làm bài" id="minutes" type="number" min="1"  name="minutes">
+                        </div>
+                        <div class="col-sm-4 ">
+                            <input class="form-control"  data-input="Chọn điểm" id="total_score" type="number" min="1" name="total_score">
+                        </div>
+                        <div class="col-sm-4 ">
+                            <input class="form-control"  data-input="Chọn điểm" id="min_score" type="number" min="1" name="min_score">
+                        </div>
+
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm-4"><label>Bài thi được dừng mấy lần?</label></div>
+                        <div class="col-sm-4"><label>Bài thi được làm lại mấy lần?</label></div>
+                        <div class="col-sm-4"><label for="total_score">Bài thi có mấy phần?</label></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input class="form-control" type="number" value="0" min="0" name="stop_time">
+                        </div>
+                        <div class="col-sm-4">
+                            <input class="form-control" type="number" value="1" min="1" name="repeat_time">
+                        </div>
+                        <div class="col-sm-4">
+                            <input class="form-control"  data-input="Bài thi có mấy phần?" type="number" min="1" name="parts">
+                        </div>
+                    </div>
+
                 </div>
             </form>
             <div class="modal-footer">
@@ -298,8 +317,8 @@
                         </div>
                         <div class="col-sm-3">
                             <select class="form-control" name="random_question">
-                                <option value="{{ \App\Models\Lesson::TRAC_NGHIEM_ANSWER_NOT_RANDOM }}">Theo thứ tự</option>
-                                <option value="{{ \App\Models\Lesson::TRAC_NGHIEM_ANSWER_RANDOM }}">Đảo ngẫu nhiên</option>
+                                <option value="{{ \App\Models\Lesson::TRAC_NGHIEM_ANSWER_NOT_RANDOM }}" @if($lesson && $lesson['random_question'] == \App\Models\Lesson::TRAC_NGHIEM_ANSWER_NOT_RANDOM) selected @endif>Theo thứ tự</option>
+                                <option value="{{ \App\Models\Lesson::TRAC_NGHIEM_ANSWER_RANDOM }}" @if($lesson && $lesson['random_question'] == \App\Models\Lesson::TRAC_NGHIEM_ANSWER_RANDOM) selected @endif>Đảo ngẫu nhiên</option>
                             </select>
                         </div>
                         <div class="col-sm-3">
