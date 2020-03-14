@@ -158,7 +158,7 @@
                                                     <span>{{$rank->user->name_full ?? 'Ẩn danh'}}</span>
                                                 </td>
                                                 <td>{{$rank->highest_score}} Điểm</td>
-                                                <td>{{$rank->doing_time}} Phút</td>
+                                                <td>{{$rank->doing_time_highest}} Phút</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
