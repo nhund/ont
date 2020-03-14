@@ -40,7 +40,12 @@
         <input type="hidden" name="time_stop" value="{{$var['exam']->stop_time}}">
         <input type="hidden" name="time_stopped" value="{{$var['userExam']->turn_stop}}">
         <input type="hidden" name="lesson_id" value="{{$var['lesson']->id}}">
-
+        <audio preload="metadata" id="false-answer" style="display: none">
+            <source src="{{ web_asset('/public/file/audio/False_Answer.wav') }}" type="audio/wav">
+        </audio>
+        <audio preload="metadata" id="correct-answer" style="display: none">
+            <source src="{{ web_asset('/public/file/audio/Correct_Answer.wav') }}" type="audio/wav">
+        </audio>
         @if(!$var['finish'])
             <section id="hoclythuyet" class="clearfix flash_card">
                 <div class="container container-exam">

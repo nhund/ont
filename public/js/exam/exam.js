@@ -9,6 +9,15 @@ $(document).ready(function () {
         process_bar.css('width', percent + '%');
         $(window).scrollTop(0);
     }
+
+    function audioAnswer(flagAnswer) {
+        if (flagAnswer){
+            document.getElementById('correct-answer').play()
+        }else {
+            document.getElementById('false-answer').play()
+        }
+    }
+
     var submit_question     = false;
     var submit_doc_loadding = false;
 
@@ -80,7 +89,7 @@ $(document).ready(function () {
                    checkButton($this)
 
                    let answer = data.data.answer;
-
+                    let  flagAnswer = true;
                    $.each(answer, function (key, val) {
 
                        if (val.error == 2) {
@@ -88,6 +97,7 @@ $(document).ready(function () {
                            $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#7BCDC7');
 
                        } else {
+                           flagAnswer = false;
                            $('.answer_' + val.answer).closest('.radio').append('<i class="fa fa-check-circle-o"></i>');
                            $('.answer_' + val.answer).closest('.radio').find('label').css('color', '#7BCDC7');
 
@@ -103,6 +113,7 @@ $(document).ready(function () {
                            box_interpret_child.show();
                        }
                    });
+                   audioAnswer(flagAnswer)
                    showAnswers(resultExam = data.data.result);
 
                } else {
@@ -148,13 +159,14 @@ $(document).ready(function () {
                    upCountQuestion();
                    checkButton($this);
                    let answer = data.data.answer;
-
+                   let  flagAnswer = true;
                    $.each(answer, function (key, val) {
 
                        if (parseInt(val.error) === 2) {
                            $('.question_id_' + key).find('.result').addClass('true');
 
                        } else {
+                           flagAnswer = false;
                            $('.question_id_' + key).find('.result').addClass('error');
                        }
                        $('.question_id_' + key).find('.user_input span').text(val.input);
@@ -165,7 +177,7 @@ $(document).ready(function () {
                        box_interpret_child.show();
 
                    });
-
+                   audioAnswer(flagAnswer)
                    showAnswers(resultExam = data.data.result);
                } else {
                    notify(data.message)
@@ -221,7 +233,7 @@ $(document).ready(function () {
                            checkButton($this)
 
                            let answer = data.data.answer
-
+                           let  flagAnswer = true;
                            $.each(answer, function (key, val) {
                                $.each(val, function (key2, val2) {
                                    var input_answer = $('.dien_tu_doan_van input[name="txtLearnWord[' + key + '][' + key2 + ']"]');
@@ -231,6 +243,7 @@ $(document).ready(function () {
                                        input_answer.hide();
 
                                    } else {
+                                       flagAnswer = false;
                                        var tpl = '<span class="answer_error_box"><span class="answer_error">' + val2.input + '</span><span class="answer_true">' + val2.answer + '</span><span>';
                                        input_answer.before(tpl);
                                        input_answer.hide();
@@ -240,7 +253,7 @@ $(document).ready(function () {
                                });
 
                            });
-
+                           audioAnswer(flagAnswer)
                            showAnswers(resultExam = data.data.result);
                        }else {
                            notify(data.message)

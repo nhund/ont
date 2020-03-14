@@ -175,6 +175,7 @@ class LessonController extends AdminBaseController
         $lesson->type           = $type;
         $lesson->save();
 
+        dd($request->all());
         if ($type == Lesson::EXAM){
             $params = $request->only(['minutes', 'parts', 'repeat_time', 'stop_time', 'total_score', 'start_time_at', 'end_time_at', 'min_score', 'total_question']);
             $params['lesson_id'] = $lesson->id;

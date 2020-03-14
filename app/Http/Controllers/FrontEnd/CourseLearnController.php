@@ -116,6 +116,7 @@ class CourseLearnController extends Controller
         $var['support'] = isset($check_permision['support']) ? $check_permision['support'] : false;
         $var['course'] = $course;
         $lessons = Lesson::where('course_id',$id)->where('parent_id',0)
+        ->active()
         ->where('level', '<>', 0)
         ->orderBy('order_s','ASC')
         ->orderBy('created_at','ASC')->get();
