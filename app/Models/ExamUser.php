@@ -21,7 +21,7 @@ class ExamUser extends Model
 
     public $timestamps = true;
 
-    protected $fillable = ['lesson_id', 'user_id', 'turn', 'score', 'time', 'status_stop', 'second_stop', 'begin_at', 'stopped_at', 'until_number', 'turn_stop'];
+    protected $fillable = ['second_stop_highest','last_submit_at','begin_highest_at', 'lesson_id', 'user_id', 'turn', 'score', 'time', 'status_stop', 'second_stop', 'begin_at', 'stopped_at', 'until_number', 'turn_stop', 'last_at'];
 
     protected $appends = ['doing_time', 'still_time'];
 
