@@ -36,7 +36,7 @@
                         <a class="offer-course do_new "
                            href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI]) }}"
                            title="Làm bài mới">
-                            <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
+                            <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
                             <div class="title">
                                 <p class="content">Làm tập mới</p>
                             </div>
@@ -44,14 +44,14 @@
                         <a class="offer-course do_old  {{ $var['show_on_tap'] == false ? 'no_action' : '' }} "
                            href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}"
                            title="Ôn tập câu cũ">
-                            <img src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
+                            <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
                             <div class="title">
                                 <p class="content">Ôn câu cũ</p>
                             </div>
                         </a>
                         <a class="offer-course do_false  {{ $var['user_learn_error'] == 0 ? 'no_action' : '' }}"
                            href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}">
-                            <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
+                            <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
                             <div class="title">
                                 <p class="content" onclick="openNav()">Làm câu sai</p>
                             </div>
@@ -59,7 +59,7 @@
                         <a class="offer-course do_bookmark {{ $var['user_learn_bookmark'] == 0 ? 'no_action' : '' }}"
                            href="{{ $var['user_learn_bookmark'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BOOKMARK]) }}"
                            title="Làm câu bookmark">
-                            <img src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
+                            <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
                             <div class="title">
                                 <p class="content">Bookmark</p>
                             </div>
