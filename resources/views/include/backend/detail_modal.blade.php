@@ -317,8 +317,8 @@
                         </div>
                         <div class="col-sm-3">
                             <select class="form-control" name="random_question">
-                                <option value="{{ \App\Models\Lesson::TRAC_NGHIEM_ANSWER_NOT_RANDOM }}" @if($lesson && $lesson['random_question'] == \App\Models\Lesson::TRAC_NGHIEM_ANSWER_NOT_RANDOM) selected @endif>Theo thứ tự</option>
-                                <option value="{{ \App\Models\Lesson::TRAC_NGHIEM_ANSWER_RANDOM }}" @if($lesson && $lesson['random_question'] == \App\Models\Lesson::TRAC_NGHIEM_ANSWER_RANDOM) selected @endif>Đảo ngẫu nhiên</option>
+                                <option value="{{ \App\Models\Lesson::TRAC_NGHIEM_ANSWER_NOT_RANDOM }}" @if(isset($lesson) && $lesson['random_question'] == \App\Models\Lesson::TRAC_NGHIEM_ANSWER_NOT_RANDOM) selected @endif>Theo thứ tự</option>
+                                <option value="{{ \App\Models\Lesson::TRAC_NGHIEM_ANSWER_RANDOM }}" @if(isset($lesson) && $lesson['random_question'] == \App\Models\Lesson::TRAC_NGHIEM_ANSWER_RANDOM) selected @endif>Đảo ngẫu nhiên</option>
                             </select>
                         </div>
                         <div class="col-sm-3">
