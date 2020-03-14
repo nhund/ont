@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Components\Exam\ExamService;
+use App\Events\DeleteQuestionEvent;
 use App\Models\Question;
 use App\Models\QuestionAnswer;
 use Doctrine\DBAL\Driver\AbstractDB2Driver;
@@ -959,6 +960,7 @@ class QuestionController extends AdminBaseController
 
     public function delete(Request $request)
     {
+
         $data = $request->all();
         if (!isset($data['id'])) {
             return response()->json([

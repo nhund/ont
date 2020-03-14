@@ -80,7 +80,7 @@ class Question extends Model
         self::deleted(function($model){
             if (isset($model->attributes['id']))
             {
-                if($model->attributes['type'] == self::TYPE_DIEN_TU || $model->attributes['type'] == self::TYPE_TRAC_NGHIEM)
+                if($model->attributes['type'] == self::TYPE_DIEN_TU || $model->attributes['type'] == self::TYPE_TRAC_NGHIEM|| $model->attributes['type'] == self::TYPE_TRAC_NGHIEM_DON)
                 {
                     if($model->attributes['parent_id'] == 0)
                     {

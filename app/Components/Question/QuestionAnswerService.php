@@ -207,7 +207,7 @@ class QuestionAnswerService
             $dataLog = array(
                 'question_id'   => $key,
                 'status'        => $reply,
-                'question_type' => Question::TYPE_TRAC_NGHIEM
+                'question_type' => $this->question->type
             );
             $this->_saveLogQuestion($dataLog);
             $question_child = Question::find($key);
