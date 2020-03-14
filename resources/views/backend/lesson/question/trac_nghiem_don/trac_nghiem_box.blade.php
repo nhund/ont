@@ -25,6 +25,22 @@
           </div>
         </div>
       </div>
+      <div>
+        <div class="box_content_t">
+          <textarea name="explain_tnd" class="col-sm-12 form-control explain" placeholder="Gợi ý">{{ $question->explain_before }}</textarea>
+          <div class="box_media">
+            @include('backend.lesson.question.options.action',['show_format_content'=>true])
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:5px">
+        <div class="box_content_t">
+          <textarea name="interpret_tnd" class="col-sm-12 form-control explain" placeholder="Giải thích câu hỏi">{{ $question->interpret }}</textarea>
+          <div class="box_media">
+            @include('backend.lesson.question.options.action',['show_format_content'=>true])
+          </div>
+        </div>
+      </div>
     </div>
     @include('backend.lesson.question.trac_nghiem_don.trac_nghiem_answer',['count'=>$question->id,'edit'=>$edit])
   </div>
@@ -57,6 +73,22 @@
             </div>
             @include('backend.lesson.question.options.action',['show_format_content'=>true,'show_audio'=>true,'show_image'=>true])
           </div>   
+        </div>
+      </div>
+      <div>
+        <div class="box_content_t">
+          <textarea name="explain_tnd" class="col-sm-12 form-control explain" placeholder="Gợi ý"></textarea>
+          <div class="box_media">
+            @include('backend.lesson.question.options.action',['show_format_content'=>true])
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:5px">
+        <div class="box_content_t">
+          <textarea name="interpret_tnd" class="col-sm-12 form-control explain" placeholder="Giải thích câu hỏi"></textarea>
+          <div class="box_media">
+            @include('backend.lesson.question.options.action',['show_format_content'=>true])
+          </div>
         </div>
       </div>
     </div>

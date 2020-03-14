@@ -134,7 +134,7 @@
        </div>
        <div id="myNav" class="overlay">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav('myNav')">&times;</a>
-            <p class="title" data-lesson="name">Bài học</p>
+            <p class="title" data-lesson="name"></p>
             <div class="overlay-content">
                 <div class="total total-question col-xs-4 col-lg-3 col-md-3 col-sm-3">
 

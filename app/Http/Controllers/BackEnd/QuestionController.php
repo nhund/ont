@@ -124,8 +124,8 @@ class QuestionController extends AdminBaseController
             $question->user_id        = $user->id;
             $question->created_at     = time();
             $question->question       = $data['question_tnd'];
-            $question->explain_before = Helper::detectMathLatex($data['explain_tnd_global']);
-            $question->interpret_all  = Helper::detectMathLatex($data['interpret_tnd_global']);
+            $question->explain_before = Helper::detectMathLatex($data['explain_tnd']);
+            $question->interpret  = Helper::detectMathLatex($data['interpret_tnd']);
             $question->img_before     = $data['question_img'][1];
             $question->audio_question  = $data['audio_question_tnd'];
             $question->save();
@@ -863,8 +863,8 @@ class QuestionController extends AdminBaseController
 
             $question->updated_at = time();
             $question->question = $data['question_tnd'];
-            $question->explain_before = Helper::detectMathLatex($data['explain_tnd_global']);
-            $question->interpret_all = Helper::detectMathLatex($data['interpret_tnd_global']);
+            $question->explain_before = Helper::detectMathLatex($data['explain_tnd']);
+            $question->interpret = Helper::detectMathLatex($data['interpret_tnd']);
             $question->img_before = $data['question_img'];
             $question->audio_question = $data['audio_question_tnd'];
             $question->save();
