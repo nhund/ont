@@ -130,7 +130,7 @@ class CourseLearnController extends Controller
             ->orderBy('order_s','ASC')
             ->orderBy('created_at','ASC')->get();
             foreach ($lesson_childs as $key => $lesson_child) {
-                $question_child = Question::where('lesson_id',$lesson_child->id)->where('parent_id',0)->get();
+                $question_child = Question::where('lesson_id',$lesson_child->id)->typeAllow()->where('parent_id',0)->get();
                 $countQuestion = $question_child->count(); 
                 //lay log lesson
                 $userLessonLog = UserLessonLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->first();
