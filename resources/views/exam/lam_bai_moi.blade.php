@@ -20,9 +20,9 @@
                     </div>
                     <div class="close_course">
                         @if($var['lesson']->level == \App\Models\Lesson::LEVEL_2)
-                            <a style="background-color: #F87B54" href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'course_id'=> $var['course']->id, 'lesson_id'=>$var['lesson']->id]) }}" class="fa fa-close"></a>
+                            <a style="background-color: #eb5757" href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'course_id'=> $var['course']->id, 'lesson_id'=>$var['lesson']->id]) }}" class="fa fa-close"></a>
                         @else
-                            <a style="background-color: #F87B54" href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="fa fa-close"></a>
+                            <a style="background-color: #eb5757" href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="fa fa-close"></a>
                         @endif
 
                     </div>
