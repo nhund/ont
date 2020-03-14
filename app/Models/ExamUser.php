@@ -34,7 +34,6 @@ class ExamUser extends Model
     {
         $doingTime  = (strtotime($this->getOriginal('last_at')) - strtotime($this->getOriginal('begin_at')) - $this->getOriginal('second_stop'))/60;
 
-        dd($this->getOriginal('last_at'), $this->getOriginal('begin_at'), $this->getOriginal('second_stop'), $doingTime);
         return number_format($doingTime , 1, ',','');
     }
 
