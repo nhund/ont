@@ -79,7 +79,10 @@ class ExamService
                     ->pluck('question_id')->toArray();
                 $questionsArray = collect();
                 if (count($arrayQuestions) < $part->number_question ||  $part->number_question == 0){
-                    throw new BadRequestException("Phần thi {$part->name} chưa hoàn thiện");
+                    if (request()->ajax()){
+                        throw new BadRequestException("Phần thi {$part->name} chưa hoàn thiện");
+                    }
+                    return false;
                 }
 
                 if (count($arrayQuestions) > $part->number_question){

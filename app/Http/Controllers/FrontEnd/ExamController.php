@@ -61,8 +61,8 @@ class ExamController extends Controller
 
         $questions = (new ExamService())->getQuestionExam($lesson, $userExam);
 
-        if (count($questions) == 0){
-            alert()->error('Bài kiểm tra chưa có câu hỏi.');
+        if (!$questions || count($questions) == 0){
+            alert()->error('Bài kiểm tra tạm thời chưa hoạt đồng, vui lòng quay lại sau!.');
             return redirect()->back();
         }
 
@@ -171,7 +171,7 @@ class ExamController extends Controller
 
         $questions = (new ExamService())->getQuestionExam($lesson, $userExam);
 
-        if (count($questions) == 0){
+        if (!$questions || count($questions) == 0){
             alert()->error('Bài kiểm tra chưa có câu hỏi.');
             return redirect()->back();
         }
