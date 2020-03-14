@@ -339,9 +339,8 @@ class QuestionAnswerService
             $questionLog->status      = $data['status'];
             $questionLog->update_time = time();
             $questionLog->is_ontap    = $type == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
-
             $questionLog->total_turn += 1;
-
+            $questionLog->status_delete   = UserQuestionLog::ACTIVE;
             if ((int)$data['status'] == Question::REPLY_OK){
                 $questionLog->correct_number += 1;
             }
@@ -359,6 +358,7 @@ class QuestionAnswerService
             $questionLog->create_at       = time();
             $questionLog->is_ontap        = $type == Question::LEARN_LAM_CAU_CU ? UserQuestionLog::TYPE_ON_TAP : 0;
             $questionLog->update_time     = time();
+            $questionLog->status_delete   = UserQuestionLog::ACTIVE;
 
             $questionLog->total_turn += 1;
 
