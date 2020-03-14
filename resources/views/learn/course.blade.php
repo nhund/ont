@@ -195,7 +195,7 @@
 
       <div id="exam-modal" class="overlay" style="overflow-y:scroll">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav('exam-modal')">&times;</a>
-            <p class="title" >Kiểm tra: <span data-exam="name"></span></p>
+            <p class="title" ><span data-exam="name"></span></p>
             <div class="overlay-content row">
                 <div class="description ">
                     <p data-exam="des"></p>

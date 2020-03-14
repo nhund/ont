@@ -80,7 +80,7 @@
                                                     <span class="count-down">00:00</span>
                                                 </div>
                                             </div>
-                                            <div class="action-exam row">
+                                            <div class="action-exam">
                                                 <span style="color: black">Còn <span class="time-stop"></span> lần dừng lại</span>
                                                 <button class="btn text-uppercase stop" onclick="pauseExam(`{{$var['lesson']->id}}`)">
                                                     @if($var['userExam'] && $var['userExam']->status_stop === \App\Models\ExamUser::INACTIVE)
