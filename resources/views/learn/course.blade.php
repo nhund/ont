@@ -239,10 +239,16 @@
                         <p class="content" >Để sau</p>
                     </div>
                 </a>
-                <a class="offer-course do-false-1 col-xs-4 col-lg-2 col-md-2 col-sm-2" title="Làm lại câu sai" id="data-exam-href" data-exam="href">
+                <a class="offer-course do-false-1 col-xs-4 col-lg-2 col-md-2 col-sm-2" title="làm bài" id="data-exam-href" data-exam="href">
                     <div style="text-align: left">
                         <p></p>
                         <p class="content" >Làm ngay</p>
+                    </div>
+                </a>
+                <a class="offer-course do-new col-xs-4 col-lg-2 col-md-2 col-sm-2" title="Bảng xếp hạng" id="data-exam-href" data-ranking="href">
+                    <div style="text-align: left">
+                        <p></p>
+                        <p class="content" >Bảng xếp hạng</p>
                     </div>
                 </a>
             </div>

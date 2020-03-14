@@ -165,7 +165,8 @@
                                     </table>
                                 </div>
                                 <div class="review-result">
-                                    <a  href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="btn-default btn" >Thoát</a> <a href="{{route('exam.result', ['title' => str_slug($var['lesson']->name), 'id'=>$var['lesson']->id ])}}" class="btn btn-orange">Xem lại bài thi</a>
+                                    <a  href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="btn-default btn" >Thoát</a>
+                                    <a href="{{route('exam.result', ['title' => str_slug($var['lesson']->name), 'id'=>$var['lesson']->id ])}}" class="btn btn-orange">Xem lại bài thi</a>
                                 </div>
                             </div>
                         </div>

@@ -49,6 +49,7 @@ function reportExam(strName, slugName,  strDes, total_question, repeat_time, min
     const $minutes    = $('[data-exam=minutes]');
     const minScore    = $('[data-exam=min_score]');
     const urlHTML     = $('[data-exam=href]');
+    const rankingUrlHTML     = $('[data-ranking=href]');
 
     turn = parseInt(repeat_time) - parseInt(turn);
 
@@ -60,6 +61,7 @@ function reportExam(strName, slugName,  strDes, total_question, repeat_time, min
     minScore.html(min_score);
 
     urlHTML[0].setAttribute('href' , `/kiem-tra/bat-dau/${slugName}.${lesson_id}`);
+    rankingUrlHTML[0].setAttribute('href' , `/kiem-tra/${slugName}.${lesson_id}`);
     document.getElementById("exam-modal").style.height = "100%";
 }
 
