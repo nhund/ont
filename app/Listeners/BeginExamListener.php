@@ -12,8 +12,10 @@ class BeginExamListener
 {
     protected $exam;
     protected $user;
+
     /**
      * @param BeginExamEvent $event
+     * @throws BadRequestException
      */
     public function handle(BeginExamEvent $event)
     {
@@ -25,7 +27,7 @@ class BeginExamListener
     }
 
     /**
-     * reset score exam
+     * @throws BadRequestException
      */
     private function resetUserExam(){
 
