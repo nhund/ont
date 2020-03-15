@@ -8,17 +8,16 @@
                     <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
                 </audio>
             @endif
-            @if(!empty($question->img_before))
-            <div class="box_image">
-                <img src="{{ web_asset('public/'.$question->img_before) }}">
-            </div>
-            @endif
             @if(!empty($question->content))
             <div class="box_des">
                 {!! $question->content !!}
             </div>
             @endif
-
+            @if(!empty($question->img_before))
+                <div class="box_image">
+                    <img src="{{ $question->img_before }}">
+                </div>
+            @endif
             <div class="box_action">
                 @if(!empty($question->explain_before))
                     <div class="icon suggest" title="Gợi ý">
