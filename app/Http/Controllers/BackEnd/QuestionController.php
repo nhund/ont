@@ -282,7 +282,7 @@ class QuestionController extends AdminBaseController
             $question->content = Helper::detectMathLatex($data['content']);
             $question->interpret_all = Helper::detectMathLatex($data['interpret_dt_global']);
             $question->img_before = $data['image'];
-            $question->audio_content = $data['audio_content'];
+            $question->audio_question = $data['audio_content'];
             $question->save();
             if ($typeLesson == Lesson::EXAM && $request->get('part_id')) {
                 (new ExamService())->insertExamQuestion($question->id, $data['lesson_id'], $request->get('part_id'));
