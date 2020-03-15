@@ -23,6 +23,8 @@ class SubmitQuestionExam
     protected $examId;
     protected $user;
     private $flag = true;
+    private $totalSub = 0;
+    private $trueSub = 0;
 
     /**
      * @param Request $request
@@ -119,6 +121,8 @@ class SubmitQuestionExam
     private function multiFlash()
     {
         $rely    = $this->request->get('reply');
+        $this->totalSub = 1;
+        $this->trueSub = 1;
         $dataLog = [
             'error'       => (int)$rely,
             'question_id' => $this->question->id
@@ -136,6 +140,8 @@ class SubmitQuestionExam
     private function singleFlash()
     {
         $rely    = $this->request->get('reply');
+        $this->totalSub = 1;
+        $this->trueSub = 1;
         $dataLog = [
             'error'       => (int)$rely,
             'question_id' => $this->question->id
@@ -152,7 +158,7 @@ class SubmitQuestionExam
         $answers = $this->request->get('answers');
         $result  = [];
         foreach ($answers as $key => $answer) {
-
+            $this->totalSub++;
             $reply = QuestionAnswer::REPLY_ERROR;
             //lay dap an dung
             $answerCheck = QuestionAnswer::where('question_id', $key)->where('status', QuestionAnswer::REPLY_OK)->first();
@@ -162,6 +168,7 @@ class SubmitQuestionExam
 
             if ($flag) {
                 $reply = QuestionAnswer::REPLY_OK;
+                $this->trueSub ++;
             }
 
             if (!$flag){
@@ -201,7 +208,10 @@ class SubmitQuestionExam
 
             if (!$flag){
                 $this->flag = $flag;
+            }else {
+                $this->trueSub ++;
             }
+            $this->totalSub ++;
 
             $result[$key] = array(
                 'error'  => $reply,
@@ -223,7 +233,7 @@ class SubmitQuestionExam
         foreach ($txtLearnWord as $question_id => $value) {
             $question = Question::find($question_id);
             if ($question) {
-
+                $this->totalSub ++;
                 $check_pass_question = QuestionAnswer::REPLY_OK;
                 $str                 = $question->question;
                 $pattern             = '/<a .*?class="(.*?cloze.*?)">(.*?)<\/a>/';
@@ -235,6 +245,7 @@ class SubmitQuestionExam
                     if (isset($value[$incr_sb])) {
                         if (mb_strtolower($value[$incr_sb], 'UTF-8') == mb_strtolower($m[2], 'UTF-8')) {
                             $reply_status = QuestionAnswer::REPLY_OK;
+                            $this->trueSub++;
                         } else {
                             $check_pass_question = QuestionAnswer::REPLY_ERROR;
                             $reply_status        = QuestionAnswer::REPLY_ERROR;
@@ -282,6 +293,9 @@ class SubmitQuestionExam
         $parts = ExamPart::where($conditionPart)->first();
 
 
+        if ($this->totalSub != 0 && $this->trueSub != 0){
+            return round(($parts->score*$this->trueSub)/($parts->number_question*$this->totalSub), 1);
+        }
         return round($parts->score/$parts->number_question, 1);
     }
 
