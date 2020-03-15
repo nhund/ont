@@ -134,7 +134,7 @@
      {
         var $this = $(e);
         $this.closest('.box_image').find('.input_image').val('');
-        $this.closest('.box_image').hide();
+        $this.closest('.box_image').attr('style','display:none !important');
      }
      $("#UploadImageQuestion").on('hide.bs.modal', function(){
         $("#UploadImageQuestion").find('input[name="image_url"]').val("");
