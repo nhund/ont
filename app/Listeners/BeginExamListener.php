@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\BeginExamEvent;
+use App\Exceptions\BadRequestException;
 use App\Models\Exam;
 use App\Models\ExamUser;
 use App\Models\ExamUserAnswer;
@@ -52,6 +53,11 @@ class BeginExamListener
              ]);
 
         }else{
+            $exam = Exam::where('lesson_id',  $this->exam->id)->first();
+            if ($exam && $userExam->turn > $exam->repeat_time){
+                throw new BadRequestException('Bạn đã hết lượt làm bài kiểm tra, vui lòng mua thêm');
+            }
+
             $userExam->score = 0;
             $userExam->turn += 1;
             $userExam->until_number = 1;

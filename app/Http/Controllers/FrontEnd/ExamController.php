@@ -108,15 +108,7 @@ class ExamController extends Controller
             return redirect()->route('home');
         }
 
-        $userExam = ExamUser::where('user_id', $request->user()->id)
-            ->where('lesson_id', $id)
-            ->first();
-
-        $exam = Exam::where('lesson_id', $id)->first();
-
-        if (!($userExam && $exam && $userExam->turn > $exam->repeat_time)){
-            event(new BeginExamEvent($lesson, $request->user()));
-        }
+        event(new BeginExamEvent($lesson, $request->user()));
 
         return redirect()->route('exam.question', ['title' =>str_slug($title), 'id' =>$id ]);
     }
