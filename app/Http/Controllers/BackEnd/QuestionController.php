@@ -317,7 +317,6 @@ class QuestionController extends AdminBaseController
         }
 
         if ($data['type'] == Question::TYPE_DIEN_TU_DOAN_VAN) {
-            //dd($data['question']);
             if (count($data['question_dt']) == 0) {
                 return response()->json(array('error' => true, 'msg' => 'Bạn chưa tạo câu hỏi'));
             }
@@ -325,6 +324,7 @@ class QuestionController extends AdminBaseController
             $question->type = $data['type'];
             $question->parent_id = 0;
             $question->lesson_id = $data['lesson_id'];
+            $question->audio_content = $data['audio_content'];
             $question->course_id = $lesson->course_id;
             $question->user_id = $user->id;
             $question->created_at = time();
@@ -919,11 +919,11 @@ class QuestionController extends AdminBaseController
             alert()->success('Cập nhật thành công');
         }
         if ($question->type == Question::TYPE_DIEN_TU_DOAN_VAN) {
-
             $question->updated_at = time();
             $question->content = Helper::detectMathLatex($data['content']);
             $question->interpret_all = Helper::detectMathLatex($data['interpret_dv_global']);
             $question->img_before = $data['image'];
+            $question->audio_question = $data['audio_content'];
             $question->save();
             foreach ($data['question_dt'] as $key => $q) {
                 $que = Question::where('id', $key)->where('parent_id', $data['id'])->first();
