@@ -660,12 +660,11 @@ class QuestionController extends AdminBaseController
             }
         }
         if ($question->type == Question::TYPE_DIEN_TU) {
-
             $question->updated_at = time();
             $question->content = Helper::detectMathLatex($data['content']);
             $question->img_before = $data['image'];
             $question->interpret_all = Helper::detectMathLatex($data['interpret_dt_global']);
-            $question->audio_content = $data['audio_content'];
+            $question->audio_question = $data['audio_content'];
             $question->save();
             foreach ($data['question'] as $key => $q) {
                 $que = Question::where('id', $key)->where('parent_id', $data['id'])->first();
