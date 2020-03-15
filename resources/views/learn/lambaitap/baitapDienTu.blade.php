@@ -8,17 +8,17 @@
                     <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
                 </audio>
             @endif
-
-            @if(!empty($question->content))
-                <div class="box_des">
-                    {!! $question->content !!}
-                </div>
-            @endif
             @if(!empty($question->img_before))
                 <div class="box_image">
                     <img src="{{$question->img_before}}">
                 </div>
             @endif
+            @if(!empty($question->content))
+                <div class="box_des">
+                    {!! $question->content !!}
+                </div>
+            @endif
+
             @if(!empty($question->interpret_all))
                 <div class="box_interpret_all">
                     <p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>                
