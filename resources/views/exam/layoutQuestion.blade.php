@@ -188,7 +188,7 @@
     <script>
         let countInterval;
         let resultExam;
-
+        const exam_id = $('input[name=lesson_id]').val();
         function pauseExam(examId) {
             const status = $('input[name=status_stop]').val();
             const url    = status === 'Inactive' ? `/api/exam/${examId}/restart` : `/api/exam/${examId}/stop`;
@@ -275,6 +275,9 @@
                 if (distance < 0) {
                     clearInterval(countInterval);
                     $('.count-down').html('<span style="color: red">Hết thời gian</span>');
+                    setTimeout(function () {
+                        location.href = `/kiem-tra/ket-thuc/bai-kiem-tra.${exam_id}`
+                    }, 5000)
                 }
             }, 1000);
         }
@@ -293,7 +296,7 @@
             $('.question_type.question_stt_' + until_number).show();
             $('.hoclythuyet .course_process .count_question_done').text(until_number - 1);
 
-            const exam_id = $('input[name=lesson_id]').val();
+
             $.ajax({
                headers: {
                    'X-CSRF-Token' : $('meta[name=csrf-token]').attr("content"),

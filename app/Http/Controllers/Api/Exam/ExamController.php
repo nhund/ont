@@ -39,16 +39,7 @@ class ExamController extends Controller
             ->where('lesson_id', $lessonId)
             ->first();
 
-        $exam = Exam::where('lesson_id', $lessonId)->first();
-
-        if ($userExam && $exam && $userExam->turn > $exam->repeat_time){
-            throw new BadRequestException('Bạn đã hết lượt làm bài kiểm tra, vui lòng mua thêm');
-        }
-
-
         $questions = (new ExamService())->getQuestionExam($lesson, $userExam);
-
-
         return $this->respondOk($questions);
     }
 

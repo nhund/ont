@@ -4,7 +4,7 @@
     <div class="row">
        <div class="col-xs-12">
           <div class="title-block">
-             <h3 class="title-group">Tin tức nổi bật</h3>
+             <h3 class="title-group">Blog học tập</h3>
              <div class="border-bottom"></div>
           </div>
        </div>
@@ -34,7 +34,7 @@
     <div class="row">
        <div class="col-xs-12">
           <div class="text-center">
-            <a href="{{ route('news') }}" class="btn btn-view-more">Xem tất cả các tin tức</a>
+            <a href="{{ route('news') }}" class="btn btn-view-more">Xem tất cả bài viết</a>
           </div>
        </div>
     </div>

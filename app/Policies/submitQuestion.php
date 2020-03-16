@@ -66,7 +66,6 @@ class submitQuestion
         $examId   = request('exam_id');
         $examUser = ExamUser::where(['lesson_id'=> $examId,
                                     'user_id' => $user->id])->first();
-
         if (!$examUser){
             throw new NotFoundException('Bài kiểm tra không tồn tại hoặc đã bị xóa.');
         }
@@ -89,17 +88,12 @@ class submitQuestion
 
         $passTime = (time() - strtotime($examUser->begin_at) - $examUser->second_stop)/60;
 
-
         if ($exam->minutes < $passTime){
             throw new BadRequestException('Bạn đã hết thời gian làm bài.');
         }
 
         if( $user->id === $course->user_id){
             return true;
-        }
-
-        if (!($user->id == $course->user_id || $user->level == User::USER_ADMIN)){
-            return false;
         }
 
         $support = TeacherSupport::where('course_id', $course->id)

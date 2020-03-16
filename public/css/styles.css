@@ -5248,6 +5248,9 @@ button.update-cart{
     #hoclythuyet .dientu_chuoi_box .head_content .box_image{
     	width: 100%;
     }
+.box_image{
+	text-align: center !important;
+}
     #hoclythuyet .dientu_chuoi_box .head_content .box_image img{
     	width: 100%;
     }

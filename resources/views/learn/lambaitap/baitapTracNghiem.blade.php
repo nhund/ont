@@ -9,9 +9,9 @@
                 </audio>
             @endif
             @if(!empty($question->img_before))
-            <div class="box_image">
-                <img src="{{ web_asset('public/'.$question->img_before) }}">
-            </div>
+                <div class="box_image">
+                    <img src="{{ $question->img_before }}">
+                </div>
             @endif
             @if(!empty($question->content))
             <div class="box_des">

@@ -41,8 +41,6 @@
                                 <span class="price-old flexbox-content text-right">{{ number_format($course->price) }}₫</span>
                             @endif
                           @endif
-                          
-                            
                          </p>
                          <div class="product-info-description clearfix hidden">
                             <p class="col-xs-12 pd-none mt5">
