@@ -34,10 +34,30 @@ function reportLesson(lesson_id){
                 $('[data-lesson=question-correct]').html(`${correct}%`);
                 $('[data-lesson=title]').html(data.data.name);
 
-                $('[data-sub-lesson=new]').html(report.totalNewQuestions+' câu');
-                $('[data-sub-lesson=wrong]').html(report.totalWrongQuestions+' câu');
-                $('[data-sub-lesson=old]').html(report.totalDid+' câu');
-                $('[data-sub-lesson=bookmark]').html(report.totalBookmarkQuestions+' câu');
+                const $new = $('[data-sub-lesson=new]');
+                const $wrong =  $('[data-sub-lesson=wrong]');
+                const $old =  $('[data-sub-lesson=old]');
+                const $bookmark =  $('[data-sub-lesson=bookmark]');
+
+
+
+                if (report.totalNewQuestions === 0){
+                    $new.closest('a').addClass('disabled-link')
+                }
+                if (report.totalWrongQuestions === 0){
+                    $wrong.closest('a').addClass('disabled-link')
+                }
+                if (report.totalDid === 0){
+                    $old.closest('a').addClass('disabled-link')
+                }
+                if (report.totalBookmarkQuestions === 0){
+                    $bookmark.closest('a').addClass('disabled-link')
+                }
+
+                $new.html(report.totalNewQuestions+' câu');
+                $wrong.html(report.totalWrongQuestions+' câu');
+                $old.html(report.totalDid+' câu');
+                $bookmark.html(report.totalBookmarkQuestions+' câu');
 
                 document.getElementById("myNav").style.height = "100%";
                 lessonId = lesson_id;

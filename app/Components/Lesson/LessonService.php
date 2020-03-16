@@ -91,7 +91,11 @@ class LessonService
      */
     public function totalNewQuestions()
     {
-        return $this->totalQuestions - ($this->totalWrongQuestions + $this->totalCorrectQuestions);
+        $didQuestions = UserQuestionLog::where('lesson_id', $this->lesson->id)
+            ->where('user_id', $this->user->id)
+            ->count();
+
+        return $this->totalQuestions - $didQuestions;
     }
 
     /**

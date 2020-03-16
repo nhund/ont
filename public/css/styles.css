@@ -5887,3 +5887,10 @@ button.update-cart{
     	font-size: 12px;
     	padding-top: 2px;
     }
+
+	.disabled-link{
+		cursor: default;
+		pointer-events: none;
+		opacity: 0.4;
+		color: #ccc;
+	}
