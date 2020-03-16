@@ -69,7 +69,7 @@ class LessonService
         return [
             'totalNewQuestions'     => $this->totalNewQuestions(),
             'totalQuestions'        => $this->totalQuestions,
-            'totalBookmarkQuestions'     => $this->totalBookmarkQuestions(),
+            'totalBookmarkQuestions'=> $this->totalBookmarkQuestions(),
             'totalWrongQuestions'   => $this->totalWrongQuestions,
             'totalCorrectQuestions' => $this->totalCorrectQuestions,
             'totalDid'              => $this->totalCorrectQuestions + $this->totalWrongQuestions,
@@ -82,6 +82,7 @@ class LessonService
     public function totalQuestions()
     {
         return Question::where('lesson_id', $this->lesson->id)
+            ->typeAllow()
             ->where('parent_id', Question::PARENT_ID)->count();
     }
 
