@@ -584,6 +584,27 @@
 #exam-modal .overlay-footer .offer-course .title{
     position: initial;
 }
+#myNav .overlay-footer .offer-course .title{
+   text-align: left;
+}
+#myNav .overlay-footer .offer-course .title p:first-child{
+    margin-bottom: 6px;
+}
+
+
+.do-new .title p:last-child{
+   color: #7BCDC7 !important;
+}
+.did-1 .title p:last-child{
+   color: #32A8F7 !important;
+}
+.do-false-1 .title p:last-child{
+   color: #F87B54 !important;
+}
+.do-bookmark-1 .title p:last-child{
+   color: #FFC646 !important;
+}
+
 #myNav .overlay-footer .offer-course.do_false,
 #exam-modal .overlay-footer .offer-course.do_false{
     background: #FF503B;

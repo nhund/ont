@@ -33,6 +33,12 @@ function reportLesson(lesson_id){
                 $('[data-lesson=question-did]').html(did);
                 $('[data-lesson=question-correct]').html(`${correct}%`);
                 $('[data-lesson=title]').html(data.data.name);
+
+                $('[data-sub-lesson=new]').html(report.totalNewQuestions+' câu');
+                $('[data-sub-lesson=wrong]').html(report.totalWrongQuestions+' câu');
+                $('[data-sub-lesson=old]').html(report.totalDid+' câu');
+                $('[data-sub-lesson=bookmark]').html(report.totalBookmarkQuestions+' câu');
+
                 document.getElementById("myNav").style.height = "100%";
                 lessonId = lesson_id;
             }
