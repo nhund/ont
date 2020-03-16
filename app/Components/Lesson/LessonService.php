@@ -109,10 +109,10 @@ class LessonService
             ;
         foreach ($userQuestions as $question)
         {
-            if ($question->status == Question::STATUS_ON){
+            if ($question->status == Question::REPLY_OK){
                 $correct = $question->total;
             }
-            if ($question->status == Question::STATUS_OFF){
+            if ($question->status == Question::REPLY_ERROR){
                 $wrong = $question->total;
             }
         }
