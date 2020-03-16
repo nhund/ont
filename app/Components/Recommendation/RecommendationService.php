@@ -158,28 +158,40 @@ class RecommendationService
             ;
         }
 
-        $listQuestionLearned = [];
-        $questionLearned = QuestionLogCurrent::where('user_id',$user->id)
-            ->where('type', Question::LEARN_LAM_BAI_TAP)
-            ->where('course_id',$this->lesson->course_id)
-            ->first();
-
-        if($questionLearned)
-        {
-            $listId = [];
-            if(!empty($questionLearned->content))
-            {
-                $listId = json_decode($questionLearned->content,true);
-            }
-            if(isset($listId[$this->lesson->id]))
-            {
-                $listQuestionLearned = $listId[$this->lesson->id];
-            }
-        }
+//        $listQuestionLearned = [];
+//        $questionLearned = QuestionLogCurrent::where('user_id',$user->id)
+//            ->where('type', Question::LEARN_LAM_BAI_TAP)
+//            ->where('course_id',$this->lesson->course_id)
+//            ->first();
+//
+//        if($questionLearned)
+//        {
+//            $listId = [];
+//            if(!empty($questionLearned->content))
+//            {
+//                $listId = json_decode($questionLearned->content,true);
+//            }
+//            if(isset($listId[$this->lesson->id]))
+//            {
+//                $listQuestionLearned = $listId[$this->lesson->id];
+//            }
+//        }
+//
+//        $questionLearnedLogs = UserQuestionLog::where('course_id',$course->id)
+//            ->where('user_id',$user->id)
+//            ->where('lesson_id', $this->lesson->id)
+//            ->groupBy('question_parent')->get()
+//            ->pluck('question_parent')->toArray();
+//
+//        if (count($questionLearnedLogs) > 10){
+//            $listQuestionLearned = array_diff($questionLearnedLogs, $listQuestionLearned);
+//        }else{
+//            $listQuestionLearned = $questionLearnedLogs;
+//        }
 
         //loai bo cac cau da luu de phan trang
         $questions = Question::where('lesson_id',$this->lesson->id)
-            ->whereIn('id',$listQuestionLearned)
+//            ->whereIn('id',$listQuestionLearned)
             ->typeAllow()
             ->where('parent_id',Question::PARENT_ID)
             ->orderByRaw('RAND()')->take($limit)

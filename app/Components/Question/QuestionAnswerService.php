@@ -56,7 +56,7 @@ class QuestionAnswerService
     {
         $courseId       = $this->lesson->course_id;
         $lessonId       = $this->lesson->id;
-        $type           = $this->request->get('type');
+        $type           = Question::LEARN_LAM_BAI_TAP;
         $user           = $this->request->user();
         $questionParent = $this->question->id;
 
@@ -94,6 +94,7 @@ class QuestionAnswerService
                 }
                 return true;
             }
+
             //neu dang click lam 1 bai bat ky
             //tong so cau hoi trong 1 lesson
             $lesson_questions = Question::where('lesson_id', $lessonId)->where('parent_id', 0)->count();
@@ -102,45 +103,35 @@ class QuestionAnswerService
             if ($lesson_questions == $userQuestionLog) {
                 UserQuestionLog::where('lesson_id', $lessonId)->where('user_id', $user->id)->update(['status_delete' => UserQuestionLog::INACTIVE]);
             }
-
-            $bookmarkQuestion = UserQuestionBookmark::where('user_id', $user->id)
-                ->where('lesson_id', $lessonId)
-                ->where('course_id', $courseId)
-                ->where('question_id', $courseId, $questionParent)->first();
-
-            if ($bookmarkQuestion){
-                $bookmarkQuestion->turn += 1;
-                $bookmarkQuestion->save();
-            }
         }
 
-        //ghi log neu dang lam on tap
-        if ($type == Question::LEARN_LAM_CAU_CU) {
-            $questionlearnedIds = [];
-            $questionLearned    = QuestionLogCurrent::where('user_id', $user->id)->where('course_id', $courseId)->where('type', $type)->first();
-            if ($questionLearned) {
-                $questionlearnedIds = json_decode($questionLearned->content, true);
-                if (!in_array($questionParent, $questionlearnedIds)) {
-                    array_push($questionlearnedIds, $questionParent);
-                    //lay tat ca cac cau hoi da lam
-                    $questionLogs = UserQuestionLog::where('course_id', $courseId)
-                        ->where('user_id', $user->id)
-                        ->groupBy('question_parent')->get()->count();
-                    if ($questionLogs == count($questionlearnedIds)) {
-                        // neu so cau da lam xong thi reset log
-                        $questionlearnedIds = [];
-                    }
-                    $questionLearned->content = json_encode($questionlearnedIds);
-                    $questionLearned->save();
-                }
-
-            } else {
-
-                array_push($questionlearnedIds, $questionParent);
-                $questionLearned['content'] = json_encode($questionlearnedIds);
-                $this->questionLearned($questionLearned);
-            }
-        }
+//        //ghi log neu dang lam on tap
+//        if ($type == Question::LEARN_LAM_CAU_CU) {
+//            $questionlearnedIds = [];
+//            $questionLearned    = QuestionLogCurrent::where('user_id', $user->id)->where('course_id', $courseId)->where('type', $type)->first();
+//            if ($questionLearned) {
+//                $questionlearnedIds = json_decode($questionLearned->content, true);
+//                if (!in_array($questionParent, $questionlearnedIds)) {
+//                    array_push($questionlearnedIds, $questionParent);
+//                    //lay tat ca cac cau hoi da lam
+//                    $questionLogs = UserQuestionLog::where('course_id', $courseId)
+//                        ->where('user_id', $user->id)
+//                        ->groupBy('question_parent')->get()->count();
+//                    if ($questionLogs == count($questionlearnedIds)) {
+//                        // neu so cau da lam xong thi reset log
+//                        $questionlearnedIds = [];
+//                    }
+//                    $questionLearned->content = json_encode($questionlearnedIds);
+//                    $questionLearned->save();
+//                }
+//
+//            } else {
+//
+//                array_push($questionlearnedIds, $questionParent);
+//                $questionLearned['content'] = json_encode($questionlearnedIds);
+//                $this->questionLearned($questionLearned);
+//            }
+//        }
 
         $this->logUserQuestion($data);
 
