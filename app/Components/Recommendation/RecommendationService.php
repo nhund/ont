@@ -78,7 +78,8 @@ class RecommendationService
 
         if(count($theories) > self::TURN)
         {
-            foreach ($theories as $theory) {
+            foreach ($theories as $theory)
+            {
                 //kiem tra xem bai nay da hoc ly thuyet chua
                 //$check_lesson_log = in_array($lesson->id, $lesson_log);
                 $checkTheory = UserLessonLog::where('user_id',$user->id)
@@ -96,15 +97,14 @@ class RecommendationService
             }
         }
 
-        $questionLearnedLogs = UserQuestionLog::where('course_id',$course->id)
-            ->active()
-            ->where('user_id',$user->id)
-            ->where('lesson_id', $this->lesson->id)
-            ->groupBy('question_parent')->get()
-            ->pluck('question_parent')->toArray();
-
         if($this->lesson->is_exercise == Lesson::IS_EXERCISE)
         {
+            $questionLearnedLogs = UserQuestionLog::where('course_id',$course->id)
+                ->where('user_id',$user->id)
+                ->where('lesson_id', $this->lesson->id)
+                ->groupBy('question_parent')->get()
+                ->pluck('question_parent')->toArray();
+
             //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
             $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
                 ->typeAllow()
@@ -115,13 +115,6 @@ class RecommendationService
 
             if($check_has_question > self::TURN)
             {
-
-//                //lay cac cau hoi da lam
-//                $question_log = UserQuestionLog::where('user_id',$user->id)
-//                    ->active()
-//                    ->where('lesson_id',$this->lesson->id)->get()
-//                    ->pluck('question_parent')->toArray();
-
                 $questions = Question::where('lesson_id', $this->lesson->id)
                     ->typeAllow()
                     ->where('parent_id', Question::PARENT_ID)
@@ -165,8 +158,28 @@ class RecommendationService
             ;
         }
 
+        $listQuestionLearned = [];
+        $questionLearned = QuestionLogCurrent::where('user_id',$user->id)
+            ->where('type', Question::LEARN_LAM_BAI_TAP)
+            ->where('course_id',$this->lesson->course_id)
+            ->first();
+
+        if($questionLearned)
+        {
+            $listId = [];
+            if(!empty($questionLearned->content))
+            {
+                $listId = json_decode($questionLearned->content,true);
+            }
+            if(isset($listId[$this->lesson->id]))
+            {
+                $listQuestionLearned = $listId[$this->lesson->id];
+            }
+        }
+
         //loai bo cac cau da luu de phan trang
         $questions = Question::where('lesson_id',$this->lesson->id)
+            ->whereIn('id',$listQuestionLearned)
             ->typeAllow()
             ->where('parent_id',Question::PARENT_ID)
             ->orderByRaw('RAND()')->take($limit)
