@@ -36,6 +36,10 @@ class LessonService
     /**
      * @var
      */
+    protected $didQuestions;
+    /**
+     * @var
+     */
     protected $totalWrongQuestions;
     /**
      * @var
@@ -65,14 +69,14 @@ class LessonService
     {
         $this->totalQuestions = $this->totalQuestions();
         list($this->totalCorrectQuestions, $this->totalWrongQuestions) = $this->totalCorrectWrongQuestion();
-
+        $this->didQuestions = $this->didQuestions();
         return [
             'totalNewQuestions'     => $this->totalNewQuestions(),
             'totalQuestions'        => $this->totalQuestions,
             'totalBookmarkQuestions'=> $this->totalBookmarkQuestions(),
             'totalWrongQuestions'   => $this->totalWrongQuestions,
             'totalCorrectQuestions' => $this->totalCorrectQuestions,
-            'totalDid'              => $this->totalCorrectQuestions + $this->totalWrongQuestions,
+            'totalDid'              => $this->didQuestions,
         ];
     }
 
@@ -91,11 +95,17 @@ class LessonService
      */
     public function totalNewQuestions()
     {
-        $didQuestions = UserQuestionLog::where('lesson_id', $this->lesson->id)
+        return $this->totalQuestions - $this->didQuestions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function didQuestions()
+    {
+        return UserQuestionLog::where('lesson_id', $this->lesson->id)
             ->where('user_id', $this->user->id)
             ->count();
-
-        return $this->totalQuestions - $didQuestions;
     }
 
     /**
