@@ -133,7 +133,7 @@
           </div>
        </div>
        <div id="myNav" class="overlay">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav('myNav')">&times;</a>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav('myNav')">&times;</a><br/>
             <p class="title" data-lesson="name"></p>
             <div class="overlay-content">
                 <div class="total total-question col-xs-4 col-lg-3 col-md-3 col-sm-3">
@@ -195,7 +195,7 @@
       </div>
 
       <div id="exam-modal" class="overlay" style="overflow-y:scroll">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav('exam-modal')">&times;</a>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav('exam-modal')">&times;</a><br/>
             <p class="title" ><span data-exam="name"></span></p>
             <div class="overlay-content row">
                 <div class="description ">
