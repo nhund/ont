@@ -39,7 +39,7 @@ function reportLesson(lesson_id){
                 const $old =  $('[data-sub-lesson=old]');
                 const $bookmark =  $('[data-sub-lesson=bookmark]');
 
-
+                $('.offer-course').removeClass('disabled-link');
 
                 if (report.totalNewQuestions === 0){
                     $new.closest('a').addClass('disabled-link')
