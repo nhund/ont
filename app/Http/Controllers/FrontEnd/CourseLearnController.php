@@ -894,9 +894,8 @@ class CourseLearnController extends Controller
                 $lesson_child->lesson_ly_thuyet_pass = UserLessonLog::where('user_id',$user->id)->where('course_id',$courseId)->where('lesson_id',$lesson_child->id)->first();
             }
             $lesson->childs = $lesson_childs;
-
-
         }
+
         $var['lessons'] = $lessons;
         $var['course_same'] = Course::where('status','!=',Course::TYPE_PRIVATE)->orderBy('id','DESC')->take(5)->get();
         $var['total_question'] = $total_question;

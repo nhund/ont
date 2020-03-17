@@ -696,13 +696,13 @@
     margin-top: 30px;
 }
 .time-exam{
- border: 1px solid #7bcdc7;
+ border: 1px solid #F87B54;
  border-radius: 5px 5px 0 0;
  font-weight: bold;
 }
 
 .time-exam .text-score{
-    background: #7bcdc7;
+    background: #F87B54;
     padding: 12px;
     color: white;
 }
