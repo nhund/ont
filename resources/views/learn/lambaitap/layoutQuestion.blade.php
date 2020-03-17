@@ -74,7 +74,7 @@
  var book_mark_url = '{{ route('user.question.bookMark') }}';
 
  const lessonId =`{{$var['lesson']->id ??''}}`;
- let  urlRecommendation = window.location.pathname+'?lesson_id='+lessonId;
+ let  urlRecommendation = window.location.pathname+'?continue&lesson_id='+lessonId;
 
 </script>
 <script src='{{ web_asset('public/js/learn/course_question.js') }}' type='text/javascript'></script>

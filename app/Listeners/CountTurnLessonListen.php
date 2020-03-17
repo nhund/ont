@@ -45,6 +45,9 @@ class CountTurnLessonListen
 
         if ($correctQuestions->count() == $totalQuestions){
             $userLesson->turn_right += 1;
+            UserQuestionLog::where('lesson_id', $question->lesson_id)
+                ->where('user_id', $user->id)
+                ->update(['status_delete' => UserQuestionLog::INACTIVE]);
             $update = true;
         }
 

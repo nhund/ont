@@ -13,7 +13,6 @@ use App\Models\Question;
 use App\Models\QuestionAnswer;
 use App\Models\QuestionLogCurrent;
 use App\Models\UserLessonLog;
-use App\Models\UserQuestionBookmark;
 use App\Models\UserQuestionLog;
 use Illuminate\Http\Request;
 
@@ -60,78 +59,39 @@ class QuestionAnswerService
         $user           = $this->request->user();
         $questionParent = $this->question->id;
 
-        if ($type == Question::LEARN_LAM_BAI_TAP) {
-            $questionlearnedIds = [];
-            $questionLearned    = QuestionLogCurrent::where('user_id', $user->id)->where('course_id', $courseId)->where('type', $type)->first();
-            if ($questionLearned) {
-                $questionlearnedIds = json_decode($questionLearned->content, true);
-                if (isset($questionlearnedIds[$lessonId])) {
-                    if (!in_array($questionParent, $questionlearnedIds[$lessonId])) {
-                        array_push($questionlearnedIds[$lessonId], $questionParent);
-                    }
-                } else {
-                    $questionlearnedIds[$lessonId] = [$questionParent];
+        $questionlearnedIds = [];
+        $questionLearned    = QuestionLogCurrent::where('user_id', $user->id)->where('course_id', $courseId)->where('type', $type)->first();
+        if ($questionLearned) {
+            $questionlearnedIds = json_decode($questionLearned->content, true);
+            if (isset($questionlearnedIds[$lessonId])) {
+                if (!in_array($questionParent, $questionlearnedIds[$lessonId])) {
+                    array_push($questionlearnedIds[$lessonId], $questionParent);
                 }
-                //lay tat ca cau hoi cua lesson
-                $lesson_questions = Question::where('lesson_id', $lessonId)->where('course_id', $courseId)->where('parent_id', 0)->count();
-
-                if ($lesson_questions == count($questionlearnedIds[$lessonId])) {
-                    // neu so cau da lam xong thi reset log
-                    $questionlearnedIds[$lessonId] = [];
-                }
-                $questionLearned->content = json_encode($questionlearnedIds);
-                $questionLearned->save();
-
             } else {
-                //$lesson_current =
-                $lesson_questions = Question::where('lesson_id', $lessonId)->where('course_id', $courseId)->where('parent_id', 0)->count();
-                if ($lesson_questions > 1) {
-                    $questionlearnedIds[$lessonId] = [$questionParent];
-
-                    $questionLearned['content'] = json_encode($questionlearnedIds);
-
-                    $this->questionLearned($questionLearned);
-                }
-                return true;
+                $questionlearnedIds[$lessonId] = [$questionParent];
             }
+            //lay tat ca cau hoi cua lesson
+            $lesson_questions = Question::where('lesson_id', $lessonId)->where('course_id', $courseId)->where('parent_id', 0)->count();
 
-            //neu dang click lam 1 bai bat ky
-            //tong so cau hoi trong 1 lesson
-            $lesson_questions = Question::where('lesson_id', $lessonId)->where('parent_id', 0)->count();
-            //tong so cau hoi user da lam
-            $userQuestionLog = UserQuestionLog::where('lesson_id', $lessonId)->active()->where('user_id', $user->id)->count();
-            if ($lesson_questions == $userQuestionLog) {
-                UserQuestionLog::where('lesson_id', $lessonId)->where('user_id', $user->id)->update(['status_delete' => UserQuestionLog::INACTIVE]);
+            if ($lesson_questions == count($questionlearnedIds[$lessonId])) {
+                // neu so cau da lam xong thi reset log
+                $questionlearnedIds[$lessonId] = [];
             }
+            $questionLearned->content = json_encode($questionlearnedIds);
+            $questionLearned->save();
+
+        } else {
+            //$lesson_current =
+            $lesson_questions = Question::where('lesson_id', $lessonId)->where('course_id', $courseId)->where('parent_id', 0)->count();
+            if ($lesson_questions > 1) {
+                $questionlearnedIds[$lessonId] = [$questionParent];
+
+                $questionLearned['content'] = json_encode($questionlearnedIds);
+
+                $this->questionLearned($questionLearned);
+            }
+            return true;
         }
-
-//        //ghi log neu dang lam on tap
-//        if ($type == Question::LEARN_LAM_CAU_CU) {
-//            $questionlearnedIds = [];
-//            $questionLearned    = QuestionLogCurrent::where('user_id', $user->id)->where('course_id', $courseId)->where('type', $type)->first();
-//            if ($questionLearned) {
-//                $questionlearnedIds = json_decode($questionLearned->content, true);
-//                if (!in_array($questionParent, $questionlearnedIds)) {
-//                    array_push($questionlearnedIds, $questionParent);
-//                    //lay tat ca cac cau hoi da lam
-//                    $questionLogs = UserQuestionLog::where('course_id', $courseId)
-//                        ->where('user_id', $user->id)
-//                        ->groupBy('question_parent')->get()->count();
-//                    if ($questionLogs == count($questionlearnedIds)) {
-//                        // neu so cau da lam xong thi reset log
-//                        $questionlearnedIds = [];
-//                    }
-//                    $questionLearned->content = json_encode($questionlearnedIds);
-//                    $questionLearned->save();
-//                }
-//
-//            } else {
-//
-//                array_push($questionlearnedIds, $questionParent);
-//                $questionLearned['content'] = json_encode($questionlearnedIds);
-//                $this->questionLearned($questionLearned);
-//            }
-//        }
 
         $this->logUserQuestion($data);
 
@@ -307,7 +267,7 @@ class QuestionAnswerService
     {
         $params['user_id']     = $this->request->user()->id;
         $params['course_id']   = $this->lesson->course_id;
-        $params['type']        = $this->request->get('type');
+        $params['type']        = Question::LEARN_LAM_BAI_TAP;
         $params['create_date'] = time();
         $params['update_date'] = time();
 
@@ -359,6 +319,13 @@ class QuestionAnswerService
 
             $questionLog->save();
         }
+
+        $lesson_questions = UserQuestionLog::where('lesson_id',  $this->lesson->id)->where('user_id', $userId)->count();
+        //tong so cau hoi user da lam
+        $userQuestionLog = UserQuestionLog::where('lesson_id',  $this->lesson->id)->active()->where('user_id', $userId)->count();
+        if ($lesson_questions == $userQuestionLog) {
+            UserQuestionLog::where('lesson_id',  $this->lesson->id)->where('user_id', $userId)->update(['status_delete' => UserQuestionLog::INACTIVE]);
+        }
     }
 
     /**
@@ -373,27 +340,6 @@ class QuestionAnswerService
 
         $up_question_true = false;
 
-        //tong so cau hoi cua lesson
-//        $lesson_questions = Question::where('lesson_id', $lessonId)
-//            ->where('parent_id', 0)->count();
-
-//        if ($data['question_type'] == Question::TYPE_FLASH_SINGLE || $data['question_type'] == Question::TYPE_FLASH_MUTI) {
-//            if ((int)$data['status'] == QuestionAnswer::REPLY_OK) {
-//                $up_question_true = true;
-//            }
-//        }
-//        else {
-//            $count_question_child = Question::where('parent_id', $questionParent)->count();
-//            //kiem tra xem da lam dung bn cau
-//            $count_question_true = UserQuestionLog::where('question_parent', $questionParent)
-//                ->where('lesson_id', $lessonId)
-//                ->where('user_id', $userId)
-//                ->where('status', QuestionAnswer::REPLY_OK)->count();
-//
-//            if ($count_question_child == $count_question_true && $count_question_true > 0) {
-//                $up_question_true = true;
-//            }
-//        }
 
         $lesson_log = UserLessonLog::where('user_id', $userId)
             ->where('lesson_id', $lessonId)->first();
@@ -408,28 +354,8 @@ class QuestionAnswerService
             $lesson_log->count_all           = 1;
             $lesson_log->create_at           = time();
             $lesson_log->count_question_true = $up_question_true == true ? 1 : 0;
-            $lesson_log->turn_right = 0;
-//            $lesson_log->total = 0;
+            $lesson_log->turn_right          = 0;
             $lesson_log->save();
-
-//            if ($up_question_true) {
-//                // tang so cau tra loi dung
-//                $lesson_log->count_question_true += 1;
-//                $lesson_log->save();
-//
-//                //dem so cau tra loi dung cua user trong lesson
-//                $countUserLearnPass = UserQuestionLog::where('user_id', $userId)
-//                    ->where('lesson_id', $lessonId)
-//                    ->where('status', QuestionAnswer::REPLY_OK)->count();
-//
-//                if ($countUserLearnPass >= $lesson_questions) {
-//                    // lam dung het tat ca cau hoi. reset tong so cau tra loi dung
-//                    // tang luot lam len
-//                    $lesson_log->count_question_true = 0;
-//                    $lesson_log->count               += 1;
-//                    $lesson_log->save();
-//                }
-//            }
         }
         event(new SubmitQuestionEvent($questionParent, $this->request->user()));
     }
