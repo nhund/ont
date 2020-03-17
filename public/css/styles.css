@@ -4581,6 +4581,7 @@ button.update-cart{
 		display: none;
 	}
 	#myNav.overlay .closebtn, #exam-modal.overlay .closebtn{
+		z-index: 10000;
 		top: 23px;
 		right: 10px;
 	}

@@ -434,7 +434,7 @@
 
 #myNav .overlay-content {
     position: relative;
-    top: 10%;
+    /*top: 10%;*/
     width: 100%;
     text-align: center;
     margin-top: 80px;
@@ -506,6 +506,7 @@
     top: 20px;
     right: 45px;
     font-size: 45px;
+    z-index: 10000;
 }
 #myNav .overlay-footer{
     position: relative;
@@ -685,6 +686,7 @@
     font-size: 40px;
     top: 15px;
     right: 35px;
+    z-index: 10000;
   }
 }
 
