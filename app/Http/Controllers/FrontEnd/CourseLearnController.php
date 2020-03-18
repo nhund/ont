@@ -551,8 +551,8 @@ class CourseLearnController extends Controller
                 }
             }
 
-                alert()->success('Bạn đã học hết các bài mới');
-                return redirect()->back();
+            alert()->success('Bạn đã học hết các bài mới');
+            return redirect()->back();
 //            if ($request->has('lesson_id')){
 //                $lesson            = Lesson::findOrFail($request->get('lesson_id'));
 //                redirect()->route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id]);

@@ -485,7 +485,6 @@ class RecommendationService
     public function __getWrongQuestions($course, $lesson, $user, $limit = 10)
     {
         $question = UserQuestionLog::where('course_id',$course->id)
-            ->active()
             ->where('user_id',$user->id)
             ->where('lesson_id',$lesson->id)
             ->where('status',Question::REPLY_ERROR)
