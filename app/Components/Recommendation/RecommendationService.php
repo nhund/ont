@@ -200,6 +200,7 @@ class RecommendationService
             ->orderBy('turn', 'ASC')->get()
             ->pluck('question_id')->toArray();
 
+        dd($userBookmark, $user->id, $course->id);
         $questions = Question::query()
             ->typeAllow()
             ->whereIn('id',$userBookmark)

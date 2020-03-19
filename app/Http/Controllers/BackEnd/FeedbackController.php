@@ -19,7 +19,8 @@ class FeedbackController extends AdminBaseController
         $data = $request->all();
         $feedback = Feedback::select('*')->with(['bookmark' => function ($q){
             $q->where('user_id',Auth::user()->id);
-        }]);
+        }])
+        ->whereHas('question');
         if(isset($data['create_date']) && !empty($data['create_date']))
         {
             $time = explode('-',$data['create_date']);

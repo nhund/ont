@@ -21,7 +21,7 @@
                 {{ $feedback->user->name_full }}
                 <p>{{ $feedback->email }} </p>
             </td>                         
-            <td>{{ $feedback->title }}</td>
+            <td>{{ $feedback->title }} {{ $feedback->id}}</td>
             <td>{{ $feedback->content }}</td>
             <td>{{ $feedback->question->question }}</td>
             <td><a href="{{route('lesson.detail', ['id' =>  $feedback->lesson->id ?? '' ])}}">{{ $feedback->lesson->name ?? '' }}</a></td>
@@ -37,7 +37,9 @@
             <td>
                 <a target="_blank" href="https://mail.google.com/mail/u/0/#inbox?compose=new" class="btn btn-default btn-xs btn-label" style="margin-bottom:5px "><i class="fa fa-envelope"></i>Trả lời email</a>
                 <a href="{{ route('admin.feedback.editQuestion',['id'=>$feedback->question_id,'feedback_id'=>$feedback->id]) }}" class="btn btn-default btn-xs btn-label"><i class="fa fa-pencil"></i>Sửa</a>
-                <a onclick="bookmark(`{{$feedback->question_id}}`, this)" class="btn {{$feedback->bookmark ? 'btn-success bookmarked' : 'btn-default'}} btn-xs btn-label"><i class="fa fa-bookmark"></i>Bookmark</a>
+                @if($feedback->question->parent_id == 0)
+                    <a onclick="bookmark(`{{$feedback->question_id}}`, this)" class="btn {{$feedback->bookmark ? 'btn-success bookmarked' : 'btn-default'}} btn-xs btn-label"><i class="fa fa-bookmark"></i>Bookmark</a>
+                @endif
             </td>
         </tr>
         @endforeach
