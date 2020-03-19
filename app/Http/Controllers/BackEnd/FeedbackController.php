@@ -49,6 +49,9 @@ class FeedbackController extends AdminBaseController
     public function editQuestion(Request $request)
     {
         $data = $request->all();
+
+        \Session::put('feedback_url', url()->previous());
+
         if(!isset($data['id']) || !isset($data['feedback_id']))
         {
             alert()->error("Nội dung không tồn tại");

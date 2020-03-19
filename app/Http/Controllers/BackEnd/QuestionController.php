@@ -461,11 +461,12 @@ class QuestionController extends AdminBaseController
             // ]);
         }
         $question = Question::find($data['id']);
-        if (!$question) {
+        $course = Course::find($question->course_id);
+
+        if (!$question || !$course) {
             alert()->error('Dữ liệu không tồn tại');
             return redirect()->route('dashboard');
         }
-        $course = Course::find($question->course_id);
         $var['breadcrumb'] = array(
             array(
                 'url' => route('course.detail', ['id' => $question->course_id]),
@@ -949,8 +950,13 @@ class QuestionController extends AdminBaseController
                 alert()->success('Cập nhật thành công');
             }
         }
+
         if (isset($data['feedback_id'])) {
             Feedback::where('id', $data['feedback_id'])->update(['status' => Feedback::STATUS_EDIT, 'update_date' => time()]);
+            $preUrl = session('feedback_url');
+            if (stripos($preUrl, 'feedback')){
+                return redirect()->to(session('feedback_url'));
+            }
             return redirect()->route('course.detail', ['id' => $question->course_id, 'type' => 'feedback']);
         }
         return redirect()->route('lesson.detail', ['id' => $question->lesson_id]);
