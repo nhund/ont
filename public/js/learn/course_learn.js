@@ -28,7 +28,7 @@ function reportLesson(lesson_id){
             if (data.meta) {
                 const report = data.meta;
                 const did = `${report.totalDid}<span style="font-size: 15px;">/${report.totalQuestions}</span>`;
-                const correct =  Number(report.totalCorrectQuestions*100/report.totalQuestions).toFixed(0);
+                const correct =  Number(report.totalCorrectQuestions*100/report.totalDid).toFixed(0);
 
                 $('[data-lesson=name]').html(data.data.name);
                 $('[data-lesson=des]').html(data.data.description);
