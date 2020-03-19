@@ -145,21 +145,21 @@
 
                     <div class="title">
                     <p style="min-height: 70px;">Tổng số câu hỏi</p>
-                    <p data-lesson="total-question">100</p>
+                    <p data-lesson="total-question"></p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #2bd6fe;"></i>
                 </div>
                 <div class="total total-question-did col-xs-4 col-lg-3 col-md-3 col-sm-3">
                     <div class="title">
                         <p style="min-height: 70px;">Số câu đã làm</p>
-                        <p data-lesson="question-did">10/<span style="font-size: 15px;">100</span></p>
+                        <p data-lesson="question-did">10/<span style="font-size: 15px;"></span></p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fa7a1d;"></i>
                 </div>
                 <div class="total total-question-correct col-xs-4 col-lg-3 col-md-3 col-sm-3">
                     <div class="title">
-                        <p style="min-height: 70px;">Tỉ &nbsp;lệ làm đúng</p>
-                        <p data-lesson="question-correct">100</p>
+                        <p style="min-height: 70px;">Trả lời chính xác</p>
+                        <p data-lesson="question-correct"></p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fce747;"></i>
                 </div>
