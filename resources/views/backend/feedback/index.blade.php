@@ -53,7 +53,7 @@
                                                     <p><strong>Email:</strong> {{ $feedback->email }}</p>
                                                 </td> 
                                                 <td>
-                                                    {{ $feedback->title }}                                                  
+                                                    {{ $feedback->title }} {{$feedback->question_id}} {{$feedback->id}}
                                                 </td>
                                                 <td>
                                                     {{ $feedback->content }}

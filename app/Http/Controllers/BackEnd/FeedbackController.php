@@ -30,7 +30,9 @@ class FeedbackController extends AdminBaseController
         {
             $feedback = $feedback->where('teacher_id',Auth::user()->id);
         }
-        $feedback = $feedback->orderBy('id','DESC')->paginate($limit);
+        $feedback = $feedback->orderBy('id','DESC')
+            ->groupBy('question_id')
+            ->paginate($limit);
         $var['feedbacks'] = $feedback;
         $var['breadcrumb'] = array(
             array(
@@ -77,9 +79,8 @@ class FeedbackController extends AdminBaseController
                 return redirect()->route('admin.question.edit',['id'=>$question->parent_id,'feedback_id'=>$data['feedback_id'],'feedback_question'=>$data['id']]);       
             }
             return redirect()->route('admin.question.edit',['id'=>$data['id'],'feedback_id'=>$data['feedback_id']]);
-        // if($question->type == Question::TYPE_DIEN_TU || Question::TYPE_TRAC_NGHIEM || Question::TYPE_DIEN_TU_DOAN_VAN){
-            
-        // }
+
+
         
     }
 }
