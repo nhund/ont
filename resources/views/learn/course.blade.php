@@ -158,7 +158,7 @@
                 </div>
                 <div class="total total-question-correct col-xs-4 col-lg-3 col-md-3 col-sm-3">
                     <div class="title">
-                        <p style="min-height: 70px;">Tổng câu làm đúng</p>
+                        <p style="min-height: 70px;">Tỉ &nbsp;lệ làm đúng</p>
                         <p data-lesson="question-correct">100</p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fce747;"></i>

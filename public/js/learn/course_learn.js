@@ -34,6 +34,7 @@ function reportLesson(lesson_id){
                 $('[data-lesson=des]').html(data.data.description);
                 $('[data-lesson=question-did]').html(did);
                 $('[data-lesson=question-correct]').html(`${correct}%`);
+                $('[data-lesson=total-question]').html(report.totalQuestions);
                 $('[data-lesson=title]').html(data.data.name);
 
                 const $new = $('[data-sub-lesson=new]');
