@@ -77,7 +77,7 @@ class RecommendationService
             ->orderBy('order_s','ASC')
             ->orderBy('created_at','ASC')
             ->get();
-        dd($this->lesson->id);
+//        dd($this->lesson->id);
 
         if(count($theories) > self::TURN)
         {
