@@ -178,4 +178,9 @@ class Lesson extends Model
     {
         return $this->hasMany(ExamUser::class);
     }
+
+    public function lessonLog()
+    {
+        return $this->hasMany(UserLessonLog::class);
+    }
 }

@@ -541,6 +541,7 @@ class CourseLearnController extends Controller
 
             $getQuestionDetail = $recommendation->doingNewQuestions($course, $user);
 
+            dd($getQuestionDetail);
             $var = array_merge($var, $getQuestionDetail);
             $var['lesson'] = $recommendation->lesson;
 

@@ -77,9 +77,11 @@ class RecommendationService
             ->orderBy('order_s','ASC')
             ->orderBy('created_at','ASC')
             ->get();
+        dd($this->lesson->id);
 
         if(count($theories) > self::TURN)
         {
+
             foreach ($theories as $theory)
             {
                 //kiem tra xem bai nay da hoc ly thuyet chua
@@ -472,18 +474,29 @@ class RecommendationService
     }
 
     public function _getLessonLogUser($course, $user){
-        return Lesson::select('lesson.*', 'user_lesson_log.turn')
-            ->leftJoin('user_lesson_log', function ($q) use ($user){
-                $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
-                    ->where('user_lesson_log.user_id', $user->id);
-            })
-            ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
-            ->where('lesson.course_id', $course->id)
-            ->orderBy('turn')
-            ->orderBy('lesson.parent_id')
-            ->orderBy('order_s')
-            ->first()
-        ;
+
+        $parentLessons = Lesson::where('course_id',$course->id)
+            ->where('parent_id', Lesson::PARENT_ID)
+            ->active()
+            ->where('level', '<>', 0)
+            ->orderBy('order_s','ASC')
+            ->orderBy('created_at','ASC')->get();
+
+        foreach ($parentLessons as $parentLesson){
+            $lesson = Lesson::select('lesson.*')
+                ->whereDoesntHave('lessonLog', function($q) use ($user){
+                    $q->where('user_id', $user->id);
+                })
+                ->where('lesson.parent_id', $parentLesson->id)
+                ->where('lesson.course_id', $course->id)
+                ->orderBy('order_s')
+                ->orderBy('lesson.created_at','ASC')
+                ->first();
+            if($lesson){
+                return $lesson;
+            }
+        }
+        return false;
     }
 
     public function __getWrongQuestions($course, $lesson, $user, $limit = 10)

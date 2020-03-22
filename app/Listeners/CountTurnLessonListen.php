@@ -36,7 +36,8 @@ class CountTurnLessonListen
             ->groupBy('question_parent')->get();
 
         $totalQuestions = Question::where('lesson_id', $question->lesson_id)
-            ->where('parent_id',0)->count();
+            ->typeAllow()
+            ->where('parent_id', Question::PARENT_ID)->count();
 
         $userLesson = UserLessonLog::where([
             'user_id' => $user->id,
