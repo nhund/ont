@@ -8,6 +8,8 @@
 
 namespace App\Components\Recommendation;
 
+use App\Events\BeginExamEvent;
+use App\Events\BeginLessonEvent;
 use App\Exceptions\BadRequestException;
 use App\Models\Course;
 use App\Models\Lesson;
@@ -169,6 +171,7 @@ class RecommendationService
                 ->where('lesson_id', $this->lesson->id)
                 ->groupBy('question_parent')->get()
                 ->pluck('question_parent')->toArray();
+            event(new BeginLessonEvent($this->lesson, $user));
         }
 
         $questions = Question::where('lesson_id',$this->lesson->id)

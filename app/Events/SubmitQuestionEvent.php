@@ -6,6 +6,7 @@ use App\Models\Lesson;
 use App\Models\Question;
 use App\User;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,7 +16,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class SubmitQuestionEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels, Queueable;
 
     public $questionId;
     public $user;

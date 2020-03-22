@@ -3,25 +3,27 @@
 namespace App\Events;
 
 use App\Models\Lesson;
-use App\Models\UserCourse;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class RefundCourseEvent
+class BeginLessonEvent
 {
     use Dispatchable, SerializesModels, Queueable;
 
-    public $userCourse;
+    public $lesson;
+
+    public $user;
 
     /**
-     * RefundCourseEvent constructor.
-     * @param UserCourse $userCourse
+     * BeginLessonEvent constructor.
+     * @param Lesson $lesson
      * @param User $user
      */
-    public function __construct(UserCourse $userCourse)
+    public function __construct(Lesson $lesson, User $user)
     {
-        $this->userCourse = $userCourse;
+        $this->lesson = $lesson;
+        $this->user = $user;
     }
 }

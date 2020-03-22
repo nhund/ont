@@ -29,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         Events\DeleteQuestionEvent::class => [
             Listeners\DeleteQuestionListener::class
+        ],
+        Events\BeginLessonEvent::class => [
+            Listeners\BeginDidQuestionListener::class
         ]
     ];
 

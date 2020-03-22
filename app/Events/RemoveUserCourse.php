@@ -4,13 +4,14 @@ namespace App\Events;
 
 use App\Models\Course;
 use App\User;
+use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
 class RemoveUserCourse
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels, Queueable;
 
     public $course;
     public $user;

@@ -5,12 +5,13 @@ namespace App\Events;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\User;
+use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 
 class DeleteQuestionEvent
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable, SerializesModels, Queueable;
 
     public $question;
 

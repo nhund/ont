@@ -93,6 +93,7 @@ class CourseLearnController extends Controller
             'msg'=>'',
         );       
     }
+
     public function course($title,$id,Request $request)
     {
         $course = Course::find($id);

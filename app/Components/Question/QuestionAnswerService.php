@@ -319,13 +319,6 @@ class QuestionAnswerService
 
             $questionLog->save();
         }
-
-        $lesson_questions = UserQuestionLog::where('lesson_id',  $this->lesson->id)->where('user_id', $userId)->count();
-        //tong so cau hoi user da lam
-        $userQuestionLog = UserQuestionLog::where('lesson_id',  $this->lesson->id)->active()->where('user_id', $userId)->count();
-        if ($lesson_questions == $userQuestionLog) {
-            UserQuestionLog::where('lesson_id',  $this->lesson->id)->where('user_id', $userId)->update(['status_delete' => UserQuestionLog::INACTIVE]);
-        }
     }
 
     /**

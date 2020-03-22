@@ -4,12 +4,13 @@ namespace App\Events;
 
 use App\Models\Lesson;
 use App\User;
+use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 
 class BeginExamEvent
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable, SerializesModels, Queueable;
 
     public $exam;
 
