@@ -139,7 +139,7 @@ class CourseLearnController extends Controller
                         $show_on_tap = true;
                     }
                 }
-                $userLearn = UserQuestionLog::where('user_id',$user->id)->active()->where('lesson_id',$lesson_child->id)->groupBy('question_parent')->get();
+                $userLearn = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->groupBy('question_parent')->get();
                 $countLearnTrue =  $userLearn->where('status',Question::REPLY_OK)->count();
                 $lesson_child->countQuestion = $countQuestion;
                 $lesson_child->userLearn = $userLessonLog;
@@ -522,19 +522,19 @@ class CourseLearnController extends Controller
 
         if($type == Question::LEARN_LAM_BAI_MOI)
         {
-            $lesson = $recommendation->_getLessonLogUser($course, $user);
-            $var['lesson'] = $lesson;
-            if ($lesson->is_exercise == Lesson::IS_DOC){
-                $checkTheory = UserLessonLog::where('user_id',$user->id)
-                    ->where('course_id',$course->id)
-                    ->where('pass_ly_thuyet',UserLessonLog::PASS_LY_THUYET)
-                    ->where('lesson_id',$lesson->id)
-                    ->first();
-                if((!$checkTheory || $checkTheory->turn == 0))
-                {
-                    return redirect()->route('user.lambaitap.lythuyet',['id'=>$lesson->id, 'lesson_id' => $request->get('lesson_id')]);
-                }
-            }
+//            $lesson = $recommendation->_getLessonLogUser($course, $user);
+//            $var['lesson'] = $lesson;
+//            if ($lesson->is_exercise == Lesson::IS_DOC){
+//                $checkTheory = UserLessonLog::where('user_id',$user->id)
+//                    ->where('course_id',$course->id)
+//                    ->where('pass_ly_thuyet',UserLessonLog::PASS_LY_THUYET)
+//                    ->where('lesson_id',$lesson->id)
+//                    ->first();
+//                if((!$checkTheory || $checkTheory->turn == 0))
+//                {
+//                    return redirect()->route('user.lambaitap.lythuyet',['id'=>$lesson->id, 'lesson_id' => $request->get('lesson_id')]);
+//                }
+//            }
 
             $recommendation = new RecommendationService();
 
@@ -553,11 +553,16 @@ class CourseLearnController extends Controller
 
         }
 
-        if(count($var['questions']) == 0)
+        $countQuestion = count($var['questions']);
+
+        if($countQuestion == 0)
         {
             alert()->error('Bài tập chưa có câu hỏi.');
             return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
         }
+
+        $var['lastRound']  = $countQuestion < 10 && $type != Question::LEARN_LAM_CAU_SAI ? true : false;
+        $var['count_question'] = $countQuestion;
 
         return view('learn.lambaitap.layoutQuestion',compact('var'));
     }

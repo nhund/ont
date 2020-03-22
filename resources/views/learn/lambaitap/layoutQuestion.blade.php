@@ -30,7 +30,7 @@
   <div class="container">
    <div class="row">                   
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pd5 box_do_learn">
-      <input type="hidden" name="count_question" value="{{ count($var['questions']) }}">
+      <input type="hidden" name="count_question" value="{{ $var['count_question'] }}">
      @foreach($var['questions'] as $key => $question)
      <div class="question_type question_stt_{{ $key + 1 }}" data-key="{{ $key + 1 }}">
       @if($question->type == \App\Models\Question::TYPE_DIEN_TU)                            
@@ -83,7 +83,10 @@
     $(document).ready(function () {
       // $('.mediPlayer').mediaPlayer();
         $('.btn_continue').on('click',function () {
-            location.href = urlRecommendation;
+            if(!$(this).hasClass('finish')){
+                location.href = urlRecommendation;
+
+            }
         })
     });
 </script>        

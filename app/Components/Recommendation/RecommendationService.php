@@ -298,6 +298,7 @@ class RecommendationService
                 }
             }
         }
+        return ['questions' => []];
     }
 
     public function clickLesson(Lesson $lesson, User $user)

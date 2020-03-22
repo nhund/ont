@@ -74,7 +74,11 @@
                 <div class="submit_question">
                     <button class="btn btn_submit">Nộp bài</button>
                     <button class="btn btn_next">Câu tiếp</button>
-                    <a href="" class="btn btn_continue btn-primary">Làm tiếp</a>
+                    @if($var['lastRound'])
+                        <a href="{{route('course.learn', ['id'=>$var['course']->id,'title'=>str_slug($var['course']->name)])}}" class="btn btn_continue finish btn-primary">Hoàn thành</a>
+                    @else
+                        <a class="btn btn_continue btn-primary">Làm tiếp</a>
+                    @endif
                 </div>
             @endif
         </div> 
