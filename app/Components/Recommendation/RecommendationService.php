@@ -67,7 +67,7 @@ class RecommendationService
         //lay lesson da hoc
 
         if (!$this->lesson){
-            $this->lesson = $this->_getLessonLogUser($course, $user);
+            $this->lesson = $this->_getNewLessonLogUser($course, $user);
         }
         if (!$this->lesson){
             return ['questions' => [], 'type' => Question::LEARN_LAM_BAI_MOI, 'message' => 'Tất cả các bài tập đã được làm'];
@@ -128,17 +128,11 @@ class RecommendationService
         $limit = request('limit', 10);
 
         if (!$this->lesson){
-            $this->lesson = Lesson::select('lesson.*')
-                ->leftJoin('user_lesson_log', function ($q) use ($user){
-                    $q->on('user_lesson_log.lesson_id', '=', 'lesson.id')
-                        ->where('user_lesson_log.user_id', $user->id);
-                })
-                ->where('is_exercise', Lesson::IS_EXERCISE)
-                ->where('lesson.parent_id', '<>', Lesson::PARENT_ID)
-                ->where('lesson.course_id', $course->id)
-                ->orderBy('turn_right')
-                ->first()
-            ;
+            $this->lesson = $this->_getDidLessonLogUser($course, $user);
+        }
+
+        if (!$this->lesson){
+            return ['questions' => [], 'type' => Question::LEARN_LAM_CAU_CU, 'message' => 'Hiện tại ko có bài tập nào hoạt động'];
         }
 
         if (request()->has('continue')){
@@ -452,7 +446,7 @@ class RecommendationService
         );
     }
 
-    public function _getLessonLogUser($course, $user){
+    public function _getNewLessonLogUser($course, $user){
 
         $parentLessons = Lesson::where('course_id',$course->id)
             ->where('parent_id', Lesson::PARENT_ID)
@@ -476,6 +470,48 @@ class RecommendationService
             }
         }
         return false;
+    }
+
+    public function _getDidLessonLogUser($course, $user){
+
+        $parentLessons = Lesson::where('course_id',$course->id)
+            ->where('parent_id', Lesson::PARENT_ID)
+            ->active()
+            ->where('level', '<>', 0)
+            ->orderBy('order_s','ASC')
+            ->orderBy('created_at','ASC')->get();
+
+        $lesson = null;
+        foreach ($parentLessons as $parentLesson) {
+            $subLessons = Lesson::select('lesson.*')
+                ->whereHas('lessonLog', function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                })
+                ->with(['lessonLog' => function($q) use ($user){
+                    $q->where('user_id', $user->id);
+                }])
+                ->where('type', Lesson::LESSON)
+                ->where('is_exercise', Lesson::IS_EXERCISE)
+                ->where('lesson.parent_id', $parentLesson->id)
+                ->orderBy('order_s')
+                ->orderBy('lesson.created_at', 'ASC')
+                ->get();
+
+            foreach ($subLessons as $subLesson){
+                if ($subLesson->lessonLog && ($subLesson->lessonLog[0]->count_all == 1 || !$subLesson->lessonLog[0]->count_all)){
+                    return $subLesson;
+                }
+
+                if (empty($lesson)){
+                    $lesson = $subLesson;
+                }else{
+                    if ($subLesson->lessonLog[0]->count_all < $lesson->lessonLog[0]->count_all){
+                        $lesson = $subLesson;
+                    }
+                }
+            }
+        }
+        return $lesson;
     }
 
     public function __getWrongQuestions($course, $lesson, $user, $limit = 10)
