@@ -553,12 +553,6 @@ class CourseLearnController extends Controller
 
             alert()->success('Bạn đã học hết các bài mới');
             return redirect()->back();
-//            if ($request->has('lesson_id')){
-//                $lesson            = Lesson::findOrFail($request->get('lesson_id'));
-//                redirect()->route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id]);
-//            }else{
-//                return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
-//            }
 
         }
         if($type == Question::LEARN_LAM_CAU_CU)
@@ -571,13 +565,7 @@ class CourseLearnController extends Controller
         if(count($var['questions']) == 0)
         {
             alert()->error('Bài tập chưa có câu hỏi.');
-            return redirect()->back();
-//            if ($request->has('lesson_id')){
-//                $lesson            = Lesson::findOrFail($request->get('lesson_id'));
-//                redirect()->route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id]);
-//            }else{
-//                return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
-//            }
+            return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
         }
 
         return view('learn.lambaitap.layoutQuestion',compact('var'));
