@@ -127,7 +127,7 @@ class RecommendationService
                 return $getQuestionDetail;
             }
         }
-        return null;
+        return ['questions' => []];
 
     }
 
@@ -252,7 +252,7 @@ class RecommendationService
                 return  $questions;
             }
         }
-        return [];
+        return ['questions' => []];
     }
 
     public function suggest(Course $course, User $user)

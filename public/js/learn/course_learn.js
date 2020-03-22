@@ -95,9 +95,5 @@ function reportExam(strName, slugName,  strDes, total_question, repeat_time, min
 }
 
 function recommendationLesson(name, courseId, type) {
-    if (type === 'lam-bai-tap') {
-        location.href = `/bai-tap/lesson/${name}.${lessonId}/${type}?lesson_id=${lessonId}`
-    }else {
-        location.href = `/khoa-hoc/${name}.${courseId}/tong-quan/${type}?lesson_id=${lessonId}`
-    }
+    location.href = `/khoa-hoc/${name}.${courseId}/tong-quan/${type}?lesson_id=${lessonId}`
 }

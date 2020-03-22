@@ -165,7 +165,7 @@
                 </div>
             </div>
             <div class="overlay-footer footer-1">
-                <a class="offer-course do-new col-xs-3 col-lg-2 col-md-2 col-sm-2" onclick="recommendationLesson(`{{str_slug($var['course']->name)}}`, `{{$var['course']->id}}`,`{{\App\Models\Question::LEARN_LAM_BAI_TAP}}`)"  title="Làm bài tập">
+                <a class="offer-course do-new col-xs-3 col-lg-2 col-md-2 col-sm-2" onclick="recommendationLesson(`{{str_slug($var['course']->name)}}`, `{{$var['course']->id}}`,`{{\App\Models\Question::LEARN_LAM_BAI_MOI}}`)"  title="Làm bài tập">
                     <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/sub_new.png') }}">
                     <div class="title ">
                         <p class="content">Làm bài mới</p>

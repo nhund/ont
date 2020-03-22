@@ -313,6 +313,7 @@ class CourseLearnController extends Controller
             $var['lesson'] = $recommendation->lesson;
 
         }else{
+            dd(121212);
             if($type == Question::LEARN_LAM_BAI_TAP)
             {
                 $listQuestionLearned = [];
@@ -509,6 +510,7 @@ class CourseLearnController extends Controller
             $var = array_merge($var, $bookmarkQuestions);
             $var['lesson'] = $recommendation->lesson;
         }
+
         if($type == Question::LEARN_LAM_CAU_SAI)
         {
             $wrongQuestions = $recommendation->doingWrongQuestions($course, $user);
@@ -517,6 +519,7 @@ class CourseLearnController extends Controller
             $var['lesson'] = $recommendation->lesson;
 
         }
+
         if($type == Question::LEARN_LAM_BAI_MOI)
         {
             $lesson = $recommendation->_getLessonLogUser($course, $user);
@@ -533,28 +536,15 @@ class CourseLearnController extends Controller
                 }
             }
 
-            if($lesson->is_exercise == Lesson::IS_EXERCISE)
-            {
-                $questionLearnedLogs = UserQuestionLog::where('course_id',$id)
-                    ->where('user_id',$user->id)
-                    ->active()
-                    ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
-                //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
-                $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
-                    ->where('parent_id',0)->where('lesson_id',$lesson->id)
-                    ->orderBy('order_s','ASC')
-                    ->orderBy('id','ASC')->count();
+            $recommendation = new RecommendationService();
 
-                if($check_has_question > 0)
-                {
-                    return redirect()->route('user.lambaitap.question',['id'=>$lesson->id,'title'=>str_slug($lesson->name),'type'=>$type, 'lesson_id' => $request->get('lesson_id')]);
-                }
-            }
+            $getQuestionDetail = $recommendation->doingNewQuestions($course, $user);
 
-            alert()->success('Bạn đã học hết các bài mới');
-            return redirect()->back();
+            $var = array_merge($var, $getQuestionDetail);
+            $var['lesson'] = $recommendation->lesson;
 
         }
+
         if($type == Question::LEARN_LAM_CAU_CU)
         {
             $replyQuestions = $recommendation->doingReplayQuestions($course, $user);
@@ -562,6 +552,7 @@ class CourseLearnController extends Controller
             $var['lesson'] = $recommendation->lesson;
 
         }
+
         if(count($var['questions']) == 0)
         {
             alert()->error('Bài tập chưa có câu hỏi.');
