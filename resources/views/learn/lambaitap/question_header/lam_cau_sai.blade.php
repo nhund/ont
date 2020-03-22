@@ -3,10 +3,10 @@
      <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pd5 head_course head_flash_Card">
        <div class="lesson_name do_new">
-        <img src="{{ web_asset('public/images/course/icon/icon_lam_cau_sai_48.png') }}"> 
+        <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
         <div class="name">   
           <div class="box_head">            
-            <div class="title">Làm câu sai</div>
+            <div class="title">Làm câu sai: {{ $var['lesson']->name }}</div>
             <div class="course_process">Đã làm <span class="count_question_done">0</span>/<span class="total_question">{{ count($var['questions']) }}</span></div>
           </div>                                                         
           <div class="progress">
