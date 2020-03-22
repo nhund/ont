@@ -69,36 +69,20 @@ class RecommendationService
         if (!$this->lesson){
             $this->lesson = $this->_getLessonLogUser($course, $user);
         }
+        if (!$this->lesson){
+            return ['questions' => [], 'type' => Question::LEARN_LAM_BAI_MOI, 'message' => 'Tất cả các bài tập đã được làm'];
+        }
 
-        // kiem tra xem co ly thuyet trong bai hoc ko
-        $theories = Lesson::where('course_id',$course->id)
-            ->where('parent_id',$this->lesson->id)
-            ->where('is_exercise',Lesson::IS_DOC)
-            ->orderBy('order_s','ASC')
-            ->orderBy('created_at','ASC')
-            ->get();
-//        dd($this->lesson->id);
+        if($this->lesson->is_exercise == Lesson::IS_DOC && $this->lesson->type == Lesson::LESSON){
+            $var['lesson'] = $this->lesson;
+            $var['type'] = 'theory';
+            return $var;
+        }
 
-        if(count($theories) > self::TURN)
-        {
-
-            foreach ($theories as $theory)
-            {
-                //kiem tra xem bai nay da hoc ly thuyet chua
-                //$check_lesson_log = in_array($lesson->id, $lesson_log);
-                $checkTheory = UserLessonLog::where('user_id',$user->id)
-                    ->where('course_id',$course->id)
-                    ->where('pass_ly_thuyet',UserLessonLog::PASS_LY_THUYET)
-                    ->where('lesson_id',$theory->id)
-                    ->first();
-
-                if(!$checkTheory && !empty($this->lesson->description))
-                {
-                    $var['course'] = $course;
-                    $var['lesson'] = $theory;
-                    return $var;
-                }
-            }
+        if($this->lesson->type == Lesson::EXAM){
+            $var['lesson'] = $this->lesson;
+            $var['type'] = Lesson::EXAM;
+            return $var;
         }
 
         if($this->lesson->is_exercise == Lesson::IS_EXERCISE)
@@ -110,28 +94,23 @@ class RecommendationService
                 ->pluck('question_parent')->toArray();
 
             //kiem tra xem bai tap co co cau hoi chua , va cau hoi da lam chua
-            $check_has_question = Question::whereNotIn('id',$questionLearnedLogs)
+            $questions = Question::whereNotIn('id',$questionLearnedLogs)
                 ->typeAllow()
                 ->where('parent_id', Question::PARENT_ID)
                 ->where('lesson_id',$this->lesson->id)
                 ->orderBy('order_s','ASC')
-                ->orderBy('id','ASC')->count();
+                ->orderBy('id','ASC')
+                ->take($limit)
+                ->get();
 
-            if($check_has_question > self::TURN)
+            if(!empty($questions))
             {
-                $questions = Question::where('lesson_id', $this->lesson->id)
-                    ->typeAllow()
-                    ->where('parent_id', Question::PARENT_ID)
-                    ->whereNotIn('id',$questionLearnedLogs)->orderBy('order_s','ASC')
-                    ->orderBy('id','ASC')->take($limit)->get();
-
                 $getQuestionDetail = $this->_getQuestion($user, $questions, $questionLearnedLogs);
-
                 $getQuestionDetail['type'] = Question::LEARN_LAM_BAI_MOI;
                 return $getQuestionDetail;
             }
         }
-        return ['questions' => []];
+        return ['questions' => [], 'type' => Question::LEARN_LAM_BAI_MOI, 'message' => 'Tất cả các bài tập đã được làm'];
 
     }
 
@@ -482,17 +461,17 @@ class RecommendationService
             ->orderBy('order_s','ASC')
             ->orderBy('created_at','ASC')->get();
 
-        foreach ($parentLessons as $parentLesson){
+        foreach ($parentLessons as $parentLesson) {
             $lesson = Lesson::select('lesson.*')
-                ->whereDoesntHave('lessonLog', function($q) use ($user){
+                ->whereDoesntHave('lessonLog', function ($q) use ($user) {
                     $q->where('user_id', $user->id);
                 })
                 ->where('lesson.parent_id', $parentLesson->id)
                 ->where('lesson.course_id', $course->id)
                 ->orderBy('order_s')
-                ->orderBy('lesson.created_at','ASC')
+                ->orderBy('lesson.created_at', 'ASC')
                 ->first();
-            if($lesson){
+            if ($lesson) {
                 return $lesson;
             }
         }

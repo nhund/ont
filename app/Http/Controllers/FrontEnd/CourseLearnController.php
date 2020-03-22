@@ -523,25 +523,16 @@ class CourseLearnController extends Controller
 
         if($type == Question::LEARN_LAM_BAI_MOI)
         {
-//            $lesson = $recommendation->_getLessonLogUser($course, $user);
-//            $var['lesson'] = $lesson;
-//            if ($lesson->is_exercise == Lesson::IS_DOC){
-//                $checkTheory = UserLessonLog::where('user_id',$user->id)
-//                    ->where('course_id',$course->id)
-//                    ->where('pass_ly_thuyet',UserLessonLog::PASS_LY_THUYET)
-//                    ->where('lesson_id',$lesson->id)
-//                    ->first();
-//                if((!$checkTheory || $checkTheory->turn == 0))
-//                {
-//                    return redirect()->route('user.lambaitap.lythuyet',['id'=>$lesson->id, 'lesson_id' => $request->get('lesson_id')]);
-//                }
-//            }
-
             $recommendation = new RecommendationService();
 
             $getQuestionDetail = $recommendation->doingNewQuestions($course, $user);
 
-            dd($getQuestionDetail);
+            if ($getQuestionDetail['type'] == 'theory'){
+                return redirect()->route('user.lambaitap.lythuyet',['id'=>$getQuestionDetail['lesson']->id]);
+            }
+            if ($getQuestionDetail['type'] == Lesson::EXAM){
+                return redirect()->route('exam.start',['title' => $getQuestionDetail['lesson']->name, 'id'=>$getQuestionDetail['lesson']->id]);
+            }
             $var = array_merge($var, $getQuestionDetail);
             $var['lesson'] = $recommendation->lesson;
 
@@ -559,7 +550,7 @@ class CourseLearnController extends Controller
 
         if($countQuestion == 0)
         {
-            alert()->error('Bài tập chưa có câu hỏi.');
+            alert()->error('Hiện tại đã hết bài tập mới.');
             return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
         }
 
