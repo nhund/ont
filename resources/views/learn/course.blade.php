@@ -20,21 +20,21 @@
        </div>
     </div>
     <section id="course_learn" class="clearfix">
-       <input type="hidden" name="course_id" value="{{ $var['course']->id }}"> 
+       <input type="hidden" name="course_id" value="{{ $var['course']->id }}">
        <div class="container">
-          <div class="row">             
+          <div class="row">
               <h1 class="course_title">{{ $var['course']->name }}</h1>
-             <div class="box_left col-lg-9 col-md-9 col-sm-8 col-xs-12">                
+             <div class="box_left col-lg-9 col-md-9 col-sm-8 col-xs-12">
                 <div class="box_head">
-                    <div class="title">Đã học {{ $var['total_user_learn'] }}/{{ $var['total_question'] }} câu</div>
+                    <div class="title">Đã học {{ $var['passLesson'] }}/{{ $var['totalLesson'] }} bài tập </div>
                     <div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                            aria-valuemin="0" aria-valuemax="100" style="width:{{ $var['total_question'] > 0 ? ($var['total_user_learn']/$var['total_question'])*100 : 0 }}%">                              
+                            aria-valuemin="0" aria-valuemax="100" style="width:{{ $var['totalLesson'] > 0 ? ($var['passLesson']/$var['totalLesson'])*100 : 0 }}%">
                             </div>
                     </div>
 
                     <div class="btn-offer">
-                        <a class="offer-course do_new "
+                        <a class="offer-course do_new " data-button="newLesson"
                            href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI]) }}"
                            title="Làm bài mới">
                             <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
@@ -42,23 +42,23 @@
                                 <p class="content">Bài tập mới</p>
                             </div>
                         </a>
-                        <a class="offer-course do_old  {{ $var['total_user_learn'] == false ? 'no_action' : '' }} "
-                           href="{{ $var['total_user_learn'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}"
+                        <a class="offer-course do_old" data-button="didLesson"
+                           href="{{route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU]) }}"
                            title="Ôn tập câu cũ">
                             <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
                             <div class="title">
                                 <p class="content">Ôn câu cũ</p>
                             </div>
                         </a>
-                        <a class="offer-course do_false  {{ $var['user_learn_error'] == 0 ? 'no_action' : '' }}"
+                        <a class="offer-course do_false" data-button="wrongQuestion"
                            href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI]) }}">
                             <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
                             <div class="title">
                                 <p class="content" >Làm câu sai</p>
                             </div>
                         </a>
-                        <a class="offer-course do_bookmark {{ $var['user_learn_bookmark'] == 0 ? 'no_action' : '' }}"
-                           href="{{ $var['user_learn_bookmark'] == 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BOOKMARK]) }}"
+                        <a class="offer-course do_bookmark" data-button="bookmark"
+                           href="{{route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BOOKMARK]) }}"
                            title="Làm câu bookmark">
                             <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
                             <div class="title">
@@ -265,10 +265,34 @@
 <script src='{{ web_asset('public/js/detail/bootstrap-rating.min.js') }}' type='text/javascript'></script>
 <script src='{{ web_asset('public/js/learn/course_learn.js') }}' type='text/javascript'></script>
 
-<script>
-        function closeNav(id) {
+<script >
+    function closeNav(id) {
           document.getElementById(id).style.height = "0%";
         }
+
+        $(document).ready(function() {
+            const courseId = $('input[name=course_id]').val();
+            $.ajax({
+                headers: {
+                    'X-CSRF-Token': $('meta[name=csrf-token]').attr("content"),
+                    'Authorization': localStorage.getItem('access_token'),
+                },
+                type: "GET",
+                url: `/api/me/courses/${courseId}/fourSuggest`,
+                success: function (data) {
+                    if(data.code == 200){
+                        $('[data-button]').each(function (i, ele) {
+                            const type  = $(ele).data('button');
+                            const noAction = data.data[type];
+                            if(!noAction){
+                                $(ele).addClass('no_action')
+                            }
+                        })
+                    }
+                    console.log('data', data)
+                }
+            });
+        });
 </script>
              
 @endpush

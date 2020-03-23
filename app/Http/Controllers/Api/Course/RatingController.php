@@ -15,6 +15,7 @@ use App\Models\Course;
 use App\Models\Rating;
 use App\Transformers\Course\RatingTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class RatingController extends Controller

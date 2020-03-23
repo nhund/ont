@@ -110,4 +110,11 @@ class UserCourseController extends Controller{
 
         return $this->respondOk($userCourseReport->get());
     }
+
+     public function statusFourSuggest(Course $course, Request $request)
+    {
+        $userCourseReport = new UserCourseReportService($request->user(), $course);
+        return $this->respondOk($userCourseReport->statusFourBottom());
+    }
+
 }

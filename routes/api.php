@@ -37,6 +37,7 @@ Route::middleware(['auth:api'])->namespace('Api')->group(function () {
             Route::post('/courses/add', 'UserCourseController@store');
             Route::get('/courses/{course}', 'UserCourseController@detail');
             Route::delete('/courses/{course}', 'UserCourseController@delete');
+            Route::get('/courses/{course}/fourSuggest', 'UserCourseController@statusFourSuggest');
         });
     });
 

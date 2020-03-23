@@ -4,6 +4,7 @@ namespace App\Http\Controllers\FrontEnd;
 
 use App\Components\Question\QuestionAnswerService;
 use App\Components\Recommendation\RecommendationService;
+use App\Components\User\UserCourseReportService;
 use App\Events\SubmitQuestionEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -37,25 +38,7 @@ class CourseLearnController extends Controller
                 'msg'=>'Khóa học không tồn tại',
             );      
         }
-        $user = User::find($user_id);
 
-        if($user_id == $course->user_id || $user->level == User::USER_ADMIN)
-        {
-            return array(
-                'error'=>false,
-                'msg'=>'',
-            );       
-        }
-        //lay danh sach tro giang
-        $support = TeacherSupport::where('course_id',$course_id)->where('user_id',$user_id)->where('status',TeacherSupport::STATUS_ON)->first();
-        if($support)
-        {
-            return array(
-                'error'=>false,
-                'msg'=>'',
-                'support'=>true,
-            );      
-        }
         $checkExist = UserCourse::where('user_id',$user_id)->where('course_id',$course_id)->first();
         if(!$checkExist)
         {
@@ -94,7 +77,7 @@ class CourseLearnController extends Controller
         );       
     }
 
-    public function course($title,$id,Request $request)
+    public function course($title, $id, Request $request)
     {
         $course = Course::find($id);
         if(!$course)
@@ -121,9 +104,7 @@ class CourseLearnController extends Controller
         ->where('level', '<>', 0)
         ->orderBy('order_s','ASC')
         ->orderBy('created_at','ASC')->get();
-        $total_question = 0;
-        $total_user_learn = 0;
-        $show_on_tap = false;
+        $passLesson = $totalLesson = 0;
 
         foreach($lessons as $lesson)
         {
@@ -131,25 +112,32 @@ class CourseLearnController extends Controller
             ->orderBy('order_s','ASC')
             ->orderBy('created_at','ASC')->get();
             foreach ($lesson_childs as $key => $lesson_child) {
-                $question_child = Question::where('lesson_id',$lesson_child->id)->typeAllow()->where('parent_id',0)->get();
-                $countQuestion = $question_child->count(); 
-                //lay log lesson
-                $userLessonLog = UserLessonLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->first();
-                if($userLessonLog) {
-                    if($userLessonLog->turn_right > 1) {
-                        $show_on_tap = true;
+                $lesson_child->countQuestion = Question::where('lesson_id',$lesson_child->id)->typeAllow()->where('parent_id',0)->count();
+
+                $userLearn =  $lesson_child->userLearn =  UserLessonLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->first();
+                $lesson_child->userLearn = $userLearn;
+
+                if($lesson_child->is_exercise == Lesson::IS_EXERCISE){
+                    $passQuestions = UserQuestionLog::where('user_id',$user->id)
+                        ->where('lesson_id',$lesson_child->id)
+                        ->groupBy('question_parent')
+                        ->where('status',Question::REPLY_OK)->get()->count();
+                    if($userLearn && $userLearn->turn_right > 0){
+                        $passLesson++;
+                    }
+                    $lesson_child->userLearnPass = $passQuestions;
+                }else {
+                    //kiem tra xem da hoc ly thuyet chua
+                    $lesson_child->lesson_ly_thuyet_pass = empty($userLearn) ? false : true;
+                    if(!empty($userLearn)){
+                        $passLesson++;
                     }
                 }
-                $userLearn = UserQuestionLog::where('user_id',$user->id)->where('lesson_id',$lesson_child->id)->groupBy('question_parent')->get();
-                $countLearnTrue =  $userLearn->where('status',Question::REPLY_OK)->count();
-                $lesson_child->countQuestion = $countQuestion;
-                $lesson_child->userLearn = $userLessonLog;
-                $lesson_child->userLearnPass = $countLearnTrue;
-                $total_question += $countQuestion;
-                $total_user_learn += $countLearnTrue;   
-                //kiem tra xem da hoc ly thuyet chua
-                $lesson_child->lesson_ly_thuyet_pass = UserLessonLog::where('user_id',$user->id)->where('course_id',$id)->where('lesson_id',$lesson_child->id)->first();         
-            }            
+
+                if ($lesson_child->type == Lesson::LESSON){
+                    $totalLesson++;
+                }
+            }
             $lesson->childs = $lesson_childs;
             
             if ($lesson->type == Lesson::EXAM){
@@ -158,22 +146,13 @@ class CourseLearnController extends Controller
         }
         $var['lessons'] = $lessons;        
         $var['course_same'] = Course::where('status','!=',Course::TYPE_PRIVATE)->orderBy('id','DESC')->take(5)->get();
-        $var['total_question'] = $total_question;
-        $var['total_user_learn'] = $total_user_learn;
-        //count so cau bookmark
-        $var['user_learn_bookmark'] = UserQuestionBookmark::where('user_id',$user->id)->where('course_id',$id)->count();
-        //lay tat ca cau sau cua user
-        $questionErrors = UserQuestionLog::where('course_id',$id)->active()
-                        ->where('user_id',$user->id)                                                
-                        ->where('status',Question::REPLY_ERROR)                        
-                        ->groupBy('question_parent')->get()->pluck('question_parent')->toArray();
-                        
-        $var['user_learn_error'] = Question::whereIn('id',$questionErrors)->count();
-        
-        $var['show_on_tap'] = $show_on_tap;
+        $var['passLesson']  = $passLesson;
+        $var['totalLesson'] = $totalLesson;
 
-        $var['rating'] = Rating::select('rating_value',DB::raw('count(*) as total'))->where('course_id',$id)->groupBy('rating_value')->get();
-        
+        $var['rating'] = Rating::select('rating_value',DB::raw('count(*) as total'))
+            ->where('course_id',$id)
+            ->groupBy('rating_value')->get();
+
         $rating_avg = 0;
         $rating_value = 0;
         $user_rating = 0;

@@ -15,7 +15,7 @@ $(document).ready(function(){
 
 });
 var lessonId;
-
+console.log('data', 3333333333)
 function reportLesson(lesson_id){
     $.ajax({
         headers: {

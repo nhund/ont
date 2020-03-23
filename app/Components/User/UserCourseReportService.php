@@ -10,6 +10,7 @@ use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\QuestionAnswer;
 use App\Models\UserLessonLog;
+use App\Models\UserQuestionBookmark;
 use App\Models\UserQuestionLog;
 use App\User;
 
@@ -228,5 +229,28 @@ class UserCourseReportService
 
        return [$exam ? $exam->total_score : 0, $userScore];
 
+    }
+
+
+    public function statusFourBottom()
+    {
+        $status['bookmark'] = UserQuestionBookmark::where('user_id', $this->user->id)
+            ->where('course_id', $this->course->id)->exists();
+
+        $status['wrongQuestion'] = UserQuestionLog::where('user_id', $this->user->id)
+            ->where('status', Question::REPLY_ERROR)
+            ->where('course_id', $this->course->id)->exists();
+
+        $status['didLesson'] = UserQuestionLog::where('user_id', $this->user->id)
+            ->where('course_id', $this->course->id)->exists();
+
+        $status['newLesson'] = Lesson::query()->whereDoesntHave('lessonLog', function ($q){
+            $q->where('user_id', $this->user->id);
+        })->where('course_id', $this->course->id)
+        ->where('type', Lesson::LESSON)
+        ->where('parent_id','<>', 0)
+        ->exists();
+
+        return $status;
     }
 }
