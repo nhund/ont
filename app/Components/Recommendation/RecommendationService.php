@@ -41,13 +41,17 @@ class RecommendationService
 
     public $lesson;
 
+    protected $lessonIds = [];
+
+    /**
+     * RecommendationService constructor.
+     * @throws BadRequestException
+     */
     public function __construct()
     {
         if (request()->has('lesson_id')){
-            $this->lesson = Lesson::findOrFail(request('lesson_id'));
-            if (request()->route()->parameter('course') != $this->lesson->course_id){
-                throw new BadRequestException('mã bài học không hợp lệ');
-            }
+            $this->getLesson();
+
         }
     }
 
@@ -66,7 +70,7 @@ class RecommendationService
         $limit = request('limit', 10);
         //lay lesson da hoc
 
-        if (!$this->lesson){
+        if (!$this->lesson || count($this->lessonIds)){
             $this->lesson = $this->_getNewLessonLogUser($course, $user);
         }
         if (!$this->lesson){
@@ -127,7 +131,8 @@ class RecommendationService
     {
         $limit = request('limit', 10);
 
-        if (!$this->lesson){
+        if (!$this->lesson || count($this->lessonIds)){
+
             $this->lesson = $this->_getDidLessonLogUser($course, $user);
         }
 
@@ -173,9 +178,13 @@ class RecommendationService
         $limit = request('limit', 10);
 
         //lay danh sach bookmark
-        $userBookmark = UserQuestionBookmark::where('user_id',$user->id)
-            ->where('course_id',$course->id)
-            ->orderBy('turn', 'ASC')->get()
+        $userBookmark = UserQuestionBookmark::query()->where('user_id',$user->id)
+            ->where('course_id',$course->id);
+
+        if (count($this->lessonIds)){
+            $userBookmark->whereIn('lesson_id', $this->lessonIds);
+        }
+        $userBookmark = $userBookmark->orderBy('turn', 'ASC')->get()
             ->pluck('question_id')->toArray();
 
         $questions = Question::query()
@@ -184,7 +193,7 @@ class RecommendationService
             ->where('parent_id',Question::PARENT_ID)
         ;
 
-        if ($this->lesson){
+        if ($this->lesson && count($this->lessonIds)==0){
             $questions->where('lesson_id', $this->lesson->id);
         }
 
@@ -211,22 +220,24 @@ class RecommendationService
     {
         $limit = request('limit', 10);
 
-        if ($this->lesson){
+        if ($this->lesson && count($this->lessonIds) == 0){
             $questions = $this->__getWrongQuestions($course, $this->lesson, $user, $limit);
             $questions['type'] = Question::LEARN_LAM_CAU_SAI;
             return $questions;
         }
 
-        $lessons = Lesson::where('course_id',$course->id)
+        $lessons = Lesson::query()->where('course_id',$course->id)
             ->where('type', Lesson::LESSON)
             ->where('is_exercise', Lesson::IS_EXERCISE)
-            ->where('parent_id', '<>', Lesson::PARENT_ID)
-            ->get();
+            ->where('parent_id', '<>', Lesson::PARENT_ID);
 
-        foreach ($lessons as $lesson){
+        if (count($this->lessonIds)){
+            $lessons->whereIn('id', $this->lessonIds);
+        }
+
+        foreach ($lessons->get() as $lesson){
             $questions = $this->__getWrongQuestions($course, $lesson, $user, $limit);
-            if (count($questions)){
-                $questions['type'] = Question::LEARN_LAM_CAU_SAI;
+            if (count($questions['questions'])){
                 return  $questions;
             }
         }
@@ -448,14 +459,19 @@ class RecommendationService
 
     public function _getNewLessonLogUser($course, $user){
 
-        $parentLessons = Lesson::where('course_id',$course->id)
+        $parentLessons = Lesson::query()->where('course_id',$course->id)
             ->where('parent_id', Lesson::PARENT_ID)
             ->active()
-            ->where('level', '<>', 0)
-            ->orderBy('order_s','ASC')
-            ->orderBy('created_at','ASC')->get();
+            ->where('level', '<>', 0);
 
-        foreach ($parentLessons as $parentLesson) {
+        if (count($this->lessonIds)){
+            $parentLessons->where('id', request('lesson_id'));
+        }
+
+        $parentLessons->orderBy('order_s','ASC')
+            ->orderBy('created_at','ASC');
+
+        foreach ($parentLessons->get() as $parentLesson) {
             $lesson = Lesson::select('lesson.*')
                 ->whereDoesntHave('lessonLog', function ($q) use ($user) {
                     $q->where('user_id', $user->id);
@@ -474,15 +490,20 @@ class RecommendationService
 
     public function _getDidLessonLogUser($course, $user){
 
-        $parentLessons = Lesson::where('course_id',$course->id)
+        $parentLessons = Lesson::query()->where('course_id',$course->id)
             ->where('parent_id', Lesson::PARENT_ID)
             ->active()
-            ->where('level', '<>', 0)
-            ->orderBy('order_s','ASC')
-            ->orderBy('created_at','ASC')->get();
+            ->where('level', '<>', 0);
+
+        if (count($this->lessonIds)){
+            $parentLessons->where('id', request('lesson_id'));
+        }
+
+         $parentLessons->orderBy('order_s','ASC')
+            ->orderBy('created_at','ASC');
 
         $lesson = null;
-        foreach ($parentLessons as $parentLesson) {
+        foreach ($parentLessons->get() as $parentLesson) {
             $subLessons = Lesson::select('lesson.*')
                 ->whereHas('lessonLog', function ($q) use ($user) {
                     $q->where('user_id', $user->id);
@@ -539,5 +560,18 @@ class RecommendationService
         $getQuestionDetail['questions'] = [];
 
         return $getQuestionDetail;
+    }
+
+    private function getLesson(){
+        $lesson = Lesson::findOrFail(request('lesson_id'));
+        $this->lesson = $lesson;
+
+        if($lesson->parent_id == Lesson::PARENT_ID){
+            $this->lessonIds = Lesson::query()->active()->where('parent_id', request('lesson_id'))->get()->pluck('id')->toArray();
+        }
+
+        if (request()->route()->parameter('course') != $this->lesson->course_id){
+            throw new BadRequestException('mã bài học không hợp lệ');
+        }
     }
 }

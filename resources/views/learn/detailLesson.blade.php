@@ -109,7 +109,7 @@
                            href="{{ 0 ? 'javascript:void(0)' :  route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI, 'lesson_id' => $var['lessons']->id]) }}">
                             <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
                             <div class="title">
-                                <p class="content" onclick="openNav()">Làm câu sai</p>
+                                <p class="content">Làm câu sai</p>
                             </div>
                         </a>
                         <a class="offer-course do_bookmark "  data-button="bookmark"
