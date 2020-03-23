@@ -119,6 +119,7 @@ class CourseLearnController extends Controller
 
                 if($lesson_child->is_exercise == Lesson::IS_EXERCISE){
                     $passQuestions = UserQuestionLog::where('user_id',$user->id)
+                        ->active()
                         ->where('lesson_id',$lesson_child->id)
                         ->groupBy('question_parent')
                         ->where('status',Question::REPLY_OK)->get()->count();
@@ -960,6 +961,7 @@ class CourseLearnController extends Controller
             if ($lesson_child->is_exercise == Lesson::IS_EXERCISE){
                 $lesson_child->countQuestion = $countQuestion;
                 $lesson_child->userLearnPass = UserQuestionLog::where('user_id', $user->id)
+                    ->active()
                     ->where('lesson_id', $lesson_child->id)
                     ->where('status', QuestionAnswer::REPLY_OK)->count();
 
