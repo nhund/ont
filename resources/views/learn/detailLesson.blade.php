@@ -76,6 +76,7 @@
     </div>
     <section id="course_learn" class="clearfix">
        <input type="hidden" name="course_id" value="{{ $var['course']->id ?? ''}}">
+       <input type="hidden" name="lesson_id" value="{{ $var['lessons']->id ?? ''}}">
        <div class="container">
           <div class="row">
               <div class="box_left col-lg-9 col-md-9 col-sm-8 col-xs-12">
@@ -85,20 +86,18 @@
                 <div class="box_head">
                     <div class="title">Đã học {{$var['passLesson']}}/{{$var['totalLesson']}} bài tập</div>
                     <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                            aria-valuemin="0" aria-valuemax="100" style="width: {{ $var['totalLesson'] > 0 ? ($var['passLesson']/$var['totalLesson'])*100 : 0 }}%" >
-                            </div>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{ $var['totalLesson'] > 0 ? ($var['passLesson']/$var['totalLesson'])*100 : 0 }}%" ></div>
                     </div>
 
                     <div class="btn-offer">
-                        <a class="offer-course do_new "  href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI, 'lesson_id' => $var['lessons']->id]) }}"
+                        <a class="offer-course do_new "  data-button="newLesson"   href="{{ route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BAI_MOI, 'lesson_id' => $var['lessons']->id]) }}"
                            title="Làm bài mới">
                             <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
                             <div class="title">
                                 <p class="content">Làm tập mới</p>
                             </div>
                         </a>
-                        <a class="offer-course do_old "
+                        <a class="offer-course do_old "  data-button="didLesson"
                            href="{{ 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_CU, 'lesson_id' => $var['lessons']->id]) }}"
                            title="Ôn tập câu cũ">
                             <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_cau_cu.png') }}">
@@ -106,14 +105,14 @@
                                 <p class="content">Ôn câu cũ</p>
                             </div>
                         </a>
-                        <a class="offer-course do_false "
+                        <a class="offer-course do_false "  data-button="wrongQuestion"
                            href="{{ 0 ? 'javascript:void(0)' :  route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_CAU_SAI, 'lesson_id' => $var['lessons']->id]) }}">
                             <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
                             <div class="title">
                                 <p class="content" onclick="openNav()">Làm câu sai</p>
                             </div>
                         </a>
-                        <a class="offer-course do_bookmark "
+                        <a class="offer-course do_bookmark "  data-button="bookmark"
                            href="{{ 0 ? 'javascript:void(0)' : route('course.courseTypeLearn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id,'type'=>\App\Models\Question::LEARN_LAM_BOOKMARK, 'lesson_id' => $var['lessons']->id]) }}"
                            title="Làm câu bookmark">
                             <img class="hidden-xs" src="{{ web_asset('public/images/course/icon/icon_mark.png') }}">
@@ -311,7 +310,7 @@
             <div class="overlay-content">
                 <div class="total total-question col-xs-3 col-lg-2 col-md-2 col-sm-3">
                     <div class="title">
-                        <p>Tổng số câu</p>
+                       <p>Tổng số câu</p>
                         <p data-exam="number_question"></p>
                     </div>
                     <i class="fa fa-circle circle" aria-hidden="true" style=" color: #2bd6fe;"></i>
@@ -374,6 +373,31 @@
         function closeNav(id) {
             document.getElementById(id).style.height = "0%";
         }
+
+        $(document).ready(function() {
+            const courseId = $('input[name=course_id]').val();
+            const lessonId = $('input[name=lesson_id]').val();
+            console.log(courseId, 'lessonId', lessonId)
+            $.ajax({
+                headers: {
+                    'X-CSRF-Token': $('meta[name=csrf-token]').attr("content"),
+                    'Authorization': localStorage.getItem('access_token'),
+                },
+                type: "GET",
+                url: `/api/me/courses/${courseId}/fourSuggest?lesson_id=${lessonId}`,
+                success: function (data) {
+                    if(data.code == 200){
+                        $('[data-button]').each(function (i, ele) {
+                            const type  = $(ele).data('button');
+                            const noAction = data.data[type];
+                            if(!noAction){
+                                $(ele).addClass('no_action')
+                            }
+                        })
+                    }
+                }
+            });
+        });
 
 </script>
              

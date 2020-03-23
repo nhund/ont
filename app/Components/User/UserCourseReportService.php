@@ -234,23 +234,47 @@ class UserCourseReportService
 
     public function statusFourBottom()
     {
-        $status['bookmark'] = UserQuestionBookmark::where('user_id', $this->user->id)
-            ->where('course_id', $this->course->id)->exists();
 
-        $status['wrongQuestion'] = UserQuestionLog::where('user_id', $this->user->id)
+        $lessonId = request()->get('lesson_id');
+
+        $bookmark = UserQuestionBookmark::query()
+            ->where('user_id', $this->user->id)
+            ->where('course_id', $this->course->id)
+            ;
+
+        $wrongQuestion = UserQuestionLog::query()
+            ->where('user_id', $this->user->id)
             ->where('status', Question::REPLY_ERROR)
-            ->where('course_id', $this->course->id)->exists();
+            ->where('course_id', $this->course->id)
+            ;
 
-        $status['didLesson'] = UserQuestionLog::where('user_id', $this->user->id)
-            ->where('course_id', $this->course->id)->exists();
+        $didLesson = UserQuestionLog::query()
+            ->where('user_id', $this->user->id)
+            ->where('course_id', $this->course->id)
+            ;
 
-        $status['newLesson'] = Lesson::query()->whereDoesntHave('lessonLog', function ($q){
-            $q->where('user_id', $this->user->id);
-        })->where('course_id', $this->course->id)
-        ->where('type', Lesson::LESSON)
-        ->where('parent_id','<>', 0)
-        ->exists();
+        $newLesson = Lesson::query()
+            ->whereDoesntHave('lessonLog', function ($q){
+                $q->where('user_id', $this->user->id);
+            })->where('course_id', $this->course->id)
+            ->where('type', Lesson::LESSON)
+            ;
 
+        if (request()->has('lesson_id') && $lessonId){
+            $subLesson = Lesson::query()->where('parent_id', $lessonId)->where('type', Lesson::LESSON)->get()->pluck('id');
+            $bookmark->whereIn('lesson_id', $subLesson);
+            $wrongQuestion->whereIn('lesson_id', $subLesson);
+            $didLesson->whereIn('lesson_id', $subLesson);
+            $newLesson->whereIn('id', $subLesson);
+        }
+
+        $status['bookmark'] = $bookmark->exists();
+
+        $status['wrongQuestion'] = $wrongQuestion->exists();
+
+        $status['didLesson'] = $didLesson->exists();
+
+        $status['newLesson'] = $newLesson->exists();
         return $status;
     }
 }
