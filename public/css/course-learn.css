@@ -4,6 +4,8 @@
 }
 #course_learn .no_action{
     opacity: 0.5;
+    cursor: not-allowed !important;
+    pointer-events: none;
 }
 #course_learn .box_left{
     width: 66%;
