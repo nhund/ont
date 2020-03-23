@@ -154,7 +154,8 @@
                                         <div class="border-lesson exam-lesson row">
                                             <div class="col-md-9 content">
                                                 <div class="title">Kiểm tra</div>
-                                                <div>{{$subLesson->name}}</div>
+                                                <div><a onclick="reportExam(`{{$subLesson->name}}`, `{{str_slug($subLesson->name)}}`,`{{$subLesson->description}}`,`{{$subLesson->exam->total_question}}`,
+                                                            `{{$subLesson->exam->repeat_time}}`, `{{$subLesson->exam->min_score}}`, `{{$subLesson->exam->minutes}}`, `{{$subLesson->exam->lesson_id ?? ''}}`, `{{$subLesson->userExam->turn ?? 0}}`)" >{{$subLesson->name}}</a></div>
                                             </div>
                                             <div class="col-md-3 score"><span>120</span>/200 câu</div>
                                         </div>
@@ -240,6 +241,125 @@
                 </a>
             </div>
         </div>
+        <div id="exam-modal" class="overlay" style="overflow-y:scroll">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav('exam-modal')">&times;</a>
+            <p class="title" ><span data-exam="name"></span></p>
+            <div class="overlay-content row">
+                <div class="description" style="color: white">
+                    <h3 data-lesson="des"></h3>
+                </div>
+            </div>
+            <div class="overlay-content">
+                <div class="total total-question col-xs-3 col-lg-2 col-md-2 col-sm-3">
+                    <div class="title">
+                        <p>Số câu</p>
+                        <p data-exam="number_question"></p>
+                    </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #2bd6fe;"></i>
+                </div>
+                <div class="total total-question-did col-xs-3 col-lg-2 col-md-2 col-sm-3">
+                    <div class="title">
+                        <p>Thời gian</p>
+                        <p data-exam="minutes"></p>
+                    </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fa7a1d;"></i>
+                </div>
+                <div class="total total-question-correct col-xs-3 col-lg-2 col-md-2 col-sm-3">
+                    <div class="title">
+                        <p>Số lần làm lại</p>
+                        <p data-exam="time_repeat"></p>
+                    </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fce747;"></i>
+                </div>
+                <div class="total min-score col-xs-3 col-lg-2 col-md-2 col-sm-3">
+                    <div class="title">
+                        <p>Điểm tối thiểu</p>
+                        <p data-exam="min_score"></p>
+                    </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #7BCDAB;"></i>
+                </div>
+            </div>
+
+            <div class="overlay-footer footer-1">
+                <a class="offer-course did-1 col-xs-4 col-lg-2 col-md-2 col-sm-2"  onclick="closeNav('exam-modal')">
+                    <div style="text-align: left">
+                        <p></p>
+                        <p class="content" >Để sau</p>
+                    </div>
+                </a>
+                <a class="offer-course do-false-1 col-xs-4 col-lg-2 col-md-2 col-sm-2" title="làm bài" id="data-exam-href" data-exam="href">
+                    <div style="text-align: left">
+                        <p></p>
+                        <p class="content" >Làm ngay</p>
+                    </div>
+                </a>
+                <a class="offer-course do-new col-xs-4 col-lg-2 col-md-2 col-sm-2" title="Bảng xếp hạng" id="data-exam-href" data-ranking="href">
+                    <div style="text-align: left">
+                        <p></p>
+                        <p class="content" >Bảng xếp hạng</p>
+                    </div>
+                </a>
+            </div>
+        </div><div id="exam-modal" class="overlay" style="overflow-y:scroll">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav('exam-modal')">&times;</a>
+            <p class="title" ><span data-exam="name"></span></p>
+            <div class="overlay-content row">
+                <div class="description" style="color: white">
+                    <h3 data-lesson="des"></h3>
+                </div>
+            </div>
+            <div class="overlay-content">
+                <div class="total total-question col-xs-3 col-lg-2 col-md-2 col-sm-3">
+                    <div class="title">
+                        <p>Tổng số câu</p>
+                        <p data-exam="number_question"></p>
+                    </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #2bd6fe;"></i>
+                </div>
+                <div class="total total-question-did col-xs-3 col-lg-2 col-md-2 col-sm-3">
+                    <div class="title">
+                        <p>Thời gian</p>
+                        <p data-exam="minutes"></p>
+                    </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fa7a1d;"></i>
+                </div>
+                <div class="total total-question-correct col-xs-3 col-lg-2 col-md-2 col-sm-3">
+                    <div class="title">
+                        <p>Số lần làm lại</p>
+                        <p data-exam="time_repeat"></p>
+                    </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fce747;"></i>
+                </div>
+                <div class="total min-score col-xs-3 col-lg-2 col-md-2 col-sm-3">
+                    <div class="title">
+                        <p>Điểm tối thiểu</p>
+                        <p data-exam="min_score"></p>
+                    </div>
+                    <i class="fa fa-circle circle" aria-hidden="true" style=" color: #7BCDAB;"></i>
+                </div>
+            </div>
+
+            <div class="overlay-footer footer-1">
+                <a class="offer-course did-1 col-xs-4 col-lg-2 col-md-2 col-sm-2"  onclick="closeNav('exam-modal')">
+                    <div style="text-align: left">
+                        <p></p>
+                        <p class="content" >Để sau</p>
+                    </div>
+                </a>
+                <a class="offer-course do-false-1 col-xs-4 col-lg-2 col-md-2 col-sm-2" title="làm bài" id="data-exam-href" data-exam="href">
+                    <div style="text-align: left">
+                        <p></p>
+                        <p class="content" >Làm ngay</p>
+                    </div>
+                </a>
+                <a class="offer-course do-new col-xs-4 col-lg-2 col-md-2 col-sm-2" title="Bảng xếp hạng" id="data-exam-href" data-ranking="href">
+                    <div style="text-align: left">
+                        <p></p>
+                        <p class="content" >Bảng xếp hạng</p>
+                    </div>
+                </a>
+            </div>
+        </div>
     </section>    
 @stop
 @push('js')
@@ -250,10 +370,11 @@
         function openNav() {
           document.getElementById("myNav").style.height = "100%";
         }
-        
-        function closeNav() {
-          document.getElementById("myNav").style.height = "0%";
+
+        function closeNav(id) {
+            document.getElementById(id).style.height = "0%";
         }
+
 </script>
              
 @endpush

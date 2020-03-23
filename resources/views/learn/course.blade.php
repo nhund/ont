@@ -210,7 +210,7 @@
           <div class="overlay-content">
               <div class="total total-question col-xs-3 col-lg-2 col-md-2 col-sm-3">
                   <div class="title">
-                      <p>Số câu</p>
+                      <p>Tổng số câu</p>
                       <p data-exam="number_question"></p>
                   </div>
                   <i class="fa fa-circle circle" aria-hidden="true" style=" color: #2bd6fe;"></i>
