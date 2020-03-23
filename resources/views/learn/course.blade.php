@@ -286,7 +286,6 @@
                             const noAction = data.data[type];
                             if(!noAction){
                                 $(ele).addClass('no_action')
-                                $(ele).unbind();
                             }
                         })
                     }

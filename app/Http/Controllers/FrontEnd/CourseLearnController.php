@@ -946,39 +946,41 @@ class CourseLearnController extends Controller
         }
         $var['subLessons'] = $var['lessons']->subLesson ?: [];
 
-        $total_question   = 0;
-        $total_user_learn = 0;
+        $totalLesson   = 0;
+        $passLesson = 0;
 
         foreach ($var['subLessons'] as $key => $lesson_child) {
             $question_child = Question::where('lesson_id', $lesson_child->id)->where('parent_id', 0)->get();
             $countQuestion  = $question_child->count();
 
-            $userLearn = UserQuestionLog::where('user_id', $user->id)->where('lesson_id', $lesson_child->id)
-                ->active()
-                ->groupBy('question_parent')->get();
-
             //lay log lesson
             $userLessonLog = UserLessonLog::where('user_id', $user->id)->where('lesson_id', $lesson_child->id)->first();
-
-            $countLearnError = $userLearn->where('status', Question::REPLY_ERROR)->count();
-            $countLearnTrue  = count($userLearn) - $countLearnError;
-
-            $lesson_child->countQuestion = $countQuestion;
             $lesson_child->userLearn     = $userLessonLog;
-            $lesson_child->userLearnPass = UserQuestionLog::where('user_id', $user->id)->where('lesson_id', $lesson_child->id)
-                ->active()
-                ->where('status', QuestionAnswer::REPLY_OK)->count();
 
-            $total_question   += $countQuestion;
-            $total_user_learn += $countLearnTrue;
+            if ($lesson_child->is_exercise == Lesson::IS_EXERCISE){
+                $lesson_child->countQuestion = $countQuestion;
+                $lesson_child->userLearnPass = UserQuestionLog::where('user_id', $user->id)
+                    ->where('lesson_id', $lesson_child->id)
+                    ->where('status', QuestionAnswer::REPLY_OK)->count();
 
-            //kiem tra xem da hoc ly thuyet chua
-            $lesson_child->lesson_ly_thuyet_pass = UserLessonLog::where('user_id', $user->id)
-                ->where('lesson_id', $lesson_child->id)->first();
+                if($userLessonLog && $userLessonLog->turn_right > 0){
+                    $passLesson++;
+                }
+            } else{
+                //kiem tra xem da hoc ly thuyet chua
+                $lesson_child->lesson_ly_thuyet_pass = empty($userLessonLog) ? false : true;
+                if(!empty($userLessonLog)){
+                    $passLesson++;
+                }
+            }
+
+            if ($lesson_child->type == Lesson::LESSON){
+                $totalLesson++;
+            }
         }
 
-        $var['total_question']   = $total_question;
-        $var['total_user_learn'] = $total_user_learn;
+        $var['totalLesson']= $totalLesson;
+        $var['passLesson'] = $passLesson;
 
         $var['user_rating'] = $user_rating;
         $var['rating_avg']  = number_format((float)$rating_avg, 1, '.', '');
