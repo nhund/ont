@@ -38,6 +38,7 @@ class CourseLearnController extends Controller
                 'msg'=>'Khóa học không tồn tại',
             );      
         }
+        $user = User::find($user_id);
 
         if($user_id == $course->user_id || $user->level == User::USER_ADMIN)
         {
