@@ -68,7 +68,10 @@ class QuestionExport implements FromView
                     $question_child->answers = QuestionAnswer::where('question_id',$question_child->id)->get();
                 }
                 $question->childs = $questions_child;
-                //dd($question);
+            }
+            if($question->type == Question::TYPE_TRAC_NGHIEM_DON)
+            {
+                $question->answers = QuestionAnswer::where('question_id',$question->id)->get();
             }
             if($question->type == Question::TYPE_DIEN_TU_DOAN_VAN)
             {

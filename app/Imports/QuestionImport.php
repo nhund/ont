@@ -492,7 +492,7 @@ class QuestionImport implements ToCollection
         $question->course_id      = $items['course_id'];
         $question->user_id        = $items['user_id'];
         $question->created_at     = time();
-        $question->interpret_all  = $items['interpret'];
+        $question->interpret  = $items['interpret'];
         $question->question       = $items['question'];
         $question->explain_before = $items['explain_before'];
         $question->img_before     = $items['image'];
