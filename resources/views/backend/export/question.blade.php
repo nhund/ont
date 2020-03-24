@@ -37,7 +37,10 @@
                         @endif
                         @if(!empty($question->img_after))
                             <td><span>$bi.{{ $question->img_after }}</span></td>
-                        @endif                        
+                        @endif
+                        @if(!empty($question->audio_content))
+                            <td><span>$ac.{{$question->audio_content}}</span></td>
+                        @endif
                     </tr>
                 @endif
 
@@ -111,7 +114,10 @@
                         @endif
                         @if(!empty($question->interpret_all))
                             <td><span>$e.{{ $question->interpret_all }}</span></td>
-                        @endif                                            
+                        @endif
+                        @if(!empty($question->audio_content))
+                            <td><span>$ac.{{$question->audio_content}}</span></td>
+                        @endif
                     </tr>
                     @if(isset($question->childs))
                         @foreach($question->childs as $question_child)
@@ -137,7 +143,10 @@
                                 @endif  
                                 @if(!empty($question_child->interpret))
                                     <td><span>$e.{{ export_math_latex($question_child->interpret) }}</span></td>
-                                @endif                                                          
+                                @endif
+                                @if(!empty($question_child->audio_question))
+                                    <td><span>$aq.{{$question->audio_question}}</span></td>
+                                @endif
                             </tr>
                         @endforeach
                     @endif
@@ -168,6 +177,9 @@
                         @if(!empty($question->interpret))
                             <td><span>$e.{{ export_math_latex($question->interpret) }}</span></td>
                         @endif
+                        @if(!empty($question->audio_question))
+                            <td><span>$aq.{{$question->audio_question}}</span></td>
+                        @endif
                     </tr>
                 @endif
 
@@ -180,7 +192,10 @@
                         @endif
                         @if(!empty($question->interpret_all))
                             <td><span>$e.{{ $question->interpret_all }}</span></td>
-                        @endif                        
+                        @endif
+                        @if(!empty($question->audio_content))
+                            <td><span>$ac.{{$question->audio_content}}</span></td>
+                        @endif
                     </tr>
                     @if(isset($question->childs))
                         @foreach($question->childs as $question_child)
@@ -205,7 +220,10 @@
                                 @endif
                                 @if(!empty($question_child->interpret))
                                     <td><span>$e.{{ export_math_latex($question_child->interpret) }}</span></td>
-                                @endif                                                             
+                                @endif
+                                @if(!empty($question_child->audio_question))
+                                    <td><span>$aq.{{$question_child->audio_question}}</span></td>
+                                @endif
                             </tr>
                         @endforeach
                     @endif    
@@ -219,7 +237,10 @@
                         @endif    
                         @if(!empty($question->interpret_all))
                             <td><span>$e.{{ $question->interpret_all }}</span></td>
-                        @endif                                                           
+                        @endif
+                        @if(!empty($question->audio_content))
+                            <td><span>$ac.{{$question->audio_content}}</span></td>
+                        @endif
                     </tr>
                     @if(isset($question->childs))
                         @foreach ($question->childs as $question_child)
@@ -232,6 +253,9 @@
                                 @endif
                                 @if(!empty($question_child->explain_before))
                                     <td><span>$h.{{ export_math_latex($question_child->explain_before) }}</span></td>
+                                @endif
+                                @if(!empty($question_child->audio_question))
+                                    <td><span>$aq.{{$question_child->audio_question}}</span></td>
                                 @endif
                             </tr>
                         @endforeach
