@@ -10,7 +10,7 @@
             @endif
             @if(!empty($question->img_before))
             <div class="box_image">
-                <img src="{{ web_asset('public/'.$question->img_before) }}">
+                <img src="{{ web_asset($question->img_before) }}">
             </div>
             @endif
             @if(!empty($question->question))
