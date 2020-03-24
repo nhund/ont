@@ -63,6 +63,7 @@ class QuestionImport implements ToCollection
                                 'explain_after'  => $formatData['explain_after'],
                                 'question'       => $formatData['question_before'],
                                 'question_after' => $formatData['question_after'],
+                                'audio_content' => $formatData['audio_content'],
                                 'img_before'     => $formatData['img_before'],
                                 'img_after'      => $formatData['img_after']
                             );
@@ -99,6 +100,7 @@ class QuestionImport implements ToCollection
                         $this->dien_tu_ngan['lesson_id'] = $this->data['lesson_id'];
                         $this->dien_tu_ngan['course_id'] = $this->data['course_id'];
                         $this->dien_tu_ngan['image']     = $formatData['image'];
+                        $this->dien_tu_ngan['audio_content']     = $formatData['audio_content'];
                     }
 
                     // trac nghiem
@@ -112,6 +114,7 @@ class QuestionImport implements ToCollection
                         $this->trac_nghiem['content']        = $this->_detectMathLatex(str_replace('#tn.', '', $items[0]));
                         $this->trac_nghiem['user_id']        = $this->data['user_id'];
                         $this->trac_nghiem['explain_before'] = $formatData['explain_before'];
+                        $this->trac_nghiem['audio_content'] = $formatData['audio_content'];
                         $this->trac_nghiem['interpret']      = $formatData['interpret'];
                         $this->trac_nghiem['lesson_id']      = $this->data['lesson_id'];
                         $this->trac_nghiem['course_id']      = $this->data['course_id'];
@@ -131,12 +134,14 @@ class QuestionImport implements ToCollection
                         $this->trac_nghiem_don['question']       = $formatData['question'];
                         $this->trac_nghiem_don['interpret']      = $formatData['interpret'];
                         $this->trac_nghiem_don['explain_before'] = $formatData['explain_before'];
+                        $this->trac_nghiem_don['audio_content'] = $formatData['audio_content'];
                         $this->trac_nghiem_don['image']          = $formatData['image'];
 
                         $this->trac_nghiem_don['child'] = array(
                             'answer'         => $formatData['answer'],
                             'answer_error'   => $formatData['ansewr_error'],
                             'image'          => $formatData['image'],
+                            'audio_question' => $formatData['audio_question'],
                         );
                     }
 
@@ -151,6 +156,7 @@ class QuestionImport implements ToCollection
                         $this->dien_tu_doan_van['interpret']      = $this->_detectMathLatex($formatData['interpret']);
                         $this->dien_tu_doan_van['user_id']        = $this->data['user_id'];
                         $this->dien_tu_doan_van['explain_before'] = $formatData['explain_before'];
+                        $this->dien_tu_doan_van['audio_content'] = $formatData['audio_content'];
                         $this->dien_tu_doan_van['image']          = $formatData['image'];
                         $this->dien_tu_doan_van['lesson_id']      = $this->data['lesson_id'];
                         $this->dien_tu_doan_van['course_id']      = $this->data['course_id'];
@@ -165,6 +171,7 @@ class QuestionImport implements ToCollection
                             'course_id'      => $this->data['course_id'],
                             'question'       => $formatData['question_before'],
                             'question_after' => $formatData['question_after'],
+                            'audio_question'     => $formatData['audio_question'],
                             'img_before'     => $formatData['img_before'],
                             'img_after'      => $formatData['img_after']
                         );
@@ -183,6 +190,7 @@ class QuestionImport implements ToCollection
                                 'question'       => $this->_detectMathLatex(str_replace('$sf.', '', $items[0])),
                                 'question_after' => $formatData['question_after'],
                                 'img_before'     => $formatData['img_before'],
+                                'audio_question' => $formatData['audio_question'],
                                 'img_after'      => $formatData['img_after']
                             );
 
@@ -198,6 +206,7 @@ class QuestionImport implements ToCollection
                             'interpret'      => $this->_detectMathLatex($formatData['interpret']),
                             'image'          => $formatData['image'],
                             'answer'         => $formatData['answer'],
+                            'audio_question' => $formatData['audio_question'],
                             'course_id'      => $this->data['course_id'],
                         );
                     }
@@ -215,6 +224,7 @@ class QuestionImport implements ToCollection
                             'course_id'      => $this->data['course_id'],
                             'image'          => $formatData['image'],
                             'interpret'      => $formatData['interpret'],
+                            'audio_question' => $formatData['audio_question'],
                         );
                     }
 
@@ -223,6 +233,7 @@ class QuestionImport implements ToCollection
                         $formatData                   = $this->_formatDienTuDoanVan($items);
                         $this->dien_tu_doan_van['childs'][] = array(
                             'question'       => $formatData['question'],
+                            'audio_question' => $formatData['audio_question'],
                             'explain_before' => $formatData['explain_before'],
                             'course_id'      => $this->data['course_id'],
                             'interpret'      => $this->_detectMathLatex($formatData['interpret']),
@@ -254,7 +265,11 @@ class QuestionImport implements ToCollection
         $explain_before = '';
         $image          = '';
         $interpret      = '';
+        $audio_question      = '';
+        $audio_content      = '';
+
         foreach ($items as $key => $text) {
+            $text = trim($text);
             if (strpos($text, '$dt.') !== false) {
                 $question = str_replace('$dt.', '', $text);
                 $pattern  = '/<#(.*?)#>/';
@@ -281,12 +296,21 @@ class QuestionImport implements ToCollection
                 $interpret = str_replace('$e.', '', $text);
                 $interpret = $this->_detectMathLatex($interpret);
             }
+
+            if (strpos($text, '$aq.') !== false) {
+                $audio_question = str_replace('$aq.', '', $text);
+            }
+            if (strpos($text, '$ac.') !== false) {
+                $audio_content = str_replace('$ac.', '', $text);
+            }
         }
 
         return array(
             'question'       => $this->_detectMathLatex($question, 'doan_van'),
             'image'          => $image,
             'explain_before' => $explain_before,
+            'audio_question' => $audio_question,
+            'audio_content' => $audio_content,
             'interpret'      => $interpret
         );
     }
@@ -298,8 +322,11 @@ class QuestionImport implements ToCollection
         $explain_before = '';
         $image          = '';
         $interpret      = '';
+        $audio_question      = '';
+        $audio_content      = '';
 
         foreach ($items as $key => $text) {
+            $text = trim($text);
             if (strpos($text, '$d.') !== false) {
                 $question = str_replace('$d.', '', $text);
                 $question = $this->_detectMathLatex($question);
@@ -319,12 +346,21 @@ class QuestionImport implements ToCollection
                 $interpret = str_replace('$e.', '', $text);
                 $interpret = $this->_detectMathLatex($interpret);
             }
+
+            if (strpos($text, '$aq.') !== false) {
+                $audio_question = str_replace('$aq.', '', $text);
+            }
+            if (strpos($text, '$ac.') !== false) {
+                $audio_content = str_replace('$ac.', '', $text);
+            }
         }
         return array(
             'question'       => $question,
             'answer'         => $ansewr,
             'explain_before' => $explain_before,
             'image'          => $image,
+            'audio_question' => $audio_question,
+            'audio_content' => $audio_content,
             'interpret'      => $interpret
         );
     }
@@ -337,8 +373,11 @@ class QuestionImport implements ToCollection
         $explain_before = '';
         $image          = '';
         $interpret      = '';
+        $audio_question      = '';
+        $audio_content      = '';
 
         foreach ($items as $key => $text) {
+            $text = trim($text);
             if (strpos($text, $type) !== false) {
                 $question = str_replace($type, '', $text);
                 $question = $this->_detectMathLatex($question);
@@ -359,6 +398,13 @@ class QuestionImport implements ToCollection
             if (strpos($text, '$i.') !== false) {
                 $image = str_replace('$i.', '', $text);
             }
+
+            if (strpos($text, '$aq.') !== false) {
+                $audio_question = str_replace('$aq.', '', $text);
+            }
+            if (strpos($text, '$ac.') !== false) {
+                $audio_content = str_replace('$ac.', '', $text);
+            }
             if (strpos($text, '$e.') !== false) {
                 $interpret = str_replace('$e.', '', $text);
                 $interpret = $this->_detectMathLatex($interpret);
@@ -370,6 +416,8 @@ class QuestionImport implements ToCollection
             'explain_before' => $explain_before,
             'ansewr_error'   => $ansewr_error,
             'image'          => $image,
+            'audio_question' => $audio_question,
+            'audio_content' => $audio_content,
             'interpret'      => $interpret
         );
     }
@@ -383,7 +431,10 @@ class QuestionImport implements ToCollection
         $explain_before  = '';
         $img_before      = '';
         $img_after       = '';
+        $audio_question      = '';
+        $audio_content      = '';
         foreach ($items as $key => $text) {
+            $text = trim($text);
             if (strpos($text, '#f.') !== false) {
                 $content = str_replace('#f.', '', $text);
                 $content = $this->_detectMathLatex($content);
@@ -410,6 +461,13 @@ class QuestionImport implements ToCollection
             if (strpos($text, '$bi.') !== false) {
                 $img_after = str_replace('$bi.', '', $text);
             }
+
+            if (strpos($text, '$aq.') !== false) {
+                $audio_question = str_replace('$aq.', '', $text);
+            }
+            if (strpos($text, '$ac.') !== false) {
+                $audio_content = str_replace('$ac.', '', $text);
+            }
         }
         return array(
             'content'         => $content,
@@ -418,6 +476,8 @@ class QuestionImport implements ToCollection
             'explain_after'   => $explain_after,
             'explain_before'  => $explain_before,
             'img_after'       => $img_after,
+            'audio_question' => $audio_question,
+            'audio_content' => $audio_content,
             'img_before'      => $img_before,
         );
     }
@@ -437,6 +497,7 @@ class QuestionImport implements ToCollection
         $question->explain_before = $items['explain_before'];
         $question->interpret_all  = $items['interpret'];
         $question->img_before     = $items['image'];
+        $question->audio_content  = $items['audio_content'];
         $question->save();
 
         $this->insertExamQuestion($lessonId, $question->id);
@@ -455,6 +516,7 @@ class QuestionImport implements ToCollection
                     $question_sub->explain_before = $value['explain_before'];
                     $question_sub->interpret      = $value['interpret'];
                     $question_sub->img_before     = $value['image'];
+                    $question_sub->audio_question     = $value['audio_question'];
                     $question_sub->save();
                     if (isset($value['answer_error']) && count($value['answer_error']) > 0) {
                         foreach ($value['answer_error'] as $key_as_error => $ans_er_value) {
@@ -496,6 +558,7 @@ class QuestionImport implements ToCollection
         $question->question       = $items['question'];
         $question->explain_before = $items['explain_before'];
         $question->img_before     = $items['image'];
+        $question->audio_question     = $items['audio_content'];
         $question->save();
 
         $this->insertExamQuestion($lessonId, $question->id);
@@ -537,6 +600,7 @@ class QuestionImport implements ToCollection
         $question->content       = $items['content'];
         $question->interpret_all = $items['interpret'];
         $question->img_before    = $items['image'];
+        $question->audio_content     = $items['audio_content'];
         $question->save();
 
         $this->insertExamQuestion($items['lesson_id'], $question->id);
@@ -550,6 +614,7 @@ class QuestionImport implements ToCollection
                 $que->course_id      = $items['course_id'];
                 $que->user_id        = $items['user_id'];
                 $que->created_at     = time();
+                $que->audio_question     = $q['audio_question'];
                 $que->question       = $q['question'];
                 $que->explain_before = $q['explain_before'];
                 $que->interpret      = $q['interpret'];
@@ -569,6 +634,7 @@ class QuestionImport implements ToCollection
         $question->created_at    = time();
         $question->content       = $items['content'];
         $question->interpret_all = $items['interpret'];
+        $question->audio_content     = $items['audio_content'];
         $question->img_before    = $items['image'];
         $question->save();
 
@@ -587,6 +653,7 @@ class QuestionImport implements ToCollection
                 $que->explain_before = $q['explain_before'];
                 $que->interpret      = $q['interpret'];
                 $que->img_before     = $q['image'];
+                $que->audio_question     = $q['audio_question'];
                 //$que->explain_after = '';
                 if ($que->save()) {
                     $an              = new QuestionAnswer();
@@ -612,6 +679,7 @@ class QuestionImport implements ToCollection
         $question->course_id  = $items['course_id'];
         $question->user_id    = $items['user_id'];
         $question->created_at = time();
+        $question->audio_content     = $items['audio_content'];
         $question->content    = $items['content'];
         if ($question->save()) {
             if (isset($items['childs'])) {

@@ -128,6 +128,9 @@
                                 @if(!empty($question_child->explain_before))
                                     <td><span>$h.{{ export_math_latex($question_child->explain_before) }}</span></td>
                                 @endif
+                                @if(!empty($question_child->img_before))
+                                    <td><span>$i.{{ $question_child->img_before }}</span></td>
+                                @endif
                                 @if(isset($question_child->answers))
                                     @foreach($question_child->answers as $question_answers)
                                         @if($question_answers->status == \App\Models\QuestionAnswer::REPLY_ERROR)
@@ -145,7 +148,7 @@
                                     <td><span>$e.{{ export_math_latex($question_child->interpret) }}</span></td>
                                 @endif
                                 @if(!empty($question_child->audio_question))
-                                    <td><span>$aq.{{$question->audio_question}}</span></td>
+                                    <td><span>$aq.{{$question_child->audio_question}}</span></td>
                                 @endif
                             </tr>
                         @endforeach
@@ -160,6 +163,9 @@
                         @endif
                         @if(!empty($question->explain_before))
                             <td><span>$h.{{ export_math_latex($question->explain_before) }}</span></td>
+                        @endif
+                        @if(!empty($question->img_before))
+                            <td><span>$i.{{ $question->img_before }}</span></td>
                         @endif
                         @if(isset($question->answers))
                             @foreach($question->answers as $question_answers)
@@ -178,7 +184,7 @@
                             <td><span>$e.{{ export_math_latex($question->interpret) }}</span></td>
                         @endif
                         @if(!empty($question->audio_question))
-                            <td><span>$aq.{{$question->audio_question}}</span></td>
+                            <td><span>$ac.{{$question->audio_question}}</span></td>
                         @endif
                     </tr>
                 @endif
