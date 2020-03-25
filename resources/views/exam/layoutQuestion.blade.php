@@ -34,6 +34,7 @@
     <div class="hoclythuyet type_flash_card type_do_new">
         @include('exam.lam_bai_moi')
         <input type="hidden" name="status_stop" value="{{$var['userExam']->status_stop ?? \App\Models\ExamUser::ACTIVE}}">
+        <input type="hidden" name="status_exam" value="{{$var['userExam']->status ?? \App\Models\ExamUser::ACTIVE}}">
         <input type="hidden" name="still_time" value="{{$var['userExam']->still_time}}">
         <input type="hidden" name="until_number" value="{{$var['userExam']->until_number}}">
         <input type="hidden" name="totalQuestion" value="{{$var['totalQuestion']}}">
@@ -241,6 +242,7 @@
         function countDown(timeLeft) {
 
             const status = $('input[name=status_stop]').val();
+            const statusExam = $('input[name=status_exam]').val();
             if (status === 'Inactive') {
                 $('.pause-exam').addClass('overlay-show');
                 $('.count-down').html('<span style="color: red">Đang tạm dừng</span>');
@@ -275,9 +277,11 @@
                 if (distance < 0) {
                     clearInterval(countInterval);
                     $('.count-down').html('<span style="color: red">Hết thời gian</span>');
-                    setTimeout(function () {
-                        location.href = `/kiem-tra/ket-thuc/bai-kiem-tra.${exam_id}`
-                    }, 5000)
+                    if(statusExam == 'Active'){
+                        setTimeout(function () {
+                            location.href = `/kiem-tra/ket-thuc/bai-kiem-tra.${exam_id}`
+                        }, 5000)
+                    }
                 }
             }, 1000);
         }

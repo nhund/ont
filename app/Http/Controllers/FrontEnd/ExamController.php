@@ -76,7 +76,7 @@ class ExamController extends Controller
             ($userExam && $var['totalQuestion'] && $var['userExam']->until_number > $var['totalQuestion'])
             || ($userExam && $exam && $userExam->turn > $exam->repeat_time)
             || ($userExam && $var['userExam']->begin_at && $var['userExam']->still_time <=  date('Y-m-d H:i:s'))
-            || ($userExam && $var['userExam']->status == ExamUser::INACTIVE) ;
+            || ($userExam && $var['userExam']->status == ExamUser::STOPPED) ;
 
         $var['overtime'] = $userExam && $exam && $userExam->turn > $exam->repeat_time;
 
