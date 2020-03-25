@@ -57,9 +57,12 @@ class BeginExamListener
         }else{
 
             if (($this->userExam->turn > $this->exam->repeat_time)
-                || ($this->userExam->status == ExamUser::INACTIVE))
+                || ($this->userExam->status == ExamUser::STOPPED)
+                || ($this->userExam->status == ExamUser::INACTIVE)
+                || (date('Y-m-d H:i:s') < $this->exam->start_time_at)
+                || (date('Y-m-d H:i:s') > $this->exam->end_time_at ))
             {
-                throw new BadRequestException('Bài kiếm tra không hợp lệ.');
+                return false;
             }
 
             $this->userExam->score = 0;
