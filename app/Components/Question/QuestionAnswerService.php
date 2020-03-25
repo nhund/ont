@@ -13,6 +13,7 @@ use App\Models\Question;
 use App\Models\QuestionAnswer;
 use App\Models\QuestionLogCurrent;
 use App\Models\UserLessonLog;
+use App\Models\UserQuestionBookmark;
 use App\Models\UserQuestionLog;
 use Illuminate\Http\Request;
 use Intervention\Image\Exception\NotFoundException;
@@ -55,6 +56,11 @@ class QuestionAnswerService
 
     protected function _saveLogQuestion($data)
     {
+
+        if ($this->checkBookmark()){
+            return false;
+        }
+
         $courseId       = $this->lesson->course_id;
         $lessonId       = $this->lesson->id;
         $type           = Question::LEARN_LAM_BAI_TAP;
@@ -353,6 +359,15 @@ class QuestionAnswerService
             $lesson_log->save();
         }
         event(new SubmitQuestionEvent($questionParent, $this->request->user()));
+    }
+
+    private function checkBookmark()
+    {
+        return !UserQuestionBookmark::query()
+            ->where([
+                'user_id', $this->$this->request->user()->id,
+                'question_id', $this->question->id
+            ])->exists();
     }
 
 }
