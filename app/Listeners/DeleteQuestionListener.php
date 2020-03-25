@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\BeginExamEvent;
+use App\Events\DeleteQuestionEvent;
 use App\Models\Exam;
 use App\Models\ExamUser;
 use App\Models\ExamUserAnswer;
@@ -14,9 +15,9 @@ class DeleteQuestionListener
     protected $user;
 
     /**
-     * @param DeleteQuestionListener $event
+     * @param DeleteQuestionEvent $event
      */
-    public function handle(DeleteQuestionListener $event)
+    public function handle(DeleteQuestionEvent $event)
     {
         $this->question = $event->question;
         $this->user = $event->user;

@@ -6,7 +6,7 @@
         <img src="{{ web_asset('public/images/course/icon/icon_cau_sai.png') }}">
         <div class="name">   
           <div class="box_head">            
-            <div class="title">Làm câu sai: {{ $var['lesson']->name }}</div>
+            <div class="title">Làm câu sai: {{ $var['lesson']->name ?? ''}}</div>
             <div class="course_process">Đã làm <span class="count_question_done">0</span>/<span class="total_question">{{ count($var['questions']) }}</span></div>
           </div>                                                         
           <div class="progress">

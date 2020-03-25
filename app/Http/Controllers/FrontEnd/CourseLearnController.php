@@ -515,6 +515,7 @@ class CourseLearnController extends Controller
 
             $var = array_merge($var, $wrongQuestions);
             $countQuestion = count($var['questions']);
+            $var['lesson'] = $recommendation->lesson;
             if($countQuestion == 0)
             {
                 return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
