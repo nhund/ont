@@ -30,7 +30,7 @@
                <div class="icon bookmark {{ isset($var['userBookmark'][$question->id]) ? 'bookmarked' : '' }}" title="{{ isset($var['userBookmark'][$question->id]) ? 'Bỏ bookmark' : 'Thêm bookmark' }}" data-id="{{ $question->id }}">
                    <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
                </div>
-           </div>
+           </div><div class="clearfix"></div>
            {{-- <div class="box_suggest">
             <p>Gợi ý</p>
             <div class="suggest_content">
@@ -52,7 +52,8 @@
                     {{-- <span>{{ $key + 1  }}).</span> --}}
                     {!! $question_child->question_display !!}
                     {{-- <p>{{ $question->question  }}</p> --}}                                
-                </div>                            
+                </div>
+                <div class="clearfix"></div>
                 <div class="explain-text box_action">
                     <div class="icon suggest" title="Gợi ý">
                        <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
@@ -64,6 +65,7 @@
                        <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
                    </div>
                 </div>
+                <div class="clearfix"></div>
                 <div class="box_suggest">
                     <p class="title">Gợi ý</p>
                     <div class="suggest_content">

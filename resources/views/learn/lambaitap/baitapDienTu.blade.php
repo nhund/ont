@@ -38,6 +38,7 @@
                                     </div>
                                 @endif                                    
                             </div>
+                            <div class="clearfix"></div>
                             @if(!empty($question->audio_question))
                                 <audio data-audio controls preload="metadata" style="width: 100%;">
                                     <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">

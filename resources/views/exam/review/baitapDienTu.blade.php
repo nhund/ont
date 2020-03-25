@@ -40,7 +40,7 @@
                                     </div>
                                 @endif                                    
                             </div>
-
+                            <div class="clearfix"></div>
                             <div class="answer">
                                 <input type="text" class="form-control answer_value" name="answers[{{ $question->id }}]" value="">
                                 <div class="explain" title="Gợi ý" data-id="{{ $question->id }}">

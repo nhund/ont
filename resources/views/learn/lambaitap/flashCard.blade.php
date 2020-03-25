@@ -59,6 +59,7 @@
                <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
          </div>
       </div>
+    <div class="clearfix"></div>
       <div class="next">
          <button class="btn not_remeber check_flashcard" data-reply='1'>
             <i class="fa fa-close"></i>

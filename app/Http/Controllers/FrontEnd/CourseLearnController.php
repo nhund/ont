@@ -312,7 +312,6 @@ class CourseLearnController extends Controller
             $var['lesson'] = $recommendation->lesson;
 
         }else{
-            dd(121212);
             if($type == Question::LEARN_LAM_BAI_TAP)
             {
                 $listQuestionLearned = [];
@@ -515,7 +514,11 @@ class CourseLearnController extends Controller
             $wrongQuestions = $recommendation->doingWrongQuestions($course, $user);
 
             $var = array_merge($var, $wrongQuestions);
-            $var['lesson'] = $recommendation->lesson;
+            $countQuestion = count($var['questions']);
+            if($countQuestion == 0)
+            {
+                return redirect()->route('course.learn',['id'=>$course->id,'title'=>str_slug($course->name)]);
+            }
 
         }
 

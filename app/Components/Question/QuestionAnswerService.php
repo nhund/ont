@@ -15,6 +15,8 @@ use App\Models\QuestionLogCurrent;
 use App\Models\UserLessonLog;
 use App\Models\UserQuestionLog;
 use Illuminate\Http\Request;
+use Intervention\Image\Exception\NotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class QuestionAnswerService
 {
@@ -140,17 +142,17 @@ class QuestionAnswerService
     {
         $answers = $this->request->get('answers');
         $result = [];
+        if(empty($answers)){
+            throw new NotFoundException('bạn chưa chọn đáp án cho câu hỏi');
+        }
+
         foreach ($answers as $key => $answer) {
 
             $reply = QuestionAnswer::REPLY_ERROR;
             //lay dap an dung
             $answerCheck = QuestionAnswer::where('question_id', $key)->where('status', QuestionAnswer::REPLY_OK)->first();
             if (!$answerCheck) {
-                return response()->json(array(
-                    'error' => true,
-                    'msg'   => 'Câu hỏi chưa có đáp án',
-                    'data'  => '',
-                ));
+                throw new NotFoundException('Câu hỏi chưa có đáp án');
             }
             if ($answerCheck && (int)$answer == (int)$answerCheck->id) {
                 $reply = QuestionAnswer::REPLY_OK;

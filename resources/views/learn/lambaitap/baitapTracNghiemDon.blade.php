@@ -34,6 +34,7 @@
                      </div>
                 @endif
          </div>
+                <div class="clearfix"></div>
          @if(!empty($question->explain_before))
             <div class="box_suggest">
                 <p>Gợi ý</p>

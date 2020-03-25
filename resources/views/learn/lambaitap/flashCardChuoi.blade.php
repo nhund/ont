@@ -23,6 +23,7 @@
          <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
       </div>
    </div>
+    <div class="clearfix"></div>
    @if(isset($question->child) && count($question->child) > 0)   
    @foreach ($question->child as $question_child)
    <div class="box_flash">

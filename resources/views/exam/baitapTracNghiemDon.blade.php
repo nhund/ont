@@ -33,7 +33,7 @@
                          <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
                      </div>
                 @endif
-         </div>
+         </div><div class="clearfix"></div>
         @if(!empty($question->interpret_all))
             <div class="box_interpret_all">
                 <p>Giải thích chung : <span id="box_interpret_all_{{ $question->id }}"></span></p>                

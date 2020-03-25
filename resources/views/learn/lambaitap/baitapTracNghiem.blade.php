@@ -33,7 +33,7 @@
                          <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
                      </div>
                 @endif     
-         </div>
+         </div><div class="clearfix"></div>
          @if(!empty($question->explain_before))
             <div class="box_suggest">
                 <p>Gợi ý</p>
@@ -65,7 +65,6 @@
                         <img class="img_question" src="{{ web_asset($question_child->img_before) }}" >
                     @endif                           
                 </div>
-
                 <div class="box_suggest_answer">
                     <div class="suggest_answer_content">
                         {{-- {{ $question_child-> }}  --}}   

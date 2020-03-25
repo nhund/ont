@@ -261,7 +261,7 @@ $(document).ready(function(){
                    });
                     audioAnswer(flagAnswer)
                 }else{
-                    toastr.error('Thông báo!',data.msg ,{timeOut: 600, positionClass : "toast-top-modify"})  
+                    toastr.error('Thông báo!',data.message ,{timeOut: 600, positionClass : "toast-top-modify"})
                 }                         
             },
             error: function (e) {}
