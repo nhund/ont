@@ -11,7 +11,9 @@ use App\Models\ExamUserAnswer;
 class BeginExamListener
 {
     protected $exam;
+    protected $lesson;
     protected $user;
+    protected $userExam;
 
     /**
      * @param BeginExamEvent $event
@@ -19,11 +21,14 @@ class BeginExamListener
      */
     public function handle(BeginExamEvent $event)
     {
-        $this->exam = $event->exam;
+        $this->lesson = $event->exam;
         $this->user = $event->user;
+        $this->exam = Exam::where('lesson_id', $this->lesson->id)->firstOrFail();
+        $this->userExam = ExamUser::where('lesson_id', $this->lesson->id)
+            ->where('user_id', $this->user->id)
+            ->first();
 
         $this->resetUserExam();
-        $this->deleteAnswerBefore();
     }
 
     /**
@@ -31,23 +36,18 @@ class BeginExamListener
      */
     private function resetUserExam(){
 
-        $userExam = ExamUser::where('lesson_id', $this->exam->id)
-            ->where('user_id', $this->user->id)
-            ->first();
 
-        if (!$userExam) {
-
-            $exam = Exam::where('lesson_id', $this->exam->id)->firstOrFail();
+        if (!$this->userExam) {
 
             ExamUser::create([
-                 'lesson_id'      => $this->exam->id,
+                 'lesson_id'      => $this->lesson->id,
                  'user_id'        => $this->user->id,
                  'turn'           => 1,
                  'score'          => 0,
                  'until_number'   => 1,
                  'status_stop'    => ExamUser::ACTIVE,
                  'begin_at'       => now(),
-                 'time'           => $exam->minutes,
+                 'time'           => $this->exam->minutes,
                  'second_stop'    => 0,
                  'stopped_at'     => null,
                  'turn_stop'      => 0,
@@ -55,22 +55,27 @@ class BeginExamListener
              ]);
 
         }else{
-            $exam = Exam::where('lesson_id',  $this->exam->id)->first();
-            if ($exam && $userExam->turn > $exam->repeat_time){
-                throw new BadRequestException('Bạn đã hết lượt làm bài kiểm tra, vui lòng mua thêm');
+
+            if (($this->userExam->turn > $this->exam->repeat_time)
+                || ($this->userExam->begin_at && $this->userExam->still_time <=  date('Y-m-d H:i:s'))
+                || ($this->userExam->status == ExamUser::INACTIVE))
+            {
+                throw new BadRequestException('Bài kiếm tra không hợp lệ.');
             }
 
-            $userExam->score = 0;
-            $userExam->turn += 1;
-            $userExam->until_number = 1;
-            $userExam->begin_at = now();
-            $userExam->status_stop = ExamUser::ACTIVE;
-            $userExam->second_stop = 0;
-            $userExam->stopped_at  = null;
-            $userExam->turn_stop   = 0;
-            $userExam->status      = ExamUser::ACTIVE;
-            $userExam->questions   = null;
-            $userExam->save();
+            $this->userExam->score = 0;
+            $this->userExam->turn += 1;
+            $this->userExam->until_number = 1;
+            $this->userExam->begin_at = now();
+            $this->userExam->status_stop = ExamUser::ACTIVE;
+            $this->userExam->second_stop = 0;
+            $this->userExam->stopped_at  = null;
+            $this->userExam->turn_stop   = 0;
+            $this->userExam->status      = ExamUser::ACTIVE;
+            $this->userExam->questions   = null;
+            $this->userExam->save();
+
+            $this->deleteAnswerBefore();
         }
     }
 
