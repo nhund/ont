@@ -324,7 +324,7 @@ class QuestionController extends AdminBaseController
             $question->type = $data['type'];
             $question->parent_id = 0;
             $question->lesson_id = $data['lesson_id'];
-            $question->audio_content = $data['audio_content'];
+            $question->audio_question = $data['audio_content'];
             $question->course_id = $lesson->course_id;
             $question->user_id = $user->id;
             $question->created_at = time();
