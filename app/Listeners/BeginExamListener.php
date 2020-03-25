@@ -57,7 +57,6 @@ class BeginExamListener
         }else{
 
             if (($this->userExam->turn > $this->exam->repeat_time)
-                || ($this->userExam->begin_at && $this->userExam->still_time <=  date('Y-m-d H:i:s'))
                 || ($this->userExam->status == ExamUser::INACTIVE))
             {
                 throw new BadRequestException('Bài kiếm tra không hợp lệ.');
