@@ -111,7 +111,9 @@
 
 @push('js')
     <script>
-        const type = location.search.split('type=')[1];
+        const url = location.search;
+        let searchParams = new URLSearchParams(url);
+        const type = searchParams.get('type');
         if (type) {
             $('[data-tab]').removeClass('active');
             $(`[data-tab=${type}]`).addClass('active');

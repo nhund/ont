@@ -196,13 +196,12 @@ class CourseController extends AdminBaseController
             }
         }
         $var['comments'] = $comments;
-        $limit_feedback = 50;
         $var['feedbacks'] = Feedback::where('course_id',$id)
             ->with(['bookmark' => function ($q){
                 $q->where('user_id', Auth::user()->id);
             }])->groupBy('question_id')
             ->orderBy('id','DESC')
-            ->paginate($limit_feedback);
+            ->paginate(15);
 
         $var['rating'] = Rating::select('rating_value',DB::raw('count(*) as total'))->where('course_id',$id)->groupBy('rating_value')->get();
         $ratingValue = array('1'=>0, '2'=>0, '3'=>0, '4'=>0, '5'=>0,);

@@ -48,7 +48,7 @@
 
 </table>
 <div class="pagination">
-    {{ $var['feedbacks']->links('vendor.pagination.default') }}
+    {{ $var['feedbacks']->appends(['type' => 'feedback'])->links('vendor.pagination.default') }}
 </div>
 @else 
     <span>Không có phản hồi</span>
