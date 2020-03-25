@@ -72,7 +72,7 @@ class CategoryNewsController extends AdminBaseController
             $menu->name = $data['name'];
             $menu->parent_id = empty($data['parent_id']) ? 0 : $data['parent_id'];
             $menu->status = $data['status'];
-            $menu->url ="/tin-tuc?cate-id=".$category->id;
+            $menu->url = route("news", ["cate-id" => $category->id]);
             $menu->create_date = time();
             $menu->save();
             alert()->success('Thông báo','Thêm dữ liệu thành công');

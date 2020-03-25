@@ -84,8 +84,8 @@ Route::prefix('bai-viet')->group(function () {
         });
 
 /*News*/
-Route::get('/tin-tuc', 'FrontEnd\PostController@news')->name('news');
-Route::get('/tin-tuc/{title}.{id}', 'FrontEnd\PostController@newsDetail')->name('news.detail');
+Route::get('/blog', 'FrontEnd\PostController@news')->name('news');
+Route::get('/blog/{title}.{id}', 'FrontEnd\PostController@newsDetail')->name('news.detail');
 
 /*End News*/
 
