@@ -528,6 +528,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 50px;
 }
 #myNav .overlay-footer .offer-course{
     background: #18C305;
@@ -577,6 +578,10 @@
     color: white;
     width: 67%;
     text-align: justify;
+}
+
+.overlay-content .description iframe{
+   width: 100% !important;
 }
 
 .circle{

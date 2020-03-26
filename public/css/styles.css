@@ -4603,6 +4603,8 @@ button.update-cart{
 	}
 	#myNav.overlay .overlay-footer, #exam-modal.overlay .overlay-footer{
 		top: 20%;
+		padding-bottom: 50px;
+
 	}
 	#box-wrapper .hoclythuyet.type_flash_card .head_course .lesson_name img{
 		width: 25px;
