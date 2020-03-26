@@ -365,8 +365,8 @@ class QuestionAnswerService
     {
         return !UserQuestionBookmark::query()
             ->where([
-                'user_id', $this->$this->request->user()->id,
-                'question_id', $this->question->id
+                'user_id'=> $this->request->user()->id,
+                'question_id' => $this->question->id
             ])->exists();
     }
 
