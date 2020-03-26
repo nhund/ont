@@ -38,25 +38,7 @@ class CourseLearnController extends Controller
                 'msg'=>'Khóa học không tồn tại',
             );      
         }
-        $user = User::find($user_id);
 
-        if($user_id == $course->user_id || $user->level == User::USER_ADMIN)
-        {
-            return array(
-                'error'=>false,
-                'msg'=>'',
-            );
-        }
-        //lay danh sach tro giang
-        $support = TeacherSupport::where('course_id',$course_id)->where('user_id',$user_id)->where('status',TeacherSupport::STATUS_ON)->first();
-        if($support)
-        {
-            return array(
-                'error'=>false,
-                'msg'=>'',
-                'support'=>true,
-            );
-        }
         $checkExist = UserCourse::where('user_id',$user_id)->where('course_id',$course_id)->first();
         if(!$checkExist)
         {
