@@ -173,7 +173,9 @@ class CourseLearnController extends Controller
         }
         $var['user_rating'] = $user_rating;
 
-        $myRating = Rating::where('user_id', $user->id)->first();
+        $myRating = Rating::where('user_id', $user->id)
+            ->where('course_id',$id)
+            ->first();
         $var['my_rating'] = $myRating->rating_value ?? 0;
 
         $var['rating_avg'] = number_format((float)$rating_avg, 1, '.', '');

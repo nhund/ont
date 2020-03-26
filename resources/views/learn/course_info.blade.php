@@ -21,7 +21,9 @@
             <span class="send_rating fa fa-star {{$var['my_rating'] >= 4 ? 'checked':''}}" data-rating="4"></span>
             <span class="send_rating fa fa-star {{$var['my_rating'] >= 5 ? 'checked':''}}" data-rating="5"></span>
         </div>
-        <p>Hãy đánh giá</p>
+        @if($var['my_rating'] == 0)
+            <p>Hãy đánh giá</p>
+        @endif
     </div>
 </div>     
 
