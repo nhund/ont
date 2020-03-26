@@ -257,6 +257,7 @@ class UserCourseReportService
             ->whereDoesntHave('lessonLog', function ($q){
                 $q->where('user_id', $this->user->id);
             })->where('course_id', $this->course->id)
+            ->where('parent_id', '<>', Lesson::PARENT_ID)
             ->where('type', Lesson::LESSON)
             ;
 

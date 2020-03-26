@@ -91,23 +91,23 @@ class Lesson extends Model
         self::deleted(function($model){
             if (isset($model->attributes['id']))
             {
-                $questions = Question::where('lesson_id',$model->attributes['id'])->get();         
-                if(count($questions) > 0)
-                {
-                    foreach ($questions as $key => $question) {
-                        $question->delete();
-                    }        
-                }
+                $questions = Question::where('lesson_id',$model->attributes['id'])->delete();
+//                if(count($questions) > 0)
+//                {
+//                    foreach ($questions as $key => $question) {
+//                        $question->delete();
+//                    }
+//                }
                 if($model->attributes['parent_id'] == 0)
                 {
-                    $lesson_childs = Lesson::where('parent_id',$model->attributes['id'])->get();
-                    if(count($lesson_childs) > 0)
-                    {
-                        foreach ($lesson_childs as $lesson_child) 
-                        {
-                            $lesson_child->delete();
-                        }      
-                    }
+                    $lesson_childs = Lesson::where('parent_id',$model->attributes['id'])->delete();
+//                    if(count($lesson_childs) > 0)
+//                    {
+//                        foreach ($lesson_childs as $lesson_child)
+//                        {
+//                            $lesson_child->delete();
+//                        }
+//                    }
                 }                       
             }
         });

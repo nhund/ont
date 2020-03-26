@@ -363,11 +363,13 @@ class QuestionAnswerService
 
     private function checkBookmark()
     {
-        return !UserQuestionBookmark::query()
-            ->where([
-                'user_id'=> $this->request->user()->id,
-                'question_id' => $this->question->id
-            ])->exists();
+
+        return $this->request->get('type') == Question::LEARN_LAM_BOOKMARK;
+//        return !UserQuestionBookmark::query()
+//            ->where([
+//                'user_id'=> $this->request->user()->id,
+//                'question_id' => $this->question->id
+//            ])->exists();
     }
 
 }
