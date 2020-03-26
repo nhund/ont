@@ -203,7 +203,7 @@
             <p class="title" ><span data-exam="name"></span></p>
             <div class="overlay-content row">
                 <div class="description" style="color: white">
-                    <h3 data-lesson="des"></h3>
+                    <h3 data-exam="des"></h3>
                 </div>
             </div>
           <div class="overlay-content">

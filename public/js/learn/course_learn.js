@@ -92,7 +92,6 @@ function reportExam(lesson_id, slugName){
 
                 const turn = parseInt(exam.repeat_time) - parseInt(turnUser);
 
-
                 name.html(exam.name);
                 des.html(exam.description);
                 number.html(exam.total_question);
