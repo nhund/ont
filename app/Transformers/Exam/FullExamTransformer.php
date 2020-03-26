@@ -14,6 +14,7 @@ use League\Fractal\TransformerAbstract;
 
 class FullExamTransformer extends TransformerAbstract
 {
+    protected $availableIncludes = ['userExam'];
     protected $exam;
     public function transform(Lesson $lesson)
     {
@@ -40,4 +41,12 @@ class FullExamTransformer extends TransformerAbstract
             'sub_parts'          => $parts
         ];
     }
+
+    public function includeUserExam()
+    {
+        $userExam = $this->exam->examUser()->where('user_id', request()->user()->id)->first();
+
+        return $userExam ? $this->item($userExam, new ExamUserTransformer) : null;
+    }
+
 }

@@ -76,8 +76,7 @@
                         @foreach($var['lessons'] as $lesson)
                                 <div class="title_body"><strong>
                                     @if($lesson->type == \App\Models\Lesson::EXAM)
-                                        <a class="exam-front" onclick="reportExam(`{{$lesson->name}}`, `{{str_slug($lesson->name)}}`,`{{$lesson->description}}`,`{{$lesson->exam->total_question}}`,
-                                                `{{$lesson->exam->repeat_time}}`, `{{$lesson->exam->min_score}}`, `{{$lesson->exam->minutes}}`, `{{$lesson->exam->lesson_id ?? ''}}`, `{{$lesson->userExam->turn ?? 0}}`)" >
+                                        <a class="exam-front" onclick="reportExam(`{{$lesson->id}}`, `{{str_slug($lesson->name)}}`)" >
                                             {{ $lesson->name }}
                                         </a>
                                     @else
@@ -224,7 +223,7 @@
               </div>
               <div class="total total-question-correct col-xs-3 col-lg-2 col-md-2 col-sm-3">
                   <div class="title">
-                      <p>Số lần làm lại</p>
+                      <p>Lượt làm lại</p>
                       <p data-exam="time_repeat"></p>
                   </div>
                   <i class="fa fa-circle circle" aria-hidden="true" style=" color: #fce747;"></i>

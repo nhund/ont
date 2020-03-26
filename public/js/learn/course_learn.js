@@ -68,29 +68,54 @@ function reportLesson(lesson_id){
     })
 }
 
-function reportExam(strName, slugName,  strDes, total_question, repeat_time, min_score, minutes,  lesson_id,turn){
+function reportExam(lesson_id, slugName){
 
-    const name        = $('[data-exam=name]');
-    const des         = $('[data-exam=des]');
-    const number      = $('[data-exam=number_question]');
-    const time_repeat = $('[data-exam=time_repeat]');
-    const $minutes    = $('[data-exam=minutes]');
-    const minScore    = $('[data-exam=min_score]');
-    const urlHTML     = $('[data-exam=href]');
-    const rankingUrlHTML     = $('[data-ranking=href]');
+    $.ajax({
+        headers: {
+            'X-CSRF-Token': $('meta[name=csrf-token]').attr("content"),
+            'Authorization': localStorage.getItem('access_token'),
+        },
+        type   : "GET",
+        url    :  `/api/exam/${lesson_id}/detail?include=userExam`,
+        success: function (data) {
+            if (data.code === 200){
+                const exam = data.data;
+                const turnUser = data.data.userExam ? data.data.userExam.data.turn : 0;
+                const name        = $('[data-exam=name]');
+                const des         = $('[data-exam=des]');
+                const number      = $('[data-exam=number_question]');
+                const time_repeat = $('[data-exam=time_repeat]');
+                const $minutes    = $('[data-exam=minutes]');
+                const minScore    = $('[data-exam=min_score]');
+                const urlHTML     = $('[data-exam=href]');
+                const rankingUrlHTML  = $('[data-ranking=href]');
 
-    turn = parseInt(repeat_time) - parseInt(turn);
+                const turn = parseInt(exam.repeat_time) - parseInt(turnUser);
 
-    name.html(strName);
-    des.html(strDes);
-    number.html(total_question);
-    time_repeat.html(turn > 0 ? turn : '(Hết lượt)');
-    $minutes.html(`${minutes} phút`);
-    minScore.html(min_score);
 
-    urlHTML[0].setAttribute('href' , `/kiem-tra/bat-dau/${slugName}.${lesson_id}`);
-    rankingUrlHTML[0].setAttribute('href' , `/kiem-tra/${slugName}.${lesson_id}`);
-    document.getElementById("exam-modal").style.height = "100%";
+                name.html(exam.name);
+                des.html(exam.description);
+                number.html(exam.total_question);
+                time_repeat.html(turn > 0 ? turn : 0);
+                $minutes.html(`${exam.minutes} phút`);
+                minScore.html(exam.min_score);
+
+                if (turn <=0 ){
+                    urlHTML.addClass('no_action')
+                }else {
+                    urlHTML[0].setAttribute('href' , `/kiem-tra/bat-dau/${slugName}.${lesson_id}`);
+                }
+                if (turnUser > 0){
+                    rankingUrlHTML[0].setAttribute('href' , `/kiem-tra/${slugName}.${lesson_id}`);
+                }else  {
+                    rankingUrlHTML.addClass('no_action');
+                }
+                document.getElementById("exam-modal").style.height = "100%";
+            }
+        }
+    });
+
+
 }
 
 function recommendationLesson(name, courseId, type) {
