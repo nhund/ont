@@ -1,7 +1,7 @@
 <div class="row top10">
     <div class="col-xs-12">
-        <div><button class="btn btn-info" type="button" onclick="addPartExam()">thêm phần kiểm tra</button></div>
-        <hr/>
+{{--        <div><button class="btn btn-info" type="button" onclick="addPartExam()">thêm phần kiểm tra</button></div>--}}
+{{--        <hr/>--}}
         <div class="panel panel-grape panel-bod">
             <div class="panel-heading"><h2>Điểm Từng phần của bài kiểm tra</h2></div>
             <div class="panel-body">
@@ -14,7 +14,7 @@
                                 <th class="text-bold">Số câu hỏi</th>
                                 <th class="text-bold">Tổng điểm</th>
                                 <th class="text-bold">Sửa</th>
-                                <th class="text-bold">Xóa</th>
+{{--                                <th class="text-bold">Xóa</th>--}}
                             </tr>
                         </thead>
                         <tbody>
@@ -24,7 +24,7 @@
                                     <td>{!! $part->number_question !!}</td>
                                     <td>{!! $part->score !!}</td>
                                     <td><button type="button" class="btn btn-info" onclick="editPart({{$part}})">Sửa</button></td>
-                                    <td><button type="button" data-toggle="modal" onclick="modalConfirm({{$part->id}})" class="btn btn-warning">Xóa</button></td>
+{{--                                    <td><button type="button" data-toggle="modal" onclick="modalConfirm({{$part->id}})" class="btn btn-warning">Xóa</button></td>--}}
                                 </tr>
                             @endforeach
                         </tbody>

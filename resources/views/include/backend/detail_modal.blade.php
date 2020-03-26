@@ -417,7 +417,7 @@
                             <input class="form-control" type="number"   value="{{$lesson->exam->repeat_time ?? ''}}"  min="1" name="repeat_time">
                         </div>
                         <div class="col-sm-4">
-                            <input class="form-control"   value="{{$lesson->exam->parts ?? ''}}"   data-input="Bài thi có mấy phần?" type="number" min="1" name="parts">
+                            <input class="form-control"  readonly  value="{{$lesson->exam->parts ?? ''}}"   data-input="Bài thi có mấy phần?" type="number" min="1" name="parts">
                         </div>
                     </div>
                 </div>

@@ -28,6 +28,13 @@ class Exam extends Model
                 $part ++;
             }
         });
+
+        self::deleted(function($model){
+            ExamUser::where('lesson_id', $model->lesson_id)->delete();
+            ExamPart::where('lesson_id', $model->lesson_id)->delete();
+            ExamQuestion::where('lesson_id', $model->lesson_id)->delete();
+            ExamUserAnswer::where('lesson_id', $model->lesson_id)->delete();
+        });
     }
     protected $table = 'exam';
 

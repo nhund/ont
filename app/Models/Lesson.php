@@ -98,6 +98,10 @@ class Lesson extends Model
 //                        $question->delete();
 //                    }
 //                }
+                if($model->attributes['type'] == Lesson::EXAM){
+                    Exam::where('lesson_id', $model->id)->delete();
+                }
+
                 if($model->attributes['parent_id'] == 0)
                 {
                     $lesson_childs = Lesson::where('parent_id',$model->attributes['id'])->delete();
