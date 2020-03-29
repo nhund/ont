@@ -13,27 +13,29 @@
                 <img src="{{ web_asset($question->img_before) }}">
             </div>
             @endif
-            @if(!empty($question->question))
-            <div class="box_des">
-                {!! $question->question !!}
-            </div>
-            @endif
+                <div class="row">
+                    @if(!empty($question->question))
+                        <div class="box_des">
+                            {!! $question->question !!}
+                            <div class="box_action">
+                                @if(!empty($question->explain_before))
+                                    <div class="icon suggest" title="Gợi ý">
+                                        <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
+                                    </div>
+                                @endif
+                                @if(!empty($question->question))
+                                    <div class="icon report send_report" title="Báo cáo" data-id="{{ $question->id }}">
+                                        <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
+                                    </div>
+                                    <div class="icon bookmark {{ isset($var['userBookmark'][$question->id]) ? 'bookmarked' : '' }}" title="{{ isset($var['userBookmark'][$question->id]) ? 'Bỏ bookmark' : 'Thêm bookmark' }}" data-id="{{ $question->id }}">
+                                        <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                </div>
 
-            <div class="box_action">
-                @if(!empty($question->explain_before))
-                    <div class="icon suggest" title="Gợi ý">
-                        <img src="{{ web_asset('public/images/course/icon/icon_bongden.png') }}" >
-                    </div>
-                @endif
-                @if(!empty($question->question))
-                     <div class="icon report send_report" title="Báo cáo" data-id="{{ $question->id }}">
-                         <img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" >
-                     </div>
-                     <div class="icon bookmark {{ isset($var['userBookmark'][$question->id]) ? 'bookmarked' : '' }}" title="{{ isset($var['userBookmark'][$question->id]) ? 'Bỏ bookmark' : 'Thêm bookmark' }}" data-id="{{ $question->id }}">
-                         <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
-                     </div>
-                @endif
-         </div>
                 <div class="clearfix"></div>
          @if(!empty($question->explain_before))
             <div class="box_suggest">

@@ -128,14 +128,7 @@ class CourseController extends Controller
         //$var['rating_total'] = $rating_value;
         if(Auth::check())
         {
-
-            if(Auth::user()->id == $course->user_id)
-            {
-                $var['user_course'] = true; 
-            }else{
-                $var['user_course'] = UserCourse::where('user_id',Auth::user()->id)->where('course_id',$id)->first();
-            }
-            
+            $var['user_course'] = UserCourse::where('user_id',Auth::user()->id)->where('course_id',$id)->first();
         }
         //dd($var['rating_total']);
         return view('course.detail.course',compact('var'));
