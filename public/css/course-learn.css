@@ -135,7 +135,7 @@
 }
 #course_learn .box_content .body .item-exercise .ly_thuyet:before{
     content: "";
-    background: url('/public/images/course/icon/icon_bai_tap.png') no-repeat;
+    background: url('/public/images/course/icon/icon_ly_thuyet.png') no-repeat;
     /* background-position: 0 -141px; */
     width: 14px;
     height: 14px;
@@ -155,7 +155,7 @@
 
 #course_learn .box_content .body .item-exercise .bai_tap:before{
     content: "";
-    background: url('/public/images/course/icon/icon_ly_thuyet.png') no-repeat;
+    background: url('/public/images/course/icon/icon_bai_tap.png') no-repeat;
     /* background-position: 0 -141px; */
     width: 14px;
     height: 14px;
