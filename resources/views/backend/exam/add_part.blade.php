@@ -20,10 +20,10 @@
                         <tbody>
                             @foreach($parts as $part)
                                 <tr>
-                                    <td><a href="{{route('exam.detail.part', ['id' => $lesson->id, 'part_id' => $part->id])}}"> <span class="fa fa-plus"> {!! $part->name !!}</span> </a></td>
+                                    <td><a class="{{$part->number_question == 0 ? 'text-danger' : ''}}" href="{{route('exam.detail.part', ['id' => $lesson->id, 'part_id' => $part->id])}}"> <span class="fa fa-plus"> {!! $part->name !!}</span> </a></td>
                                     <td>{!! $part->number_question !!}</td>
                                     <td>{!! $part->score !!}</td>
-                                    <td><button type="button" class="btn btn-info" onclick="editPart({{$part}})">Sửa</button></td>
+                                    <td><button type="button" class="btn btn-info {{$part->number_question == 0 ? 'btn-danger' : ''}}" onclick="editPart({{$part}})">Sửa</button></td>
 {{--                                    <td><button type="button" data-toggle="modal" onclick="modalConfirm({{$part->id}})" class="btn btn-warning">Xóa</button></td>--}}
                                 </tr>
                             @endforeach

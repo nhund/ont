@@ -175,7 +175,7 @@ class ExamController
         if ($exam->total_score < $totalScore){
             return response()->json(['status' => 201, 'message' => "Mức điểm tổng các phần vượt quá mức điểm tổng là {$exam->total_score} điểm"]);
         }
-        if ($exam->total_question < $currentPart->number_question){
+        if ($exam->total_question < $params['number_question']){
             return response()->json(['status' => 201, 'message' => "Số câu hỏi vượt quá tổng câu hỏi bài thi là  {$exam->total_question} câu hỏi"]);
         }
 
