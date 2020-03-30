@@ -42,4 +42,9 @@ class UserQuestionLog extends Model
         return $query->where('status_delete', self::ACTIVE);
     }
 
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
+
 }

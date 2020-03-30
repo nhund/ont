@@ -104,6 +104,9 @@ class LessonService
     public function didQuestions()
     {
         return UserQuestionLog::where('lesson_id', $this->lesson->id)
+            ->whereHas('question', function ($q){
+                $q->typeAllow();
+            })
             ->where('user_id', $this->user->id)
             ->count();
     }
@@ -115,6 +118,9 @@ class LessonService
     {
         $correct = $wrong = 0;
         $userQuestions =  UserQuestionLog::select('status', \DB::raw('count(status) as total'))
+            ->whereHas('question', function ($q){
+                $q->typeAllow();
+            })
             ->where('lesson_id', $this->lesson->id)
             ->where('user_id', $this->user->id)
             ->groupBy('status')
