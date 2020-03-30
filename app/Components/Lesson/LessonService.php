@@ -126,6 +126,7 @@ class LessonService
             ->groupBy('status')
             ->get()
             ;
+
         foreach ($userQuestions as $question)
         {
             if ($question->status == Question::REPLY_OK){

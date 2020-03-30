@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Api\Recommendation;
 
+use App\Components\Lesson\LessonService;
 use App\Components\Recommendation\RecommendationService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RecommendationRequest;
@@ -121,7 +122,9 @@ class RecommendationController extends Controller
         $this->authorize('permission', $course);
 
         $questionDid = UserQuestionLog::where('course_id', $course->id)
-            ->active()
+			->whereHas('question', function ($q){
+				$q->typeAllow();
+			})
             ->where('user_id', $request->user()->id);
 
         $questionsIds = $questionDid->get()->pluck('question_parent')->toArray();
@@ -132,19 +135,17 @@ class RecommendationController extends Controller
             ->count();
 
         $wrongQuestions = UserQuestionLog::where('course_id', $course->id)
-            ->active()
+			->whereHas('question', function ($q){
+				$q->typeAllow();
+			})
             ->where('user_id', $request->user()->id)
             ->where('status', Question::REPLY_ERROR)
             ->count();
 
         $bookmarkQuestions = UserQuestionBookmark::where('course_id', $course->id)
             ->where('user_id', $request->user()->id)
-            ->where('status', Question::REPLY_ERROR)
-            ->count();
-
-        UserQuestionLog::where('course_id', $course->id)
-            ->active()
-            ->where('status', Question::REPLY_OK)
+			->whereNotNull('question_id')
+			->groupBy('question_id')
             ->count();
 
         $report['countWrongQuestion'] = $wrongQuestions;
