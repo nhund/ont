@@ -132,6 +132,7 @@ class UserCourseReportService
         {
             foreach ($subLessons as $subLesson)
             {
+				$subReport = [];
                 $subReport['name'] = $subLesson->name;
                 $subReport['type'] = $this->getType($subLesson);
                 $subReport['sub_lesson_id'] = $subLesson->id;
