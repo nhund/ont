@@ -183,7 +183,8 @@ class UserCourseReportService
      * @return mixed
      */
     private function countTotalQuestion($lessonID){
-        return Question::where('lesson_id',$lessonID)->where('parent_id', Lesson::PARENT_ID)->count();
+        return Question::where('lesson_id',$lessonID)
+            ->typeAllow()->where('parent_id', Lesson::PARENT_ID)->count();
     }
 
     /**
@@ -221,13 +222,17 @@ class UserCourseReportService
         $userScore = 0;
         $exam = Exam::where('lesson_id', $lesson->id)->first();
 
-
         $examUser = ExamUser::where('user_id', $this->user->id)
             ->where('lesson_id', $lesson->id)
             ->first();
-        $userScore = $examUser ? $examUser->highest_score : $userScore;
+        $highestScore = $examUser ? $examUser->highest_score : $userScore;
 
-       return [$exam ? $exam->total_score : 0, $userScore];
+       return [
+		   'standard_score' => $exam->min_score,
+		   'highest_score'  => $highestScore,
+		   'near_score'     => $examUser ? $examUser->score : $userScore,
+		   'passed'         => $highestScore >= $exam->min_score ? true : false,
+       ];
 
     }
 
