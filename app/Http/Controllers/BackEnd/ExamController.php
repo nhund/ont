@@ -167,9 +167,6 @@ class ExamController
                     ->whereNotIn('id', [$request->get('id')])
                     ->groupBy('lesson_id')->first();
 
-        $currentPart = ExamPart::where('lesson_id', $params['lesson_id'])
-            ->where('id', [$request->get('id')])
-            ->first();
         $totalScore = $examPart ? $examPart->total_score + (int) $params['score'] : (int) $params['score'];
 
         if ($exam->total_score < $totalScore){
