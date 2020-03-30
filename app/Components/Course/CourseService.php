@@ -36,7 +36,9 @@ class CourseService
     public function getStickyCourses($school_id = null, $limit = null)
     {
         $limit = $limit ?: request('limit', 3);
-        $query =  Course::query()->where('sticky', Course::STICKY);
+        $query =  Course::query()
+            ->where('status', '<>',Course::TYPE_PRIVATE)
+            ->where('sticky', Course::STICKY);
 
         if($school_id){
             $query->where('category_id', $school_id);
@@ -58,7 +60,9 @@ class CourseService
     public function getCoursesOfByStatus(array $status, $school_id = null, $limit = null)
     {
         $limit = $limit ?: request('limit', 3);
-        $query = Course::query();
+        $query = Course::query()
+            ->where('status', '<>',Course::TYPE_PRIVATE)
+        ;
 
         if($school_id){
             $query->where('category_id', $school_id);
@@ -80,7 +84,8 @@ class CourseService
     public function getSourcesForHomePage($school_id = null, $limit = null){
 
         $limit = $limit ?: request('limit', 4);
-        $query = Course::query();
+        $query = Course::query()
+            ->where('status', '<>',Course::TYPE_PRIVATE);
         if($school_id){
             $query->where('category_id', $school_id);
         }
@@ -95,7 +100,8 @@ class CourseService
      */
     public function search()
     {
-        $query = Course::query();
+        $query = Course::query()
+            ->where('status', '<>',Course::TYPE_PRIVATE);
 
         return $this->applySchoolIdFilter($query)
             ->applySourceNameFilter($query)
@@ -107,7 +113,8 @@ class CourseService
      */
     public function searchByUser()
     {
-        $query = Course::query();
+        $query = Course::query()
+            ->where('status', '<>',Course::TYPE_PRIVATE);
 
         return $this->applySchoolIdFilter($query)
             ->applySourceNameFilter($query)
