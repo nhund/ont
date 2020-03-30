@@ -55,20 +55,30 @@ class UserCourseReportService
 
         foreach ($lessons as $lesson)
         {
+			$data = [];
             $data['lesson_name'] = $lesson->name;
             $data['lesson_id'] = $lesson->id;
-            $data['type'] = $this->getType($lesson);
-            if ($lesson->level == Lesson::LEVEL_1)
-            {
-                $data['level'] =  Lesson::LEVEL_1;
-                $data['report'] = $this->subLessons($lesson);
-            }
+            $type  = $this->getType($lesson);
+			$data['type'] = $type;
 
-            if ($lesson->level == Lesson::LEVEL_2)
-            {
-                $data['level'] =  Lesson::LEVEL_2;
-                $data['report'] = $this->level2($lesson);
-            }
+            if($type == Lesson::LESSON || $type == 'theory'){
+				if ($lesson->level == Lesson::LEVEL_1)
+				{
+					$data['level'] =  Lesson::LEVEL_1;
+					$data['report'] = $this->subLessons($lesson);
+				}
+
+				if ($lesson->level == Lesson::LEVEL_2)
+				{
+					$data['level'] =  Lesson::LEVEL_2;
+					$data['report'] = $this->level2($lesson);
+				}
+			}
+
+			if($type == Lesson::EXAM){
+				$data['level'] =  Lesson::LEVEL_1;
+				$data = array_merge($data, $this->exam($lesson));
+			}
 
             array_push($this->report, $data);
         }
@@ -83,6 +93,7 @@ class UserCourseReportService
     {
         return Lesson::where('parent_id', Lesson::PARENT_ID)
             ->where('course_id', $this->course->id)
+            ->where('level',  '!=', 0)
             ->orderBy('order_s','ASC')
             ->orderBy('created_at','ASC')
             ->get();
@@ -138,7 +149,7 @@ class UserCourseReportService
 
                 if ($subLesson->type == Lesson::EXAM)
                 {
-                    list($subReport['total'], $subReport['done']) = $this->exam($subLesson);
+					$subReport = array_merge($subReport, $this->exam($subLesson));
                 }
                 array_push($report, $subReport);
             }
@@ -201,15 +212,24 @@ class UserCourseReportService
      */
     private function getType(Lesson $lesson){
 
-        if ($lesson->is_exercise() && $lesson->type == Lesson::LESSON){
-            return 'exercise';
-        }
-        if ($lesson->is_exercise() && $lesson->type == Lesson::EXAM){
-            return Lesson::EXAM;
-        }
-        if (!$lesson->is_exercise()){
-            return 'theory';
-        }
+    	if ($lesson->parent_id != Lesson::PARENT_ID){
+			if ($lesson->is_exercise() && $lesson->type == Lesson::LESSON){
+				return 'exercise';
+			}
+			if ($lesson->is_exercise() && $lesson->type == Lesson::EXAM){
+				return Lesson::EXAM;
+			}
+			if (!$lesson->is_exercise() && $lesson->type == Lesson::LESSON){
+				return 'theory';
+			}
+
+			if (!$lesson->is_exercise()){
+				return 'theory';
+			}
+		}else {
+			return $lesson->type;
+		}
+
         return null;
     }
 
