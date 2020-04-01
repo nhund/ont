@@ -127,7 +127,6 @@ class LessonService
             ->get()
             ;
 
-        dd($userQuestions, $this->user);
         foreach ($userQuestions as $question)
         {
             if ($question->status == Question::REPLY_OK){
