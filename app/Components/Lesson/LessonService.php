@@ -107,7 +107,7 @@ class LessonService
             ->whereHas('question', function ($q){
                 $q->typeAllow();
             })
-            ->where('user_id', $this->user->id)
+            ->where('user_id', $this->user->id)->get()
             ->count();
     }
 
@@ -147,7 +147,7 @@ class LessonService
         return UserQuestionBookmark::where('lesson_id', $this->lesson->id)
             ->where('user_id', $this->user->id)
             ->whereNotNull('question_id')
-            ->groupBy('question_id')
+            ->groupBy('question_id')->get()
             ->count();
     }
 
