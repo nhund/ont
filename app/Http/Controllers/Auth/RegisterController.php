@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterUserRequest;
 use App\Models\Transformers\auth\AccessTokenEntityFull;
 use App\User;
 use App\Http\Controllers\Controller;
+use Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -63,7 +64,7 @@ class RegisterController extends Controller
 //             'level'     => $data['level'],
 //             'status'    => $data['status'],
          ]);
-
+		Auth::logout();
         $tokenEntity = $this->authenticator->issueTokensUsingPasswordGrantWithClient(
             $request->oauthClient(),
             $data['email'],
