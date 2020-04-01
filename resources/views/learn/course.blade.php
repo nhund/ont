@@ -74,19 +74,22 @@
                     </div>
                     <div class="body">
                         @foreach($var['lessons'] as $lesson)
-                                <div class="title_body"><strong>
+                                <div class="title_body">
                                     @if($lesson->type == \App\Models\Lesson::EXAM)
-                                        <a class="exam-front" onclick="reportExam(`{{$lesson->id}}`, `{{str_slug($lesson->name)}}`)" >
-                                            {{ $lesson->name }}
-                                        </a>
+                                        <a style="width: 92%; display: flex" class="exam-front name" onclick="reportExam(`{{$lesson->id}}`, `{{str_slug($lesson->name)}}`)" ><strong>{{ $lesson->name }}</strong></a>
+                                        @if( $lesson->userExam && $lesson->exam->min_score <= $lesson->userExam->highest_score)
+                                            <div class="topic_progress">
+                                                <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
+                                            </div>
+                                        @endif
                                     @else
                                         @if($lesson->level == \App\Models\Lesson::LEVEL_1)
-                                            <a href="{{route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
+                                            <strong><a href="{{route('user.lambaitap.detailLesson',['title'=>str_slug($lesson->name), 'id'=>$lesson->id])}}"> {{ $lesson->name }} </a></strong>
+
                                         @else
-                                            <a href="{{route('course.learn.level2',['title'=>str_slug($lesson->name),'course_id' =>$lesson->course_id, 'lesson_id'=>$lesson->id])}}"> {{ $lesson->name }} </a>
+                                            <strong><a href="{{route('course.learn.level2',['title'=>str_slug($lesson->name),'course_id' =>$lesson->course_id, 'lesson_id'=>$lesson->id])}}"> {{ $lesson->name }} </a> </strong>
                                         @endif
                                     @endif
-                                    </strong>
                                 </div>
                                 @if(isset($lesson->childs))
                                     @foreach($lesson->childs as $lesson_child)
@@ -103,10 +106,14 @@
                                                             @endif
                                                         </div>
                                                     @else
-                                                        <a class="exam-front" onclick="reportExam(`{{$lesson_child->name}}`, `{{str_slug($lesson_child->name)}}`,`{{$lesson_child->description}}`,`{{$lesson_child->exam->total_question}}`,
-                                                                `{{$lesson_child->exam->repeat_time}}`, `{{$lesson_child->exam->min_score}}`, `{{$lesson_child->exam->minutes}}`, `{{$lesson_child->exam->lesson_id ?? ''}}`, `{{$lesson_child->userExam->turn ?? 0}}`)" >
+                                                        <a class="exam-front name" onclick="reportExam(`{{$lesson_child->id}}`, `{{str_slug($lesson_child->name)}}`)" >
                                                             {{ $lesson_child->name }}
                                                         </a>
+                                                        @if($lesson_child->userExam && $lesson_child->exam->min_score <= $lesson_child->userExam->highest_score)
+                                                            <div class="topic_progress">
+                                                                <img src="{{ web_asset('public/images/course/icon/icon_check.png') }}">
+                                                            </div>
+                                                        @endif
                                                     @endif
                                                 </div>
                                             @else

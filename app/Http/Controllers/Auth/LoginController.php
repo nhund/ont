@@ -30,52 +30,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-//   public function __construct()
-//   {
-//       $this->middleware('guest')->except('logout');
-//   }
-//   public function login(Request $request)
-//   {
-//       if(Auth::check())
-//       {
-//           //return redirect()->route('home');
-//           return response()->json(array(
-//               'error' => true,
-//               'msg' => 'Đăng nhập không thành công',
-//               'redirect_url' => route('home')
-//           ));
-//       }
-//       $data = $request->all();
-//       if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']]))
-//       {
-//           $user = User::where('email',$data['email'])->first();
-//           if($data['remember'])
-//           {
-//               Auth::login($user, true);
-//           }
-//           else
-//           {
-//               Auth::login($user, false);
-//           }
-//           return response()->json(array(
-//               'error' => false,
-//               'msg' => 'Đăng nhập thành công',
-//           ));
-//       }else{
-//           return response()->json(array(
-//               'error' => true,
-//               'msg' => 'Sai email hoặc mật khẩu',
-//           ));
-//       }
-//
-//   }
 
     /**
      * {@inheritdoc}
