@@ -81,6 +81,11 @@ class CourseController extends AdminBaseController
         $image         = $request->file('avatar');
 
         $hasError       = false;
+
+        if (floatval($price) < floatval($discount)){
+			alert()->error('Có lỗi','Giảm giá không được quá với số tiền khóa học');
+			return redirect()->route('addcourse');
+		}
         if($status == Course::TYPE_PUBLIC || $status == Course::TYPE_APPROVAL || $status == Course::TYPE_FREE_TIME)
         {
             if((int)$study_time == 0 || (int)$study_time < 1)

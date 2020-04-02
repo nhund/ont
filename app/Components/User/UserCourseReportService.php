@@ -2,6 +2,7 @@
 
 namespace App\Components\User;
 
+use App\Components\Lesson\LessonService;
 use App\Models\Course;
 use App\Models\Exam;
 use App\Models\ExamPart;
@@ -280,9 +281,7 @@ class UserCourseReportService
             ;
 
         $newLesson = Lesson::query()
-            ->whereDoesntHave('lessonLog', function ($q){
-                $q->where('user_id', $this->user->id);
-            })->where('course_id', $this->course->id)
+         	->where('course_id', $this->course->id)
             ->where('parent_id', '<>', Lesson::PARENT_ID)
             ->where('type', Lesson::LESSON)
             ;
@@ -295,13 +294,43 @@ class UserCourseReportService
             $newLesson->whereIn('id', $subLesson);
         }
 
+		$existNewLesson = false;
+        foreach ($newLesson->get() as $new){
+
+			if($new->type == Lesson::LESSON){
+				if ($new->is_exercise()){
+					$lessonService = new LessonService($new, $this->user);
+					$totalQuestions = $lessonService->totalQuestions();
+					$didQuestions = $lessonService->didQuestions();
+					if ($didQuestions < $totalQuestions){
+						$existNewLesson = true;
+						break;
+					}
+				}else{
+					$theory = $new->lessonLog()->where('user_id', $this->user->id)->first();
+					if (!$theory){
+						$existNewLesson = true;
+						break;
+					}
+				}
+			}
+
+			if ( $new->type == Lesson::EXAM){
+				$userExam  = $new->examUser()->where('user_id', $this->user->id)->first();
+				if (!$userExam){
+					$existNewLesson = true;
+					break;
+				}
+			}
+		}
+
         $status['bookmark'] = $bookmark->exists();
 
         $status['wrongQuestion'] = $wrongQuestion->exists();
 
         $status['didLesson'] = $didLesson->exists();
 
-        $status['newLesson'] = $newLesson->exists();
+        $status['newLesson'] = $existNewLesson;
         return $status;
     }
 }

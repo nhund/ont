@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Components\Exam\ExamService;
+use App\Events\AddQuestionEvent;
 use App\Events\DeleteQuestionEvent;
 use App\Models\Question;
 use App\Models\QuestionAnswer;
@@ -111,7 +112,6 @@ class QuestionController extends AdminBaseController
                     }
 
                 }
-                return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
             }
         }
 
@@ -161,7 +161,6 @@ class QuestionController extends AdminBaseController
                 }
             }
 
-            return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
         }
 
         if ($data['type'] == Question::TYPE_FLASH_MUTI) {
@@ -233,7 +232,6 @@ class QuestionController extends AdminBaseController
                 }
 
             }
-            return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
         }
 
         if ($data['type'] == Question::TYPE_FLASH_SINGLE) {
@@ -262,7 +260,6 @@ class QuestionController extends AdminBaseController
                 if ($typeLesson == Lesson::EXAM && $request->get('part_id')) {
                     (new ExamService())->insertExamQuestion($question->id, $data['lesson_id'], $request->get('part_id'));
                 }
-                return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
             }
             return response()->json(array('error' => true, 'msg' => 'Thêm dữ liệu không thành công'));
         }
@@ -313,7 +310,6 @@ class QuestionController extends AdminBaseController
                     $an->save();
                 }
             }
-            return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
         }
 
         if ($data['type'] == Question::TYPE_DIEN_TU_DOAN_VAN) {
@@ -350,8 +346,10 @@ class QuestionController extends AdminBaseController
                 $que->interpret = Helper::detectMathLatex($data['interpret_dv'][$key]);
                 $que->save();
             }
-            return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
         }
+        event(new AddQuestionEvent($data['lesson_id']));
+
+		return response()->json(array('error' => false, 'msg' => 'Thêm dữ liệu thành công'));
 
     }
 

@@ -32,6 +32,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         Events\BeginLessonEvent::class => [
             Listeners\BeginDidQuestionListener::class
+        ],
+        Events\AddQuestionEvent::class => [
+            Listeners\ResetUserLessonListener::class
         ]
     ];
 

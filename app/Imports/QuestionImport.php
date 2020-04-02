@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Events\AddQuestionEvent;
 use App\Exceptions\BadRequestException;
 use App\Models\ExamQuestion;
 use App\Models\Lesson;
@@ -36,12 +37,13 @@ class QuestionImport implements ToCollection
      */
     public function collection(Collection $collection)
     {
+    	$addQuestion = false;
         DB::beginTransaction();
         try {
             foreach ($collection as $keys => $value) {
 
                 if ($keys >= 1) {
-
+					$addQuestion = true;
                     $items = array_filter($value->toArray());
 
                     // Câu hỏi cho flashcard
@@ -248,6 +250,10 @@ class QuestionImport implements ToCollection
                     DB::commit();
                 }
             }
+
+            if ($addQuestion){
+				event(new AddQuestionEvent($this->data['lesson_id']));
+			}
         } catch
         (\Exception $e) {
             //die("111");

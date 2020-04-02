@@ -126,6 +126,9 @@ class UserCourseService
         }
 
         $course_price = $course->price - $course->discount;
+
+		$course_price = floatval($course_price) < 0 ? 0 : $course_price;
+
         $wallet_current = $wallet->xu;
         if($wallet_current < $course_price)
         {

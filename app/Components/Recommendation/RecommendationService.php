@@ -8,6 +8,7 @@
 
 namespace App\Components\Recommendation;
 
+use App\Components\Lesson\LessonService;
 use App\Events\BeginExamEvent;
 use App\Events\BeginLessonEvent;
 use App\Exceptions\BadRequestException;
@@ -472,18 +473,38 @@ class RecommendationService
             ->orderBy('created_at','ASC');
 
         foreach ($parentLessons->get() as $parentLesson) {
-            $lesson = Lesson::select('lesson.*')
-                ->whereDoesntHave('lessonLog', function ($q) use ($user) {
-                    $q->where('user_id', $user->id);
-                })
+            $lessons = Lesson::select('lesson.*')
                 ->where('lesson.parent_id', $parentLesson->id)
                 ->where('lesson.course_id', $course->id)
                 ->orderBy('order_s')
                 ->orderBy('lesson.created_at', 'ASC')
-                ->first();
-            if ($lesson) {
-                return $lesson;
-            }
+                ->get();
+
+            foreach ($lessons as $lesson){
+            	if($lesson->type == Lesson::LESSON){
+					if ($lesson->is_exercise()){
+						$lessonService = new LessonService($lesson, $user);
+						$totalQuestions = $lessonService->totalQuestions();
+						$didQuestions = $lessonService->didQuestions();
+						if ($didQuestions < $totalQuestions){
+							return $lesson;
+						}
+					}else{
+						$theory = $lesson->lessonLog()->where('user_id', $user->id)->first();
+						if (!$theory){
+							return $lesson;
+						}
+					}
+				}
+
+            	if ($lesson->type == Lesson::EXAM){
+					$userExam  = $lesson->examUser()->where('user_id', $user->id)->first();
+					if (!$userExam){
+						return $lesson;
+					}
+				}
+
+			}
         }
         return false;
     }
