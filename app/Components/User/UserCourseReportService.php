@@ -142,11 +142,12 @@ class UserCourseReportService
                 {
                     $subReport['total'] = $this->countTotalQuestion($subLesson->id);
                     $subReport['done']  = $this->countCorrectQuestion($subLesson->id);
+                    $subReport['passed']  = $this->passLesson($subLesson->id);
                 }
 
                 if ($subLesson->is_exercise == Lesson::IS_DOC && $subLesson->type == Lesson::LESSON)
                 {
-                    $subReport['done'] = $this->checkPassTheory($subLesson->id);
+                    $subReport['done'] = $subReport['passed'] = $this->checkPassTheory($subLesson->id);
                 }
 
                 if ($subLesson->type == Lesson::EXAM)
@@ -190,6 +191,22 @@ class UserCourseReportService
             ->where('status',QuestionAnswer::REPLY_OK)
             ->count();
     }
+
+	/**
+	 * @param $lessonID
+	 * @return mixed
+	 */
+	private function passLesson($lessonID)
+	{
+		$userLesson = UserLessonLog::where('user_id',$this->user->id)
+			->where('lesson_id',$lessonID)
+			->first();
+
+		if(!$userLesson){
+			return false;
+		}
+		return $userLesson->turn_right > 0 ? true : false;
+	}
 
     /**
      * @param $lessonID

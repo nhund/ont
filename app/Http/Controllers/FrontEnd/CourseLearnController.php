@@ -79,6 +79,7 @@ class CourseLearnController extends Controller
 
     public function course($title, $id, Request $request)
     {
+
         $course = Course::find($id);
         if(!$course)
         {
