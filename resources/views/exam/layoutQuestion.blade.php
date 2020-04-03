@@ -139,7 +139,7 @@
                                        <div class="col-xs-6" style="z-index: 10000; padding-left: 0;">
                                            <div class=" title-score">
                                                <h2><span class="score-text"><strong>Điểm</strong></span></h2>
-                                               <span><strong class="minute-1">{{ $var['userExam']->doing_time}}  Phút</strong></span>
+                                               <span><strong class="minute-1">{{ $var['userExam']->doing_time}}</strong></span>
                                            </div>
                                        </div>
                                    </div>
@@ -159,7 +159,7 @@
                                                     <span>{{$rank->user->name_full ?? 'Ẩn danh'}}</span>
                                                 </td>
                                                 <td>{{$rank->highest_score}} Điểm</td>
-                                                <td>{{$rank->doing_time_highest}} Phút</td>
+                                                <td>{{$rank->doing_time_highest}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>

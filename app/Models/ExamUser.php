@@ -33,17 +33,27 @@ class ExamUser extends Model
     public function getDoingTimeAttribute()
     {
         $second = strtotime($this->getOriginal('last_at')) - strtotime($this->getOriginal('begin_at')) - $this->getOriginal('second_stop');
-        $doingTime = floor($second/60);
-        $mod       = floor($second%60);
-        return $mod > 0 ? "{$doingTime}'{$mod}" : $doingTime;
+        $minutes  = floor($second/60);
+		$hours = 0;
+        if($minutes >= 60){
+        	$hours = floor($minutes/60);
+			$minutes = floor($minutes%60);
+		}
+        $second = floor($second%60);
+        return $hours > 0 ? "{$hours}h{$minutes}m{$second}s" : $minutes > 0 ? "{$minutes}m{$second}s" : "{$second}s";
     }
 
     public function getDoingTimeHighestAttribute()
     {
         $second = strtotime($this->getOriginal('last_submit_at')) - strtotime($this->getOriginal('begin_highest_at')) - $this->getOriginal('second_stop_highest');
-        $doingTime = floor($second/60);
-        $mod       = floor($second%60);
-        return $mod > 0 ? "{$doingTime}'{$mod}" : $doingTime;
+		$minutes  = floor($second/60);
+		$hours = 0;
+		if($minutes >= 60){
+			$hours = floor($minutes/60);
+			$minutes = floor($minutes%60);
+		}
+		$second = floor($second%60);
+		return $hours > 0 ? "{$hours}h{$minutes}m{$second}s" : $minutes > 0 ? "{$minutes}m{$second}s" : "{$second}s";
     }
 
     public function getStillTimeAttribute()
