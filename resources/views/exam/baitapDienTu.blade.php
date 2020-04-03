@@ -73,7 +73,7 @@
                 <div class="submit_question">
                     <button class="btn btn_submit">Nộp bài</button>
                     <button class="btn btn_next">Làm tiếp</button>
-                    <a href="{{route('exam.question', ['title' =>str_slug($var['lesson']->name), 'id'=> $var['lesson']->id ])}}" class="btn btn_finish">Kết thúc</a>
+                    <a href="{{route('exam.finish', ['title' =>str_slug($var['lesson']->name), 'id' =>$var['lesson']->id ])}}" class="btn btn_finish">Kết thúc</a>
                 </div>
             @endif
         </div> 

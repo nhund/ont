@@ -73,10 +73,10 @@ class ExamController extends Controller
         $var['userExam'] = $userExam;
         $var['totalQuestion'] = count($var['questions']);
         $var['finish'] =
-            ($userExam && $var['totalQuestion'] && $var['userExam']->until_number > $var['totalQuestion'])
-            || ($userExam && $exam && $userExam->turn > $exam->repeat_time)
+             ($userExam && $exam && $userExam->turn > $exam->repeat_time)
             || ($userExam && $var['userExam']->begin_at && $var['userExam']->still_time <=  date('Y-m-d H:i:s'))
-            || ($userExam && $var['userExam']->status == ExamUser::STOPPED) ;
+            || ($userExam && $var['userExam']->status == ExamUser::STOPPED)
+		;
 
         $var['overtime'] = $userExam && $exam && $userExam->turn > $exam->repeat_time;
 
@@ -108,15 +108,7 @@ class ExamController extends Controller
             return redirect()->route('home');
         }
 
-        $userExam = ExamUser::where('user_id', $request->user()->id)
-            ->where('lesson_id', $id)
-            ->first();
-
-        $exam = Exam::where('lesson_id', $id)->first();
-
-        if (!($userExam && $exam && $userExam->turn > $exam->repeat_time)){
-            event(new BeginExamEvent($lesson, $request->user()));
-        }
+		event(new BeginExamEvent($lesson, $request->user()));
 
         return redirect()->route('exam.question', ['title' =>str_slug($title), 'id' =>$id ]);
     }
@@ -136,12 +128,7 @@ class ExamController extends Controller
             return redirect()->route('home');
         }
 
-        $userExam = ExamUser::where('user_id', $request->user()->id)
-            ->where('lesson_id', $id)
-            ->first();
-        $userExam->status = ExamUser::STOPPED;
-        $userExam->last_at = now();
-        $userExam->save();
+		(new ExamService())->submitExam($lesson, $request->user());
 
         return redirect()->route('exam.question', ['title' =>str_slug($title), 'id' =>$id ]);
     }

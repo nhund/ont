@@ -120,4 +120,27 @@ class ExamService
                 $q->where('exam_user_answer.user_id',$userId);
             }])->get()->toArray();
     }
+
+	public function submitExam($lesson, $user)
+	{
+		$userExam = ExamUser::where('lesson_id', $lesson->id)
+			->where('user_id', $user->id)->first();
+
+		$userExam->last_at = now();
+		$userExam->status = ExamUser::STOPPED;
+
+		if ($userExam->turn == 1){
+			$userExam->last_submit_at = now();
+			return $userExam->save();
+		}
+		$secondHighest = strtotime($userExam->last_submit_at) - strtotime($userExam->begin_highest_at) - $userExam->second_stop_highest;
+		$second 	   = strtotime($userExam->last_at) - strtotime($userExam->begin_at) - $userExam->second_stop;
+		if($secondHighest > $second && $userExam->score >= $userExam->highest_score){
+			$userExam->begin_highest_at = $userExam->begin_at;
+			$userExam->last_submit_at   = now();
+			return $userExam->save();
+		}
+
+		return $userExam->save();
+    }
 }

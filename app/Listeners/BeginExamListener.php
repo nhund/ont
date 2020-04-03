@@ -37,8 +37,13 @@ class BeginExamListener
     private function resetUserExam(){
 
 
-        if (!$this->userExam) {
 
+    	if((date('Y-m-d H:i:s') < $this->exam->start_time_at) || (date('Y-m-d H:i:s') > $this->exam->end_time_at )){
+			$this->lesson->status = Exam::INACTIVE;
+			$this->lesson->save();
+			return false;
+		}
+        if (!$this->userExam) {
             ExamUser::create([
                  'lesson_id'      => $this->lesson->id,
                  'user_id'        => $this->user->id,
@@ -52,14 +57,12 @@ class BeginExamListener
                  'stopped_at'     => null,
                  'turn_stop'      => 0,
                  'status'         => ExamUser::ACTIVE,
+                 'begin_highest_at'=> now(),
              ]);
 
         }else{
 
-            if (($this->userExam->turn > $this->exam->repeat_time)
-                || ($this->userExam->status == ExamUser::INACTIVE)
-                || (date('Y-m-d H:i:s') < $this->exam->start_time_at)
-                || (date('Y-m-d H:i:s') > $this->exam->end_time_at ))
+            if (($this->userExam->turn > $this->exam->repeat_time) || ($this->userExam->status == ExamUser::INACTIVE))
             {
                 return false;
             }
@@ -87,7 +90,7 @@ class BeginExamListener
     {
         ExamUserAnswer::where([
             'user_id' => $this->user->id,
-            'lesson_id' => $this->exam->id
+            'lesson_id' => $this->lesson->id
         ])->delete();
     }
 

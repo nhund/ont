@@ -97,21 +97,17 @@ class ExamController extends Controller
             ->respond();
     }
 
-    /**
-     * @param Lesson $lesson
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws BadRequestException
-     */
+	/**
+	 * @param Lesson $lesson
+	 * @param Request $request
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws BadRequestException
+	 */
     public function submitExam(Lesson $lesson, Request $request)
     {
-        $userExam = ExamUser::where('lesson_id', $lesson->id)
-            ->where('user_id', $request->user()->id)->first();
+		$submit = (new ExamService())->submitExam($lesson, $request->user());
 
-        $userExam->last_at = now();
-        $userExam->status = ExamUser::INACTIVE;
-
-        if ($userExam->save()){
+        if ($submit){
             return $this->message('Chúc mừng bạn đã hoàn thành bài kiểm tra')->respondOk();
         }
 
