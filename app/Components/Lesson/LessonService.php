@@ -95,7 +95,8 @@ class LessonService
      */
     public function totalNewQuestions()
     {
-        return $this->totalQuestions - $this->didQuestions;
+		$totalDid = $this->totalQuestions - $this->didQuestions;
+        return $totalDid > 0 ? $totalDid : 0;
     }
 
     /**
