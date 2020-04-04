@@ -1,5 +1,18 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../fonts/Montserrat-Regular.ttf?v=32') format('truetype');
+}
+@font-face {
+  font-family: 'Montserrat-Bold';
+  src: url('../fonts/Montserrat-Bold.ttf?v=32') format('truetype');
+  font-weight: bold;
+}
 h1,h2,h3,h4,p,span{
   font-size: 12px;
+  font-family: 'Montserrat';
+}
+body {
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 #app {

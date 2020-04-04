@@ -42,5 +42,14 @@
 @else
     <script src='{{ asset('public/app/js/exam.js'). '?v='.time() }}' type='text/javascript'></script>
 @endif
+<script type="text/javascript" async
+        src="{{ asset('public/plugin/ckeditor/plugins/mathjax/MathJax.js?config=TeX-AMS-MML_SVG.js') }}">
+      </script>
+      <script type="text/x-mathjax-config;executed=true">
+          MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+                processEscapes: true
+              });
+      </script>
 </body>
 </html>
