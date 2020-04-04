@@ -186,7 +186,6 @@ class UserCourseReportService
     private function countCorrectQuestion($lessonID)
     {
         return UserQuestionLog::where('user_id',$this->user->id)
-            ->active()
             ->where('lesson_id',$lessonID)
             ->where('status',QuestionAnswer::REPLY_OK)
             ->count();

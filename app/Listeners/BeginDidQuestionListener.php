@@ -32,9 +32,9 @@ class BeginDidQuestionListener
      */
     private function resetQuestions(){
 
-        UserQuestionLog::where('user_id', $this->user->id)
-            ->where('lesson_id', $this->lesson->id)
-            ->update(['status_delete' => UserQuestionLog::INACTIVE]);
+//        UserQuestionLog::where('user_id', $this->user->id)
+//            ->where('lesson_id', $this->lesson->id)
+//            ->update(['status_delete' => UserQuestionLog::INACTIVE]);
 
         $userLessonLog = UserLessonLog::where('user_id', $this->user->id)
             ->where('lesson_id', $this->lesson->id)->first()

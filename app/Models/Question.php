@@ -31,6 +31,7 @@ class Question extends Model
 
     const REPLY_ERROR = 1;
     const REPLY_OK = 2;
+    const NOT_YET = 3;
 
     const PARENT_ID = 0;
 
