@@ -98,7 +98,7 @@ class SubmitQuestionExam
             'user_id' => $this->user->id,
             'lesson_id' => $this->examId
         ])->first();
-        if ($this->flag){
+        if ($score > 0){
             $examUser->score += $score;
 
             if ($examUser->score > $examUser->highest_score){
@@ -127,7 +127,6 @@ class SubmitQuestionExam
             'error'       => (int)$rely,
             'question_id' => $this->question->id
         ];
-        $this->flag = $rely == Question::REPLY_OK;
 
          $this->_saveLogQuestion($dataLog);
 
@@ -147,7 +146,6 @@ class SubmitQuestionExam
             'question_id' => $this->question->id
         ];
 
-        $this->flag = $rely == Question::REPLY_OK;
         $this->_saveLogQuestion($dataLog);
 
         return $dataLog;
@@ -169,10 +167,6 @@ class SubmitQuestionExam
             if ($flag) {
                 $reply = QuestionAnswer::REPLY_OK;
                 $this->trueSub ++;
-            }
-
-            if (!$flag){
-                $this->flag = false;
             }
 
             $question_child = Question::find($key);
@@ -206,11 +200,10 @@ class SubmitQuestionExam
 
             $flag = mb_strtolower($an->answer, 'UTF-8') == mb_strtolower($answer, 'UTF-8');
 
-            if (!$flag){
-                $this->flag = $flag;
-            }else {
-                $this->trueSub ++;
+            if ($flag){
+				$this->trueSub ++;
             }
+
             $this->totalSub ++;
 
             $result[$key] = array(
@@ -233,13 +226,12 @@ class SubmitQuestionExam
         foreach ($txtLearnWord as $question_id => $value) {
             $question = Question::find($question_id);
             if ($question) {
-                $this->totalSub ++;
                 $check_pass_question = QuestionAnswer::REPLY_OK;
                 $str                 = $question->question;
                 $pattern             = '/<a .*?class="(.*?cloze.*?)">(.*?)<\/a>/';
 
                 $content = preg_replace_callback($pattern, function ($m) use ($question_id, $value, &$result, &$check_pass_question) {
-
+					$this->totalSub ++;
                     static $incr_sb = 0;
                     $incr_sb += 1;
                     if (isset($value[$incr_sb])) {
@@ -249,7 +241,6 @@ class SubmitQuestionExam
                         } else {
                             $check_pass_question = QuestionAnswer::REPLY_ERROR;
                             $reply_status        = QuestionAnswer::REPLY_ERROR;
-                            $this->flag = false;
                         }
                         $result[$question_id][$incr_sb] = array(
                             'error'  => $reply_status,
@@ -258,7 +249,6 @@ class SubmitQuestionExam
                             'answer' => $m[2],
                         );
                     } else {
-                        $this->flag = false;
                         $check_pass_question            = QuestionAnswer::REPLY_ERROR;
                         $result[$question_id][$incr_sb] = array(
                             'error'  => QuestionAnswer::REPLY_ERROR,
@@ -292,8 +282,7 @@ class SubmitQuestionExam
         // tổng điểm của phần
         $parts = ExamPart::where($conditionPart)->first();
 
-
-        if ($this->totalSub != 0 && $this->trueSub != 0){
+        if ($this->totalSub != 0){
             return round(($parts->score*$this->trueSub)/($parts->number_question*$this->totalSub), 1);
         }
         return round($parts->score/$parts->number_question, 1);

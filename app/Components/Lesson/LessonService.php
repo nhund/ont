@@ -95,7 +95,8 @@ class LessonService
      */
     public function totalNewQuestions()
     {
-        return $this->totalQuestions - $this->didQuestions;
+		$totalDid = $this->totalQuestions - $this->didQuestions;
+        return $totalDid > 0 ? $totalDid : 0;
     }
 
     /**
@@ -116,7 +117,7 @@ class LessonService
      */
     public function totalCorrectWrongQuestion()
     {
-        $correct = $wrong = 0;
+        $correct = $wrong = $notYet = 0;
         $userQuestions =  UserQuestionLog::select('status', \DB::raw('count(status) as total'))
             ->whereHas('question', function ($q){
                 $q->typeAllow();
@@ -135,7 +136,15 @@ class LessonService
             if ($question->status == Question::REPLY_ERROR){
                 $wrong = $question->total;
             }
+
+			if ($question->status == Question::NOT_YET){
+				$notYet = $question->total;
+			}
         }
+
+        if ($notYet > 0 and $wrong == 0 and $correct == 0){
+			$correct = $notYet;
+		}
         return [$correct, $wrong];
     }
 

@@ -31,6 +31,7 @@ class Question extends Model
 
     const REPLY_ERROR = 1;
     const REPLY_OK = 2;
+    const NOT_YET = 3;
 
     const PARENT_ID = 0;
 
@@ -87,6 +88,7 @@ class Question extends Model
                         $question_childs = Question::where('parent_id',$model->attributes['id'])->get()->pluck('id')->toArray();
                         //xoa cau hoi
                         Question::where('parent_id',$model->attributes['id'])->delete();
+						UserQuestionLog::where('question_parent',$model->attributes['id'])->delete();
                         //xoa cau tra loi
                         QuestionAnswer::whereIn('question_id',$question_childs)->delete();
                         // xoa log question

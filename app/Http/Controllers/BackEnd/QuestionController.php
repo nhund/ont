@@ -914,6 +914,18 @@ class QuestionController extends AdminBaseController
                     }
                 }
             }
+			// xoa het cac cau tra loi duoc xoa bo
+			if (count($list_answer) > 0) {
+				$answersdeletes = QuestionAnswer::whereNotIn('id', $list_answer)->where('question_id', $question->id)->get();
+				if (count($answersdeletes) > 0) {
+					foreach ($answersdeletes as $answersdelete) {
+						if (!in_array($answersdelete->id, $list_answer)) {
+							$answersdelete->delete();
+						}
+					}
+				}
+
+			}
             alert()->success('Cập nhật thành công');
         }
         if ($question->type == Question::TYPE_DIEN_TU_DOAN_VAN) {

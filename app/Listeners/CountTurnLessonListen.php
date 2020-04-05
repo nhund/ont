@@ -30,7 +30,6 @@ class CountTurnLessonListen
         ->first();
 
         $correctQuestions = UserQuestionLog::where('user_id', $user->id)
-            ->active()
             ->where('lesson_id',$question->lesson_id)
             ->where('status',Question::REPLY_OK)
             ->groupBy('question_parent')->get();
@@ -46,6 +45,9 @@ class CountTurnLessonListen
 
         if ($correctQuestions->count() == $totalQuestions){
             $userLesson->turn_right += 1;
+			UserQuestionLog::where('user_id', $user->id)
+				->where('lesson_id',$question->lesson_id)
+				->update(['status' => Question::NOT_YET]);
             $update = true;
         }
 
