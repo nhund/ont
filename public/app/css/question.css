@@ -18,6 +18,9 @@ body {
 #app {
   background: #ffffff;
 }
+#app img{
+  width: 100%;
+}
 #app .question_type {
   display: none;
 }
