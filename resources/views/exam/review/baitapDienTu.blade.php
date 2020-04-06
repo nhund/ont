@@ -20,7 +20,11 @@
                     {!! $question->content !!}
                 </div>
             @endif
-
+            @if(!empty($question->interpret_all))
+                <div class="box_interpret_all">
+                    <p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>
+                </div>
+            @endif
         </div>
         <div class="content_question">
             @if(isset($question))        
@@ -55,6 +59,11 @@
                                     Câu trả lời chính xác : <span></span>
                                 </div>
                             </div>
+                            @if(!empty($question->interpret))
+                                <div class="box_interpret_question box_interpret_{{ $question->id }}">
+                                    <p>Giải thích : <span>{!! $question->interpret !!}</span></p>
+                                </div>
+                            @endif
                         </div>
                     @endforeach              
                 </div>

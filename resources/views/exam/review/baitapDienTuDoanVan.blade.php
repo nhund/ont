@@ -21,6 +21,11 @@
                 {!! $question->content !!}
             </div>
             @endif
+            @if(!empty($question->interpret_all))
+                <div class="box_interpret_all">
+                    <p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>
+                </div>
+            @endif
     </div>
     <div class="content_question">
         @if(isset($question))
@@ -30,6 +35,19 @@
                 <div class="question">
                     {!! $question_child->question_display !!}
                 </div>
+                @if($question_child->explain_before)
+                <div class="box_suggest">
+                    <p class="title">Gợi ý</p>
+                    <div class="suggest_content">
+                        {!! $question_child->explain_before !!}
+                    </div>
+                </div>
+                @endif
+                @if(!empty($question_child->interpret))
+                    <div class="box_interpret_question box_interpret_{{ $question_child->id }}">
+                        <p>Giải thích : <span>{!! $question_child->interpret !!}</span></p>
+                    </div>
+                @endif
             </div>
             @endforeach
         </div>

@@ -5,6 +5,9 @@
         #box-wrapper {
             background: #f2f3f5;
         }
+        .box_suggest, .box_interpret_question, .box_interpret_all, .box_suggest_answer{
+            display: block !important;
+        }
     </style>
 @endpush
 @section('content')

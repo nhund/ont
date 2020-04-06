@@ -21,6 +21,20 @@
             </div>
             @endif
 
+            @if(!empty($question->explain_before))
+                <div class="box_suggest">
+                    <p>Gợi ý</p>
+                    <div class="suggest_content">
+                        {!! $question->explain_before !!}
+                    </div>
+                </div>
+            @endif
+            @if(!empty($question->interpret_all))
+                <div class="box_interpret_all">
+                    <p>Giải thích chung : <span id="box_interpret_all_{{ $question->id }}"></span></p>
+                </div>
+            @endif
+
     </div>
     <div class="content_question">
         @if(isset($question) && isset($question->child))     
@@ -40,6 +54,13 @@
                     @endif                           
                 </div>
 
+                @if( $question_child->explain_before)
+                <div class="box_suggest_answer">
+                    <div class="suggest_answer_content">
+                        <p>{!! $question_child->explain_before !!}</p>
+                    </div>
+                </div>
+                @endif
                 <div class="list_answer">
                     @if(isset($question_child->answers))
                     @foreach ($question_child->answers as $key_chhild => $question_answe)
@@ -56,6 +77,11 @@
                     @endforeach
                     @endif                                    
                 </div>
+                @if(!empty($question_child->interpret))
+                    <div class="box_interpret_question box_interpret_{{ $question_child->id }}">
+                        <p>Giải thích : <span id="box_interpret_all_{{ $question_child->id }}"></span></p>
+                    </div>
+                @endif
             </div>
             @endforeach              
         </div>
