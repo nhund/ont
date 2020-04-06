@@ -3,9 +3,9 @@
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="type" value="{{ $var['type'] }}" >
         <div class="head_content">
-            @if(!empty($question->audio_content))
+            @if(!empty($question->audio_question))
                 <audio data-audio controls preload="metadata" style="width: 100%;">
-                    <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
+                    <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
                 </audio>
             @endif
             @if(!empty($question->img_before))

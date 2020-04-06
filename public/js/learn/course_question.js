@@ -440,7 +440,7 @@ $(document).ready(function(){
                 data: data,
                 success: function (data) {
 
-                    if(data.error == false)
+                    if(data.error == false && data.data)
                     {
                         $this.closest('.question_item').find('.explain-text').text(data.data);
                         $this.closest('.question_item').find('.explain-text').show();

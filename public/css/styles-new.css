@@ -64,7 +64,7 @@
 }
 .wrap-main .news-lst .lst-top li a {
 	font-size: 16px;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	color: #4f4f4f;
 }
 .wrap-main .news-lst .lst-top li a:hover {
