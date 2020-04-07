@@ -19,7 +19,7 @@
             <img src="{{ web_asset('public/app/icon/question-bookmark.png') }}" />
         </div>
     </div>
-    <div class="question_com">
+    <div class="question_com content_text">
         {!! $question['content'] !!}
     </div>
     @if(!empty($question['explain_before']))
@@ -27,7 +27,7 @@
             <div class="title">
                 Gợi ý
             </div>
-            <div class="content">
+            <div class="content content_text">
                 {!! $question['explain_before'] !!}
             </div>
         </div>

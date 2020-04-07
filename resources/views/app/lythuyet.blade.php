@@ -20,7 +20,7 @@
 {{--    <script>--}}
 {{--        var count_question = '{{ count($questions) }}';--}}
 {{--    </script>--}}
-    <div class="ly_thuyet">
+    <div class="ly_thuyet content_text">
         @if(isset($lesson->description))
             {!! $lesson->description !!}
         @endif
