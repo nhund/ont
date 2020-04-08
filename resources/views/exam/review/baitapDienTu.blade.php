@@ -32,9 +32,9 @@
                     @foreach ($question->child as $question)
                         <div class="question_item question_id_{{ $question->id }}">
                             @if(!empty($question->audio_question))
-                                <div class="mediPlayer">
-                                    <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
-                                </div>
+                                <audio controls preload="metadata" style="width: 100%;">
+                                    <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
+                                </audio>
                             @endif
                             <div class="question">
                                 <p>{!! $question->question  !!}</p>

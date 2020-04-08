@@ -40,7 +40,7 @@ class ExamUser extends Model
 			$minutes = floor($minutes%60);
 		}
         $second = floor($second%60);
-        return $hours > 0 ? "{$hours}h{$minutes}m{$second}s" : $minutes > 0 ? "{$minutes}m{$second}s" : "{$second}s";
+        return $hours > 0 ? "{$hours}h{$minutes}m{$second}s" : ($minutes > 0 ? "{$minutes}m{$second}s" : "{$second}s");
     }
 
     public function getDoingTimeHighestAttribute()
@@ -53,7 +53,7 @@ class ExamUser extends Model
 			$minutes = floor($minutes%60);
 		}
 		$second = floor($second%60);
-		return $hours > 0 ? "{$hours}h{$minutes}m{$second}s" : $minutes > 0 ? "{$minutes}m{$second}s" : "{$second}s";
+		return $hours > 0 ? "{$hours}h{$minutes}m{$second}s" : ($minutes > 0 ? "{$minutes}m{$second}s" : "{$second}s");
     }
 
     public function getStillTimeAttribute()

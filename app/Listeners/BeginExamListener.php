@@ -58,6 +58,8 @@ class BeginExamListener
                  'turn_stop'      => 0,
                  'status'         => ExamUser::ACTIVE,
                  'begin_highest_at'=> now(),
+                 'last_submit_at'=> now(),
+                 'last_at'=> now(),
              ]);
 
         }else{

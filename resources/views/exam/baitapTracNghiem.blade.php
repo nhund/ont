@@ -60,9 +60,9 @@
                     @endif                           
                 </div>
                 @if(!empty($question_child->audio_question))
-                    <div class="mediPlayer">
-                      <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question_child->audio_question) }}"></audio>
-                    </div>      
+                    <audio controls preload="metadata" style="width: 100%;">
+                        <source data-size="60" src="{{ web_asset($question_child->audio_question) }}" type="audio/mpeg">
+                    </audio>
                 @endif
                 <div class="box_suggest_answer">
                     <div class="suggest_answer_content">
