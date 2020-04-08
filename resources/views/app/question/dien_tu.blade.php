@@ -19,14 +19,24 @@
             <img src="{{ web_asset('public/app/icon/question-bookmark.png') }}" />
         </div>
     </div>
-    <div class="question_com">
+    @if(!empty($question->audio_question))
+        <audio data-audio controls preload="metadata" style="width: 100%;">
+            <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
+        </audio>
+    @endif
+    @if(!empty($question->img_before))
+        <div class="box_image">
+            <img src="{{$question->img_before}}">
+        </div>
+    @endif
+    <div class="question_com content_text">
         {!! $question['content'] !!}
     </div>
     <div class="sugess_all">
         <div class="title">
             Gợi ý
         </div>
-        <div class="content">
+        <div class="content content_text">
             {!! $question['explain_before'] !!}
         </div>
     </div>

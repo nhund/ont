@@ -8,14 +8,14 @@
                 <img src="{{ web_asset('public/app/icon/question-sugess.png') }}" />
             </div>
         </div>
-        <div class="content">
+        <div class="content content_text">
             {!! $item->content !!}
         </div>
         <div class="sugess_item">
             <div class="title">
                 Gợi ý
             </div>
-            <div class="content">
+            <div class="content content_text">
                 {!! $item->explain_before !!}
             </div>
         </div>
@@ -32,7 +32,7 @@
                     <span class="result_text"></span>
                 </div>
                 @if(!empty($item->interpret))
-                    <div class="explain-answer box_interpret_{{ $item->id }}">
+                    <div class="explain-answer box_interpret_{{ $item->id }} content_text">
                         <div class="title">Giải thích</div>
                         <div class="content">{!! $item->interpret !!}</div>
                     </div>

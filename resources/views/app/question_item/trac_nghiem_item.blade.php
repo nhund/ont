@@ -2,7 +2,7 @@
     <div class="title">
         {!! $item->question !!}
     </div>
-    
+
     <div class="content">
         {{-- <div class="question_all">
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
@@ -11,7 +11,7 @@
             <div class="title">
                 Gợi ý
             </div>
-            <div class="content">
+            <div class="content content_text">
                     {!! $item->explain_before !!}
             </div>
         </div>
@@ -28,14 +28,14 @@
                             <img src="{{ web_asset('public/app/icon/question-error.png') }}" class="question-error" />
                             <img src="{{ web_asset('public/app/icon/question-success.png') }}" class="question-success" />
                         </div>
-                        <div class="answer-text">
+                        <div class="answer-text content_text">
                                 {!! $answer->answer !!}
-                        </div>                    
+                        </div>
                     </div>
-                @endforeach                                
+                @endforeach
             </div>
             @if(!empty($item->interpret))
-                <div class="explain-answer box_interpret_{{ $item->id }}">
+                <div class="explain-answer box_interpret_{{ $item->id }} content_text">
                     <div class="title">Giải thích</div>
                     <div class="content">{!! $item->interpret !!}</div>
                 </div>

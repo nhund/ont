@@ -18,11 +18,17 @@ body {
 #app {
   background: #ffffff;
 }
-#app img{
+#app .content_text img{
   width: 100%;
 }
 #app .question_type {
   display: none;
+}
+#app .question_type .box_image{
+  text-align: center !important;
+}
+#app .question_type .box_image img{
+  width: 100%;
 }
 #app .question_type.question_stt_1 {
   display: block;
