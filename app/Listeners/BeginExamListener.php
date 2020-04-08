@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Components\Exam\ExamService;
 use App\Events\BeginExamEvent;
 use App\Exceptions\BadRequestException;
 use App\Models\Exam;
@@ -36,9 +37,14 @@ class BeginExamListener
      */
     private function resetUserExam(){
 
+		$questions = (new ExamService())->getQuestionExam($this->lesson, $this->userExam);
+
+		if (!$questions || count($questions) == 0){
+			return false;
+		}
 
 
-    	if((date('Y-m-d H:i:s') < $this->exam->start_time_at) || (date('Y-m-d H:i:s') > $this->exam->end_time_at )){
+		if((date('Y-m-d H:i:s') < $this->exam->start_time_at) || (date('Y-m-d H:i:s') > $this->exam->end_time_at )){
 			$this->lesson->status = Exam::INACTIVE;
 			$this->lesson->save();
 			return false;
