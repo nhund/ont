@@ -51,7 +51,7 @@ class CodeController extends AdminBaseController
 
 	/**
 	 * @param Request $request
-	 * @return \Illuminate\Http\RedirectResponse
+	 * @return \Illuminate\Http\RedirectResponse|\Maatwebsite\Excel\BinaryFileResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
 	 * @throws \PhpOffice\PhpSpreadsheet\Exception
 	 * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
 	 */
@@ -81,7 +81,7 @@ class CodeController extends AdminBaseController
         }
 
         if ($excel) {
-			Excel::download(new CodeExport($row), 'list-code.xlsx');
+			return Excel::download(new CodeExport($row), 'list-code.xlsx');
         }
         return redirect()->back();
     }
