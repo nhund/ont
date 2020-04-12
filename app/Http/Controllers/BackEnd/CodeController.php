@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Exports\CodeExport;
 use App\Models\Code;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +49,12 @@ class CodeController extends AdminBaseController
         return view('backend.code.list', $var);
     }
 
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+	 */
     public function handle(Request $request) {
         $quantity   =   $request->input('quantity', 0);
         $excel      =   $request->input('excel', 0);
@@ -74,18 +81,7 @@ class CodeController extends AdminBaseController
         }
 
         if ($excel) {
-            Excel::create('ListCode', function ($excel) use ($row) {
-                $excel->sheet('sheet', function ($sheet) use ($row) {
-                    $sheet->setColumnFormat(array(
-                        'A' => '@',
-                        'B' => '@',
-                        'C' => '@',
-                        'D' => '@',
-                    ));
-                    $var['code'] = $row;
-                    $sheet->loadView('backend.code.excel', $var);
-                });
-            })->download('xlsx');
+			Excel::download(new CodeExport($row), 'list-code.xlsx');
         }
         return redirect()->back();
     }
