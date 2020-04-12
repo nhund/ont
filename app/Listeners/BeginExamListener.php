@@ -37,58 +37,62 @@ class BeginExamListener
      */
     private function resetUserExam(){
 
+		if (!$this->userExam) {
+			$this->userExam = ExamUser::create([
+				'lesson_id'      => $this->lesson->id,
+				'user_id'        => $this->user->id,
+				'turn'           => 0,
+				'score'          => 0,
+				'until_number'   => 1,
+				'status_stop'    => ExamUser::ACTIVE,
+				'time'           => $this->exam->minutes,
+				'second_stop'    => 0,
+				'stopped_at'     => null,
+				'turn_stop'      => 0,
+				'status'         => ExamUser::ACTIVE,
+				'last_at'=> now(),
+			]);
+		}
+
 		$questions = (new ExamService())->getQuestionExam($this->lesson, $this->userExam);
 
 		if (!$questions || count($questions) == 0){
 			return false;
 		}
 
-
 		if((date('Y-m-d H:i:s') < $this->exam->start_time_at) || (date('Y-m-d H:i:s') > $this->exam->end_time_at )){
 			$this->lesson->status = Exam::INACTIVE;
 			$this->lesson->save();
 			return false;
 		}
-        if (!$this->userExam) {
-            ExamUser::create([
-                 'lesson_id'      => $this->lesson->id,
-                 'user_id'        => $this->user->id,
-                 'turn'           => 1,
-                 'score'          => 0,
-                 'until_number'   => 1,
-                 'status_stop'    => ExamUser::ACTIVE,
-                 'begin_at'       => now(),
-                 'time'           => $this->exam->minutes,
-                 'second_stop'    => 0,
-                 'stopped_at'     => null,
-                 'turn_stop'      => 0,
-                 'status'         => ExamUser::ACTIVE,
-                 'begin_highest_at'=> now(),
-                 'last_submit_at'=> now(),
-                 'last_at'=> now(),
-             ]);
 
-        }else{
+		if (($this->userExam->turn > $this->exam->repeat_time) || ($this->userExam->status == ExamUser::INACTIVE))
+		{
+			return false;
+		}
 
-            if (($this->userExam->turn > $this->exam->repeat_time) || ($this->userExam->status == ExamUser::INACTIVE))
-            {
-                return false;
-            }
+		$this->userExam->score = 0;
+		$this->userExam->turn += 1;
+		$this->userExam->until_number = 1;
+		$this->userExam->begin_at = now();
+		$this->userExam->status_stop = ExamUser::ACTIVE;
+		$this->userExam->second_stop = 0;
+		$this->userExam->stopped_at  = null;
+		$this->userExam->turn_stop   = 0;
+		$this->userExam->status      = ExamUser::ACTIVE;
+		$this->userExam->questions   = null;
 
-            $this->userExam->score = 0;
-            $this->userExam->turn += 1;
-            $this->userExam->until_number = 1;
-            $this->userExam->begin_at = now();
-            $this->userExam->status_stop = ExamUser::ACTIVE;
-            $this->userExam->second_stop = 0;
-            $this->userExam->stopped_at  = null;
-            $this->userExam->turn_stop   = 0;
-            $this->userExam->status      = ExamUser::ACTIVE;
-            $this->userExam->questions   = null;
-            $this->userExam->save();
+		if(empty($this->userExam->begin_highest_at)){
+			$this->userExam->begin_highest_at = now();
+		}
 
-            $this->deleteAnswerBefore();
-        }
+		if(empty($this->userExam->last_submit_at)){
+			$this->userExam->last_submit_at = now();
+		}
+
+		$this->userExam->save();
+
+		$this->deleteAnswerBefore();
     }
 
     /**

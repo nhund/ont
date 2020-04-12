@@ -80,7 +80,7 @@ function reportExam(lesson_id, slugName){
         success: function (data) {
             if (data.code === 200){
                 const exam = data.data;
-                const turnUser = data.data.userExam ? data.data.userExam.data.turn : 0;
+                const turnUser    = data.data.userExam ? data.data.userExam.data.turn : 0;
                 const name        = $('[data-exam=name]');
                 const des         = $('[data-exam=des]');
                 const number      = $('[data-exam=number_question]');
