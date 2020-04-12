@@ -606,7 +606,7 @@ class QuestionImport implements ToCollection
         $question->content       = $items['content'];
         $question->interpret_all = $items['interpret'];
         $question->img_before    = $items['image'];
-        $question->audio_content     = $items['audio_content'];
+        $question->audio_question     = $items['audio_question'];
         $question->save();
 
         $this->insertExamQuestion($items['lesson_id'], $question->id);
