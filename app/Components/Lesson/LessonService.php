@@ -108,7 +108,9 @@ class LessonService
             ->whereHas('question', function ($q){
                 $q->typeAllow();
             })
-            ->where('user_id', $this->user->id)->get()
+            ->where('user_id', $this->user->id)
+			->groupBy('question_parent')
+			->get()
             ->count();
     }
 
