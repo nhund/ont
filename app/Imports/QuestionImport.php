@@ -102,7 +102,7 @@ class QuestionImport implements ToCollection
                         $this->dien_tu_ngan['lesson_id'] = $this->data['lesson_id'];
                         $this->dien_tu_ngan['course_id'] = $this->data['course_id'];
                         $this->dien_tu_ngan['image']     = $formatData['image'];
-                        $this->dien_tu_ngan['audio_content']     = $formatData['audio_content'];
+                        $this->dien_tu_ngan['audio_question']     = $formatData['audio_question'];
                     }
 
                     // trac nghiem
@@ -640,7 +640,7 @@ class QuestionImport implements ToCollection
         $question->created_at    = time();
         $question->content       = $items['content'];
         $question->interpret_all = $items['interpret'];
-        $question->audio_content     = $items['audio_content'];
+        $question->audio_question     = $items['audio_question'];
         $question->img_before    = $items['image'];
         $question->save();
 

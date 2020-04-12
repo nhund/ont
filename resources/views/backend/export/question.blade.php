@@ -199,8 +199,8 @@
                         @if(!empty($question->interpret_all))
                             <td><span>$e.{{ $question->interpret_all }}</span></td>
                         @endif
-                        @if(!empty($question->audio_content))
-                            <td><span>$ac.{{$question->audio_content}}</span></td>
+                        @if(!empty($question->audio_question))
+                            <td><span>$ac.{{$question->audio_question}}</span></td>
                         @endif
                     </tr>
                     @if(isset($question->childs))
