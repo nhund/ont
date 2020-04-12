@@ -158,7 +158,7 @@ class QuestionImport implements ToCollection
                         $this->dien_tu_doan_van['interpret']      = $this->_detectMathLatex($formatData['interpret']);
                         $this->dien_tu_doan_van['user_id']        = $this->data['user_id'];
                         $this->dien_tu_doan_van['explain_before'] = $formatData['explain_before'];
-                        $this->dien_tu_doan_van['audio_content'] = $formatData['audio_content'];
+                        $this->dien_tu_doan_van['audio_question'] = $formatData['audio_content'];
                         $this->dien_tu_doan_van['image']          = $formatData['image'];
                         $this->dien_tu_doan_van['lesson_id']      = $this->data['lesson_id'];
                         $this->dien_tu_doan_van['course_id']      = $this->data['course_id'];
