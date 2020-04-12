@@ -102,7 +102,7 @@ class QuestionImport implements ToCollection
                         $this->dien_tu_ngan['lesson_id'] = $this->data['lesson_id'];
                         $this->dien_tu_ngan['course_id'] = $this->data['course_id'];
                         $this->dien_tu_ngan['image']     = $formatData['image'];
-                        $this->dien_tu_ngan['audio_question']     = $formatData['audio_question'];
+                        $this->dien_tu_ngan['audio_question']     = $formatData['audio_content'];
                     }
 
                     // trac nghiem
