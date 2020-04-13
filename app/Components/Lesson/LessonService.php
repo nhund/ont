@@ -126,7 +126,6 @@ class LessonService
             })
             ->where('lesson_id', $this->lesson->id)
             ->where('user_id', $this->user->id)
-			->groupBy('question_parent')
             ->groupBy('status')
             ->get()
             ;
