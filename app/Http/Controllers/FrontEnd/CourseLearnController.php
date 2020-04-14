@@ -24,6 +24,7 @@ use App\Models\QuestionCardMuti;
 use App\Models\UserQuestionBookmark;
 use App\Models\QuestionLogCurrent;
 use App\Models\TeacherSupport;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CourseLearnController extends Controller
@@ -100,11 +101,15 @@ class CourseLearnController extends Controller
 
         $var['support'] = isset($check_permision['support']) ? $check_permision['support'] : false;
         $var['course'] = $course;
-        $lessons = Lesson::where('course_id',$id)->where('parent_id',0)
-        ->active()
-        ->where('level', '<>', 0)
-        ->orderBy('order_s','ASC')
-        ->orderBy('created_at','ASC')->get();
+
+		$lessons = Cache::remember("lessons_{$id}", 600, function () use ($id) {
+			return Lesson::where('course_id',$id)->where('parent_id',0)
+				->active()
+				->where('level', '<>', 0)
+				->orderBy('order_s','ASC')
+				->orderBy('created_at','ASC')->get();
+		});
+
         $passLesson = $totalLesson = 0;
 
         foreach($lessons as $lesson)
@@ -152,9 +157,12 @@ class CourseLearnController extends Controller
         $var['passLesson']  = $passLesson;
         $var['totalLesson'] = $totalLesson;
 
-        $var['rating'] = Rating::select('rating_value',DB::raw('count(*) as total'))
-            ->where('course_id',$id)
-            ->groupBy('rating_value')->get();
+        $var['rating'] = Cache::remember("rating_{$id}", 600, function () use ($id) {
+			return Rating::select('rating_value',DB::raw('count(*) as total'))
+				->where('course_id',$id)
+				->groupBy('rating_value')->get();;
+		});
+
 
         $rating_avg = 0;
         $rating_value = 0;

@@ -23,6 +23,7 @@ $(document).ready(function () {
         var data = {remember:remember,email:email,password:password,_token:$('meta[name=csrf-token]').attr("content")};
         if(!ajax_login)
         {
+            localStorage.setItem('access_token', '');
             var ajax_login = true;
             icon_loadding.show();
             $.ajax({

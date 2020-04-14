@@ -79,6 +79,6 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
-        return $this->message('đăng kí tài khoản thành công')-> respondOk();
+        return $this->message('Đăng kí tài khoản thành công')-> respondOk();
     }
 }

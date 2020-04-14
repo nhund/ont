@@ -58,26 +58,6 @@ class Question extends Model
     {
         parent::boot();
 
-
-        self::creating(function($model){
-
-        });
-        self::created(function($model){
-            
-        });
-
-        self::updating(function($model){
-
-        });
-
-        self::updated(function($model){
-
-        });
-
-        self::deleting(function($model){
-            // ... code here
-        });
-
         self::deleted(function($model){
             if (isset($model->attributes['id']))
             {

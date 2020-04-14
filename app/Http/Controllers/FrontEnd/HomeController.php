@@ -187,7 +187,7 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
         Auth::logout();
-        alert()->error('<span>Tài khoản của bạn đã được đăng nhập ở một nơi khác.</br> Bạn vui lòng không dùng chung tài khoản để chức năng tối ưu ghi nhớ có hiệu quả.</span>');
+        alert()->error('Tài khoản của bạn đã được đăng nhập ở một nơi khác. Bạn vui lòng không dùng chung tài khoản để chức năng tối ưu ghi nhớ có hiệu quả.');
         return redirect()->route('home');
     }
 }

@@ -68,36 +68,10 @@ class Lesson extends Model
     {
         parent::boot();
 
-
-        self::creating(function($model){
-
-        });
-        self::created(function($model){
-            
-        });
-
-        self::updating(function($model){
-
-        });
-
-        self::updated(function($model){
-
-        });
-
-        self::deleting(function($model){
-            // ... code here
-        });
-
         self::deleted(function($model){
             if (isset($model->attributes['id']))
             {
                 $questions = Question::where('lesson_id',$model->attributes['id'])->delete();
-//                if(count($questions) > 0)
-//                {
-//                    foreach ($questions as $key => $question) {
-//                        $question->delete();
-//                    }
-//                }
                 if($model->attributes['type'] == Lesson::EXAM){
                     Exam::where('lesson_id', $model->id)->delete();
                 }
@@ -105,14 +79,7 @@ class Lesson extends Model
                 if($model->attributes['parent_id'] == 0)
                 {
                     $lesson_childs = Lesson::where('parent_id',$model->attributes['id'])->delete();
-//                    if(count($lesson_childs) > 0)
-//                    {
-//                        foreach ($lesson_childs as $lesson_child)
-//                        {
-//                            $lesson_child->delete();
-//                        }
-//                    }
-                }                       
+                }
             }
         });
     }
