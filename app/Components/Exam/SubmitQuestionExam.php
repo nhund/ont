@@ -100,14 +100,15 @@ class SubmitQuestionExam
         ])->first();
         if ($score > 0){
             $examUser->score += $score;
-
-            if ($examUser->score > $examUser->highest_score){
-                $examUser->highest_score = $examUser->score;
-                $examUser->last_submit_at = now();
-                $examUser->begin_highest_at = $examUser->begin_at;
-                $examUser->second_stop_highest = $examUser->second_stop;
-            }
         }
+
+		if ($examUser->score > $examUser->highest_score || ($examUser->highest_score == 0 && !$examUser->begin_highest_at)){
+			$examUser->highest_score  	= $examUser->score;
+			$examUser->last_submit_at 	= now();
+			$examUser->begin_highest_at = $examUser->begin_at;
+			$examUser->second_stop_highest = $examUser->second_stop;
+		}
+
         $examUser->until_number = $this->request->get('until_number');
         $examUser->last_at = now();
         $examUser->save();

@@ -50,7 +50,6 @@ class BeginExamListener
 				'stopped_at'     => null,
 				'turn_stop'      => 0,
 				'status'         => ExamUser::ACTIVE,
-				'last_at'=> now(),
 			]);
 		}
 
@@ -71,10 +70,13 @@ class BeginExamListener
 			return false;
 		}
 
+		$timeNow =  now();
+
 		$this->userExam->score = 0;
 		$this->userExam->turn += 1;
 		$this->userExam->until_number = 1;
-		$this->userExam->begin_at = now();
+		$this->userExam->begin_at = $timeNow->addSeconds(2);
+		$this->userExam->last_at  = $timeNow;
 		$this->userExam->status_stop = ExamUser::ACTIVE;
 		$this->userExam->second_stop = 0;
 		$this->userExam->stopped_at  = null;
@@ -83,11 +85,11 @@ class BeginExamListener
 		$this->userExam->questions   = null;
 
 		if(empty($this->userExam->begin_highest_at)){
-			$this->userExam->begin_highest_at = now();
+			$this->userExam->begin_highest_at = $timeNow->addSeconds(2);
 		}
 
 		if(empty($this->userExam->last_submit_at)){
-			$this->userExam->last_submit_at = now();
+			$this->userExam->last_submit_at = $timeNow;
 		}
 
 		$this->userExam->save();

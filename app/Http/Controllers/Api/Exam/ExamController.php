@@ -201,4 +201,24 @@ class ExamController extends Controller
 
         return $this->respondOk($result);
     }
+
+	public function startExam(Lesson $lesson, Request $request)
+	{
+		$examUser = ExamUser::query()->where('lesson_id', $lesson->id)
+			->where('user_id', $request->user()->id)
+			->firstOrFail();
+
+		$examUser->begin_at = now();
+		$examUser->last_at  = now();
+		if(empty($examUser->begin_highest_at)){
+			$examUser->begin_highest_at = now();
+		}
+
+		if(empty($examUser->last_submit_at)){
+			$examUser->last_submit_at = now();
+		}
+		$examUser->save();
+
+		return fractal()->item($examUser, new ExamUserTransformer)->respond();
+    }
 }

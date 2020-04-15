@@ -45,20 +45,11 @@
                                 </div>
                             </div>
                             <div class="progress" style="background: #eb5757">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                                     aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:0%">
                                     <span class="sr-only"></span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="close_course">
-                        @if($var['lesson']->level == \App\Models\Lesson::LEVEL_2)
-                            <a style="background-color: #eb5757" href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'course_id'=> $var['course']->id, 'lesson_id'=>$var['lesson']->id]) }}" class="fa fa-close"></a>
-                        @else
-                            <a style="background-color: #eb5757" href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="fa fa-close"></a>
-                        @endif
-
                     </div>
                 </div>
             </div>
