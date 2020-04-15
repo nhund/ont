@@ -61,7 +61,7 @@ class BeginExamListener
 		}
 
 		if((date('Y-m-d H:i:s') < $this->exam->start_time_at) || (date('Y-m-d H:i:s') > $this->exam->end_time_at )){
-			$this->lesson->status = Exam::INACTIVE;
+			$this->lesson->name  = $this->lesson->name.' ( Hết hạn)';
 			$this->lesson->save();
 			return false;
 		}
