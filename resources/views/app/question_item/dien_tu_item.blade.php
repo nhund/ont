@@ -3,7 +3,18 @@
         <div class="head">
             <div class="title">
                 {!! $item->question !!}
+                @if(!empty($item->img_before))
+                    <div class="box_image">
+                        <img src="{{ web_asset($item->img_before) }}">
+                    </div>
+                @endif
             </div>
+            <div class="clearfix"></div>
+            @if(!empty($item->audio_question))
+                    <audio data-audio controls preload="metadata" style="width: 100%;">
+                        <source data-size="60" src="{{ web_asset($item->audio_question) }}" type="audio/mpeg">
+                    </audio>
+            @endif
             <div class="sugess">
                 <img src="{{ web_asset('public/app/icon/question-sugess.png') }}" />
             </div>

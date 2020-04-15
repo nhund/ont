@@ -1,4 +1,4 @@
-<div class="dientu_chuoi_box dien_tu_doan_van">    
+<div class="dientu_chuoi_box dien_tu_doan_van">
     <form class="form_dien_tu_dien_tu_doan_van">
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="type" value="{{ $var['type'] }}" >
@@ -30,19 +30,19 @@
         <div class="clearfix"></div>
         @if(!empty($question->interpret_all))
                 <div class="box_interpret_all">
-                    <p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>                
-                </div> 
+                    <p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>
+                </div>
             @endif
     </div>
     <div class="content_question">
-        @if(isset($question))        
+        @if(isset($question))
         <div class="list_question">
             @foreach ($question->childs as $key => $question_child)
             <div class="question_item question_id_{{ $question_child->id }}">
                 <div class="question">
                     {{-- <span>{{ $key + 1  }}).</span> --}}
                     {!! $question_child->question_display !!}
-                    {{-- <p>{{ $question->question  }}</p> --}}                                
+                    {{-- <p>{{ $question->question  }}</p> --}}
                 </div>
                 <div class="clearfix"></div>
                 <div class="explain-text box_action">
@@ -68,8 +68,8 @@
                         <p>Giải thích : <span>{!! $question_child->interpret !!}</span></p>
                     </div>
                 @endif
-            </div>    
-            @endforeach              
+            </div>
+            @endforeach
         </div>
         <div class="submit_question">
             <button class="btn btn_submit">Nộp bài</button>
@@ -81,6 +81,6 @@
             @endif
         </div>
         @endif
-    </div> 
-</form>   
+    </div>
+</form>
 </div>

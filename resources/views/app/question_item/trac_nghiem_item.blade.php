@@ -1,6 +1,16 @@
 <div class="question-app-trac-nghiem">
     <div class="title">
+        @if(!empty($item->audio_question))
+                    <audio data-audio controls preload="metadata" style="width: 100%;">
+                        <source data-size="60" src="{{ web_asset($item->audio_question) }}" type="audio/mpeg">
+                    </audio>
+        @endif
         {!! $item->question !!}
+        @if(!empty($item->img_before))
+            <div class="box_image">
+                <img class="img_question" src="{{ web_asset($item->img_before) }}" >
+            </div>
+        @endif
     </div>
 
     <div class="content">
@@ -29,6 +39,11 @@
                             <img src="{{ web_asset('public/app/icon/question-success.png') }}" class="question-success" />
                         </div>
                         <div class="answer-text content_text">
+                            @if(!empty($answer->image))
+                                <div class="box_image">
+                                    <img src="{{ web_asset($answer->image) }}">
+                                </div>
+                            @endif
                                 {!! $answer->answer !!}
                         </div>
                     </div>
