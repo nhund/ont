@@ -5,9 +5,9 @@
         <input type="hidden" name="until_number" value="{{ $key + 2 }}">
 
         <div class="head_content">
-            @if(!empty($question->audio_content))
-                <audio controls preload="metadata" style="width: 100%;">
-                    <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
+            @if(!empty($question->audio_question))
+                <audio data-audio controls preload="metadata" style="width: 100%;">
+                    <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
                 </audio>
             @endif
             @if(!empty($question->img_before))
