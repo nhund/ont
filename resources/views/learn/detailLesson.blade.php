@@ -153,10 +153,9 @@
                                         <div class="border-lesson exam-lesson row">
                                             <div class="col-md-9 content">
                                                 <div class="title">Kiểm tra</div>
-                                                <div><a onclick="reportExam(`{{$subLesson->name}}`, `{{str_slug($subLesson->name)}}`,`{{$subLesson->description}}`,`{{$subLesson->exam->total_question}}`,
-                                                            `{{$subLesson->exam->repeat_time}}`, `{{$subLesson->exam->min_score}}`, `{{$subLesson->exam->minutes}}`, `{{$subLesson->exam->lesson_id ?? ''}}`, `{{$subLesson->userExam->turn ?? 0}}`)" >{{$subLesson->name}}</a></div>
+                                                <div><a onclick="reportExam(`{{$subLesson->id}}`, `{{str_slug($subLesson->name)}}`)" >{{$subLesson->name}}</a></div>
                                             </div>
-                                            <div class="col-md-3 score"><span>120</span>/200 câu</div>
+                                            <div class="col-md-3 score"><span>0</span>/0 câu</div>
                                         </div>
                                     </div>
                             @endif
