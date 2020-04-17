@@ -392,7 +392,7 @@ function bookmark(question_id, $this) {
        }
     })
 };
-$(document).ajaxComplete(function() {k
+$(document).ajaxComplete(function() {
     $('button').prop('disabled', false)
 });
 $(document).ajaxStart(function() {
