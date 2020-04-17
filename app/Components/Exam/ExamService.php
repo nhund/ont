@@ -126,18 +126,23 @@ class ExamService
 		$userExam = ExamUser::where('lesson_id', $lesson->id)
 			->where('user_id', $user->id)->first();
 
-		$userExam->last_at = now();
+		$now = now();
+		$doingTime = date('Y-m-d H:i:s', strtotime($userExam->begin_at) + ($userExam->time*60));
+
+		$time = $now > $doingTime ? $doingTime : $now;
+
+		$userExam->last_at = $time;
 		$userExam->status = ExamUser::STOPPED;
 
 		if ($userExam->turn == 1){
-			$userExam->last_submit_at = now();
+			$userExam->last_submit_at = $time;
 			return $userExam->save();
 		}
 		$secondHighest = strtotime($userExam->last_submit_at) - strtotime($userExam->begin_highest_at) - $userExam->second_stop_highest;
 		$second 	   = strtotime($userExam->last_at) - strtotime($userExam->begin_at) - $userExam->second_stop;
 		if($secondHighest > $second && $userExam->score >= $userExam->highest_score){
 			$userExam->begin_highest_at = $userExam->begin_at;
-			$userExam->last_submit_at   = now();
+			$userExam->last_submit_at   = $time;
 			return $userExam->save();
 		}
 
