@@ -11,6 +11,7 @@
                 </audio>
             @endif
             @if(!empty($question->img_before))
+                    <br/>
             <div class="box_image">
                 <img src="{{ web_asset($question->img_before) }}">
             </div>
@@ -50,6 +51,7 @@
                 <div class="question">
                     <p>{!! $question_child->question  !!}</p>     
                     @if(!empty($question_child->img_before))
+                        <br/>
                         <img class="img_question" src="{{ web_asset($question_child->img_before) }}" >
                     @endif                           
                 </div>
