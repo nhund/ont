@@ -51,7 +51,7 @@
                 </div>
                 @if(!empty($question->interpret))
                     <div class="box_interpret_question box_interpret_{{ $question->id }}">
-                        <p>Giải thích : <span id="box_interpret_all_{{ $question->id }}"></span></p>
+                        <p>Giải thích : <span id="box_interpret_all_{{ $question->id }}">{!! $question->interpret !!}</span></p>
                     </div>
                 @endif
             </div>

@@ -31,7 +31,7 @@
             @endif
             @if(!empty($question->interpret_all))
                 <div class="box_interpret_all">
-                    <p>Giải thích chung : <span id="box_interpret_all_{{ $question->id }}"></span></p>
+                    <p>Giải thích chung : <span id="box_interpret_all_{{ $question->id }}">{!! $question->interpret_all !!}</span></p>
                 </div>
             @endif
 
@@ -79,7 +79,7 @@
                 </div>
                 @if(!empty($question_child->interpret))
                     <div class="box_interpret_question box_interpret_{{ $question_child->id }}">
-                        <p>Giải thích : <span id="box_interpret_all_{{ $question_child->id }}"></span></p>
+                        <p>Giải thích : <span id="box_interpret_all_{{ $question_child->id }}">{!! $question_child->interpret !!}</span></p>
                     </div>
                 @endif
             </div>

@@ -882,3 +882,6 @@
 .answer-true{
     color: rgb(0, 200, 25);
 }
+.img_question{
+    width: 100% !important;
+}
