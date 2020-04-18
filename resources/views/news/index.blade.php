@@ -92,21 +92,21 @@
                     </div>
                     @endforeach
                     @if(count($var['otherNews']))
+                        <div class="group-news group-other-news">
+                            <h3 class="title-tlt">Các bài viết khác</h3>
+                            <div class="other-news-fl">
                         @foreach($var['otherNews'] as $other)
-                            <div class="group-news group-other-news">
-                                <h3 class="title-tlt">Các bài viết khác</h3>
-                                <div class="other-news-fl">
-                                    <ul>
-                                        <li>
-                                            <div class="other-box">
-                                                <a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}"><img src="{{$other->thumbnail}}"></a>
-                                                <h4 class="other-title"><a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}">{!! substr($other->name, 0, 120) !!}...</a></h4>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                            <ul>
+                                <li>
+                                    <div class="other-box">
+                                        <a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}"><img src="{{$other->thumbnail}}"></a>
+                                        <h4 class="other-title"><a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}">{!! substr($other->name, 0, 120) !!}...</a></h4>
+                                    </div>
+                                </li>
+                            </ul>
                         @endforeach
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div><!-- //col-right -->
