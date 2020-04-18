@@ -95,16 +95,17 @@
                         <div class="group-news group-other-news">
                             <h3 class="title-tlt">Các bài viết khác</h3>
                             <div class="other-news-fl">
-                        @foreach($var['otherNews'] as $other)
-                            <ul>
-                                <li>
-                                    <div class="other-box">
-                                        <a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}"><img src="{{$other->thumbnail}}"></a>
-                                        <h4 class="other-title"><a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}">{!! substr($other->name, 0, 120) !!}...</a></h4>
-                                    </div>
-                                </li>
-                            </ul>
-                        @endforeach
+                                <ul>
+                                @foreach($var['otherNews'] as $other)
+                                    <li>
+                                        <div class="other-box">
+                                            <a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}"><img src="{{$other->thumbnail}}"></a>
+                                            <h4 class="other-title"><a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}">{!! substr($other->name, 0, 120) !!}...</a></h4>
+                                        </div>
+                                    </li>
+                                @endforeach
+                                </ul>
+
                             </div>
                         </div>
                     @endif
