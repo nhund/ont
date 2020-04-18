@@ -12,7 +12,7 @@
             @endif
             @if(!empty($question->img_before))
             <div class="box_image">
-                <img src="{{ web_asset('public/'.$question->img_before) }}">
+                <img src="{{ web_asset($question->img_before) }}">
             </div>
             @endif
             @if(!empty($question->content))
@@ -42,9 +42,9 @@
         <div class="list_question">
             @foreach ($question->child as $subKey => $question_child)
             <div class="question_item question_id_{{ $question_child->id }}">
-                @if(!empty($question->audio_question))
+                @if(!empty($question_child->audio_question))
                     <audio controls preload="metadata" style="width: 100%;">
-                        <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
+                        <source data-size="60" src="{{ web_asset($question_child->audio_question) }}" type="audio/mpeg">
                     </audio>
                 @endif
                 <div class="question">
