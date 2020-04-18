@@ -992,6 +992,10 @@ class CourseLearnController extends Controller
             if ($lesson_child->type == Lesson::LESSON){
                 $totalLesson++;
             }
+
+            if ($lesson_child->type == Lesson::EXAM){
+				$lesson_child->userExam = $lesson_child->examUser()->where('user_id', $user->id)->first();
+            }
         }
 
         $var['totalLesson']= $totalLesson;

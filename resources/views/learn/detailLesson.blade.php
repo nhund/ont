@@ -155,7 +155,7 @@
                                                 <div class="title">Kiểm tra</div>
                                                 <div><a onclick="reportExam(`{{$subLesson->id}}`, `{{str_slug($subLesson->name)}}`)" >{{$subLesson->name}}</a></div>
                                             </div>
-                                            <div class="col-md-3 score"><span>0</span>/0 câu</div>
+                                            <div class="col-md-3 score"><span>{{$subLesson->userExam->highest_score}}</span>/{{$subLesson->exam->total_score}} điểm</div>
                                         </div>
                                     </div>
                             @endif
