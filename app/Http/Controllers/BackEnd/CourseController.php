@@ -204,7 +204,8 @@ class CourseController extends AdminBaseController
         $var['feedbacks'] = Feedback::where('course_id',$id)
             ->with(['bookmark' => function ($q){
                 $q->where('user_id', Auth::user()->id);
-            }])->groupBy('question_id')
+            }])
+//			->groupBy('question_id')
             ->orderBy('id','DESC')
             ->paginate(15);
 
