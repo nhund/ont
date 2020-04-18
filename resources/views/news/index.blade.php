@@ -62,7 +62,6 @@
                     @endif
 
                 @foreach($var['newsCategories'] as $newsCategory)
-                    @if(strtolower($newsCategory->name) != 'các bài viết khác')
                     <div class="group-news">
                            <h3 class="title-tlt"><a href="{{route('news', ['cate-id' => $newsCategory->id])}}">{!! $newsCategory->name !!}</a></h3>
                            <div class="group-news-fl">
@@ -91,27 +90,24 @@
                                </div>
                            </div>
                     </div>
-                    @else
-                        <div class="group-news group-other-news">
-                            <h3 class="title-tlt">Các bài viết khác</h3>
-                            <div class="other-news-fl">
-                                <ul>
-                                    @if(count($newsCategory->news))
-                                        @foreach($newsCategory->news as $other)
-                                            <li>
-                                                <div class="other-box">
-                                                    <a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}"><img src="{{$other->thumbnail}}"></a>
-                                                    <h4 class="other-title"><a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}">{!! substr($other->name, 0, 120) !!}...</a></h4>
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                    @endif
-                                </ul>
-                            </div>
-                        </div>
-                    @endif
                     @endforeach
-
+                    @if(count($var['otherNews']))
+                        @foreach($var['otherNews'] as $other)
+                            <div class="group-news group-other-news">
+                                <h3 class="title-tlt">Các bài viết khác</h3>
+                                <div class="other-news-fl">
+                                    <ul>
+                                        <li>
+                                            <div class="other-box">
+                                                <a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}"><img src="{{$other->thumbnail}}"></a>
+                                                <h4 class="other-title"><a href="{{route('news.detail',[str_slug($other->name, '-'), $other->id])}}">{!! substr($other->name, 0, 120) !!}...</a></h4>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div><!-- //col-right -->
             {{--<div class="col-right">

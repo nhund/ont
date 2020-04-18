@@ -53,6 +53,7 @@ class PostController extends Controller
 
         $var['newsFeature'] = $newsFeatureHot->get();
 
+        $otherNews = "bài viết khác";
         $var['otherNewsFeature'] = Post::where('status', Post::STATUS_ON)
             ->whereNotIn('id', $newsFeatureHot->pluck('id'))
             ->where('type', Post::NEWS)
@@ -63,12 +64,16 @@ class PostController extends Controller
 
         $var['otherNews'] = Post::where('status', Post::STATUS_ON)
             ->where('type', Post::NEWS)
-            ->limit(5)
+			->whereHas('category', function ($q) use ($otherNews){
+				$q->where('name', 'like', "%{$otherNews}%");
+			})
+			->limit(5)
             ->orderBy('update_date','DESC')
             ->get();
 
         $var['newsCategories'] = CategoryNews::where('status', CategoryNews::STATUS_ON)
             ->whereHas('news')
+			->where('name', 'not like', "%{$otherNews}%")
             ->with(['news' => function ($q){
                 $q->orderBy('create_date', 'DESC')->limit(5);
             }])->get();

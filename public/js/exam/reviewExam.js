@@ -19,7 +19,7 @@ $(document).ready(function () {
         $('.question_type').hide();
 
         $('.question_type.question_stt_' + parseInt(key + 1)).show();
-
+        $.each($('[data-audio]'), function (i ,au) {au.pause();});
         const type = $this.data('type');
         const stt = $this.data('stt');
         upCountQuestion()
