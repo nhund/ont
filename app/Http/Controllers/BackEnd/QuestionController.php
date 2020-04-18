@@ -72,7 +72,7 @@ class QuestionController extends AdminBaseController
                         $question_sub->question = $value;
                         $question_sub->explain_before = Helper::detectMathLatex($data['explain_tn'][$key]);
                         $question_sub->interpret = Helper::detectMathLatex($data['interpret_tn'][$key]);
-                        $question_sub->img_before = $data['question_img'][$key];
+                        $question_sub->img_before = $data['question_img_tn'][$key];
                         $question_sub->audio_question = $data['audio_question_tn'][$key];
                         $question_sub->save();
 
@@ -728,7 +728,7 @@ class QuestionController extends AdminBaseController
                         if ($question_sub) {
                             $question_sub->updated_at = time();
                             $question_sub->question = Helper::detectMathLatex($value);
-                            $question_sub->img_before = $data['question_img'][$key];
+                            $question_sub->img_before = $data['question_img_'][$key];
                             $question_sub->explain_before = Helper::detectMathLatex($data['explain_tn'][$key]);
                             $question_sub->interpret = Helper::detectMathLatex($data['interpret_tn'][$key]);
                             $question_sub->audio_question = $data['audio_question_tn'][$key];
