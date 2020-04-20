@@ -6,7 +6,7 @@
 
         <div class="head_content">
             @if(!empty($question->audio_content))
-                <audio controls preload="metadata" style="width: 100%;">
+                <audio  data-audio controls preload="metadata" style="width: 100%;">
                     <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
                 </audio>
             @endif
@@ -44,7 +44,7 @@
             @foreach ($question->child as $subKey => $question_child)
             <div class="question_item question_id_{{ $question_child->id }}">
                 @if(!empty($question_child->audio_question))
-                    <audio controls preload="metadata" style="width: 100%;">
+                    <audio  data-audio controls preload="metadata" style="width: 100%;">
                         <source data-size="60" src="{{ web_asset($question_child->audio_question) }}" type="audio/mpeg">
                     </audio>
                 @endif

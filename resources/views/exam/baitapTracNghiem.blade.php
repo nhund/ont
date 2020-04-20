@@ -6,7 +6,7 @@
 
         <div class="head_content">
             @if(!empty($question->audio_content))
-                <audio controls preload="metadata" style="width: 100%;">
+                <audio    data-audio controls preload="metadata" style="width: 100%;">
                     <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
                 </audio>
             @endif
@@ -55,7 +55,7 @@
             @foreach ($question->child as $key => $question_child)
             <div class="question_item question_id_{{ $question_child->id }}">
                 @if(!empty($question->audio_question))
-                    <audio controls preload="metadata" style="width: 100%;">
+                    <audio   data-audio controls preload="metadata" style="width: 100%;">
                         <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
                     </audio>
                 @endif
@@ -65,12 +65,6 @@
                         <img class="img_question" src="{{ web_asset($question_child->img_before) }}" >
                     @endif                           
                 </div>
-                @if(!empty($question_child->audio_question))
-                    <br/>
-                    <audio controls preload="metadata" style="width: 100%;">
-                        <source data-size="60" src="{{ web_asset($question_child->audio_question) }}" type="audio/mpeg">
-                    </audio>
-                @endif
                 <div class="box_suggest_answer">
                     <div class="suggest_answer_content">
                     </div>

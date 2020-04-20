@@ -42,9 +42,9 @@
                             </div>
                             @if(!empty($question->audio_question))
                                 <br/>
-                                <div class="mediPlayer">
-                                  <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
-                              </div>      
+                                <audio data-audio controls preload="metadata" style="width: 100%;">
+                                    <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
+                                </audio>
                             @endif
                             <div class="answer">
                                 <input type="text" class="form-control answer_value" name="answers[{{ $question->id }}]" value="">
