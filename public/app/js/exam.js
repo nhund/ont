@@ -15,6 +15,8 @@ $(document).ready(function() {
                 checkSubmit();
             }
             if (params.action == "return_result") {
+                $('audio').pause();
+                $('audio').currentTime = 0;
                 showResult(params.data);
             }
             if (params.action == "next_question") {
@@ -337,6 +339,10 @@ $(document).ready(function() {
             .removeClass("checked");
         $this.find(".answer_radio").prop("checked", true);
         $this.addClass("checked");
+        let params = {
+        action: "selectTracNghiem",
+      };
+        window.ReactNativeWebView.postMessage(JSON.stringify(params));  
     });
     //comment
     $(".list-action .icon-comment").on("click", function(e) {
