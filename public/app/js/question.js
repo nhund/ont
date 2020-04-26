@@ -11,12 +11,15 @@ $(document).ready(function() {
     "message",
     function(event) {
       let params = JSON.parse(event.data);
+
       if (params.action == "check_submit") {
         checkSubmit();
       }
       if (params.action == "return_result") {
-        $('audio').pause();
-        $('audio').currentTime = 0;
+         var allAudios = document.querySelectorAll('audio');
+         allAudios.forEach(function(audio){
+          audio.pause();
+        });
         showResult(params.data);
       }
       if (params.action == "next_question") {
@@ -332,6 +335,7 @@ $(document).ready(function() {
   }
   //cau hoi trac nghiem
   $(".question-app-trac-nghiem .list-answer .answer").on("click", function(e) {
+   
     var $this = $(this);
     $this
       .closest(".list-answer")

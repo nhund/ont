@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     var stt_start = 1;
     var disable = false;
     function toObject(arr) {
@@ -15,11 +16,17 @@ $(document).ready(function() {
                 checkSubmit();
             }
             if (params.action == "return_result") {
-                $('audio').pause();
-                $('audio').currentTime = 0;
+                var allAudios = document.querySelectorAll('audio');
+                 allAudios.forEach(function(audio){
+                  audio.pause();
+                });
                 showResult(params.data);
             }
             if (params.action == "next_question") {
+                var allAudios = document.querySelectorAll('audio');
+                 allAudios.forEach(function(audio){
+                  audio.pause();
+                });
                 let param = {};
                 if (parseInt(count_question) < parseInt(params.stt)) {
                     param = {
