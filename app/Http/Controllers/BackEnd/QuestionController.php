@@ -811,7 +811,7 @@ class QuestionController extends AdminBaseController
                             $question_sub->created_at = time();
                             $question_sub->question = Helper::detectMathLatex($value);
                             $question_sub->explain_before = Helper::detectMathLatex($data['explain_tn'][$key]);
-                            $question_sub->img_before = $data['question_img'][$key];
+                            $question_sub->img_before = $data['question_img_tn'][$key];
                             $question_sub->audio_question = $data['audio_question_tn'][$key];
                             $question_sub->save();
 

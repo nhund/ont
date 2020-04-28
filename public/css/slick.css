@@ -34,6 +34,7 @@
 	background: #efc463;
 	color:#fff;
 	font-size:25px;
+	opacity: 0.5;
 }
 .slick-prev:hover, .slick-next:hover {
 	opacity:0.7;

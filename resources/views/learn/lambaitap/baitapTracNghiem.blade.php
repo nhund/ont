@@ -1,4 +1,4 @@
-<div class="trac_nghiem_box">    
+<div class="trac_nghiem_box dientu_chuoi_box">
     <form class="form_trac_nghiem">
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="type" value="{{ $var['type'] }}" >        
@@ -44,7 +44,7 @@
         @endif
         @if(!empty($question->interpret_all))
             <div class="box_interpret_all">
-                <p>Giải thích chung : <span id="box_interpret_all_{{ $question->id }}"></span></p>                
+                <p>Giải thích chung : <span id="box_interpret_all_{{ $question->id }}">{!! $question->interpret_all !!}</span></p>
             </div> 
         @endif
     </div>
