@@ -153,7 +153,9 @@
     margin-right: 4px;
     margin-top: 2px;
 }
-
+.exam-front{
+    cursor: pointer;
+}
 #course_learn .box_content .body .item-exercise .bai_tap:before{
     content: "";
     background: url('/public/images/course/icon/icon_ly_thuyet.png') no-repeat;
