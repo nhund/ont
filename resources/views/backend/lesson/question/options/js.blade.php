@@ -29,15 +29,14 @@
      }
      //audio
      var current_audio = '';
-     function showAudioUpload(e)
-     { 
+     function showAudioUpload(e) {
         current_audio = e;
         $('#UploadAudioQuestion').modal({
             show: 'false',
         });
      }
-     function uploadAudio(e)
-     {
+
+     function uploadAudio(e) {
         var $this = $(e);   
         var formData = new FormData();
         formData.append('file', $this[0].files[0]);
@@ -56,8 +55,8 @@
        });
 
      }
-     function appendAudioContent(e)
-     {
+
+     function appendAudioContent(e) {
         var $this = $(e);
         var audio = $this.closest('#UploadAudioQuestion').find('input[name="audio_url"]').val();
         if(audio == '')
@@ -76,11 +75,11 @@
         parent_audio.show();
         $("#UploadAudioQuestion .close").click();
      }
-     function deleteAudio(e)
-     {
+
+     function deleteAudio(e) {
         var $this = $(e);
-        $this.closest('.box_audio').find('.input_audio').val('');
-        $this.closest('.box_audio').hide();
+         $this.closest('.box_audio').find('.input_audio').val('');
+        $this.closest('.box_audio').attr('style','display:none !important');
      }
      $("#UploadAudioQuestion").on('hide.bs.modal', function(){
         $("#UploadAudioQuestion").find('input[name="audio_url"]').val("");        
@@ -135,7 +134,7 @@
      {
         var $this = $(e);
         $this.closest('.box_image').find('.input_image').val('');
-        $this.closest('.box_image').hide();
+        $this.closest('.box_image').attr('style','display:none !important');
      }
      $("#UploadImageQuestion").on('hide.bs.modal', function(){
         $("#UploadImageQuestion").find('input[name="image_url"]').val("");

@@ -9,6 +9,10 @@ $(document).ready(function() {
 
 		var box_action = $this.closest('#importQuestion').find('.box_action');
 		var loading = $this.closest('#importQuestion').find('.loader');
+		const part = $('input[name=part_id]').val() ;
+
+		console.log('ssssss', $('#part'))
+
 		if(type == '')
 		{
 			swal({
@@ -38,7 +42,8 @@ $(document).ready(function() {
 			formData.append('file', file[0].files[0]);
 			formData.append('lesson_id', lesson_id);
 			formData.append('type', type);
-			formData.append('_token', $('meta[name=csrf-token]').attr("content"));            
+			formData.append('part', part);
+			formData.append('_token', $('meta[name=csrf-token]').attr("content"));
 			$.ajax({
 				url : import_excel,
 				type : 'POST',
@@ -61,7 +66,7 @@ $(document).ready(function() {
 					}else{
 						swal({
 							title: 'Thông báo',
-							text: data.msg,
+							text: data.msg ? data.msg : data.message,
 							timer: 3000,
 							type: 'error',
 						});

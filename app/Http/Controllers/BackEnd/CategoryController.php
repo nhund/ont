@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\BackEnd;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Auth;
-use App\User;
 use App\Models\Category;
 class CategoryController extends AdminBaseController
 {
@@ -40,9 +37,9 @@ class CategoryController extends AdminBaseController
     {
         $data = $request->all();
         $category = new Category();
-        $category->name = $data['name'];        
+        $category->name = $data['name'];
         $category->status = $data['status'];
-        $category->create_at = time();    
+        $category->create_at = time();
         if($category->save())
         {            
             alert()->success('Thông báo','Thêm dữ liệu thành công');

@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Http\Controllers\Controller;
+use App\Models\Exam;
+use App\Models\ExamPart;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\UserCourse;
 use App\Models\Course;
+use App\Models\UserQuestionLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TeacherSupport;
 use App\User;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\DB;
 
 class LessonController extends AdminBaseController
 {
@@ -33,16 +38,24 @@ class LessonController extends AdminBaseController
         if (!$lesson) {
             return redirect()->route('dashboard');
         }
-        $var['page_title']          = 'Chi tiết khóa học '.$lesson->course['name'];
-        $var['course']              = $lesson->course;
-        $var['lesson']              = $lesson;
-        $question                   = Question::where('lesson_id', '=', $lesson->id)
-        ->where('parent_id',0)->orderBy('order_s','ASC')
+        $var['page_title'] = 'Chi tiết khóa học ' . $lesson->course['name'];
+        $var['course']     = $lesson->course;
+        $var['lesson']     = $lesson;
+        $question          = Question::where('lesson_id', '=', $lesson->id)
+        ->typeAllow()
+        ->where('parent_id',Question::PARENT_ID)->orderBy('order_s','ASC')
         ->orderBy('id','ASC')->paginate(30);
+
         foreach($question as $q) {
-            $q->subs = Question::where('lesson_id', '=', $lesson->id)->where('parent_id', '=', $q->id)->get();
+            $q->subs = Question::where('lesson_id', '=', $lesson->id)
+                ->typeAllow()
+                ->where('parent_id', '=', $q->id)->get();
+
+            $q->questionLog = UserQuestionLog::select(DB::raw('sum(correct_number) as correct_number, sum(total_turn) as total_turn'))
+                ->where('lesson_id', $lesson->id)
+                ->where('question_parent',  $q->id)->first();
         }
-        //$userCourse = UserCourse::where('course_id',$lesson->course_id)->count();
+
         $var['questions']           = $question;
         $var['user_course']         = $lesson->user_course->count();
         $var['course_lesson']       = Lesson::getCourseLesson($lesson->course['id']);
@@ -55,7 +68,7 @@ class LessonController extends AdminBaseController
                 'url'=>'#',
                 'title'=>$lesson->name
             )
-        ); 
+        );
         return view('backend.lesson.detail', $var);
     }
 
@@ -108,8 +121,10 @@ class LessonController extends AdminBaseController
         $description    = trim($request->input('exDescription', ''));
         $sapo           = trim($request->input('sapo', ''));
         $repeat_time    = $request->input('repeat_time', '');
-        $random_question           = $request->input('random_question', '');
+        $random_question= $request->input('random_question', '');
         $avatar         = $request->file('avatar');
+        $type           = $request->input('type');
+        $level           = $request->input('level', 1);
 
         $les                    = Lesson::find($lesson_id);
         if ($cur_lesson_id) {
@@ -118,14 +133,23 @@ class LessonController extends AdminBaseController
             $lesson = new Lesson();
             $lesson->created_at     = time();
             $lesson->is_exercise    = Lesson::IS_EXERCISE;
-            $lesson->parent_id      = $lesson_id ? $lesson_id : 0;
+            $lesson->parent_id      = $lesson_id ?: 0;
             $lesson->lv1            = 0;
+            $lesson->level          = $level;
         }
 
         if ($les) {
-            $lesson->lv1        = $les['lv1'] ? $les['lv1'] : $lesson_id;
-            if ($lesson->lv1) {
+            $lesson->lv1 = $les['lv1'] ?: $lesson_id;
+
+            if ($les['lv1']) {
                 $lesson->lv2    = $lesson_id;
+                $lesson->lv3    = $lesson_id;
+            }
+
+            if ($les['lv1'] && $les['lv2'])
+            {
+                $lesson->lv2 = $les['lv2'];
+                $lesson->lv3 = $lesson_id;
             }
         }
 
@@ -146,10 +170,19 @@ class LessonController extends AdminBaseController
         $lesson->course_id      = $course_id;
         $lesson->sapo           = $sapo;
         $lesson->repeat_time    = $repeat_time;
-        $lesson->random_question           = $random_question;
+        $lesson->random_question= $random_question;
+        $lesson->type           = $type;
         $lesson->save();
 
-        return redirect()->back();
+        if ($type == Lesson::EXAM){
+            $params = $request->only(['minutes', 'parts', 'repeat_time', 'stop_time', 'total_score', 'start_time_at', 'end_time_at', 'min_score', 'total_question']);
+            $params['lesson_id'] = $lesson->id;
+            Exam::updateOrCreateExam($params);
+
+            return redirect()->route('exam.detail', ['id' => $lesson->id]);
+        }
+
+         return redirect()->route('lesson.detail', ['id' => $lesson->id]);
     }
 
     public function deleteLesson($id) {

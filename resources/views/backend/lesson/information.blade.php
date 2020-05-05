@@ -34,7 +34,8 @@
         <div class="panel panel-default panel-bod">
             <div class="panel-heading"><h2>Tiến độ khóa học</h2></div>
             <div class="panel-body">
-                <a href="{{ route('admin.course.listUser', ['id' => $lesson->course_id]) }}">Xem tiến độ</a>
+                {{--<a href="{{ route('admin.course.listUser', ['id' => $lesson->course_id]) }}">Xem tiến độ</a>--}}
+                <a href="{{ route('admin.userLesson.report.detail', ['lesson' => $lesson->id]) }}">  Xem tiến độ bài học</a>
             </div>
         </div>
     </div>
@@ -61,40 +62,55 @@
             <tbody>
                 @foreach($questions as $quest)
                 <tr class="row-doc">
-                    <td width="50%">{{ $loop->iteration }}. {!! $quest->content !!}</td>
+                    @if($quest->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
+                        <td width="30%">{{ $loop->iteration }}. {!! $quest->question !!}</td>
+                    @else
+                        <td width="30%">{{ $loop->iteration }}. {!! $quest->content !!}</td>
+                    @endif
                     <td>
                         @if ($quest->type == \App\Models\Question::TYPE_DIEN_TU)
-                        @if ($quest->subs)
-                        @foreach($quest->subs as $sub)
-                        <p>{{ $loop->iteration }}. {!! $sub->question !!}: {!! $sub->answer[0]->answer !!}</p>
-                        @endforeach
-                        @else
-                        <p>{!! $quest->content !!}</p>
-                        @endif
+                            @if ($quest->subs)
+                                @foreach($quest->subs as $sub)
+                                    <p>{{ $loop->iteration }}. {!! $sub->question !!}: {!! $sub->answer[0]->answer !!}</p>
+                                @endforeach
+                            @else
+                                <p>{!! $quest->content !!}</p>
+                            @endif
                         @elseif ($quest->type == \App\Models\Question::TYPE_TRAC_NGHIEM)
-                        @if ($quest->subs)
-                        @foreach($quest->subs as $sub)
-                        <div class="row col-sm-12">{{ $loop->iteration }}. {!! $sub->question !!}</div>
-                        @foreach($sub->answer as $ans)
-                        <div class="col-sm-6">
-                            @if($ans->status == 2) <span class="color-red">*</span> @endif {!! $ans->answer !!}
-                        </div>
-                        @endforeach
-                        @endforeach
+                            @if ($quest->subs)
+                                @foreach($quest->subs as $sub)
+                                    <div class="row col-sm-12">{{ $loop->iteration }}. {!! $sub->question !!}</div>
+                                    @foreach($sub->answer as $ans)
+                                        <div class="col-sm-6">
+                                            @if($ans->status == 2)
+                                                <span class="color-red">*</span> @endif {!! $ans->answer !!}
+                                        </div>
+                                    @endforeach
+                                @endforeach
+                            @else
+                                <p>{!! $quest->content !!}</p>
+                            @endif
+                        @elseif ($quest->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
+                            @foreach($quest->answer as $ans)
+                                <div class="col-sm-6">
+                                    @if($ans->status == 2)
+                                        <span class="color-red">*</span> @endif {!! $ans->answer !!}
+                                </div>
+                            @endforeach
                         @else
-                        <p>{!! $quest->content !!}</p>
-                        @endif
-                        @else
-                        <p>{!! $quest->question !!}</p>
+                            <p>{!! $quest->question !!}</p>
                         @endif
                     </td>
-                    <td>
+                    <td width="100">
                         <div class="question_edit" data-id="{{ $quest->id }}">
                             <a href="{{ route('admin.question.edit',['id'=>$quest->id]) }}">
                                 <i class="fa fa-edit"></i>
                                 Sửa
                             </a>
                         </div>
+                        @if($quest->questionLog)
+                            <p>Đúng : {{$quest->questionLog->correct_number}}/{{$quest->questionLog->total_turn}}</p>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

@@ -60,4 +60,20 @@ class QuestionCardMuti extends Model
             }
         });
     }
+
+    /**
+     * @return null|string
+     */
+    public function getImgBeforeAttribute()
+    {
+        return $this->getOriginal('img_before') ? asset($this->getOriginal('img_before')) : null;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getImgAfterAttribute()
+    {
+        return $this->getOriginal('img_after') ? asset($this->getOriginal('img_after')) : null;
+    }
 }

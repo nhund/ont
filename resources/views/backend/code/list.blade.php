@@ -49,25 +49,35 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <form action="" method="GET">
-                            <div class="col-sm-8">&nbsp;</div>
+                        <form id="form-code" action="" method="GET">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2">
+                                <label for="status" ><strong>Đã sử dụng</strong></label>
+                                &nbsp; <input type="checkbox" id="status" name="status" {{request()->has('status') ? 'checked' : ''}} onclick="searchCode()"/>
+                            </div>
+                            {{--<div class="col-sm-4">--}}
+                                {{--<input type="text"  name="email" placeholder="người dùng" class="form-control" value="{{ request('email') }}">--}}
+                            {{--</div>--}}
                             <div class="input-group col-sm-4">
-                                <input type="text" autocomplete="off" name="search_code" placeholder="Nhập mã code" class="form-control" value="{{ $search_code or '' }}">
+                                <input type="text" autocomplete="off" name="search_code" placeholder="Nhập mã code" class="form-control" value="{{ request('search_code') }}">
                                 <span class="input-group-btn">
                                   <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                               </span>
                             </div>
                         </form>
+                        <hr/>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th width="10%">STT</th>
-                                    <th width="15%">Ngày tạo</th>
-                                    <th width="20%">Code</th>
+                                    <th width="3%">STT</th>
+                                    <th width="10%">Code</th>
+                                    <th width="10%">Ngày tạo</th>
                                     <th>Giá</th>
-                                    <th>Trạng thái</th>
+                                    <th>Nguồn</th>
                                     <th>Người dùng</th>
+                                    <th>Thời gian kích hoạt</th>
+                                    <th>Trạng thái</th>
                                     <th>Ngày hết hạn</th>
                                 </tr>
                                 </thead>
@@ -77,21 +87,33 @@
                                             @if (file_exists(public_path().'/document/file/'.$co->document))
                                                 <tr class="row-doc">
                                                     <td>{{ $loop->iteration  }}</td>
+                                                    <td>
+                                                        {{ $co->cCode }}
+                                                    </td>
                                                     <td align="left">
                                                         {{ date('d/m/Y', $co->created_at) }}
                                                     </td>
-                                                    <td>
-                                                        {{ $co->code }}
-                                                    </td>
                                                     <td>{{  number_format($co->price,0,',','.') }}</td>
+
+                                                    <td>
+                                                        @if(empty($co->social_type))
+                                                            Web
+                                                        @else
+                                                            @if($co->social_type == \App\User::LOGIN_FB)
+                                                                FaceBook
+                                                            @else
+                                                                Google
+                                                            @endif
+                                                        @endif
+                                                    </td>
+                                                    <td><strong>{{$co->full_name}}</strong> -- {{$co->email}}</td>
+                                                    <td>{{ (empty($co->dateActive)) ? '' : date('d/m/Y H:i:s', $co->dateActive) }}</td>
                                                     <td>
                                                         @if ($co->status)
                                                             <span class="color-red">Đã sử dụng</span>
                                                         @else
                                                             <span class="color-green">Chưa sử dụng</span>
                                                         @endif
-                                                    </td>
-                                                    <td>
                                                     </td>
                                                     <td>@if($co->end_date) {{ date('d/m/Y', $co->end_date) }} @else Không thời hạn @endif</td>
                                                 </tr>
@@ -158,3 +180,11 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+    <script type="text/javascript">
+        function searchCode() {
+           $('#form-code').submit()
+        }
+    </script>
+@endpush

@@ -17,7 +17,10 @@ class FeedbackController extends AdminBaseController
 
         $limit = 20;
         $data = $request->all();
-        $feedback = Feedback::select('*');
+        $feedback = Feedback::select('*')->with(['bookmark' => function ($q){
+            $q->where('user_id',Auth::user()->id);
+        }])
+        ->whereHas('question');
         if(isset($data['create_date']) && !empty($data['create_date']))
         {
             $time = explode('-',$data['create_date']);
@@ -28,7 +31,9 @@ class FeedbackController extends AdminBaseController
         {
             $feedback = $feedback->where('teacher_id',Auth::user()->id);
         }
-        $feedback = $feedback->orderBy('id','DESC')->paginate($limit);
+        $feedback = $feedback->orderBy('id','DESC')
+            ->groupBy('question_id')
+            ->paginate($limit);
         $var['feedbacks'] = $feedback;
         $var['breadcrumb'] = array(
             array(
@@ -36,6 +41,8 @@ class FeedbackController extends AdminBaseController
                 'title' => 'Danh sách phản hồi',
             ),
         );
+        //session
+        $request->session()->put('REQUEST_URI', $request->server('REQUEST_URI'));
         //d($var);
         return view('backend.feedback.index',compact('var','data'));
     }
@@ -43,6 +50,9 @@ class FeedbackController extends AdminBaseController
     public function editQuestion(Request $request)
     {
         $data = $request->all();
+
+        \Session::put('feedback_url', url()->previous());
+
         if(!isset($data['id']) || !isset($data['feedback_id']))
         {
             alert()->error("Nội dung không tồn tại");
@@ -73,9 +83,8 @@ class FeedbackController extends AdminBaseController
                 return redirect()->route('admin.question.edit',['id'=>$question->parent_id,'feedback_id'=>$data['feedback_id'],'feedback_question'=>$data['id']]);       
             }
             return redirect()->route('admin.question.edit',['id'=>$data['id'],'feedback_id'=>$data['feedback_id']]);
-        // if($question->type == Question::TYPE_DIEN_TU || Question::TYPE_TRAC_NGHIEM || Question::TYPE_DIEN_TU_DOAN_VAN){
-            
-        // }
+
+
         
     }
 }

@@ -8,23 +8,27 @@
             <form class="addQuestion add_question" method="POST" action="{{ route('exercise.handle') }}">
                 <div class="modal-body pad10">
                     <input type="hidden" name="lesson_id" id="lesson_id" value="{{ $lesson['id'] }}">
+                    <input type="hidden" name="type_lesson" id="type_lesson" value="{{ $lesson['type'] }}">
+                    <input type="hidden" name="course_id" id="course_id" value="{{ $lesson['course_id'] }}">
+                    <input type="hidden" name="part_id" value="{{ $part->id ?? '' }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <div class="form-group row" style="margin: 5px;">                        
+                    <div class="form-group row" style="margin: 5px;">
                         <div class="col-sm-12 row form-group">
 
                             <div class="form-group row">
                                 <div class="col-sm-12">Loại câu hỏi</div>
                                 <div class="col-sm-3">
-                                    <select class="form-control" name="type">
+                                    <select class="form-control" name="type" id="type-question">
                                         <option value="{{ \App\Models\Question::TYPE_FLASH_SINGLE }}">FlashCard Đơn</option>
                                         <option value="{{ \App\Models\Question::TYPE_FLASH_MUTI }}">FlashCard chuỗi</option>
                                         <option value="{{ \App\Models\Question::TYPE_DIEN_TU }}">Điền từ</option>
                                         <option value="{{ \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN }}">Điền từ đoạn văn</option>
                                         <option value="{{ \App\Models\Question::TYPE_TRAC_NGHIEM }}">Trác nghiệm</option>
+                                        <option value="{{ \App\Models\Question::TYPE_TRAC_NGHIEM_DON }}">Trác nghiệm đơn</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <div class="form-group row doan-van">
                                 <div class="col-sm-12">Đoạn văn</div>
                                 <div class="col-sm-12">
                                     <div class="box_content box_content_t">
@@ -42,21 +46,11 @@
                                             </div>
                                             <div class="box_image">
                                                 <img  src="" name="" >
-                                                <input class="input_image" type="hidden" name="image" value="">  
+                                                <input class="input_image" type="hidden" name="image" value="">
                                                 <p class="delete" title="Xóa ảnh" onclick="deleteImage(this)">Xóa</p>
                                             </div>
                                             @include('backend.lesson.question.options.action',['show_format_content'=>true,'show_audio'=>true,'show_image'=>true])
-                                            {{-- <div class="phd">
-                                                <div class="dropdown">
-                                                    <img class="dropdown-toggle" data-toggle="dropdown" src="{{ asset('public/images/course/icon/option-create-question-01.png') }}" style="" type="button" aria-expanded="false">                
-                                                    <ul class="dropdown-menu">
-                                                        <li class="popup_upload" data-type="content">Thêm ảnh</li>
-                                                        <li class="popup_upload_audio" onclick="showAudioUpload(this)">Thêm audio</li>
-                                                        <li class="format_content" onclick="ShowFormatContent(this)" data-type="content">Định dạng nội dung</li>
-                                                    </ul>
-                                                </div>
-                                            </div> --}}
-                                        </div>                                            
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -77,6 +71,9 @@
                             </div>   
                             <div class="form_question form_trac_nghiem">
                                 @include('backend.lesson.question.form_question_trac_nghiem')
+                            </div>
+                            <div class="form_question form_trac_nghiem_don">
+                                @include('backend.lesson.question.form_question_trac_nghiem_don')
                             </div>
                             <div class="form_question form_dien_tu_doan_van">
                                 @include('backend.lesson.question.form_question_dien_tu_doan_van')

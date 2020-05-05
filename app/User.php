@@ -2,13 +2,16 @@
 
 namespace App;
  
+use App\Models\Course;
+use App\Models\UserCourse;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Wallet;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     const USER_STUDENT = 1;
     const USER_TEACHER = 2;
@@ -79,9 +82,9 @@ class User extends Authenticatable
     {
         if(empty($this->avatar))
         {
-            return web_asset('public/images/avatar-default.png');    
+            return asset(config('app.url').'public/images/avatar-default.png');
         }
-        return web_asset($this->avatar);  
+        return asset(config('app.url').$this->avatar);
         
     }   
 
@@ -160,5 +163,9 @@ class User extends Authenticatable
         }
         $users = $users->orderBy('id','DESC')->paginate($limit);
         return $users;
+    }
+
+    public function courses(){
+       return $this->belongsToMany(Course::class, UserCourse::class,  'user_id', 'course_id');
     }
 }

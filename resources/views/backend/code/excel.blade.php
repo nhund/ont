@@ -8,8 +8,8 @@
         </tr>
     </thead>
     <tbody>
-        @if($code)
-            @foreach($code as $co)
+        @if($codes)
+            @foreach($codes as $co)
                 <tr>
                     <td><span>{{ $co['serial'] }}</span></td>
                     <td><span>{{ $co['code'] }}</span></td>

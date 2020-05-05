@@ -82,7 +82,7 @@
                                                     <img src="{{ $course->avatar_thumb }}" class="" style="width: 50px; height: 50px;">                                                 
                                                 </td>
                                                 <td>
-                                                    {{ $course->name }}
+                                                    <a href="{{ route('course.detail',['id'=>$course->id]) }}">{{ $course->name }}</a>
                                                 </td>
                                                 <td>
                                                     {{ $course->category->name }}
@@ -103,23 +103,9 @@
                                                     {{ date('d-m-Y H:i',$course->study_time ) }}
 
                                                 </td>  
-                                                <td>                                                    
-                                                    @if($course->status == \App\Models\Course::TYPE_FREE_TIME)
-                                                        <span style="color: #FF8515;font-weight: bold;">Miễn phí có thời hạn</span>
-                                                    @endif
-                                                    @if($course->status == \App\Models\Course::TYPE_FREE_NOT_TIME)
-                                                        <span style="color: #3c3bb3; font-weight: bold;">Miễn phí không thời hạn</span>
-                                                    @endif
-                                                    @if($course->status == \App\Models\Course::TYPE_PUBLIC)
-                                                        <span style="color: #5cb85c; font-weight: bold;">Công khai</span>
-                                                    @endif
-                                                    @if($course->status == \App\Models\Course::TYPE_APPROVAL)
-                                                        <span style="color: #000; font-weight: bold;">Cần xét duyệt</span>
-                                                    @endif
-                                                    @if($course->status == \App\Models\Course::TYPE_PRIVATE)
-                                                        <span style="color: #c9302c; font-weight: bold;">Riêng tư</span>
-                                                    @endif
-                                                </td>                                              
+                                                <td>
+                                                    {!! App\Models\Course::STATUS[$course->status] !!}
+                                                </td>
                                                 <td><div class="icheck checkbox-inline"><input type="checkbox" class="checkbox_sticky" value="{{ $course->id }}" @if($course->sticky == \App\Models\Course::STICKY) checked @endif ></div></td>                                            
                                                 <td>
                                                     <a href="{{ route('course.detail',['id'=>$course->id]) }}" class="btn btn-default btn-xs btn-label"><i class="fa fa-pencil"></i>Sửa</a>

@@ -18,13 +18,13 @@
                     <div class="topic_icon new_style">{{ $loop->iteration }}</div>
                 </th>
                 <td class="td-infor">
-                    <span class="@if ($course_lesson[$cl]['is_exercise']) sub-name-ex @else sub-name @endif">
+                    <span class="@if($course_lesson[$cl]['is_exercise'] && $course_lesson[$cl]['type'] == \App\Models\Lesson::LESSON) sub-name-ex
+                                @elseif($course_lesson[$cl]['type'] == \App\Models\Lesson::EXAM) sub-name-exam @else sub-name @endif">
                         {{ $loop->iteration }}. {{ $course_lesson[$cl]['name'] }}
                     </span>
                 </td>
                 <td>{{ isset($course_lesson[$cl]['sub'])?count($course_lesson[$cl]['sub']):0 }} bài</td>
-                <td>@if ($course_lesson[$cl]['status'] == 1) <span class="color-green">Đã phát hành</span>@else Chưa phát
-                hành @endif</td>
+                <td>@if ($course_lesson[$cl]['status'] == 1) <span class="color-green">Đã phát hành</span>@else Chưa phát hành @endif</td>
             </tr>
             @endif
             @endforeach

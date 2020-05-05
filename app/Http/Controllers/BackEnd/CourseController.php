@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Components\Course\CourseService;
+use App\Events\RefundCourseEvent;
+use App\Exceptions\UserCourseException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddExamRequest;
 use App\Models\Category;
 use App\Models\CommentCourse;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\UserCourse;
+use App\Models\Wallet;
 use App\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
 use App\Models\Feedback;
@@ -74,6 +81,11 @@ class CourseController extends AdminBaseController
         $image         = $request->file('avatar');
 
         $hasError       = false;
+
+        if (floatval($price) < floatval($discount)){
+			alert()->error('Có lỗi','Giảm giá không được quá với số tiền khóa học');
+			return redirect()->route('addcourse');
+		}
         if($status == Course::TYPE_PUBLIC || $status == Course::TYPE_APPROVAL || $status == Course::TYPE_FREE_TIME)
         {
             if((int)$study_time == 0 || (int)$study_time < 1)
@@ -189,16 +201,16 @@ class CourseController extends AdminBaseController
             }
         }
         $var['comments'] = $comments;
-        $limit_feedback = 50;
-        $var['feedbacks'] = Feedback::where('course_id',$id)->orderBy('id','DESC')->paginate($limit_feedback);
+        $var['feedbacks'] = Feedback::where('course_id',$id)
+            ->with(['bookmark' => function ($q){
+                $q->where('user_id', Auth::user()->id);
+            }])
+//			->groupBy('question_id')
+            ->orderBy('id','DESC')
+            ->paginate(15);
+
         $var['rating'] = Rating::select('rating_value',DB::raw('count(*) as total'))->where('course_id',$id)->groupBy('rating_value')->get();
-        $ratingValue = array(
-            '1'=>0,
-            '2'=>0,
-            '3'=>0,
-            '4'=>0,
-            '5'=>0,
-        );
+        $ratingValue = array('1'=>0, '2'=>0, '3'=>0, '4'=>0, '5'=>0,);
         $rating_avg = 0;
         $rating_value = 0;
         $user_rating = 0;
@@ -244,15 +256,20 @@ class CourseController extends AdminBaseController
         return view('backend.course.feedback', $var);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function addLesson(Request $request) {
         $course_id      = $request->input('course_id');
         $name           = $request->input('name');
         $status         = $request->input('status');
         $lesson_id      = $request->input('lesson_id');
+        $level      = $request->input('level', 1);
         $lesson         = Lesson::find($lesson_id);
         $firstId        = 0;
-        foreach ($name as $k=>$val) {
-            if ($name) {
+        if (is_array($name) && $name) {
+            foreach ($name as $k=>$val) {
                 $insertData = [
                     'name'          => $val,
                     'status'        => $status[$k],
@@ -260,41 +277,82 @@ class CourseController extends AdminBaseController
                     'parent_id'     => $lesson_id ? $lesson_id : 0,
                     'lv1'           => 0,
                     'created_at'    => time(),
+                    'type'          => Course::LESSON,
+                    'level'         => $level,
                 ];
 
                 if ($lesson) {
-                    $insertData['lv1'] = $lesson['lv1'] ? $lesson['lv1'] : $lesson_id;
-                    if ($lesson['lv1']) {
-                        $insertData['lv2'] = $lesson_id;
+                    $insertData['lv1'] = $lesson['lv1'] ?: $lesson_id;
+
+                    if ($lesson['lv1'] && $lesson['lv2'])
+                    {
+                        $insertData['lv2'] = $lesson['lv2'];
+                        $insertData['lv3'] = $lesson_id;
                     }
                 }
-
                 if (!$firstId) {
                     $firstId = Lesson::insertGetId($insertData);
                 } else {
                     Lesson::insert($insertData);
                 }
-                //tao fordel anh
-                $path = '/images/course/'.$course_id;
-                $destinationPath = public_path($path);
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777);
-                }
-                $path = '/images/course/'.$course_id.'/lesson';
-                $destinationPath = public_path($path);
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777);
-                } 
-                $path = '/images/course/'.$course_id.'/lesson/audio';
-                $destinationPath = public_path($path);
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777);
-                }               
+
+                (new CourseService())->createFolderGalaryForLesson($course_id);
 
             }
         }
 
         return response()->json(['msg' => 'Thêm bài giảng thành công', 'status' => 1, 'id' => $firstId]);
+    }
+
+    public function addExam(AddExamRequest $request)
+    {
+        $params    = $request->only('course_id', 'name', 'status', 'lesson_id');
+        $lesson_id = Arr::get($params, 'lesson_id');
+
+        $lesson     = Lesson::find($lesson_id);
+
+        $insertData = [
+            'name' => $params['name'],
+            'status' => $params['status'],
+            'course_id' => $params['course_id'],
+            'parent_id' => $lesson_id ? $lesson_id : 0,
+            'lv1' => 0,
+            'created_at' => time(),
+            'type' => Course::EXAM,
+        ];
+
+        if ($lesson)
+        {
+            $insertData['lv1'] = $lesson['lv1'] ? $lesson['lv1'] : $lesson_id;
+            if ($lesson['lv1']) {
+                $insertData['lv2'] = $lesson_id;
+            }
+        }
+
+        $firstId = Lesson::insertGetId($insertData);
+
+        (new CourseService())->createFolderGalaryForLesson($params['course_id']);
+
+        return response()->json(['msg' => 'Thêm bài kiểm tra thành công', 'status' => 1, 'id' => $firstId]);
+    }
+
+    public function addLevel2(AddExamRequest $request)
+    {
+        $insertData = [
+            'name'          => $request->get('name'),
+            'status'        => $request->get('status'),
+            'course_id'     => $request->get('course_id'),
+            'parent_id'     => Lesson::PARENT_ID,
+            'lv1'           => Lesson::PARENT_ID,
+            'level'         => 2,
+            'is_exercise'   => null,
+            'created_at'    => time(),
+            'type'          => Course::LESSON,
+        ];
+
+        $id = Lesson::insertGetId($insertData);
+
+        return response()->json(['msg' => 'Thêm bài giảng cấp 2 thành công', 'status' => 1, 'id' => $id]);
     }
 
     public function listUser($id) {
@@ -360,7 +418,7 @@ class CourseController extends AdminBaseController
             //kiem tra ngay hoc gan nhat\
             $user->learn_last_time = UserQuestionLog::where('user_id',$user->id)->where('course_id',$id)->orderBy('update_time','DESC')->first();
             //kiem tra xem user lam tat ca bao nhieu cau
-            $user->userLearn = UserQuestionLog::where('user_id',$user->id)->where('course_id',$id)->groupBy('question_parent')->get()->count();            
+            $user->userLearn = UserQuestionLog::where('user_id',$user->id)->where('course_id',$id)->groupBy('question_parent')->get()->count();
             //kiem tra xem user lam dung bao nhieu cau
             $user->userLearn_true = UserQuestionLog::where('user_id',$user->id)->where('course_id',$id)->where('status',Question::REPLY_OK)->groupBy('question_parent')->get()->count();
             //kiem tra luot lam cua user
@@ -512,5 +570,41 @@ class CourseController extends AdminBaseController
         }else{
             return response()->json(array('error' => true, 'msg' => 'Cập nhật không thành công'));
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws UserCourseException
+     * @throws \Throwable
+     */
+    public function refund(Request $request)
+    {
+        $data = $request->only(['user_id', 'course_id']);
+
+        $userCourse = UserCourse::where([
+            'user_id' => $data['user_id'],
+            'course_id' => $data['course_id']
+        ])->firstOrFail();
+
+        //check wallet
+        $wallet = Wallet::where('user_id',$data['user_id'])->first();
+        if(!$wallet) {
+            throw new UserCourseException('Bạn chưa có xu để mua khóa học.');
+        }
+
+        $course = Course::findOrFail($data['course_id']);
+
+        DB::transaction(function () use ($wallet, $userCourse, $course, $data){
+
+            $wallet->xu += $course->price - $course->discount;
+            $wallet->save();
+            $userCourse->delete();
+
+            event(new RefundCourseEvent($userCourse));
+        });
+
+        return response()->json(array('error' => false, 'msg' => 'Cập nhật thành công'));
+
     }
 }

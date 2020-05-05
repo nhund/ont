@@ -12,14 +12,58 @@
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-md-12">
                                     <form method="POST" action="{{ route('admin.post.update') }}" class="form-horizontal row-border" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{ $var['post']->id }}">
+
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label">Loại bài viết</label>
+                                            <div class="col-sm-2">
+                                                <select name="type" class="form-control" id="type">
+                                                    <option value="news" {{request('type') == 'news' ? 'selected' :''}}>Blog TMU</option>
+                                                    <option value="posting"  {{request('type') == 'posting' ? 'selected' :''}} >Bài viết</option>
+                                                </select>
+                                            </div>
+                                            <label for="" class="control-label col-sm-1">Trạng thái</label>
+                                            <div class="col-sm-2 tabular-border">
+                                                <select class="form-control" name="status">
+                                                    <option @if(App\Models\Post::STATUS_ON == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_ON }}">Hiển thị</option>
+                                                    <option @if(App\Models\Post::STATUS_OFF == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_OFF }}">Ẩn</option>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label" for="feature">Nổi bật</label>
+                                            <div class="col-sm-1">
+                                                <input {{$var['post']->feature == 1 ?'checked' : ''}} class="checkbox form-control" name="feature" id="feature" type="checkbox"/>
+                                            </div>
+                                            <label class="col-sm-1 control-label" for="feature_best">Nổi bật nhất</label>
+                                            <div class="col-sm-1">
+                                                <input {{$var['post']->feature == 2 ?'checked' : ''}} class="checkbox form-control" name="feature_best" id="feature_best" type="checkbox"/>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Tiêu đề</label>
                                             <div class="col-sm-8">
                                                 <input type="text" name="name" autocomplete="off" value="{{ $var['post']->name }}" placeholder="Tiêu đề" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Danh mục</label>
+                                            <div class="col-sm-2 tabular-border">
+                                                <select name="category_id" class="form-control">
+                                                    @foreach($_category as $value)
+                                                        <option @if($var['post']->category_id == $value->id) selected @endif value="{{$value->id}}">{{$value->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <p style="padding-top: 6px; color: red"><i>(Lưu ý: Chỉ dành cho tin tức)</i></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Mô tả</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="note-codable form-control" rows="6" name="des">{{ $var['post']->des }}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -27,15 +71,26 @@
                                             <div class="col-sm-8">
                                                 <textarea class="note-codable form-control" id="editor" name="content">{{ $var['post']->content }}</textarea>
                                             </div>
-                                        </div>                                                                       
-                                                                            
-                                        <div class="form-group pb0">
-                                            <label for="" class="control-label col-sm-2">Trạng thái</label>
-                                            <div class="col-sm-2 tabular-border">
-                                                <select class="form-control" name="status">                                                                   
-                                                    <option @if(App\Models\Post::STATUS_ON == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_ON }}">public</option>
-                                                    <option @if(App\Models\Post::STATUS_OFF == $var['post']->status) selected @endif value="{{ App\Models\Post::STATUS_OFF }}">private</option>
-                                                </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Hình đại diện</label>
+                                            <div class="col-sm-8">
+                                                <div class="fileinput fileinput-new" style="width: 100%;"
+                                                     data-provides="fileinput">
+                                                    <div class="fileinput-preview thumbnail mb20" data-trigger="fileinput"
+                                                         style="width: 50%; height: 150px;">
+                                                        <img src="{{ asset('/public/images/news/'.$var['post']->id.'/'.$var['post']->avatar)}}">
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="btn btn-default fileinput-exists"
+                                                           data-dismiss="fileinput">Xoá</a>
+                                                        <span class="btn btn-default btn-file">
+                                                        <span class="fileinput-new">Chọn ảnh</span>
+                                                        <span class="fileinput-exists">Thay đổi</span>
+                                                        <input type="file" name="avatar" id="avatar">
+                                                    </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="panel-footer">
@@ -129,6 +184,24 @@
 
                 initSample();
             });
+            $('#category-news').change(function () {
+                var val = $(this).val();
+                if (val === ""){
+                    $('.hide-show').addClass('none');
+                    $('.hide-show-hot').addClass('none');
+                }else {
+                    $('.hide-show').removeClass('none');
+                    $('.hide-show-hot').removeClass('none');
+                }
+            });
 
+            $('#feature').change(function () {
+                var val = $(this).val();
+                if (val == 0){
+                    $('.hide-show-hot').addClass('none_hot');
+                }else {
+                    $('.hide-show-hot').removeClass('none_hot');
+                }
+            });
     </script>
 @endpush

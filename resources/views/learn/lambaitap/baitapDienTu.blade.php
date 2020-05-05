@@ -3,12 +3,14 @@
         <input type="hidden" name="id" value="{{ $question->id }}" >
         <input type="hidden" name="type" value="{{ $var['type'] }}" >
         <div class="head_content">
-            <div class="audio_box">
-
-            </div>
+            @if(!empty($question->audio_question))
+                <audio data-audio controls preload="metadata" style="width: 100%;">
+                    <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
+                </audio>
+            @endif
             @if(!empty($question->img_before))
                 <div class="box_image">
-                    <img src="{{ web_asset('public/'.$question->img_before) }}">
+                    <img src="{{$question->img_before}}">
                 </div>
             @endif
             @if(!empty($question->content))
@@ -16,11 +18,7 @@
                     {!! $question->content !!}
                 </div>
             @endif
-            @if(!empty($question->audio_content))
-                 <div class="mediPlayer">
-                  <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_content) }}"></audio>
-                 </div>      
-            @endif
+
             @if(!empty($question->interpret_all))
                 <div class="box_interpret_all">
                     <p>Giải thích chung : <span>{!! $question->interpret_all !!}</span></p>                
@@ -40,10 +38,11 @@
                                     </div>
                                 @endif                                    
                             </div>
+                            <div class="clearfix"></div>
                             @if(!empty($question->audio_question))
-                                <div class="mediPlayer">
-                                  <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
-                              </div>      
+                                <audio data-audio controls preload="metadata" style="width: 100%;">
+                                    <source data-size="60" src="{{ web_asset($question->audio_question) }}" type="audio/mpeg">
+                                </audio>
                             @endif
                             <div class="answer">
                                 <input type="text" class="form-control answer_value" name="answers[{{ $question->id }}]" value="">
@@ -75,7 +74,12 @@
                 </div>
                 <div class="submit_question">
                     <button class="btn btn_submit">Nộp bài</button>
-                    <button class="btn btn_next">Làm tiếp</button>
+                    <button class="btn btn_next">Câu tiếp</button>
+                    @if($var['lastRound'])
+                        <a href="{{route('course.learn', ['id'=>$var['course']->id,'title'=>str_slug($var['course']->name)])}}" class="btn btn_continue finish btn-primary">Hoàn thành</a>
+                    @else
+                        <a class="btn btn_continue btn-primary">Làm tiếp</a>
+                    @endif
                 </div>
             @endif
         </div> 

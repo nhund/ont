@@ -1,3 +1,11 @@
+// let jQuery = $(document).ajaxError(function(event, jqxhr, settings, thrownError ) {
+//     console.log(event, jqxhr, settings, thrownError);
+// });
+//
+// $(document).ajaxComplete(function( event, xhr, settings ) {
+//     console.log( event, xhr, settings );
+// });
+
 function number_format(Num) {
     Num = Num.toString().replace(/^0+/, "").replace(/\./g, "").replace(/,/g, "");
     Num = "" + parseInt(Num);
@@ -99,19 +107,46 @@ function showSuccessMsg (msg) {
     });
 }
 
-function showModalAddLesson(lesson_id, title) {
+function showModalAddLesson(lesson_id, title, level) {
     if (lesson_id) {
-        $('#lesson_id').val(lesson_id);
+        $('#courseLesson #lesson_id').val(lesson_id);
     }
-    $('.title-courseLesson').html(title);
+
+    if (level) {
+        $('#courseLesson #level').val(level);
+    }
+    $('#courseLesson .title-courseLesson').html(title);
     $('#courseLesson').modal('show');
 }
 
-function showModalAddExersice(lesson_id) {
-    if (lesson_id) {
-         $('#les_id').val(lesson_id);
-    }
+function showModalAddExercise(lesson_id, type, level) {
+
+    if (lesson_id) {$('#courseEx #les_id').val(lesson_id);}
+
+    if (type) {$('#courseEx #type').val(type);}
+    if (type) {$('#courseEx #level').val(level);}
+
     $('#courseEx').modal('show');
+}
+
+function showModalAddExam(lesson_id, type, level) {
+
+    if (lesson_id) {$('#courseExam #les_id').val(lesson_id);}
+
+    if (type) {$('#courseExam #type').val(type);}
+    if (type) {$('#courseExam #level').val(level);}
+
+    $('#courseExam').modal('show');
+}
+
+function showModalAddLevel2(title, lesson_type) {
+
+    if (lesson_type) {
+        $('#courseLevel2 #lesson_type').val(lesson_type);
+    }
+
+    $('#courseLevel2 .title-courseLesson').html(title);
+    $('#courseLevel2').modal('show');
 }
 
 function addRowLesson() {
@@ -164,11 +199,27 @@ function addLesson() {
         dataType: 'json',
         method: 'POST',
         success: function (response) {
+            console.log('response', response)
             if (response.status) {
                 window.location.href = '/admin/lesson/'+response.id;
             }
         }
     });
+}
+
+function addLevel2() {
+    const serialise = $( "form#addCourseLevel2" ).serialize();
+    $.ajax({
+       url: '/admin/course/addLevel2',
+       data: serialise,
+       dataType: 'json',
+       method: 'POST',
+       success: function (response) {
+           if (response.status) {
+               window.location.href = '/admin/lesson/'+response.id;
+           }
+       }
+   });
 }
 
 function handleLessonForm() {
@@ -210,6 +261,22 @@ function ValidExForm(form) {
     }
 
     $('form#'+form).submit();
+}
+
+function ValidFormCommon(form) {
+    CKEDITOR.instances.exDescription.updateElement();
+    const inputs = $('#'+form+' [data-input]');
+    let valid =  true;
+    inputs.each(function ( ele, input) {
+        const value = $(input).val();
+        if ( $.trim($(input).val()) === ''){
+            valid = false;
+            showErrorMsg('Vui lòng nhập ' + $(input).data('input') );
+        }
+    });
+    if (valid){
+        $('form#'+form).submit();
+    }
 }
 
 function ValidForm(form) {
@@ -281,3 +348,53 @@ function addComment(e, parent_id, course_id) {
         }
     });
 }
+
+function updatePartExam() {
+    var serialise = $( "form#form-update-part-exam" ).serialize();
+    $.ajax({
+           url: '/admin/exam/part',
+           data: serialise,
+           dataType: 'json',
+           method: 'POST',
+           success: function (response) {
+               if (response.status) {
+                   window.location.reload();
+               } else {
+                   showErrorMsg('cập nhât điểm cho bài kiểm tra không thành công.');
+                   return false;
+               }
+           }
+       });
+}
+
+//bookmark
+function bookmark(question_id, $this) {
+    var data = {question_id};
+
+    $.ajax({
+       headers: {'X-CSRF-Token': $('meta[name=csrf-token]').attr("content")},
+       type   : "POST",
+       url    : '/bai-tap/bookmark',
+       data   : data,
+       success: function (data) {
+           if (data.error == false) {
+               if (!$($this).hasClass('bookmarked')){
+                   $($this).addClass('bookmarked');
+                   $($this).removeClass('btn-default').addClass('btn-success');
+               } else {
+                   $($this).removeClass('bookmarked');
+                   $($this).removeClass('btn-success').addClass('btn-default');
+               }
+           }
+       },
+       error  : function (e) {
+
+       }
+    })
+};
+$(document).ajaxComplete(function() {
+    $('button').prop('disabled', false)
+});
+$(document).ajaxStart(function() {
+    $('button').prop('disabled', true)
+});

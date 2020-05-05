@@ -4,10 +4,10 @@
          {!! $question->content !!}
       </div>
       @if(!empty($question->audio_content))
-         <div class="mediPlayer">
-          <audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_content) }}"></audio>
-         </div>      
-      @endif   
+           <audio data-audio controls preload="metadata" style="width: 100%;">
+               <source data-size="60" src="{{ web_asset($question->audio_content) }}" type="audio/mpeg">
+           </audio>
+      @endif
    </div>                                                      
       <div class="box_flash">
        <input type="hidden" name="question_id" value="{{ $question->id }}">
@@ -59,6 +59,7 @@
                <img src="{{ web_asset('public/images/course/icon/icon_bookmark.png') }}" >
          </div>
       </div>
+    <div class="clearfix"></div>
       <div class="next">
          <button class="btn not_remeber check_flashcard" data-reply='1'>
             <i class="fa fa-close"></i>

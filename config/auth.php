@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'passport',
             'provider' => 'users',
         ],
     ],
@@ -97,6 +97,11 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
         ],
+    ],
+
+    'web_app_client' => [
+        'id' => env('WEB_APP_CLIENT_ID'),
+        'secret' => env('WEB_APP_CLIENT_SECRET'),
     ],
 
 ];

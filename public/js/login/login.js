@@ -23,6 +23,7 @@ $(document).ready(function () {
         var data = {remember:remember,email:email,password:password,_token:$('meta[name=csrf-token]').attr("content")};
         if(!ajax_login)
         {
+            localStorage.setItem('access_token', '');
             var ajax_login = true;
             icon_loadding.show();
             $.ajax({
@@ -31,22 +32,22 @@ $(document).ready(function () {
                 dataType: 'json',
                 data: data,
                 success: function (result) {
-                    if(result.error == false)
+                    if(result.code === 200)
                     {
                         swal({
-                            title: "Thông báo",
-                            text: result.msg,
+                            title: 'Chúc mừng bạn đã đăng nhập thành công',
                             timer: 1000,
                             type : 'success',
                         },function(){
+                            localStorage.setItem('access_token', `${result.data.token_type} ${result.data.access_token}`);
                             window.location.reload();
                         });
                     }else{
                         swal({
-                            title: "Thông báo",
-                            text: result.msg,
-                            type : 'error',
-                        })
+                             title: result.error.email[0],
+                             timer: 1000,
+                             type : 'error',
+                         });
                     }
                 },
                 error: function (result) {
@@ -90,11 +91,10 @@ $(document).ready(function () {
                 dataType: 'json',
                 data: data,
                 success: function (result) {
-                    if(result.error == false)
+                    if(result.code  ===  200)
                     {
                         swal({
-                            title: "Thông báo",
-                            text: result.msg,
+                            title:result.message,
                             timer: 1000,
                             type : 'success',
                             showConfirmButton: false,
@@ -103,10 +103,9 @@ $(document).ready(function () {
                         });
                     }else{
                         swal({
-                            title: "Thông báo",
-                            text: result.msg,
-                            timer: 5000,
-                            type : 'error',
+                                 title: result.error.email[0],
+                                 timer: 3000,
+                                 type : 'error',
                         })
                     }
                 },

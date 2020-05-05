@@ -52,17 +52,17 @@
                                  <div class="col-md-12">
                                      <div class="col-md-2">
                                             <div class="form-group">
-                                                <input type="text" autocomplete="off" name="from_time" placeholder="Từ ngày" class="form-control from_time" value="{{ $from_time or '' }}">
+                                                <input type="text" autocomplete="off" name="from_time" placeholder="Từ ngày" class="form-control from_time" value="{{ $from_time ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <input type="text" autocomplete="off" name="to_time" placeholder="Đến ngày" class="form-control to_time" value="{{ $to_time or '' }}">
+                                                <input type="text" autocomplete="off" name="to_time" placeholder="Đến ngày" class="form-control to_time" value="{{ $to_time ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <input type="text" autocomplete="off" name="user_search" placeholder="Nhập tên thành viên hoặc email" class="form-control" value="{{ $user_search or '' }}">
+                                                <input type="text" autocomplete="off" name="user_search" placeholder="Nhập tên thành viên hoặc email" class="form-control" value="{{ $user_search ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -84,18 +84,17 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th width="100">STT</th>
+                                    <th width="10">STT</th>
                                     <th width="200">Họ Tên</th>
-                                    <th width="150">Email</th>
                                     <th width="200">Trạng thái</th>
                                     <th width="100">Tham gia</th>
                                     <th width="150">Học gần nhất</th>
                                     <th width="200">Tổng câu đã học</th>
                                     <th width="200">Tổng câu làm đúng</th>
                                     <th width="400">Tổng quan</th>
-                                    <th width="200">Lượt làm max</th>
-                                    <th width="200">Lượt làm min</th>
-                                    <th width="200">Lượt làm trung bình</th>
+                                    {{--<th width="200">Lượt làm max</th>--}}
+                                    {{--<th width="200">Lượt làm min</th>--}}
+                                    {{--<th width="200">Lượt làm trung bình</th>--}}
                                     {{-- <th>Vai trò</th> --}}
                                 </tr>
                                 </thead>
@@ -108,8 +107,8 @@
                                                 <td align="left">
                                                     <img class="user_img" src="{{ !empty($this->avatar) ? web_asset($this->avatar) : web_asset('public/images/avatar-default.png')  }}"     >
                                                     {{ $user->full_name }}
+                                                    <p>{{ $user->email }}</p>
                                                 </td>                                                
-                                                <td>{{ $user->email }}</td>                                               
                                                 <td>
                                                     @if ($user->id != Auth::user()['id'])
                                                         <select class="form-control" onchange="changeUserStatus('{{ $user->id }}', '{{ $course->id }}', this.value)">
@@ -122,7 +121,7 @@
                                                 <td>{{ date('d/m/y', $user->created_at) }}</td>
                                                 <td>
                                                     @if(isset($user->learn_last_time->update_time))
-                                                        {{ date('d/m/y', $user->learn_last_time->update_time) }}</td>
+                                                        {{ date('d/m/y', $user->learn_last_time->update_time) }}
                                                     @endif
                                                 </td>
                                                 <td>
@@ -141,15 +140,15 @@
                                                         /
                                                     @endforeach
                                                 </td>
-                                                <td> 
-                                                    {{ isset($user->learn_lesson_max) ? number_format($user->learn_lesson_max) : '' }}
-                                                </td>
-                                                <td> 
-                                                    {{ isset($user->learn_lesson_min) ? number_format($user->learn_lesson_min) : '' }}
-                                                </td>
-                                                <td>
-                                                    {{ isset($user->learn_lesson_avg) ? number_format($user->learn_lesson_avg) : '' }}
-                                                </td>
+                                                {{--<td> --}}
+                                                    {{--{{ isset($user->learn_lesson_max) ? number_format($user->learn_lesson_max) : '' }}--}}
+                                                {{--</td>--}}
+                                                {{--<td> --}}
+                                                    {{--{{ isset($user->learn_lesson_min) ? number_format($user->learn_lesson_min) : '' }}--}}
+                                                {{--</td>--}}
+                                                {{--<td>--}}
+                                                    {{--{{ isset($user->learn_lesson_avg) ? number_format($user->learn_lesson_avg) : '' }}--}}
+                                                {{--</td>--}}
                                                 {{-- <td>
                                                     @if ($user->id == Auth::user()['id']) <span class="color-green">Quản trị lớp học</span> @else Học viên @endif
                                                 </td> --}}

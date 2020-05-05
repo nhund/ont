@@ -2,25 +2,39 @@
 
 namespace App\Exceptions;
 
+use App\Support\ApiResponseFormatter;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\Models\Error as ErrorModel;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Intervention\Image\Exception\NotFoundException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponseFormatter;
     /**
      * A list of the exception types that should not be reported.
      *
      * @var array
      */
     protected $dontReport = [
-        \Illuminate\Auth\AuthenticationException::class,
+    ];
+
+    protected $customRender = [
+        UserCourseException::class,
+        BookMarkException::class,
+        BadRequestException::class,
+        AuthenticationException::class,
         \Illuminate\Auth\Access\AuthorizationException::class,
-        \Symfony\Component\HttpKernel\Exception\HttpException::class,
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
-        \Illuminate\Session\TokenMismatchException::class,
-        \Illuminate\Validation\ValidationException::class,
+        NotFoundException::class,
+        \App\Exceptions\ValidationException::class,
+        \League\OAuth2\Server\Exception\OAuthServerException::class,
     ];
 
     /**
@@ -45,12 +59,162 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        $hasCustomRenderer = in_array(get_class($exception), $this->customRender);
+        if ($hasCustomRenderer) {
+            return $this->renderCustomException($request, $exception);
+        }
+
         if ($this->shouldReport($exception))
         {
             $this->_logError($request, $exception);
         }
         return parent::render($request, $exception);
     }
+
+    /**
+     * Handle exceptions for API request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Exception $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function renderCustomException($request, $exception)
+    {
+        $handler = 'render'.class_basename($exception);
+
+        if (!method_exists($this, $handler)) {
+            return null;
+        }
+
+        return $this->$handler($request, $exception);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\Access\AuthorizationException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderUserCourseException($request, $exception){
+
+        return $this->prepareErrorResponse($request, $exception, 400);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\Access\AuthorizationException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderOnthiezException($request, $exception){
+
+        return $this->prepareErrorResponse($request, $exception, 400);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\Access\AuthorizationException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderBadRequestException($request, $exception){
+
+        return $this->prepareErrorResponse($request, $exception, 201);
+    }
+
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Database\Eloquent\ModelNotFoundException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderModelNotFoundException($request, $exception)
+    {
+        $entity = str_replace('-', ' ', strtolower(Str::kebab(class_basename($exception->getModel()))));
+        $message = __('Cannot find the given :entity.', ['entity' => $entity]);
+
+        return $this->prepareErrorResponse($request, $exception, 404, $message);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Database\Eloquent\ModelNotFoundException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderNotFoundException($request, $exception)
+    {
+        return $this->prepareErrorResponse($request, $exception, 404, $exception->getMessage());
+    }
+
+
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \League\OAuth2\Server\Exception\OAuthServerException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderOAuthServerException($request, $exception)
+    {
+        return $this->prepareErrorResponse(
+            $request,
+            $exception,
+            $exception->getHttpStatusCode(),
+            Arr::get($exception->getPayload(), 'message') ?: null,
+            null,
+            $exception->getHttpHeaders()
+        );
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\Access\AuthorizationException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderAuthorizationException($request, $exception)
+    {
+
+        return $this->prepareErrorResponse($request, $exception, 403,  __('You are not allowed to perform this request.'));
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Auth\AuthenticationException $exception
+     * @return \Illuminate\Http\JsonResponse|null
+     */
+    protected function renderAuthenticationException($request, $exception)
+    {
+        $message = $exception->getMessage() != 'Unauthenticated.' ? $exception->getMessage() :  'Bạn chưa đăng nhập';
+        return $this->prepareErrorResponse($request, $exception, 401, $message);
+    }
+
+
+    /**
+     * Convert a given exception to the appropriate response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $exception
+     * @param  integer $status
+     * @param  mixed  $data
+     * @param  string|null  $message
+     * @param  array   $headers
+     * @return mixed
+     */
+    protected function prepareErrorResponse($request, $exception, $status = 400, $message = null, $data = null, $headers = [])
+    {
+        if (is_null($message) && method_exists($exception, 'getMessage')) {
+            $message = $exception->getMessage();
+        }
+
+        if (method_exists($exception, 'getStatusCode') && $exception->getStatusCode() !== null) {
+            $status = $exception->getStatusCode();
+        }
+
+        return $this->respondError(
+            $data,
+            __($message),
+            $status,
+            $headers
+        );
+    }
+
+
 
     /**
      * Convert an authentication exception into an unauthenticated response.
@@ -184,6 +348,7 @@ class Handler extends ExceptionHandler
         }
         return redirect()->guest(route('login'));
     }
+
     protected function _logError($request, $exception)
     {
 
@@ -201,5 +366,31 @@ class Handler extends ExceptionHandler
 
         $error->save();
 
+    }
+
+    /**
+     * Render an error exception.
+     *
+     * @param  mixed $data
+     * @param  string|null $message
+     * @param  integer $status
+     * @param  array $headers
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function respondError($data = null, $message = null, $status = 400, $headers = [])
+    {
+        $data = $this->formatDataForApiResponse($data, $message, $status, true);
+
+        return response()->json($data, 200, $headers);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        $data = $this->formatDataForApiResponse($exception->errors(), null, $exception->status, true);
+
+        return response()->json($data, 200);
     }
 }

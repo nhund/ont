@@ -32,7 +32,7 @@
                                 <div class="tabular-cell msg col-sm-6">
                                     <a href="#" class="msgee">{{ $var['course']->name }}</a>
                                     <p>Ngôn ngữ: Tiếng Việt</p>
-                                    <p>Trạng thái : 
+                                    <p>Trạng thái :
                                         @if($var['course']->status == \App\Models\Course::TYPE_FREE_TIME) Miễn phí có thời hạn  @endif
                                         @if($var['course']->status == \App\Models\Course::TYPE_FREE_NOT_TIME) Miễn phí không thời hạn  @endif
                                         @if($var['course']->status == \App\Models\Course::TYPE_PUBLIC) Công khai  @endif
@@ -60,64 +60,39 @@
                                 <div class="panel-heading">
                                     <h2>
                                         <ul class="nav nav-tabs">
-                                            <li class="dropdown pull-right tabdrop hide">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                    <i class="fa fa-angle-down"></i>
-                                                </a>
-                                                <ul class="dropdown-menu"></ul>
-                                            </li>
-                                            <li class="active">
-                                                <a href="#tab-des" data-toggle="tab">
-                                                    <span class="tabDes">Mô tả</span>
-                                                </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="{{ route('admin.course.listUser', ['id' => $var['course']->id]) }}" target="_blank">
-                                                    <i class="fa fa-group"></i>
-                                                    <span class="">Thành viên</span>
-                                                </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="{{ route('admin.course.support.index', ['id' => $var['course']->id]) }}" target="_blank">
-                                                    <i class="fa fa-user"></i>
-                                                    <span class="">Trợ giảng</span>
-                                                </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="#tab-comment" data-toggle="tab">
-                                                    <span class="tabComment">Bình luận</span>
-                                                </a>
-                                            </li>
-                                            <li class=""><a href="#tab-rate" data-toggle="tab"><img src="{{ asset('/public/images/course/icon/icon-star.png')}}" class="tab-des">Đánh giá</a></li>
-                                            <li class=""><a href="#tab-feedback" data-toggle="tab"><img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" class="tab-des">Phản hồi</a></li>
+                                            <li data-tab="description" class="active"><a href="#tab-des" data-toggle="tab"><span class="tabDes">Mô tả</span></a></li>
+                                            <li data-tab="user" class=""><a href="{{ route('admin.course.listUser', ['id' => $var['course']->id]) }}" target="_blank"><i class="fa fa-group"></i><span class="">Thành viên</span></a></li>
+                                            <li data-tab="assistant" class=""><a href="{{ route('admin.course.support.index', ['id' => $var['course']->id]) }}" target="_blank"><i class="fa fa-user"></i><span class="">Trợ giảng</span></a></li>
+                                            <li data-tab="comment" class=""><a href="#tab-comment" data-toggle="tab"><span class="tabComment">Bình luận</span></a></li>
+                                            <li data-tab="rate" class=""><a href="#tab-rate" data-toggle="tab"><img src="{{ asset('/public/images/course/icon/icon-star.png')}}" class="tab-des">Đánh giá</a></li>
+                                            <li data-tab="feedback" class=""><a href="#tab-feedback" data-toggle="tab"><img src="{{ web_asset('public/images/course/icon/icon_flag.png') }}" class="tab-des">Phản hồi</a></li>
                                         </ul>
                                     </h2>
                                 </div>
                                 <div class="panel-body">
                                     <div class="tab-content">
-                                        <div class="tab-pane active" id="tab-des">
+                                        <div data-tab="description" class="tab-pane active" id="tab-des">
                                             <p>{!! $var['course']->description !!}</p>
                                             @include('backend.course.list')
                                         </div>
-                                        <div class="tab-pane" id="tab-user">
-                                            
+                                        <div data-tab="user" class="tab-pane" id="tab-user">
                                         </div>
-                                        <div class="tab-pane" id="tab-comment">
+                                        <div  data-tab="comment" class="tab-pane" id="tab-comment">
                                             <div class="comments-container">
-                                                <div id="comment" class="box-info">              
+                                                <div id="comment" class="box-info">
                                                   <div class="container-fluid">
                                                      <div class="row">
-                                                        @include('course.detail.comment.comment_list')                                                        
+                                                        @include('course.detail.comment.comment_list')
                                                      </div>
                                                   </div>
                                                </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="tab-rate">
+                                        <div data-tab="rate" class="tab-pane" id="tab-rate">
                                             <p>Đánh giá</p>
                                             @include('course.detail.rating',['rating'=>$var['rates'],'rating_value'=>$var['rating_value'],'rating_avg'=>$var['rating_avg'],'user_rating'=>$var['user_rating']])
                                         </div>
-                                        <div class="tab-pane" id="tab-feedback">
+                                        <div data-tab="feedback" class="tab-pane" id="tab-feedback">
                                             @include('backend.course.feedback.feedback')
                                         </div>
                                     </div>
@@ -133,3 +108,15 @@
 
     @include('include.backend.detail_modal',['course'=>$var['course']])
 @endsection
+
+@push('js')
+    <script>
+        const url = location.search;
+        let searchParams = new URLSearchParams(url);
+        const type = searchParams.get('type');
+        if (type) {
+            $('[data-tab]').removeClass('active');
+            $(`[data-tab=${type}]`).addClass('active');
+        }
+    </script>
+@endpush

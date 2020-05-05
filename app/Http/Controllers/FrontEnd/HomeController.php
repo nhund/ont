@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
@@ -89,7 +90,16 @@ class HomeController extends Controller
         $var['courses'] = Course::where('status','!=',Course::TYPE_PRIVATE)->where('sticky',Course::STICKY)->take(8)->get();        
         $var['about'] = About::first();  
         $var['user_feels'] = UserFeel::where('status',UserFeel::STATUS_ON)->get();
-        $var['founders'] = Founder::where('status',Founder::STATUS_ON)->get();        
+        $var['founders'] = Founder::where('status',Founder::STATUS_ON)->get();
+
+        $newsFeature =  Post::where('type', Post::NEWS)
+            ->where('status', Post::STATUS_ON)->take(4)
+            ->orderBy('feature', 'DESC')
+            ->orderByRaw('RAND()')->get();
+
+        $var['news'] = $newsFeature;
+
+
         return view('home.index',compact('var'));
     }
     public function contact()
@@ -157,6 +167,7 @@ class HomeController extends Controller
         $feedback->email = $data['email'];
         $feedback->content = $data['content'];
         $feedback->course_id = $lesson->course_id;
+        $feedback->lesson_id = $lesson->id;
         $feedback->teacher_id = $question->user_id;
         $feedback->question_id = $data['question_id'];
         $feedback->question_type = isset($data['type']) ? $data['type'] : 0;
@@ -176,7 +187,7 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
         Auth::logout();
-        alert()->error('<span>Tài khoản của bạn đã được đăng nhập ở một nơi khác.</br> Bạn vui lòng không dùng chung tài khoản để chức năng tối ưu ghi nhớ có hiệu quả.</span>')->html()->autoclose(6000)->persistent("Đóng lại");
+        alert()->error('Tài khoản của bạn đã được đăng nhập ở một nơi khác. Bạn vui lòng không dùng chung tài khoản để chức năng tối ưu ghi nhớ có hiệu quả.');
         return redirect()->route('home');
     }
 }

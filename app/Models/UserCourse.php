@@ -28,4 +28,11 @@ class UserCourse extends Model
     {
         return $this->hasOne('App\User', 'id', 'user_id');
     }
+
+
+    public function getExpiredAttribute()
+    {
+        return (int)$this->getOriginal('and_date') > 0 ?  ((int)$this->getOriginal('and_date') - time()) * 24 * 60 * 60 : 0;
+
+    }
 }

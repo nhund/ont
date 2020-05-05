@@ -27,7 +27,7 @@
       <link href='{{ web_asset('public/css/font-awesome.min.css') }}' rel='stylesheet' type='text/css'  media='all'  />
       <link href='{{ web_asset('public/css/styles.css') }}' rel='stylesheet' type='text/css'  media='all'  />
       <link href="{{ web_asset('public/css/sweetalert.css') }}" rel="stylesheet" type="text/css">
-      
+      <link href="{{ web_asset('public/css/font-google.css') }}" rel="stylesheet">
       <!-- Global site tag (gtag.js) - Google Analytics -->
       <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131344708-1"></script>
       <script>
@@ -97,7 +97,7 @@
       
       <script src='{{ web_asset('public/js/script.js') }}' type='text/javascript'></script>
       <script src='{{ web_asset('public/js/main.js') }}' type='text/javascript'></script>
-      <script src='{{ web_asset('public/js/no_coppy.js') }}' type='text/javascript'></script>
+      {{--<script src='{{ web_asset('public/js/no_coppy.js') }}' type='text/javascript'></script>--}}
       <script src="{{ web_asset('public/js/sweetalert.min.js') }}"></script>
       
       @if(Auth::check())            

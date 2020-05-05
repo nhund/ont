@@ -62,7 +62,7 @@
                                             </picture>
                                          </a>
                                          @if($course->is_free !== 1 && $course->discount_percent > 0)
-                                            <div class="product-pricesale-percent">-{{ $course->discount_percent }}%</div>
+                                            <div class="product-pricesale-percent">-{{ number_format($course->discount_percent , 0) }}%</div>
                                          @endif
                                       </div>
                                       <div class="product-info">

@@ -23,7 +23,11 @@ class CommentCourse extends Model
     }
     public function user()
     {
-        return $this->hasOne('App\User', 'id', 'user_id');
+        return $this->hasOne('App\User', 'id', 'user_id')
+            ->withDefault(function ($user){
+                $user->full_name = 'Default Name';
+                $user->email = 'onthiez@gmail.com';
+            });
     }    
 
     public static function boot()
@@ -56,5 +60,13 @@ class CommentCourse extends Model
                 CommentCourse::where('parent_id',$model->attributes['id'])->delete();
             }
         });
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subComment()
+    {
+        return $this->hasMany(CommentCourse::class, 'parent_id', 'id');
     }
 }

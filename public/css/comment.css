@@ -16,8 +16,8 @@
 	border-radius:4px; 
 }
 .comments-container .paginations .pagination>.active>span{
-	background-color: #FF8515;
-    border-color: #FF8515;
+	background-color: #FFC646;
+    border-color: #FFC646;
 }
 .comments-container h1 {
 	font-size: 36px;
@@ -60,8 +60,8 @@
 .comments-container .box_add_comment .box_submit .send-comment{
 	width: 95px;
     height: 35px;
-    border: 1px solid#FF8515;
-    background: #FF8515;
+    border: 1px solid#FFC646;
+    background: #FFC646;
     border-radius: 4px;
     margin: 5px 0px;
     display: flex;

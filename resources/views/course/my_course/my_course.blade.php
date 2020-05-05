@@ -45,25 +45,21 @@
                                 <div class="product-information">
                                    <div class="product-detail clearfix">
                                       <div class="product-image image-resize">
-                                        <a href="{{ route('courseDetail',['title'=>str_slug($course->course->name),'id'=>$course->course->id]) }}" title="{{ $course->course->name }}">
+
+                                        <a href="{{ route('course.learn',['title'=>str_slug($course->course->name),'id'=>$course->course->id]) }}" title="{{ $course->course->name }}">
                                             <picture>
-                                               {{-- <source media="(max-width: 1199px)" srcset="../../product.hstatic.net/1000122408/product/upload_2161eda575ed44b2942861d9ddeb9ecc_medium.jpg">
-                                               <source media="(min-width: 1200px)" srcset="../../product.hstatic.net/1000122408/product/upload_2161eda575ed44b2942861d9ddeb9ecc_large.jpg"> --}}
                                                   <img src="{{ $course->course->avatar_thumb }}" alt="{{ $course->course->name }}" />
                                             </picture>
                                          </a>
                                          @if($course->course->is_free !== 1 && $course->course->discount_percent > 0)
-                                            <div class="product-pricesale-percent">-{{ $course->course->discount_percent }}%</div>
+                                            <div class="product-pricesale-percent">-{{ number_format($course->course->discount_percent , 0)}}%</div>
                                         @endif
                                       </div>
                                       <div class="product-info">
-                                         <a href="{{ route('courseDetail',['title'=>str_slug($course->course->name),'id'=>$course->course->id]) }}" title="{{ $course->course->name }}">
+                                         <a href="{{ route('course.learn',['title'=>str_slug($course->course->name),'id'=>$course->course->id]) }}" title="{{ $course->course->name }}">
                                             <h2>{{ $course->course->name }}</h2>
                                          </a>
                                          <p class="product-vendor">Người tạo: {{ $course->course->user->name_full }}</p>
-                                         <div class="box_process product-box-price clearfix flexbox-grid-default">
-                                              @include('course.my_course.info_process_course')
-                                         </div>
                                          <div class="product-info-description clearfix hidden">
                                             <p class="col-xs-12 pd-none mt5">
                                                     {{ $course->course->sapo }}

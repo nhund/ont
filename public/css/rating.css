@@ -23,7 +23,7 @@
 }
 #rating .box-rate .number-rate .rating .send_rating{
 	cursor: pointer;
-	display: none;
+	/*display: none;*/
 }
 #rating .box-rate .number-rate .rating .checked{
 	color: #FFD600;
@@ -54,7 +54,7 @@
 }
 #rating .box-rate .box-rate-action .border{	
 	height: 4px;
-	background: #FF8515;
+	background: #FFC646;
 	width: 117px;
 	border-radius: 4px;	
 	margin: 0px 5px;

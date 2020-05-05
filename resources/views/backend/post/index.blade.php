@@ -6,10 +6,23 @@
         <div id="panel-advancedoptions">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
+                    <div class="form-group">
+                        <div class="col-sm-2">
                             <a href="{{ route('admin.post.add') }}" class="btn-primary btn">Thêm bài viết</a>
                         </div>
+                        <div class="col-sm-4">
+                            <select name="category_id" class="form-control" id="category-news" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                                <option value="{{route('admin.post.index')}}">--Chọn Loại bài viết --</option>
+                                <option {{request('type') == 'news' ? 'selected' :''}} value="{{route('admin.post.index', ['type' => 'news'])}}">Tin tức</option>
+                                <option {{request('type') == 'posting' ? 'selected' :''}} value="{{route('admin.post.index', ['type' => 'posting'])}}">Bài viết</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12">
+
                         <div class="panel">
                             <div class="panel-body panel-no-padding">
                                 <table class="table table-striped table-bordered">
@@ -20,9 +33,10 @@
                                         </th> --}}
                                         <th width="100">STT</th>
                                         <th>Tiêu đề</th>                   
-                                        <th>Nội dung</th>                                                                        
-                                        <th width="200">Trạng thái</th>
-                                        <th width="200">Ngày tạo</th>                                        
+{{--                                        <th>Nội dung</th>                                                                        --}}
+                                        <th width="100">Chuyên mục</th>
+                                        <th width="100">Trạng thái</th>
+                                        <th width="150">Ngày tạo</th>
                                         <th width="150">Hành động</th>
                                     </tr>
                                     </thead>
@@ -30,25 +44,22 @@
                                     @if($var['posts'])
                                         @foreach($var['posts'] as $key => $post)
                                             <tr class="tr">
-                                                {{-- <td><div class="icheck checkbox-inline"><input type="checkbox"></div></td> --}}
-                                                <td>{{ $loop->iteration }}</td>                                                
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>
                                                     <a target="_blank" href="{{ route('post.detail',['id'=>$post->id,'title'=>str_slug($post->name)]) }}">{{ $post->name }}</a>
-                                                    
                                                 </td>   
-                                                <td>{{ str_limit($post->content,300) }}</td>   
+{{--                                                <td>{{ substr($post->des, 0, 100)  }}</td>--}}
+                                                <td>{{ \App\Models\CategoryNews::find($post->category_id)['name']}}</td>
                                                 <td>
                                                     @if($post->status == \App\Models\Post::STATUS_OFF)
-                                                        <span style="color: #c9302c; font-weight: bold;">private</span>
-                                                        
+                                                        <span style="color: #c9302c; font-weight: bold;">Ẩn</span>
                                                     @else
-                                                        <span style="color: #5cb85c;font-weight: bold;">Public</span>                                                        
+                                                        <span style="color: #5cb85c;font-weight: bold;">Hiển thị</span>
                                                     @endif
                                                 </td>                                                 
                                                 <td>{{ date('d-m-Y',$post->create_date) }}</td>
-                                                
                                                 <td>                                                    
-                                                    <a href="{{ route('admin.post.edit',['id'=>$post->id]) }}" class="btn btn-default btn-xs btn-label"><i class="fa fa-pencil"></i>Sửa</a>
+                                                    <a href="{{ route('admin.post.edit',['id'=>$post->id, 'type' => $post->type]) }}" class="btn btn-default btn-xs btn-label"><i class="fa fa-pencil"></i>Sửa</a>
                                                     <a href="#" data-id="{{ $post->id }}" class="btn btn-danger btn-xs btn-label confirmButton"><i class="fa fa-trash-o"></i>Xóa</a>
                                                 </td>
                                             </tr>

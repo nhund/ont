@@ -79,7 +79,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" name="name" placeholder="Tên khóa học" value="{{ $course['name'] or '' }}">
+                                <input type="text" class="form-control" name="name" placeholder="Tên khóa học" value="{{ $course['name'] ?? '' }}">
                             </div>
                             <div class="col-sm-3">
                                 <select class="form-control" name="category_id">
@@ -103,12 +103,12 @@
                     <div class="form-group">
                         <div class="row">
                             <label class="col-sm-6">Mô tả <i class="fa fa-asterisk" style="color:red; font-size: 0.6em;" aria-hidden="true"></i></label>
-                            <label class="col-sm-3">Giá</label>
+                            <label class="col-sm-3">Giá gốc </label>
                             <label class="col-sm-3">Giảm giá</label>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <textarea name="description" cols="80" rows="20" class="ckeditor">{{ $course['description'] or '' }}</textarea>
+                                <textarea name="description" cols="80" rows="20" class="ckeditor">{{ $course['description'] ?? '' }}</textarea>
                             </div>
                             <div class="col-sm-6">
                                 <div class="row">

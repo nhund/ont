@@ -2,7 +2,7 @@
     <div class="flexbox-grid-default hidden-lg hidden-md hidden-sm">
        <div class="flexbox-content box-logo-mobile">
           <div class="logo-mobile">
-             <a href="{{ route('home') }}" title="Trang chủ">             
+             <a href="{{ route('home') }}" title="Trang chủ">
              <img src="{{ isset($data_all['about']->logo) ? web_asset($data_all['about']->logo) : '' }}" alt="{{ isset($data_all['about']->title) ? $data_all['about']->title : '' }}" />
              </a>
           </div>
@@ -49,13 +49,13 @@
                 <li class="">
                   <a href="{{ $menu->url }}" title="{{ $menu->name }}">{{ $menu->name }} @if(count($menu->child) > 0)<i class="fa fa-angle-down">@endif</i></a>
                   @if(count($menu->child) > 0)
-                    <ul class="dropdown-menu submenu-level1-children" role="menu">            
+                    <ul class="dropdown-menu submenu-level1-children" role="menu">
                         @foreach($menu->child as $menu_child)
                           <li class="">
                             <a href="{{ $menu_child->url }}" title="{{ $menu_child->name }}">{{ $menu_child->name }}</a>
-                          </li>  
+                          </li>
                         @endforeach
-                    </ul>  
+                    </ul>
                   @endif
                 </li>
               @endforeach
@@ -66,7 +66,7 @@
           <ul class="icon-control-header text-right">
              <li class="search-header">
                <div class="dropdown-menu-search form-search">
-                  <form action="{{ route('search') }}" method="GET">                      
+                  <form action="{{ route('search') }}" method="GET">
                       <input type="text" class="form-control" name="q" placeholder="Tìm kiếm...">
                       <button type="submit"><i class="fa fa-search"></i></button>
                   </form>
@@ -79,7 +79,7 @@
                         <img src="{{ web_asset('public/images/groupwallet.png') }}" />
                       </div>
                       <span class="wallet">Nạp ví</span>
-                   </a>                                    
+                   </a>
                 </div>
              </li>
           </ul>

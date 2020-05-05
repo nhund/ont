@@ -3,10 +3,10 @@
      <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pd5 head_course head_flash_Card">
        <div class="lesson_name do_new">
-        <img src="{{ web_asset('public/images/course/icon/icon_bt_moi_48.png') }}"> 
+        <img src="{{ web_asset('public/images/course/icon/icon_bt_moi.png') }}">
         <div class="name">   
           <div class="box_head">            
-            <div title="{{ $var['lesson']->name }}" class="title">{{ $var['lesson']->name }}</div>
+            <div title="{{ $var['lesson']->name }}" class="title"> Làm bài mới: {{ $var['lesson']->name }}</div>
             <div class="course_process">Đã làm <span class="count_question_done">0</span>/<span class="total_question">{{ count($var['questions']) }}</span></div>
           </div>                                                         
           <div class="progress">
@@ -18,7 +18,12 @@
      </div>
    </div>
    <div class="close_course">
-    <a href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="fa fa-close"></a>   
+       @if($var['lesson']->level == \App\Models\Lesson::LEVEL_2)
+           <a href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'course_id'=> $var['course']->id, 'lesson_id'=>$var['lesson']->id]) }}" class="fa fa-close"></a>
+       @else
+           <a href="{{ route('course.learn',['title'=>str_slug($var['course']->name),'id'=>$var['course']->id]) }}" class="fa fa-close"></a>
+       @endif
+
   </div>
 </div>
 </div>

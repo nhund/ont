@@ -4,7 +4,7 @@
     <link href="{{asset('/public/admintrator/assets/css/animate.min.css')}}" type="text/css" rel="stylesheet">
 @endpush
 @push('js')
-    
+
 @endpush
 @section('content')
     @include('backend.include.breadcrumb',['var'=>$breadcrumb])
@@ -35,10 +35,10 @@
                                                     <span class="tabDes">@if ($lesson['is_exercise']) Câu hỏi @else Nội dung @endif</span>
                                                 </a>
                                             </li>
-                                            {{-- <li class=""><a href="#tab-rate" data-toggle="tab"><img src="{{ asset('/public/images/course/icon/icon-star.png')}}" class="tab-des">Đánh giá</a></li>
-                                            <li class=""><a href="#tab-comment" data-toggle="tab"><img src="{{ asset('/public/images/course/icon/icon-comment.png')}}" class="tab-des">Bình luận</a></li> --}}
                                         </ul>
                                     </h2>
+                                    @if (!$lesson['is_exercise'] && $lesson['parent_id'])  <h2><a href="{{ route('admin.userLesson.report.detail', ['lesson' => $lesson->id]) }}">&nbsp; Tiến độ bài học</a></h2>@endif
+
                                     <div class="pull-right editBtn">
                                         @if (!$lesson['is_exercise'])
                                                 <button class="btn btn-primary" title="Sửa" @if (!$lesson['is_exercise'])
@@ -100,21 +100,9 @@
                                                                       });
                                                                     </script>
                                                                 @endpush
-                                                            @endif                                                            
+                                                            @endif
                                                         </div>
                                                     </div>
-                                                    {{-- <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <div class="col-sm-6">File ảnh</div>                                                            
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            @if(!empty($lesson['image']))
-                                                                <img src="{{ web_asset('public/'.$lesson['image']) }}" style="max-width: 200px;">
-                                                            @endif
-
-                                                            <input type="file" name="image">
-                                                        </div>
-                                                    </div> --}}
                                                     <div class="row col-sm-12">Nội dung</div>
                                                     <div class="col-sm-12 row">
                                                         <textarea name="description" cols="80" rows="20" id="editor" class="ckeditor1">{{ $lesson['description'] or '' }}</textarea>
@@ -162,10 +150,10 @@
             </div>
         </div>
     </div>
-    
+
     @include('include.backend.detail_modal')
     @include('include.backend.lesson_modal')
-    
+
 @endsection
 @push('js')
 {{-- <script src="{{ asset('public/admintrator/assets/plugins/form-ckeditor/ckeditor.js') }}"></script> --}}
@@ -178,7 +166,7 @@
             } else {
                 $('.editBtn').hide();
             }
-        });    
+        });
     if($('#editor').length > 0)
     {
         if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
@@ -201,14 +189,14 @@
                 // :(((
                 if ( isBBCodeBuiltIn ) {
                     editorElement.setHtml(
-                        
+
                     );
                 }
 
                 // Depending on the wysiwygarea plugin availability initialize classic or inline editor.
                 if ( wysiwygareaAvailable ) {
                     CKEDITOR.replace( 'editor' ,{
-                        
+
                         filebrowserUploadUrl: '{{ route('admin.import.imageCkeditor') }}?_token={{ csrf_token() }}&course_id={{ $lesson['course_id'] }}',
                     });
                 } else {
@@ -232,11 +220,11 @@
         } )();
         initSample();
     }
-    
+
     @if(!$lesson['is_exercise'])
-        $(document).ready(function() {        
-            $('.supplier_select').select2();     
-                  
+        $(document).ready(function() {
+            $('.supplier_select').select2();
+
         });
     @endif
 </script>

@@ -34,16 +34,16 @@
                     {!! $var['lesson']->description !!}                    
                     @if(!empty($var['lesson']->audio))
                     <p>Audio :</p>
-                    <div class="mediPlayer">
-                        <audio class="listen" preload="none" data-size="60" src="{{ web_asset('public/'.$var['lesson']->audio) }}"></audio>
-                    </div>
+                        <audio data-audio controls preload="metadata" style="width: 100%;">
+                            <source data-size="60" src="{{ web_asset('public/'.$var['lesson']->audio) }}" type="audio/mpeg">
+                        </audio>
                     @endif
                 </div>
                 <div class="next">
                     <form action="{{ $var['child'] }}">
                                 {{-- <input type="hidden" name="type" value="" >
-                                <input type="hidden" name="type" value="" >
-                                <input type="hidden" name="type" value="" > --}}
+                                {{--<input type="hidden" name="type" value="" >--}}
+                        <input type="hidden" name="parentLesson" value="{{request('lesson_id')}}" >
                         <button class="btn btn_submit_doc" data-id="{{ $var['lesson']->id }}">Đã hoàn thành</button>
                     </form>
                 </div>                    

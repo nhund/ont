@@ -9,6 +9,7 @@
 			<div class="modal-body pad10">
 				<input type="hidden" name="id" value="{{ $question->id }}">
 				<input type="hidden" name="lesson_id" id="lesson_id" value="{{ $question->lesson_id }}">
+				<input type="hidden" name="course_id" id="course_id" value="{{ $question->course_id }}">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				@if(isset($data['feedback_id']))
 					<input type="hidden" name="feedback_id" value="{{ $data['feedback_id'] }}">
@@ -21,15 +22,12 @@
 						<div class="form-group row">
 							<div class="col-sm-12">Loại câu hỏi</div>
 							<div class="col-sm-3">
-								<select class="form-control" name="type">
-									<option disabled @if($question->type == \App\Models\Question::TYPE_FLASH_SINGLE) selected @endif value="{{ \App\Models\Question::TYPE_FLASH_SINGLE }}">FlashCard Đơn</option>
-									<option disabled @if($question->type == \App\Models\Question::TYPE_FLASH_MUTI) selected @endif value="{{ \App\Models\Question::TYPE_FLASH_MUTI }}">FlashCard chuỗi</option>
-									<option disabled @if($question->type == \App\Models\Question::TYPE_DIEN_TU) selected @endif value="{{ \App\Models\Question::TYPE_DIEN_TU }}">Điền từ</option>
-									<option disabled @if($question->type == \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN) selected @endif value="{{ \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN }}">Điền từ đoạn văn</option>
-									<option disabled @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM) selected @endif value="{{ \App\Models\Question::TYPE_TRAC_NGHIEM }}">Trác nghiệm</option>
+								<select class="form-control" name="type" id="type-question">
+									<option selected value="{{ $question->type }}">{{\App\Models\Question::TYPE[$question->type]}}</option>
 								</select>
 							</div>
 						</div>
+						@if($question->type !== \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
 						<div class="form-group row">
 							<div class="col-sm-12">Đoạn văn</div>
 							<div class="col-sm-12">
@@ -39,34 +37,46 @@
 										<div class="box_video">
 
 										</div>
-										<div class="box_audio @if(!empty($question->audio_question)) show @endif">
-											<div class="mediPlayer">
-												<audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
+										@if($question->type === \App\Models\Question::TYPE_TRAC_NGHIEM)
+											<div class="box_audio @if(!empty($question->audio_content)) show @endif">
+												<div class="mediPlayer">
+													<audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_content) }}"></audio>
+												</div>
+												<p class="delete" title="Xóa audio" onclick="deleteAudio(this)">Xóa</p>
+												<input type="hidden" name="audio_content" class="input_audio" value={{ $question->audio_content }}>
 											</div>
-											<p class="delete" title="Xóa audio" onclick="deleteAudio(this)">Xóa</p>
-											<input type="hidden" name="audio_content" class="input_audio" value={{ $question->audio_question }}>
-										</div>
+										@else
+											<div class="box_audio @if(!empty($question->audio_question)) show @endif">
+												<div class="mediPlayer">
+													<audio class="listen" preload="none" data-size="60" src="{{ web_asset($question->audio_question) }}"></audio>
+												</div>
+												<p class="delete" title="Xóa audio" onclick="deleteAudio(this)">Xóa</p>
+												<input type="hidden" name="audio_content" class="input_audio" value={{ $question->audio_question }}>
+											</div>
+										@endif
+
 										@if($question->type !== \App\Models\Question::TYPE_FLASH_SINGLE)
 											<div class="box_image @if(!empty($question->img_before)) show @endif">
 												<img  src="{{ web_asset($question->img_before) }}">
-												<input class="input_image" type="hidden" name="image" value="{{ $question->img_before }}">  
+												<input class="input_image" type="hidden" name="image" value="{{ $question->img_before }}">
 												<p class="delete" title="Xóa ảnh" onclick="deleteImage(this)">Xóa</p>
 											</div>
 											@include('backend.lesson.question.options.action',['show_format_content'=>true,'show_audio'=>true,'show_image'=>true])
-										@else 
+										@else
 											{{-- <div class="box_image @if(!empty($question->img_before)) show @endif">
 												<img  src="{{ web_asset($question->img_before) }}">
-												<input class="input_image" type="hidden" name="image" value="{{ $question->img_before }}">  
+												<input class="input_image" type="hidden" name="image" value="{{ $question->img_before }}">
 												<p class="delete" title="Xóa ảnh" onclick="deleteImage(this)">Xóa</p>
 											</div> --}}
 											@include('backend.lesson.question.options.action',['show_format_content'=>true,'show_audio'=>true])
 										@endif
-										
-									</div>                                            
+
+									</div>
 								</div>
 
 							</div>
 						</div>
+						@endif
                             <!-- <div class="form-group row">
                                 <div class="col-sm-12">Gợi ý</div>
                                 <div class="col-sm-12">
@@ -91,13 +101,18 @@
                             @if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM)
 	                            <div class="form_question form_trac_nghiem">
 	                            	@include('backend.lesson.question.form_question_trac_nghiem',['edit'=>true])
-	                            </div>                          
-	                            @endif
+	                            </div>
+							@endif
                             @if($question->type == \App\Models\Question::TYPE_DIEN_TU_DOAN_VAN)
 	                            <div class="form_question form_dien_tu_doan_van">
 	                            	@include('backend.lesson.question.form_question_dien_tu_doan_van',['edit'=>true])
 	                            </div>                        
                             @endif
+							@if($question->type == \App\Models\Question::TYPE_TRAC_NGHIEM_DON)
+								<div class="form_question form_trac_nghiem">
+									@include('backend.lesson.question.form_question_trac_nghiem_don',['edit'=>true])
+								</div>
+							@endif
 
                         </div>
                     </div>

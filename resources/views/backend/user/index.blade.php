@@ -133,7 +133,7 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('admin.user.edit',['id'=>$user->id]) }}" class="btn btn-default btn-xs btn-label"><i class="fa fa-pencil"></i>Sửa</a>
-                                                    {{-- <a data-id="{{ $user->id }}" href="#" class="btn btn-danger btn-xs btn-label"><i class="fa fa-trash-o"></i>Xóa</a> --}}
+                                                    <a href="{{ route('admin.report.detail',['id'=>$user->id]) }}" class="btn btn-default btn-xs btn-label"><i class="fa fa-eye"></i>Lịch sử</a>
                                                 </td>
                                             </tr>
                                         @endforeach

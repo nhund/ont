@@ -128,14 +128,7 @@ class CourseController extends Controller
         //$var['rating_total'] = $rating_value;
         if(Auth::check())
         {
-
-            if(Auth::user()->id == $course->user_id)
-            {
-                $var['user_course'] = true; 
-            }else{
-                $var['user_course'] = UserCourse::where('user_id',Auth::user()->id)->where('course_id',$id)->first();
-            }
-            
+            $var['user_course'] = UserCourse::where('user_id',Auth::user()->id)->where('course_id',$id)->first();
         }
         //dd($var['rating_total']);
         return view('course.detail.course',compact('var'));
@@ -159,28 +152,6 @@ class CourseController extends Controller
                 $courses->forget($key);
                 continue;
             }
-            //dem so cau hoi cua khoa hoc
-            $question_count = Question::where('course_id',$course->course_id)->where('parent_id',0)->count();
-            //dem tat ca so cau da lam cua user
-            $user_question_log_all = UserQuestionLog::where('user_id',$user->id)->where('course_id',$course->course_id)->groupBy('question_parent')->count();
-            // dem so cau hoi tra loi sai
-            $user_question_log_error = UserQuestionLog::where('user_id',$user->id)->where('status',Question::REPLY_ERROR)->where('course_id',$course->course_id)->groupBy('question_parent')->count();
-            //tinh so cau tra loi dung
-            $user_question_log_true = $user_question_log_all - $user_question_log_error;
-            // tinh toan tien do
-            
-            if($question_count > 0 && $user_question_log_true > 0)
-            {
-                $process_percent = ($user_question_log_true / $question_count) * 100;   
-                $course->process_percent = round($process_percent,1); 
-            }
-            // dem so cau bookmark
-            //$course->user_learn_bookmark = UserQuestionBookmark::where('user_id',$user->id)->where('course_id',$course->course_id)->count();
-            
-            $course->user_learn_error = $user_question_log_error;
-            $course->question_count = $question_count;
-            $course->user_question_log_true = $user_question_log_true;    
-            
         }
         //$var['params']['user_id'] = Auth::user()->id;
         $var['courses'] = $courses;

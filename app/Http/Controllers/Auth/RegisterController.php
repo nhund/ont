@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Components\Auth\Authenticator;
+use App\Http\Requests\RegisterUserRequest;
+use App\Models\Transformers\auth\AccessTokenEntityFull;
 use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -22,6 +23,20 @@ class RegisterController extends Controller
     |
     */
 
+    protected $authenticator;
+
+    /**
+     * Create a new controller instance.
+     *
+     * RegisterController constructor.
+     * @param Authenticator $authenticator
+     */
+    public function __construct(Authenticator $authenticator){
+        $this->authenticator = $authenticator;
+        $this->middleware('guest');
+
+    }
+
     use RegistersUsers;
 
     /**
@@ -29,118 +44,33 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
+
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * @param RegisterUserRequest $request
+     * @return mixed
+     * @throws \Exception
      */
-    public function __construct()
+    public function store(RegisterUserRequest $request)
     {
-        $this->middleware('guest');
-    }
+         $data = $request->only(['email', 'full_name', 'password', 'phone']);
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            //'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-    }
-    public function register(Request $request)
-    {
-        if(Auth::check())
-        {
-            return redirect('/home');
-        }
-        $data = $request->all();
-        $check = $this->affirm($request);
+         User::create([
+             'email'     => $data['email'],
+             'full_name' => $data['full_name'] ?? null,
+             'phone'     => $data['phone'] ?? null,
+             'password'  => bcrypt($data['password']),
+//             'level'     => $data['level'],
+//             'status'    => $data['status'],
+         ]);
+		Auth::logout();
+        $tokenEntity = $this->authenticator->issueTokensUsingPasswordGrantWithClient(
+            $request->oauthClient(),
+            $data['email'],
+            $data['password']
+        );
 
-        if($check)
-        { 
-            $msg = '';
-            if(isset($check['email']))
-            {
-                $msg = $check['email'][0];
-            }
-            if(isset($check['password']))
-            {
-                $msg = $check['password'][0];
-            }
-            if(isset($check['password_confirmation']))
-            {
-                $msg = $check['password_confirmation'][0];
-            }
-            return response()->json(array(
-                'error' => true,
-                'msg' => $msg,
-            ));
-        }
-
-        $user = new User();
-        //$user->name = $data['name'];
-        $user->email = $data['email'];
-        //$user->full_name = $data['full_name'];
-        $user->create_at = time();        
-        $user->status = User::USER_STUDENT;        
-        $user->password = bcrypt($data['password']);
-        $user->level = User::USER_STUDENT;
-        $user->avatar = '';
-        if($user->save())
-        {
-            Auth::login($user, true);
-            return response()->json(array(
-                'error' => false,
-                'msg' => 'Chúc mừng, Bạn đã đăng ký tài khoản thành công',
-            ));
-        }
-        return response()->json(array(
-            'error' => true,
-            'msg' => 'Đăng ký tài khoản không thành công',
-        ));
-
-    }
-    public function affirm(Request $request)
-    {
-        $data = $request->all();
-
-        $rules  =  [
-            //'name'              => 'required|min:4|max:30|unique:users',
-            'email'             => 'required|email|unique:users',            
-            'password' => 'required|min:6|confirmed',
-            'password_confirmation' => 'required'
-        ];
-
-        $messsages = [
-            //'name.required'                     => ' Tên dăng nhập không được để trống.',
-            //'name.min'                          => ' Độ dài tên tối thiểu 5 ký tự.',
-            //'name.max'                          => ' Độ dài tên tối đa 30 ký tự.',
-            //'name.alpha_spaces'                 => ' Tên đăng nhập chứa ký tự đặc biệt.',
-            //'name.unique'                       => ' Tên đăng nhập đã tồn tại.',
-            'email.required'                    => ' Email không được để trống.',
-            'email.email'                       => ' Email không đúng định dạng.',
-            'email.unique'                      => ' Email đã được sử dụng.',            
-            'password.required'                 => ' Mật khẩu không được để trống.',
-            'password.min'                      => ' Mật khẩu tối thiểu 6 ký tự.',
-            'password.confirmed'                => 'Mật khẩu xác nhận không đúng',
-        ];
-
-        $validator = Validator::make($data, $rules,$messsages);
-
-        if ($validator->fails())
-        {
-            $error = $validator->getMessageBag()->toArray();
-            return $error;
-        }
-        return false;
-
+        return $this->authenticator->respondWithTokens($request, $tokenEntity);
     }
 }

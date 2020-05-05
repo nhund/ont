@@ -1,22 +1,3 @@
-{{-- <div class="box_media">  
-	<div class="box_audio">
-		<div class="mediPlayer">
-			<audio class="listen" preload="none" data-size="60" src=""></audio>
-		</div>
-		<input type="hidden" name="audio_content" class="input_audio">
-	</div>                  
-    <div class="phd">
-        <div class="dropdown">
-            <img class="dropdown-toggle" data-toggle="dropdown" src="{{ asset('public/images/course/icon/option-create-question-01.png') }}" style="" type="button" aria-expanded="false">                
-            <ul class="dropdown-menu"> --}}
-                {{-- <li class="popup_upload" data-type="content">Thêm ảnh</li> --}}
-                {{-- <li class="popup_upload_audio" onclick="showAudioUpload(this)">Thêm audio</li>
-                <li class="format_content" onclick="ShowFormatContent(this)" data-type="content">Định dạng nội dung</li>
-            </ul>
-        </div>
-    </div>
-</div> --}}
-
 <div class="phd">
         <div class="dropdown">
             <img class="dropdown-toggle" data-toggle="dropdown" src="{{ asset('public/images/course/icon/option-create-question-01.png') }}" style="" type="button" aria-expanded="false">                

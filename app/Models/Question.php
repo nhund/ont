@@ -18,9 +18,22 @@ class Question extends Model
     const TYPE_DIEN_TU = 3;
     const TYPE_TRAC_NGHIEM = 4;
     const TYPE_DIEN_TU_DOAN_VAN = 5;
+    const TYPE_TRAC_NGHIEM_DON = 6;
+
+    const TYPE  = [
+        self::TYPE_FLASH_SINGLE => 'FlashCard đơn',
+        self::TYPE_FLASH_MUTI => 'FlashCard chuỗi',
+        self::TYPE_DIEN_TU => 'Điền từ',
+        self::TYPE_TRAC_NGHIEM => 'Trắc nghiệm',
+        self::TYPE_TRAC_NGHIEM_DON => 'Trắc nghiệm đơn',
+        self::TYPE_DIEN_TU_DOAN_VAN => 'Điền từ đoạn văn',
+    ];
 
     const REPLY_ERROR = 1;
     const REPLY_OK = 2;
+    const NOT_YET = 3;
+
+    const PARENT_ID = 0;
 
     const LEARN_LAM_BAI_MOI = 'lam-bai-moi';
     const LEARN_LAM_CAU_CU = 'lam-cau-cu';
@@ -45,36 +58,17 @@ class Question extends Model
     {
         parent::boot();
 
-
-        self::creating(function($model){
-
-        });
-        self::created(function($model){
-            
-        });
-
-        self::updating(function($model){
-
-        });
-
-        self::updated(function($model){
-
-        });
-
-        self::deleting(function($model){
-            // ... code here
-        });
-
         self::deleted(function($model){
             if (isset($model->attributes['id']))
             {
-                if($model->attributes['type'] == self::TYPE_DIEN_TU || $model->attributes['type'] == self::TYPE_TRAC_NGHIEM)
+                if($model->attributes['type'] == self::TYPE_DIEN_TU || $model->attributes['type'] == self::TYPE_TRAC_NGHIEM|| $model->attributes['type'] == self::TYPE_TRAC_NGHIEM_DON)
                 {
                     if($model->attributes['parent_id'] == 0)
                     {
                         $question_childs = Question::where('parent_id',$model->attributes['id'])->get()->pluck('id')->toArray();
                         //xoa cau hoi
                         Question::where('parent_id',$model->attributes['id'])->delete();
+						UserQuestionLog::where('question_parent',$model->attributes['id'])->delete();
                         //xoa cau tra loi
                         QuestionAnswer::whereIn('question_id',$question_childs)->delete();
                         // xoa log question
@@ -98,5 +92,52 @@ class Question extends Model
                 }                
             }
         });
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subQuestion()
+    {
+        return $this->hasMany(Question::class, 'parent_id', 'id');
+    }
+
+    public function type()
+    {
+        return self::TYPE[$this->getOriginal('type')];
+    }
+
+//    /**
+//     * @return null|string
+//     */
+//    public function getImgBeforeAttribute()
+//    {
+//        return $this->getOriginal('img_before') ? $this->getOriginal('img_before') : null;
+//    }
+
+//    /**
+//     * @return null|string
+//     */
+//    public function getImgAfterAttribute()
+//    {
+//        return $this->getOriginal('img_after') ? asset($this->getOriginal('img_after')) : null;
+//    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comment()
+    {
+        return $this->hasMany(CommentQuestion::class);
+    }
+
+    public function examQuestion()
+    {
+        return $this->hasMany(ExamQuestion::class);
+    }
+
+    public function scopeTypeAllow($query)
+    {
+        return $query->whereNotIn('type', [self::TYPE_FLASH_MUTI, self::TYPE_FLASH_SINGLE]);
     }
 }

@@ -101,4 +101,38 @@ class Helper
         }        
         return $text;
     }
+
+    /**
+     * Safely decode a given JSON string.
+     *
+     * @param  string|mixed $payload
+     * @param  \Exception|null $e
+     * @param  bool $associative
+     * @return array|\stdClass
+     * @throws \Exception
+     */
+    public static function decode_json_payload($payload, $e = null, $associative = true)
+    {
+        if (empty($payload) || !is_string($payload)) {
+            if (is_null($e)) {
+                return [];
+            }
+
+            throw $e;
+        }
+
+        $value = json_decode($payload, $associative);
+
+        if (is_null($value) || json_last_error() !== JSON_ERROR_NONE) {
+            if (is_null($e)) {
+                return [];
+            }
+
+            logger()->error(json_last_error_msg());
+
+            throw $e;
+        }
+
+        return $value;
+    }
 }

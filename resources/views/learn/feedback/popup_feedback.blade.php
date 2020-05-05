@@ -39,7 +39,7 @@
   text-align: center;
 }
 #feedbackModel .modal-footer .btn-send-feedback{
-  background: #FF8515;
+  background: #FFC646;
   color: #fff;
 }
 #feedbackModel .modal-footer .btn-send-feedback:focus{

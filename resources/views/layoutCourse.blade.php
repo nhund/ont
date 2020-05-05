@@ -25,6 +25,7 @@
       <link href='{{ web_asset('public/css/styles.css') }}' rel='stylesheet' type='text/css'  media='all'  />      
       <link href="{{ web_asset('public/css/sweetalert.css') }}" rel="stylesheet" type="text/css">
       <link href="{{ web_asset('public/css/toastr.min.css') }}" rel="stylesheet" type="text/css">
+      <link href="{{ web_asset('public/css/font-google.css') }}" rel="stylesheet">
       @stack('css')
    </head>
    <body class="hideresponsive">
@@ -52,7 +53,7 @@
       <script src="{{ web_asset('public/js/bootstrap.min.js') }}" type="text/javascript"></script>
       <script src="{{ web_asset('public/js/sweetalert.min.js') }}"></script>
       <script src="{{ web_asset('public/js/toastr.min.js') }}"></script>
-      <script src='{{ web_asset('public/js/no_coppy.js') }}' type='text/javascript'></script>
+      {{--<script src='{{ web_asset('public/js/no_coppy.js') }}' type='text/javascript'></script>--}}
       <script type="text/javascript" src="{{ asset('public/admintrator/assets/plugins/form-ckeditor/plugins/ckeditor_wiris/integration/WIRISplugins.js?viewer=image') }}"></script>
       <script type="text/javascript" src="{{ web_asset('public/admintrator/assets/plugins/form-ckeditor/plugins/ckeditor_wiris/core/display.js') }}"></script>
       <script type="text/javascript" src="{{ web_asset('public/admintrator/assets/plugins/form-ckeditor/plugins/ckeditor_wiris/wirisplugin-generic.js') }}"></script>
